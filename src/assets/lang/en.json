@@ -6,6 +6,7 @@
     "aiApplication": "AI Application",
     "contracts": "Contracts",
     "mapping": "Mapping",
+    "refund": "Refund",
     "createCoin": "Create Currency",
     "outHint": "Are you sure you want to close this wallet?",
     "hint": "Tips",
@@ -183,6 +184,7 @@
   },
   "CampaignNode": {
     "mortgage": "Deposit",
+    "query": "Query",
     "Mining_nodes": "Mining Node",
     "miners": "Miner",
     "mortgage_man": "Deposited MAN",

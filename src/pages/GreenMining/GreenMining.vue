@@ -4,6 +4,8 @@
       <div class="header">
         <!-- <label :class="{'active' : type === 'miningTransaction'}"
                @click="changeType('miningTransaction')">{{$t('greenMining.mining_revenue')}}&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</label> -->
+        <label :class="{'active' : type === 'refund'}"
+               @click="changeType('refund')">{{$t('header.refund')}}&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</label>
         <label :class="{'active' : type === 'campaignNode'}"
                @click="changeType('campaignNode')">{{$t('greenMining.campaign_node')}}&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</label>
         <label :class="{'active' : type === 'secondaryKey'}"
@@ -49,9 +51,6 @@ export default {
   },
   watch: {
     $route (to, from) {
-      if (to.name === 'MiningTransactionOverview') {
-        this.type = 'miningTransaction'
-      }
       if (to.name === 'MortgageHistory' || to.name === 'HistoricalIncome') {
         this.showBack = true
       } else {
@@ -72,6 +71,9 @@ export default {
     if (route.name === 'MortgageHistory') {
       this.showBack = true
     }
+    if (route.name === 'Refund') {
+      this.type = 'refund'
+    }
     if (route.path.indexOf('startNode') > -1 || route.path.indexOf('campaignNode') > -1) {
       this.type = 'campaignNode'
       this.showCampaignTip = true
@@ -88,6 +90,8 @@ export default {
         this.$router.push({ path: '/green-mining/mining-transaction-overview' })
       } else if (status === 'secondaryKey') {
         this.$router.push({ path: '/green-mining/secondKey' })
+      } else if (status === 'refund') {
+        this.$router.push({ path: '/green-mining/refund' })
       }
     },
     back () {

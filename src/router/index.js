@@ -5,6 +5,7 @@ import AIApplication from '@/pages/AIApplication/AIApplication'
 import Contract from '@/pages/Contract/Contract'
 import GreenMining from '@/pages/GreenMining/GreenMining'
 import MiningTransactionOverview from '@/components/MiningTransactionOverview/MiningTransactionOverview'
+import Refund from '@/components/Refund/Refund'
 import HistoricalIncome from '@/components/HistoricalIncome/HistoricalIncome'
 import MortgageHistory from '@/components/MortgageHistory/MortgageHistory'
 import MyWallet from '@/pages/MyWallet/MyWallet'
@@ -116,6 +117,10 @@ let router = new Router({
         path: 'mining-transaction-overview',
         name: 'MiningTransactionOverview',
         component: MiningTransactionOverview
+      }, {
+        path: 'refund',
+        name: 'Refund',
+        component: Refund
       }, {
         path: 'mortgage-history',
         name: 'MortgageHistory',

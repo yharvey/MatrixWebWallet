@@ -6,6 +6,7 @@
     "aiApplication": "AI应用",
     "contracts": "合约",
     "mapping": "MAN 映射",
+    "refund": "退款",
     "createCoin": "创建币种",
     "outHint": "此操作将退出钱包解锁",
     "hint": "提示",
@@ -183,6 +184,7 @@
   },
   "CampaignNode": {
     "mortgage": "抵押",
+    "query": "查询",
     "Mining_nodes": "挖矿节点",
     "miners": "矿工",
     "mortgage_man": "抵押man数量",
