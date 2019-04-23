@@ -6,9 +6,6 @@
       <div>
         <span class="keyStoneHintFont">{{$t('myWallet.msg1')}}&nbsp; <a @click="goPage('createWallet')">{{$t('myWallet.create')}}</a></span>
       </div>
-      <div>
-        <span class="keyStoneHintFont">{{$t('myWallet.msg2')}}&nbsp;<a @click="goPage('queryWallet')">{{$t('myWallet.view')}}</a>&nbsp;{{$t('myWallet.balance')}}</span>
-      </div>
     </el-card>
   </div>
 </template>
@@ -31,7 +28,12 @@ export default {
   mounted () {
     // console.log(WalletUtil.entropyToMnemonic('dd47e5391a7a3aa921dae322659537493219b779eca811006b239636c4446556'))
     try {
-      let address = this.$store.getters.wallet.address
+      let address
+      if (this.$store.state.offline != null) {
+        address = this.$store.state.offline
+      } else {
+        address = this.$store.getters.wallet.address
+      }
       if (address) {
         this.$router.push({ path: '/my-wallet/openWallet/myAssets' })
       }
@@ -75,7 +77,7 @@ export default {
             if (!deposit) {
               this.$router.push({ path: '/green-mining/campaignNode' })
             } else {
-              this.$router.push({ path: '/green-mining/mining-transaction-overview' })
+              this.$router.push({ path: '/green-mining/campaignNode' })
             }
           }
         } else {

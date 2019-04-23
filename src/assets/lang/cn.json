@@ -6,12 +6,13 @@
     "aiApplication": "AI应用",
     "contracts": "合约",
     "mapping": "MAN 映射",
-    "refund": "退款",
     "createCoin": "创建币种",
     "outHint": "此操作将退出钱包解锁",
     "hint": "提示",
     "sure": "确认",
-    "cancel": "取消"
+    "cancel": "取消",
+    "refund": "退款",
+    "offlineSend": "离线交易"
   },
   "myWallet": {
     "queryWallet": "查询钱包",
@@ -123,6 +124,7 @@
     "entrustTime2": "委托时间应该大于当前时间",
     "entrustTime3": "结束时间应该大于开始时间",
     "entrustTime4": "和之前委托此地址时间不能重合",
+    "secondTime": "和之前授权此地址时间不能重合",
     "invalidManAddress": "无效man地址",
     "entrustBlock": "开始块高不能大于结束块高",
     "entrustSelf": "不能委托自己",
@@ -237,7 +239,7 @@
     "inputGasLimit": "请输入gasgasLimit"
   },
   "cancel": {
-    "hint": "取消委托成功",
+    "hint": "取消关联成功",
     "cancelAssociate1": "取消授权",
     "cancelAssociate": "取消关联"
   },
@@ -255,7 +257,10 @@
     "addButton": "+ 添加地址",
     "delCreate": "删除此地址",
     "manCount": "MAN数量",
-    "destruction": "销毁地址"
+    "destruction": "销毁地址",
+    "addressError": "接收新币种的钱包地址填写错误",
+    "valueError": "转账金额必须大于0",
+    "nameError": "转账地址必须与创建币种一致"
   },
   "cancelEntrust": {
     "index": "序号",
@@ -498,6 +503,32 @@
     "offline": "离线模式",
     "sign": "签名交易",
     "sendSign": "发送签名交易",
-    "sendSignInformation": "发送签名信息"
+    "sendSignInformation": "发送签名信息",
+    "sendSignature": "发送签名"
+  },
+  "undo": {
+    "title": "撤销交易",
+    "transferHash": "交易hash"
+  },
+  "OfflineUnlock": {
+    "title": "发送签名交易",
+    "tip": "点击发送签名交易",
+    "sendSuccess": "交易成功",
+    "offlineTip": "*请确认打开钱包时，设备处于离线状态",
+    "sendSignTip": "*请确认发送签名时，设备处于连网状态",
+    "sign": "交易签名",
+    "noSignTransfer": "未签名交易",
+    "signing": "进行签名",
+    "selectSign": "选择下面其中一种方式进行签名"
+  },
+  "refund": {
+    "deposit_amount": "抵押金额",
+    "deposit_status": "抵押状态",
+    "node_address": "节点地址",
+    "no_deposit": "账户未抵押",
+    "Set_Miner": "已抵押为矿工节点",
+    "Set_validator": "已抵押为验证者节点",
+    "withdraw_block": "已退选，退选在",
+    "block": "块"
   }
 }

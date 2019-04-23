@@ -83,7 +83,7 @@ export default {
     },
     changeSendSign (data) {
       this.sendSignVisible = false
-      if (data != null) {
+      if (data != null && data !== false) {
         this.hash = data.hash
         let contractAddr = WalletUtil.getManAddress(this.contractAddr)
         this.contractAddr = WalletUtil.getCurrencyAddress(contractAddr, this.currency)
@@ -127,6 +127,14 @@ export default {
           this.contractAddr = WalletUtil.getCurrencyAddress(contractAddr, this.currency)
           this.hash = this.httpProvider.man.sendRawTransaction(newTxData)
           this.visible = true
+          let recordArray = localStorage.getItem(this.address)
+          if (recordArray == null) {
+            recordArray = []
+          } else {
+            recordArray = JSON.parse(recordArray)
+          }
+          recordArray.push({ hash: this.hash, newTxData: this.newTxData })
+          localStorage.setItem(this.address, JSON.stringify(recordArray))
         } else {
           this.jsonObj = JSON.stringify(jsonObj)
           this.confirmOffline = true

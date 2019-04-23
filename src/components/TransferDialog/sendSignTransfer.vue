@@ -6,11 +6,13 @@
              :before-close="handleClose"
              center>
     <div class="content">
+      <h1>{{$t('OfflineUnlock.title')}}</h1>
       <el-input type="textarea"
                 :autosize="{ minRows: 4, maxRows: 6}"
                 v-model="information"></el-input>
       <button class="common-button button-top"
               @click="sendTransfer">{{$t('unlock.sendSignInformation')}}</button>
+      <div class="error_font">{{$t('OfflineUnlock.sendSignTip')}}</div>
     </div>
   </el-dialog>
 </template>
@@ -27,6 +29,14 @@ export default {
         let newTxData = SendTransfer.getTxParams(this.information)
         let hash = this.httpProvider.man.sendRawTransaction(newTxData)
         let obj = { newTxData: newTxData, hash: hash }
+        let recordArray = localStorage.getItem(this.$store.state.offline)
+        if (recordArray == null) {
+          recordArray = []
+        } else {
+          recordArray = JSON.parse(recordArray)
+        }
+        recordArray.push({ hash: hash, newTxData: newTxData })
+        localStorage.setItem(this.$store.state.offline, JSON.stringify(recordArray))
         this.$emit('changeSendSign', obj)
       } catch (e) {
         this.$message.error(e.message)
@@ -75,6 +85,12 @@ export default {
     .button-top {
       margin-top: 2rem;
     }
+  }
+  .error_font {
+    font-size: 1rem;
+    color: #ed3c1c;
+    letter-spacing: 0.11px;
+    margin-top: 1rem;
   }
 }
 </style>

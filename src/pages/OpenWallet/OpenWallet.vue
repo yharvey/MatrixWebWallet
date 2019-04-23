@@ -37,7 +37,7 @@ export default {
       } else if (to.name === 'MyAssets') {
         this.type = 'myAssets'
       }
-      if (to.name === 'Token' || to.name === 'OnlineTransfer') {
+      if (to.name === 'Token' || to.name === 'OnlineTransfer' || to.name === 'Undo') {
         this.showBack = true
       } else {
         this.showBack = false

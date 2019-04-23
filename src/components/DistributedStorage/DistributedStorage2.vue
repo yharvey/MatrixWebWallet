@@ -114,7 +114,7 @@ export default {
     },
     changeSendSign (data) {
       this.sendSignVisible = false
-      if (data != null) {
+      if (data != null && data !== false) {
         this.hash = data.hash
         this.visible = true
       }
@@ -225,6 +225,14 @@ export default {
               this.newTxData = SendTransfer.getTxParams(serializedTx)
               this.hash = this.httpProvider.man.sendRawTransaction(this.newTxData)
               this.aiserver(this.hash)
+              let recordArray = localStorage.getItem(this.address)
+              if (recordArray == null) {
+                recordArray = []
+              } else {
+                recordArray = JSON.parse(recordArray)
+              }
+              recordArray.push({ hash: this.hash, newTxData: this.newTxData })
+              localStorage.setItem(this.address, JSON.stringify(recordArray))
               this.visible = true
             } else {
               this.jsonObj = JSON.stringify(jsonObj)

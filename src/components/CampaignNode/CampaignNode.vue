@@ -83,7 +83,7 @@ export default {
     },
     changeSendSign (data) {
       this.sendSignVisible = false
-      if (data != null) {
+      if (data != null && data !== false) {
         this.hash = data.hash
         this.visible = true
       }
@@ -127,7 +127,8 @@ export default {
           this.$message.error(this.$t('CampaignNode.valueError'))
           return
         }
-        let balance = this.$store.state.balance
+        let balances = this.httpProvider.man.getBalance(this.address)
+        let balance = this.httpProvider.fromWei(balances[0].balance)
         let compareBalance = new BigNumber(balance)
         let campaignValue = new BigNumber(this.value)
         let flag = campaignValue.comparedTo(compareBalance)
@@ -180,6 +181,14 @@ export default {
           this.newTxData = SendTransfer.getTxParams(serializedTx)
           this.hash = this.httpProvider.man.sendRawTransaction(this.newTxData)
           this.visible = true
+          let recordArray = localStorage.getItem(this.address)
+          if (recordArray == null) {
+            recordArray = []
+          } else {
+            recordArray = JSON.parse(recordArray)
+          }
+          recordArray.push({ hash: this.hash, newTxData: this.newTxData })
+          localStorage.setItem(this.address, JSON.stringify(recordArray))
         } else {
           this.confirmOffline = true
           this.jsonObj = JSON.stringify(jsonObj)

@@ -46,13 +46,29 @@
         </el-table>
       </div>
     </div>
-
+    <all-dialog :visible="visible"
+                @changeVisible="changeVisible"
+                :width="'800px'"
+                :msg="msg"
+                :hash="hash"></all-dialog>
+    <offline-dialog :width="'800px'"
+                    :transferJson="jsonObj"
+                    :confirmOffline="confirmOffline"
+                    @changeConfirmOffline="changeConfirmOffline"
+                    @openSendSign="openSendSign"></offline-dialog>
+    <send-sign :visible="sendSignVisible"
+               :width="'800px'"
+               :information="information"
+               @changeSendSign="changeSendSign"></send-sign>
   </div>
 </template>
 <script>
 import WalletUtil from '@/assets/js/WalletUtil'
 import SendTransfer from '@/assets/js/SendTransfer'
 import TradingFuns from '@/assets/js/TradingFuns'
+import AllDialog from '@/components/TransferDialog/AllDialog'
+import OfflineDialog from '@/components/TransferDialog/TipOfflineDialog'
+import sendSign from '@/components/TransferDialog/sendSignTransfer'
 
 export default {
   name: 'CannelEntrust',
@@ -68,14 +84,26 @@ export default {
         gasPrice: 18000000000,
         data: '',
         nonce: '',
-        extra_to: [[6, 0, []]]
+        extra_to: [[6, 0, []]],
+        value: 0
       },
       currency: 'MAN',
-      matrixCoins: []
+      matrixCoins: [],
+      hash: '',
+      msg: '抵押成功',
+      visible: false,
+      confirmOffline: false,
+      jsonObj: '',
+      sendSignVisible: false,
+      information: ''
     }
   },
   created () {
-    this.address = this.$store.getters.wallet.address
+    if (this.$store.state.offline != null) {
+      this.address = this.$store.state.offline
+    } else {
+      this.address = this.$store.getters.wallet.address
+    }
     this.tradingObj.to = this.address
     let array = this.httpProvider.man.getEntrustList(this.address)
     for (let i = 0, length = array.length; i < length; i++) {
@@ -92,7 +120,25 @@ export default {
     this.matrixCoins = this.httpProvider.man.getMatrixCoin('latest')
   },
   methods: {
-    search (index) {
+    openSendSign () {
+      this.sendSignVisible = true
+    },
+    changeSendSign (data) {
+      this.sendSignVisible = false
+      if (data != null && data !== false) {
+        this.hash = data.hash
+        this.visible = true
+      }
+    },
+    changeConfirmOffline (data) {
+      this.confirmOffline = false
+      if (data !== false) {
+        this.sendSignVisible = true
+        this.information = data
+      }
+    },
+    changeVisible (state) {
+      this.visible = state
     },
     handleSelectionChange (val) {
       this.multipleSelection = val
@@ -117,15 +163,28 @@ export default {
         })
         this.tradingObj.data = JSON.stringify(dataArray)
         let jsonObj = TradingFuns.getTxData(this.tradingObj)
-        // jsonObj.currency = this.currency
-        let tx = WalletUtil.createTx(jsonObj)
-        let privateKey = this.$store.state.wallet.privateKey
-        privateKey = Buffer.from(privateKey.indexOf('0x') > -1 ? privateKey.substring(2, privateKey.length) : privateKey, 'hex')
-        tx.sign(privateKey)
-        let serializedTx = tx.serialize()
-        let newTxData = SendTransfer.getTxParams(serializedTx)
-        this.httpProvider.man.sendRawTransaction(newTxData)
-        this.$message.success(this.$t('cancel.hint'))
+        if (this.$store.state.wallet != null) {
+          let tx = WalletUtil.createTx(jsonObj)
+          let privateKey = this.$store.state.wallet.privateKey
+          privateKey = Buffer.from(privateKey.indexOf('0x') > -1 ? privateKey.substring(2, privateKey.length) : privateKey, 'hex')
+          tx.sign(privateKey)
+          let serializedTx = tx.serialize()
+          let newTxData = SendTransfer.getTxParams(serializedTx)
+          this.hash = this.httpProvider.man.sendRawTransaction(newTxData)
+          this.visible = true
+          let recordArray = localStorage.getItem(this.address)
+          if (recordArray == null) {
+            recordArray = []
+          } else {
+            recordArray = JSON.parse(recordArray)
+          }
+          recordArray.push({ hash: this.hash, newTxData: this.newTxData })
+          localStorage.setItem(this.address, JSON.stringify(recordArray))
+        } else {
+          this.jsonObj = JSON.stringify(jsonObj)
+          this.confirmOffline = true
+        }
+        this.msg = this.$t('cancel.hint')
       } catch (e) {
         this.$message.error(e.message)
       }
@@ -146,6 +205,11 @@ export default {
         }
       }
     }
+  },
+  components: {
+    AllDialog,
+    OfflineDialog,
+    sendSign
   }
 }
 </script>

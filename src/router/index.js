@@ -5,7 +5,6 @@ import AIApplication from '@/pages/AIApplication/AIApplication'
 import Contract from '@/pages/Contract/Contract'
 import GreenMining from '@/pages/GreenMining/GreenMining'
 import MiningTransactionOverview from '@/components/MiningTransactionOverview/MiningTransactionOverview'
-import Refund from '@/components/Refund/Refund'
 import HistoricalIncome from '@/components/HistoricalIncome/HistoricalIncome'
 import MortgageHistory from '@/components/MortgageHistory/MortgageHistory'
 import MyWallet from '@/pages/MyWallet/MyWallet'
@@ -45,6 +44,12 @@ import AIRecord from '@/pages/AIApplication/AIRecord'
 import CreateCoin from '@/pages/CreateCoin/CreateCoin'
 import CreateCoinSecond from '@/pages/CreateCoin/CreateCoinSecond'
 import BlackList from '@/components/BlackList/BlackList'
+import Refund from '@/components/Refund/Refund'
+import Undo from '@/components/Undo/Undo'
+import SendOffline from '@/pages/SendOffline/SendOffline'
+import OfflineUnlock from '@/pages/SendOffline/OfflineUnlock'
+import SendSignTransfer from '@/pages/SendOffline/SendSignTransfer'
+import SendTransferData from '@/pages/SendOffline/SendTransferData'
 
 Vue.use(Router)
 
@@ -87,6 +92,10 @@ let router = new Router({
           path: 'createCoinSecond',
           name: 'CreateCoinSecond',
           component: CreateCoinSecond
+        }, {
+          path: 'undo',
+          name: 'Undo',
+          component: Undo
         }]
       }, {
         path: 'myWalletFirst',
@@ -235,6 +244,23 @@ let router = new Router({
       path: 'sendEth',
       name: 'SendEth',
       component: SendEth
+    }, {
+      path: '/sendOffline',
+      name: 'SendOffline',
+      component: SendOffline,
+      children: [{
+        path: 'offlineUnlock',
+        name: 'OfflineUnlock',
+        component: OfflineUnlock
+      }, {
+        path: 'sendSignTransfer',
+        name: 'SendSignTransfer',
+        component: SendSignTransfer
+      }, {
+        path: 'sendTransferData',
+        name: 'SendTransferData',
+        component: SendTransferData
+      }]
     }]
   }]
 })
@@ -242,7 +268,7 @@ let router = new Router({
 // 判断是否解锁钱包
 router.beforeEach((to, from, next) => {
   store.commit('UPDATE_HISTORYURL', to.path)
-  if ((store.state.offline === null && store.state.wallet === null && to.path.indexOf('my-wallet') < 0) && to.path.indexOf('offline-transfer') < 0 && to.path.indexOf('mapping') < 0 && to.path.indexOf('conversion') < 0 && to.path.indexOf('sendEth') < 0) {
+  if ((store.state.offline === null && store.state.wallet === null && to.path.indexOf('my-wallet') < 0) && to.path.indexOf('offline-transfer') < 0 && to.path.indexOf('mapping') < 0 && to.path.indexOf('conversion') < 0 && to.path.indexOf('sendEth') < 0 && to.path.indexOf('sendOffline') < 0) {
     // location.href = location.href.split('#')[0]
     // console.log(this.$router)
     next({

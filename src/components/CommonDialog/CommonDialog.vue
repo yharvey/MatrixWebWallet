@@ -1,20 +1,36 @@
 <template>
-  <el-dialog :visible.sync="commonDialogVisible"
-             :showClose=false
-             customClass="common-dialog"
-             :width="width"
-             :before-close="handleClose"
-             center>
-    <div class="content">
-      <div class="title">{{title}}</div>
-      <div class="msg">{{msg}}</div>
-    </div>
-    <span slot="footer"
-          class="dialog-footer">
-      <button @click="confirm('cancel')">{{cancelText}}</button>
-      <button @click="confirm('ok')">{{okText}}</button>
-    </span>
-  </el-dialog>
+  <div>
+    <el-dialog :visible.sync="commonDialogVisible"
+               :showClose=false
+               customClass="common-dialog"
+               :width="width"
+               :before-close="handleClose"
+               center>
+      <div class="content">
+        <div class="title">{{title}}</div>
+        <div class="msg">{{msg}}</div>
+      </div>
+      <span slot="footer"
+            class="dialog-footer">
+        <button @click="confirm('cancel')">{{cancelText}}</button>
+        <button @click="confirm('ok')">{{okText}}</button>
+      </span>
+    </el-dialog>
+    <offline-dialog :width="'800px'"
+                    :transferJson="jsonObj"
+                    :confirmOffline="confirmOffline"
+                    @changeConfirmOffline="changeConfirmOffline"
+                    @openSendSign="openSendSign"></offline-dialog>
+    <send-sign :visible="sendSignVisible"
+               :width="'800px'"
+               :information="information"
+               @changeSendSign="changeSendSign"></send-sign>
+    <all-dialog :visible="visible"
+                @changeVisible="changeVisible"
+                :width="'800px'"
+                :msg="allMsg"
+                :hash="hash"></all-dialog>
+  </div>
 </template>
 
 <script>
@@ -22,15 +38,45 @@ import WalletUtil from '@/assets/js/WalletUtil'
 import SendTransfer from '@/assets/js/SendTransfer'
 import { mortgage, contract } from '@/assets/js/config'
 import TradingFuns from '@/assets/js/TradingFuns'
-
+import OfflineDialog from '@/components/TransferDialog/TipOfflineDialog'
+import sendSign from '@/components/TransferDialog/sendSignTransfer'
+import AllDialog from '@/components/TransferDialog/AllDialog'
 export default {
   name: 'CommonDialog',
   data () {
     return {
-      functions: []
+      functions: [],
+      confirmOffline: false,
+      jsonObj: '',
+      sendSignVisible: false,
+      information: '',
+      allMsg: '',
+      hash: '',
+      visible: false
     }
   },
   methods: {
+    changeVisible (state) {
+      this.visible = state
+    },
+    openSendSign () {
+      this.sendSignVisible = true
+    },
+    changeSendSign (data) {
+      this.sendSignVisible = false
+      if (data != null && data !== false) {
+        this.hash = data.hash
+        this.visible = true
+        this.allMsg = this.$t('mortgageHistory.cancelMortgageSuccess')
+      }
+    },
+    changeConfirmOffline (data) {
+      this.confirmOffline = false
+      if (data !== false) {
+        this.sendSignVisible = true
+        this.information = data
+      }
+    },
     confirm (status) {
       if (status === 'ok') {
         try {
@@ -72,15 +118,30 @@ export default {
           }
           let jsonObj = TradingFuns.getTxData(data)
           jsonObj.data = '0x' + funcSig + WalletUtil.solidityCoder.encodeParams(types, values)
-          let tx = WalletUtil.createTx(jsonObj)
-          let privateKey = this.$store.state.wallet.privateKey
-          privateKey = Buffer.from(privateKey.indexOf('0x') > -1 ? privateKey.substring(2, privateKey.length) : privateKey, 'hex')
-          tx.sign(privateKey)
-          let serializedTx = tx.serialize()
-          this.newTxData = SendTransfer.getTxParams(serializedTx)
-          let hash = this.httpProvider.man.sendRawTransaction(this.newTxData)
-          this.$emit('getHash', hash)
-          // this.$message.success(this.$t('successHint.withdrawal'))
+          if (this.$store.state.wallet != null) {
+            let tx = WalletUtil.createTx(jsonObj)
+            let privateKey = this.$store.state.wallet.privateKey
+            privateKey = Buffer.from(privateKey.indexOf('0x') > -1 ? privateKey.substring(2, privateKey.length) : privateKey, 'hex')
+            tx.sign(privateKey)
+            let serializedTx = tx.serialize()
+            this.newTxData = SendTransfer.getTxParams(serializedTx)
+            let hash = this.httpProvider.man.sendRawTransaction(this.newTxData)
+            this.hash = hash
+            this.allMsg = this.$t('successHint.refund')
+            this.visible = true
+            let recordArray = localStorage.getItem(this.address)
+            if (recordArray == null) {
+              recordArray = []
+            } else {
+              recordArray = JSON.parse(recordArray)
+            }
+            recordArray.push({ hash: this.hash, newTxData: this.newTxData })
+            localStorage.setItem(this.address, JSON.stringify(recordArray))
+          } else {
+            this.jsonObj = JSON.stringify(jsonObj)
+            this.confirmOffline = true
+          }
+          this.allMsg = this.$t('successHint.withdrawal')
         } catch (e) {
           this.$message.error(e.message)
         }
@@ -120,6 +181,11 @@ export default {
       default: '',
       type: String
     }
+  },
+  components: {
+    AllDialog,
+    OfflineDialog,
+    sendSign
   }
 }
 </script>

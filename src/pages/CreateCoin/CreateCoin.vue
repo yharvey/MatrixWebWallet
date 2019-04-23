@@ -79,15 +79,15 @@ export default {
         for (let i = 0, length = this.createObj.addAddress.length; i < length; i++) {
           if (this.createObj.addAddress[i].createValue !== '' && this.createObj.addAddress[i].createAddress !== '') {
             if (!/^[A-Z]{2,8}\.[0-9a-zA-Z]{18,29}$/.test(this.createObj.addAddress[i].createAddress)) {
-              this.$message.error('转账地址填写错误')
+              this.$message.error(this.$t('createCoin.addressError'))
               return
             }
             if (this.createObj.addAddress[i].createAddress.split('.')[0] !== this.createObj.currencyName) {
-              this.$message.error('转账地址必须与创建币种一致')
+              this.$message.error(this.$t('createCoin.nameError'))
               return
             }
             if (this.createObj.addAddress[i].createValue <= 0) {
-              this.$message.error('转账金额必须大于0')
+              this.$message.error(this.$t('createCoin.valueError'))
               return
             }
             tempData[this.createObj.addAddress[i].createAddress] = SendTransfer.sanitizeHex(WalletUtil.decimalToHex(Number(ManUtils.toWei(Number(this.createObj.addAddress[i].createValue)))))
@@ -98,14 +98,18 @@ export default {
           CoinName: this.createObj.currencyName,
           AddrAmount: tempData
         })))
-        let tx = WalletUtil.createTx(jsonObj)
-        let privateKey = this.$store.state.wallet.privateKey
-        privateKey = Buffer.from(privateKey.indexOf('0x') > -1 ? privateKey.substring(2, privateKey.length) : privateKey, 'hex')
-        tx.sign(privateKey)
-        let serializedTx = tx.serialize()
-        this.newTxData = SendTransfer.getTxParams(serializedTx)
-        // this.httpProvider.man.sendRawTransaction(newTxData)
-        this.$router.push({ name: 'CreateCoinSecond', params: { newTxData: this.newTxData } })
+        if (this.$store.state.wallet != null) {
+          let tx = WalletUtil.createTx(jsonObj)
+          let privateKey = this.$store.state.wallet.privateKey
+          privateKey = Buffer.from(privateKey.indexOf('0x') > -1 ? privateKey.substring(2, privateKey.length) : privateKey, 'hex')
+          tx.sign(privateKey)
+          let serializedTx = tx.serialize()
+          this.newTxData = SendTransfer.getTxParams(serializedTx)
+          this.$router.push({ name: 'CreateCoinSecond', params: { newTxData: this.newTxData } })
+        } else {
+          this.jsonObj = JSON.stringify(jsonObj)
+          this.$router.push({ name: 'CreateCoinSecond', params: { newTxData: this.jsonObj } })
+        }
       } catch (e) {
         this.$message.error(e.message)
       }
@@ -121,7 +125,11 @@ export default {
     }
   },
   mounted () {
-    this.address = this.$store.getters.wallet.address
+    if (this.$store.state.offline != null) {
+      this.address = this.$store.state.offline
+    } else {
+      this.address = this.$store.getters.wallet.address
+    }
   }
 }
 </script>

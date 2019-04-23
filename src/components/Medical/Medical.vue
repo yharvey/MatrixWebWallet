@@ -3,18 +3,18 @@
     <div class="title">
       <div class="title-1" v-if="type==22">{{$t('medical.tittle1')}}</div>
       <div class="title-1" v-if="type==22">{{$t('medical.tittle2')}}</div>
-      <div class="title-1" v-if="type==20">{{$t('medical.pose1')}}</div>
-      <div class="title-1" v-if="type==20">{{$t('medical.pose2')}}</div>
-      <div class="title-1" v-if="type==21">{{$t('medical.obj')}}</div>
+      <div class="title-1" v-if="type==21">{{$t('medical.pose1')}}</div>
+      <div class="title-1" v-if="type==21">{{$t('medical.pose2')}}</div>
+      <div class="title-1" v-if="type==20">{{$t('medical.obj')}}</div>
       <div class="title-2" v-if="type!=22">{{$t('medical.pose3')}}</div>
     </div>
     <div class="content">
       <div class="pic">
         <img v-if="type==22"
              src="../../assets/images/medical.jpg">
-        <img v-if="type==20"
-             src="../../assets/images/pos.jpg">
         <img v-if="type==21"
+             src="../../assets/images/pos.jpg">
+        <img v-if="type==20"
              src="../../assets/images/obj.png">
       </div>
       <div class="info">{{$t('medical.example')}}</div>

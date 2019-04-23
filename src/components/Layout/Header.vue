@@ -15,8 +15,10 @@
              @click="changeMenu('ai-application')">{{$t('header.aiApplication')}}</label>
       <label :class="{'active' : type === 'contract'}"
              @click="changeMenu('contract')">{{$t('header.contracts')}}</label>
-      <label :class="{'active' : type === 'mapping'}"
-             @click="changeMenu('mapping')">{{$t('header.mapping')}}</label>
+      <!-- <label :class="{'active' : type === 'mapping'}"
+             @click="changeMenu('mapping')">{{$t('header.mapping')}}</label> -->
+      <label :class="{'active' : type === 'offlineSend'}"
+             @click="changeMenu('offlineSend')">{{$t('header.offlineSend')}}</label>
     </div>
     <div class="info">
       <label v-html="userName"
@@ -39,7 +41,7 @@
                             @click.native="goPage('blackList')">{{$t('setUp.blackList')}}</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-      <img v-show="isUnlock"
+      <img v-show="isUnlock || $store.state.offline!= null"
            src="../../assets/images/logout.svg"
            :title="$t('setUp.logout')"
            @click="logout">
@@ -145,6 +147,7 @@ export default {
         type: 'warning'
       }).then(() => {
         store.commit('UPDATE_WALLET', null)
+        store.commit('OFFLINE', null)
         store.commit('UPDATE_BEFOREURL', store.state.historyUrl)
         this.isUnlock = false
         this.$router.push({ path: '/my-wallet/myWalletFirst' })
@@ -184,6 +187,10 @@ export default {
 
             store.commit('UPDATE_HISTORYURL', '/ai-application/medical')
             this.$router.push({ path: '/ai-application/medical' })
+          } else if (status === 'offlineSend') {
+            store.commit('UPDATE_BEFOREURL', '/sendOffline/offlineUnlock')
+            store.commit('UPDATE_HISTORYURL', '/sendOffline/offlineUnlock')
+            this.$router.push({ path: '/sendOffline/offlineUnlock' })
           } else {
             store.commit('UPDATE_BEFOREURL', '/' + status)
             this.$router.push({ path: '/' + status })
@@ -272,11 +279,14 @@ export default {
       background: #06fafb;
       margin-left: -37px;
     }
+    label:nth-child(3):after {
+      margin-left: -30px;
+    }
     label:nth-child(4):after {
-      margin-left: -32px;
+      margin-left: -22px;
     }
     label:nth-child(5):after {
-      margin-left: -21px;
+      margin-left: -36px;
     }
     // label:last-child:after {
     //   margin-left: -42px;
@@ -298,13 +308,13 @@ export default {
       margin-left: -57px;
     }
     label:nth-child(3):after {
-      margin-left: -60px;
+      margin-left: -48px;
     }
     label:nth-child(4):after {
-      margin-left: -50px;
+      margin-left: -37px;
     }
     label:nth-child(5):after {
-      margin-left: -39px;
+      margin-left: -81px;
     }
     // label:last-child:after {
     //   margin-left: -36px;

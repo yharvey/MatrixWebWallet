@@ -124,7 +124,7 @@ export default {
     },
     changeSendSign (data) {
       this.sendSignVisible = false
-      if (data != null) {
+      if (data != null && data !== false) {
         this.hash = data.hash
         this.visible = true
       }
@@ -141,6 +141,7 @@ export default {
     },
     confirm () {
       try {
+        let currency = this.entrustList[0].EntrustAddres.split('.')[0]
         this.tradingObj.nonce = this.httpProvider.man.getTransactionCount(this.address)
         this.tradingObj.nonce = WalletUtil.numToHex(this.tradingObj.nonce)
         for (let index = 0; index < this.entrustList.length; index++) {
@@ -174,6 +175,24 @@ export default {
               return
             }
           }
+          let nowAddress = (WalletUtil.getCurrencyAddress(this.address, currency))
+          this.cancelList = this.httpProvider.man.getEntrustList(nowAddress)
+          for (let j = 0; j < this.cancelList.length; j++) {
+            const cannel = this.cancelList[j]
+            if (cannel.EntrustAddres === entrust.EntrustAddres) {
+              if (entrust.EnstrustSetType === 0) {
+                if (entrust.StartHeight < cannel.EndHeight) {
+                  this.$message.error(this.$t('errorMsgs.entrustHeight'))
+                  return
+                }
+              } else if (entrust.EnstrustSetType === 1) {
+                if (entrust.StartTime < cannel.EndTime) {
+                  this.$message.error(this.$t('errorMsgs.secondTime'))
+                  return
+                }
+              }
+            }
+          }
         }
         this.tradingObj.data = JSON.stringify(this.entrustList)
         let jsonObj = TradingFuns.getEntrustData(this.tradingObj)
@@ -186,6 +205,14 @@ export default {
           let newTxData = SendTransfer.getTxParams(serializedTx)
           this.hash = this.httpProvider.man.sendRawTransaction(newTxData)
           this.visible = true
+          let recordArray = localStorage.getItem(this.address)
+          if (recordArray == null) {
+            recordArray = []
+          } else {
+            recordArray = JSON.parse(recordArray)
+          }
+          recordArray.push({ hash: this.hash, newTxData: this.newTxData })
+          localStorage.setItem(this.address, JSON.stringify(recordArray))
         } else {
           this.jsonObj = JSON.stringify(jsonObj)
           this.confirmOffline = true

@@ -59,7 +59,8 @@ export default {
         gasPrice: 18000000000,
         data: '',
         nonce: '',
-        extra_to: [[6, 0, []]]
+        extra_to: [[6, 0, []]],
+        value: 0
       }
     }
   },

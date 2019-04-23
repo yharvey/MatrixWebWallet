@@ -4,6 +4,8 @@
       <label class="title_font">MAN {{$t('myWallet.assets')}}</label>
       <label class="transfer_font"
              @click="goTransfer(balance[0].balance, 'MAN')">{{$t('myWallet.transfer')}}</label>
+      <label class="transfer_font"
+             @click="goPage('undo')">{{$t('record.undo')}}</label>
       <div class="money_font">
         <template v-for="(item, index) in balance">
           <label v-if="item.accountType == 0"

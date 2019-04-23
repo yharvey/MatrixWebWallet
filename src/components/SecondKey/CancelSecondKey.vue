@@ -31,8 +31,7 @@
                            prop="EntrustAddres">
           </el-table-column>
           <el-table-column prop="setUp"
-                           :label="$t('cancelEntrust.authorizationSetUp')"
-                           >
+                           :label="$t('cancelEntrust.authorizationSetUp')">
             <template slot-scope="scope">
               <div v-if="scope.row.EnstrustSetType==0">{{scope.row.StartHeight}}————{{scope.row.EndHeight}}</div>
               <div v-if="scope.row.EnstrustSetType==1">{{scope.row.StartTime | dateFormat('MM.DD.YYYY HH:mm')}} ———— {{scope.row.EndTime | dateFormat('MM.DD.YYYY HH:mm')}}</div>
@@ -130,7 +129,7 @@ export default {
     },
     changeSendSign (data) {
       this.sendSignVisible = false
-      if (data != null) {
+      if (data != null && data !== false) {
         this.hash = data.hash
         this.visible = true
       }
@@ -180,6 +179,14 @@ export default {
           let newTxData = SendTransfer.getTxParams(serializedTx)
           this.hash = this.httpProvider.man.sendRawTransaction(newTxData)
           this.visible = true
+          let recordArray = localStorage.getItem(this.address)
+          if (recordArray == null) {
+            recordArray = []
+          } else {
+            recordArray = JSON.parse(recordArray)
+          }
+          recordArray.push({ hash: this.hash, newTxData: this.newTxData })
+          localStorage.setItem(this.address, JSON.stringify(recordArray))
         } else {
           this.jsonObj = JSON.stringify(jsonObj)
           this.confirmOffline = true

@@ -1,72 +1,30 @@
 <template>
   <div class="record">
     <div class="content-left">
-      <span class="span-font span-spacing">{{$t('record.transaction')}}</span>
-      <el-dropdown split-button
-                   type="Info"
-                   class="select-spacing"
-                   @command="changeTxType">
-        {{txType === 'all' ? $t('record.all') : txType === 'receipt' ? $t('record.into') : $t('record.out')}}
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item command="all">{{$t('record.all')}}</el-dropdown-item>
-          <el-dropdown-item command="receipt">{{$t('record.into')}}</el-dropdown-item>
-          <el-dropdown-item command="transfer">{{$t('record.out')}}</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
-      <span class="span-font span-spacing">{{$t('transfer.transferMethod')}}</span>
-      <el-dropdown split-button
-                   type="Info"
-                   @command="changeTxMode">
-        {{txMode === 'timely' ? $t('record.nowTransaction') : $t('record.timeTransaction')}}
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item command="timely">{{$t('record.nowTransaction')}}</el-dropdown-item>
-          <el-dropdown-item command="timing">{{$t('record.timeTransaction')}}</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
       <div class="commonTable top-spacing">
         <el-table :data="tableData"
                   style="width: 100%">
           <el-table-column type="index"
                            :label="$t('record.index')"
-                           width="84">
+                           width="150">
           </el-table-column>
           <el-table-column :label="$t('record.time')"
                            width="147">
             <template slot-scope="scope">
-              <div>{{scope.row.timestamp | dateFormat('MM.DD.YYYY HH:mm')}}</div>
-            </template>
-          </el-table-column>
-          <el-table-column prop="money"
-                           :label="$t('record.transactionValue')"
-                           width="168">
-            <template slot-scope="scope">
-              <div class="amount">{{scope.row.addrFrom == address ? '-' : '+'}} {{scope.row.value | weiToNumber}} {{scope.row.currency}}</div>
-            </template>
-          </el-table-column>
-          <el-table-column width="247"
-                           :label="$t('record.transactionDetails')">
-            <template slot-scope="scope">
-              <div class="font-color hash"
-                   @click="openBrowser(scope.row.hash)">{{scope.row.hash}}</div>
+              <div>{{scope.row.newTxData.commitTime | dateFormat('MM.DD.YYYY HH:mm')}}</div>
             </template>
           </el-table-column>
           <el-table-column :label="$t('record.transactionType')"
-                           width="108">
+                           width="160">
             <template slot-scope="scope">
-              <div class="font-color">{{scope.row.matrixType | txTypeFilter}}</div>
+              <div class="font-color">{{scope.row.newTxData.txType | txTypeFilter}}</div>
+              <!-- <div class="font-color">{{scope.row}}</div> -->
             </template>
           </el-table-column>
-          <el-table-column prop="state"
-                           width="108"
-                           :label="$t('record.transactionState')">
-
-          </el-table-column>
-          <el-table-column prop="matrixType"
-                           :label="$t('record.operation')">
+          <el-table-column :label="$t('record.transactionDetails')">
             <template slot-scope="scope">
-              <div class="font-color"
-                   v-if="scope.row.matrixType===3"
-                   @click="revocableTransfer(scope.row.hash)">{{$t('record.undo')}}</div>
+              <div class="font-color hash"
+                   @click="openBrowser(scope.row.hash)">{{scope.row.hash}}</div>
             </template>
           </el-table-column>
         </el-table>
@@ -84,93 +42,59 @@
         </div>
       </div>
     </div>
-    <all-dialog :visible="visible"
-                @changeVisible="changeVisible"
-                :width="'800px'"
-                :msg="msg"
-                :hash="hash"></all-dialog>
   </div>
 </template>
 <script>
 import { browserUrl } from '@/assets/js/config'
-import TradingFuns from '@/assets/js/TradingFuns'
-import WalletUtil from '@/assets/js/WalletUtil'
-import SendTransfer from '@/assets/js/SendTransfer'
-import AllDialog from '@/components/TransferDialog/AllDialog'
+// import TradingFuns from '@/assets/js/TradingFuns'
+// import WalletUtil from '@/assets/js/WalletUtil'
+// import SendTransfer from '@/assets/js/SendTransfer'
+// import AllDialog from '@/components/TransferDialog/AllDialog'
 
 export default {
   name: 'record',
   data () {
     return {
-      txType: 'all',
-      txMode: 'timely',
       pageNumber: 1,
       pageSize: 10,
-      address: this.$store.state.wallet.address,
+      address: '',
       tableData: [],
       total: 0,
-      ruleForm: {
-        value: '',
-        to: '',
-        IsEntrustTx: '',
-        ExtraTimeTxType: '0',
-        gasLimit: 210000,
-        gasPrice: 18000000000,
-        extra_to: [[4, 0, []]],
-        data: '',
-        nonce: ''
-      },
       hash: '',
-      msg: this.$t('record.mortgageSuccess'),
-      visible: false
+      visible: false,
+      localData: []
     }
   },
   mounted () {
-    this.getTxs()
-    this.getTxCount()
+    if (this.$store.state.wallet != null) {
+      this.address = this.$store.getters.wallet.address
+    } else {
+      this.address = this.$store.state.offline
+    }
+    this.localData = JSON.parse(localStorage.getItem(this.address))
+    this.total = this.localData.length
+    this.getTableData()
   },
   methods: {
-    changeVisible (state) {
-      this.visible = state
-    },
     currentChange (status) {
       this.pageNumber = status
-      this.getTxs()
+      this.getTableData()
     },
-    getTxs () {
-      this.$http.get('findTxByAddress/' + this.address + '/' + this.pageNumber + '/' + this.pageSize + '/' + this.txType + '/' + this.txMode).then(res => {
-        if (res.data.status === 200) {
-          this.tableData = res.data.result
+    getTableData () {
+      this.tableData = []
+      let arrayLength = 0
+      let i = 0
+      if (this.localData.length > 0) {
+        if (this.localData.length - this.pageNumber * this.pageSize > 0) {
+          arrayLength = this.localData.length - this.pageNumber * this.pageSize - 1
+          i = this.localData.length - (this.pageNumber - 1) * this.pageSize - 1
         } else {
-          this.tableData = []
-          this.$message.error(res.data.message)
+          arrayLength = -1
+          i = this.localData.length - (this.pageNumber - 1) * this.pageSize - 1
         }
-      })
-    },
-    getTxCount () {
-      this.$http.get('findTxCountByAddress/' + this.address + '/' + this.txType + '/' + this.txMode).then(res => {
-        if (res.data.status === 200) {
-          this.total = res.data.result
-        } else {
-          this.total = 0
-          this.$message.error(res.data.message)
+        for (let index = i; index > arrayLength; index--) {
+          this.tableData.push(this.localData[index])
         }
-      })
-    },
-    changeTxType (command) {
-      if (this.txType !== command) {
-        this.pageNumber = 1
-        this.txType = command
-        this.getTxs()
-        this.getTxCount()
-      }
-    },
-    changeTxMode (command) {
-      if (this.txMode !== command) {
-        this.pageNumber = 1
-        this.txMode = command
-        this.getTxs()
-        this.getTxCount()
       }
     },
     openBrowser (hash) {
@@ -179,30 +103,7 @@ export default {
       } else {
         window.open(browserUrl + '/tx/' + hash)
       }
-    },
-    revocableTransfer (hash) {
-      try {
-        this.ruleForm.nonce = this.httpProvider.man.getTransactionCount(this.address)
-        this.ruleForm.nonce = WalletUtil.numToHex(this.ruleForm.nonce)
-        this.ruleForm.to = this.address
-        let jsonObj = TradingFuns.getTxData(this.ruleForm)
-        jsonObj.data = hash
-        let tx = WalletUtil.createTx(jsonObj)
-        let privateKey = this.$store.state.wallet.privateKey
-        privateKey = Buffer.from(privateKey.indexOf('0x') > -1 ? privateKey.substring(2, privateKey.length) : privateKey, 'hex')
-        tx.sign(privateKey)
-        let serializedTx = tx.serialize()
-        let newTxData = SendTransfer.getTxParams(serializedTx)
-        this.hash = this.httpProvider.man.sendRawTransaction(newTxData)
-        this.visible = true
-        this.msg = this.$t('record.undoSuccess')
-      } catch (e) {
-        this.$message.error(e.message)
-      }
     }
-  },
-  components: {
-    AllDialog
   }
 }
 </script>

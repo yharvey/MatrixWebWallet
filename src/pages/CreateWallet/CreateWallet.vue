@@ -8,7 +8,7 @@
              @click="goPage('/my-wallet/CreateWalletSecond')">
           {{$t('createWallet.createWalletButton')}}
         </div>
-        <span class="keyStoneHintFont">{{$t('myWallet.msg1')}}<a @click="goPage('/')">{{$t('myWallet.openWallet')}}</a><br>{{$t('myWallet.msg2')}} &nbsp;<a @click="goPage('/my-wallet/queryWallet')">{{$t('myWallet.view')}}</a>&nbsp;{{$t('myWallet.balance')}} </span>
+        <span class="keyStoneHintFont">{{$t('myWallet.msg1')}}<a @click="goPage('/')">{{$t('myWallet.openWallet')}}</a></span>
       </div>
     </el-card>
   </div>

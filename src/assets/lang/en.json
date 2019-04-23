@@ -6,12 +6,13 @@
     "aiApplication": "AI Application",
     "contracts": "Contracts",
     "mapping": "Mapping",
-    "refund": "Refund",
     "createCoin": "Create Currency",
     "outHint": "Are you sure you want to close this wallet?",
     "hint": "Tips",
     "sure": "Yes, close",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "refund": "Refund",
+    "offlineSend": "Send Offline"
   },
   "myWallet": {
     "queryWallet": "Open Wallet Using",
@@ -123,6 +124,7 @@
     "entrustTime2": "The entrust time shall be later than current time",
     "entrustTime3": "The start time should not be later than the end time",
     "entrustTime4": "You've already specified an entrust which overlaps this time range",
+    "secondTime": "You've already specified an authorization which overlaps this time range",
     "invalidManAddress": "The MAN Address is invalid",
     "entrustBlock": "The start block shall be smaller than the end block",
     "entrustSelf": "You can't entrust to yourself",
@@ -201,7 +203,7 @@
     "campaignvalueError3": "You should deposit at least 100000 MAN for a validator node",
     "mortgageTypeError": "Please choose your deposit type",
     "valueError": "Please enter your deposit amount",
-    "cancelDepositError":"No deposit allowed before refund is finished"
+    "cancelDepositError": "No deposit allowed before refund is finished"
   },
   "startNode": {
     "name": "Startup Node",
@@ -255,7 +257,10 @@
     "addButton": "+ Add address",
     "delCreate": "Delete address",
     "manCount": "MAN quantity",
-    "destruction": "Burn address"
+    "destruction": "Burn address",
+    "addressError": "Error with the address to receive new currency",
+    "valueError": "The transfer amount must be over 0",
+    "nameError": "The address must match the created currency"
   },
   "cancelEntrust": {
     "index": "Number",
@@ -494,10 +499,36 @@
   },
   "unlock": {
     "unlockSuccess": "Unlock Success",
-    "online":"在线模式",
-    "offline":"离线模式",
-    "sign":"签名交易",
-    "sendSign": "发送签名交易",
-    "sendSignInformation": "发送签名信息"
+    "online": "Online Mode",
+    "offline": "Offline Mode",
+    "sendSign": "Send signed transaction",
+    "sendSignInformation": "Send signed information",
+    "sign": "Sign",
+    "sendSignature":"Send signature"
+  },
+  "undo": {
+    "title": "Cancel Transaction",
+    "transferHash": "transaction hash"
+  },
+  "OfflineUnlock": {
+    "title": "Send signed transaction",
+    "tip": "Click to send signed transaction",
+    "sendSuccess": "Success",
+    "offlineTip": "*Please ensure your device is offline when you unlock your wallet",
+    "sendSignTip": "*Please ensure your device is networked when you send the signed transaction",
+    "sign": "Sign",
+    "noSignTransfer":"unsigned transaction",
+    "signing":"Sign Tx",
+    "selectSign":"Sign the transaction via one of  the following methods"
+  },
+  "refund": {
+    "deposit_amount": "Deposit amount",
+    "deposit_status": "Deposit status",
+    "node_address": "Address",
+    "no_deposit": "No Deposit Info Found",
+    "Set_Miner": "Set to Miner node",
+    "Set_validator": "Set to validator node",
+    "withdraw_block": "withdraw at block ",
+    "block": " block"
   }
 }

@@ -72,7 +72,7 @@ export default {
       tableData: [],
       total: 0,
       ruleForm: {
-        value: '',
+        value: 0,
         to: '',
         IsEntrustTx: '',
         ExtraTimeTxType: '0',

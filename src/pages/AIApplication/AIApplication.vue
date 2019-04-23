@@ -4,12 +4,10 @@
       <div class="header">
         <label :class="{'active' : type === 22}"
                @click="changeType(22)">{{$t('ai.medical')}}&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</label>
-        <label :class="{'active' : type === 20}"
-               @click="changeType(20)">{{$t('ai.posture')}}&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</label>
         <label :class="{'active' : type === 21}"
-               @click="changeType(21)">{{$t('ai.object')}}&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</label>
-        <label :class="{'active' : type === 23}"
-               @click="changeType(23)">{{$t('ai.aiRecord')}}</label>
+               @click="changeType(21)">{{$t('ai.posture')}}&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</label>
+        <label :class="{'active' : type === 20}"
+               @click="changeType(20)">{{$t('ai.object')}}&nbsp;&nbsp;&nbsp;</label>
       </div>
       <medical :type="type"
                v-if="type!=23&&isUpload!==true"

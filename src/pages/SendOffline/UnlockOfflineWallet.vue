@@ -1,13 +1,7 @@
 <template>
   <div class="unlock-wallet">
-    <div class="switch_offline">
-      <el-switch v-model="offSwitch"
-                 active-color="#13ce66">
-      </el-switch>
-      <span v-html="offSwitch?$t('unlock.offline'):$t('unlock.online')"></span>
-    </div>
-    <h1>{{title === $t('myWallet.queryWallet') ? $t('myWallet.openWallet') : ''}}</h1>
-    <h4 v-if="!offSwitch">{{$t('myWallet.choose')}}</h4>
+    <h1>{{$t('OfflineUnlock.signing')}}</h1>
+    <h4 v-if="!offSwitch">{{$t('OfflineUnlock.selectSign')}}</h4>
     <div v-if="!offSwitch">
       <div class="card_pos">
         <div class="card_way"
@@ -99,13 +93,6 @@
              @click="openWallet">{{$t('myWallet.openWallet')}}</div>
       </div>
     </div>
-    <div v-if="offSwitch">
-      <el-input type="text"
-                :placeholder="$t('queryWallet.pleaseInput')"
-                v-model="address"></el-input>
-      <div class="file_btn"
-           @click="loginOffline">{{$t('HistoricalIncome.determine')}}</div>
-    </div>
   </div>
 </template>
 
@@ -131,7 +118,8 @@ export default {
       keyPrivateError: false,
       isEmit: true,
       offSwitch: false,
-      address: ''
+      address: '',
+      wallet: {}
     }
   },
   props: {
@@ -160,22 +148,19 @@ export default {
         spinner: 'el-icon-loading',
         background: 'rgba(0, 0, 0, 0.7)'
       })
-      // if (this.password.length < 9) {
-      //   this.keystoreError = true
-      //   loading.close()
-      // } else {
       this.keystoreError = false
       WalletUtil.keyStoreToWallet(this.keyStore, this.password).then((result) => {
         loading.close()
-        store.commit('UPDATE_WALLET', result)
+        // store.commit('UPDATE_WALLET', result)
+        this.wallet = result
         this.keyStore = null
         this.isShowPassword = false
         this.password = ''
         this.keystoreError = false
         this.$refs.file.value = ''
-        this.$emit('openWallet')
+        this.$emit('openWallet', this.wallet)
         if (this.isEmit) {
-          Bus.$emit('openWallet')
+          Bus.$emit('openWallet', this.wallet)
         }
       }, () => {
         loading.close()
@@ -224,12 +209,13 @@ export default {
           })
           let wallet = WalletUtil.privateKeyToWallet(this.privateKey.trim())
           loading.close()
-          store.commit('UPDATE_WALLET', wallet)
+          // store.commit('UPDATE_WALLET', wallet)
+          this.wallet = wallet
           this.privateKey = ''
           this.keyPrivateError = false
-          this.$emit('openWallet')
+          this.$emit('openWallet', this.wallet)
           if (this.isEmit) {
-            Bus.$emit('openWallet')
+            Bus.$emit('openWallet', this.wallet)
           }
         }
       } else if (this.unlockType === 'mnemonic') {
@@ -245,55 +231,52 @@ export default {
           })
           let wallet = WalletUtil.privateKeyToWallet(WalletUtil.mnemonicToPrivateKey(this.mnemonic).toString('hex'))
           loading.close()
-          store.commit('UPDATE_WALLET', wallet)
+          // store.commit('UPDATE_WALLET', wallet)
+          this.wallet = wallet
           this.mnemonic = ''
           this.keyPrivateError = false
-          this.$emit('openWallet')
+          this.$emit('openWallet', this.wallet)
           if (this.isEmit) {
-            Bus.$emit('openWallet')
+            Bus.$emit('openWallet', this.wallet)
           }
         }
       }
     },
     loginOffline () {
-      try {
-        if (WalletUtil.validateManAddress(this.address)) {
-          this.$store.commit('OFFLINE', this.address)
-          let historyUrl = store.state.historyUrl
-          if (historyUrl === '/my-wallet/myWalletFirst' && store.state.beforeUrl != null) {
-            historyUrl = store.state.beforeUrl
-          }
-          this.address = this.$store.getters.offline
-          let balance = this.httpProvider.man.getBalance(this.address)
-          let walletBlance = filter.weiToNumber(balance[0].balance)
-          this.$store.commit('BALANCE', walletBlance)
-          let greetings = localStorage.getItem('greetings')
-          let msg = this.$t('unlock.unlockSuccess')
-          if (greetings != null) {
-            let address = this.$store.state.offline
-            greetings = JSON.parse(greetings)
-            for (let i = 0, length = greetings.length; i < length; i++) {
-              if (greetings[i].address === address) {
-                msg = greetings[i].content
-                break
-              }
+      if (WalletUtil.validateManAddress(this.address)) {
+        this.$store.commit('OFFLINE', this.address)
+        let historyUrl = store.state.historyUrl
+        if (historyUrl === '/my-wallet/myWalletFirst' && store.state.beforeUrl != null) {
+          historyUrl = store.state.beforeUrl
+        }
+        this.address = this.$store.getters.offline
+        let balance = this.httpProvider.man.getBalance(this.address)
+        let walletBlance = filter.weiToNumber(balance[0].balance)
+        this.$store.commit('BALANCE', walletBlance)
+        let greetings = localStorage.getItem('greetings')
+        let msg = this.$t('unlock.unlockSuccess')
+        if (greetings != null) {
+          let address = this.$store.state.offline
+          greetings = JSON.parse(greetings)
+          for (let i = 0, length = greetings.length; i < length; i++) {
+            if (greetings[i].address === address) {
+              msg = greetings[i].content
+              break
             }
           }
-          this.$message({
-            message: msg,
-            duration: 3000,
-            type: 'success'
-          })
-          if (historyUrl.indexOf('green-mining') > -1 || historyUrl.indexOf('ai-application') > -1 || historyUrl.indexOf('contract') > -1) {
-            this.$router.push({ path: historyUrl })
-          } else {
-            this.$router.push({ path: '/my-wallet/openWallet/myAssets' })
-          }
-        } else {
-          this.$message.error(this.$t('errorMsgs.invalidManAddress'))
         }
-      } catch (e) {
-        this.$message.error(e.message)
+        this.$message({
+          message: msg,
+          duration: 3000,
+          type: 'success'
+        })
+        if (historyUrl.indexOf('green-mining') > -1 || historyUrl.indexOf('ai-application') > -1 || historyUrl.indexOf('contract') > -1) {
+          this.$router.push({ path: historyUrl })
+        } else {
+          this.$router.push({ path: '/my-wallet/openWallet/myAssets' })
+        }
+      } else {
+        this.$message.error(this.$t('errorMsgs.invalidManAddress'))
       }
     }
   },

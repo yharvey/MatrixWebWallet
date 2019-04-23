@@ -48,17 +48,26 @@
       <div class="dash"></div>
       <div class="addButton"
            @click="addTransfer">{{$t('associate.addCollection')}}</div>
-      <h5 class="h5-dis">{{$t('transfer.estimatedGas')}}</h5>
-      <el-input disabled></el-input>
+      <!-- <h5 class="h5-dis">{{$t('transfer.estimatedGas')}}</h5>
+      <el-input disabled></el-input> -->
       <hr>
       <button class="common-button"
               @click="confirm">{{$t('transfer.confirm')}}</button>
     </div>
-     <all-dialog :visible="visible"
+    <all-dialog :visible="visible"
                 @changeVisible="changeVisible"
                 :width="'800px'"
                 :msg="msg"
                 :hash="hash"></all-dialog>
+    <offline-dialog :width="'800px'"
+                    :transferJson="jsonObj"
+                    :confirmOffline="confirmOffline"
+                    @changeConfirmOffline="changeConfirmOffline"
+                    @openSendSign="openSendSign"></offline-dialog>
+    <send-sign :visible="sendSignVisible"
+               :width="'800px'"
+               :information="information"
+               @changeSendSign="changeSendSign"></send-sign>
   </div>
 </template>
 
@@ -67,6 +76,8 @@ import TradingFuns from '@/assets/js/TradingFuns'
 import WalletUtil from '@/assets/js/WalletUtil'
 import SendTransfer from '@/assets/js/SendTransfer'
 import AllDialog from '@/components/TransferDialog/AllDialog'
+import OfflineDialog from '@/components/TransferDialog/TipOfflineDialog'
+import sendSign from '@/components/TransferDialog/sendSignTransfer'
 export default {
   name: 'associate',
   data () {
@@ -91,12 +102,34 @@ export default {
         gasLimit: 210000,
         gasPrice: 18000000000,
         data: '',
-        nonce: ''
+        nonce: '',
+        value: 0
       },
-      cancelList: []
+      cancelList: [],
+      confirmOffline: false,
+      jsonObj: '',
+      sendSignVisible: false,
+      information: ''
     }
   },
   methods: {
+    openSendSign () {
+      this.sendSignVisible = true
+    },
+    changeSendSign (data) {
+      this.sendSignVisible = false
+      if (data != null && data !== false) {
+        this.hash = data.hash
+        this.visible = true
+      }
+    },
+    changeConfirmOffline (data) {
+      this.confirmOffline = false
+      if (data !== false) {
+        this.sendSignVisible = true
+        this.information = data
+      }
+    },
     changeVisible (state) {
       this.visible = state
     },
@@ -188,26 +221,45 @@ export default {
         this.tradingObj.to = WalletUtil.getCurrencyAddress(this.address, this.entrustList[0].EntrustAddres.split('.')[0])
         this.tradingObj.data = JSON.stringify(this.entrustList)
         let jsonObj = TradingFuns.getEntrustData(this.tradingObj)
-        let tx = WalletUtil.createTx(jsonObj)
-        let privateKey = this.$store.state.wallet.privateKey
-        privateKey = Buffer.from(privateKey.indexOf('0x') > -1 ? privateKey.substring(2, privateKey.length) : privateKey, 'hex')
-        tx.sign(privateKey)
-        let serializedTx = tx.serialize()
-        let newTxData = SendTransfer.getTxParams(serializedTx)
-        this.hash = this.httpProvider.man.sendRawTransaction(newTxData)
+        if (this.$store.state.wallet != null) {
+          let tx = WalletUtil.createTx(jsonObj)
+          let privateKey = this.$store.state.wallet.privateKey
+          privateKey = Buffer.from(privateKey.indexOf('0x') > -1 ? privateKey.substring(2, privateKey.length) : privateKey, 'hex')
+          tx.sign(privateKey)
+          let serializedTx = tx.serialize()
+          let newTxData = SendTransfer.getTxParams(serializedTx)
+          this.hash = this.httpProvider.man.sendRawTransaction(newTxData)
+          this.visible = true
+          let recordArray = localStorage.getItem(this.address)
+          if (recordArray == null) {
+            recordArray = []
+          } else {
+            recordArray = JSON.parse(recordArray)
+          }
+          recordArray.push({ hash: this.hash, newTxData: this.newTxData })
+          localStorage.setItem(this.address, JSON.stringify(recordArray))
+        } else {
+          this.jsonObj = JSON.stringify(jsonObj)
+          this.confirmOffline = true
+        }
         this.msg = this.$t('associate.associateSuccess')
-        this.visible = true
       } catch (e) {
         this.$message.error(e.message)
       }
     }
   },
   mounted () {
-    this.tradingObj.to = this.$store.getters.wallet.address
-    this.address = this.tradingObj.to
+    if (this.$store.state.offline != null) {
+      this.address = this.$store.state.offline
+    } else {
+      this.address = this.$store.getters.wallet.address
+    }
+    this.tradingObj.to = this.address
   },
   components: {
-    AllDialog
+    AllDialog,
+    OfflineDialog,
+    sendSign
   }
 }
 </script>

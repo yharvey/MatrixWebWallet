@@ -6,10 +6,11 @@
              :before-close="handleClose"
              center>
     <div class="content">
+      <h1>{{$t('myWallet.openWallet')}}</h1>
       <el-input type="textarea"
                 :autosize="{ minRows: 4, maxRows: 6}"
                 v-model="transferJson"></el-input>
-      <div v-if="wallet==null">
+      <div >
         <div class="card_pos">
           <div class="card_way"
                @click="selectUnlock('keystore')">
@@ -100,11 +101,10 @@
                   @click="openWallet">{{$t('myWallet.openWallet')}}</button>
         </div>
       </div>
-      <button class="common-button button-top"
+      <div class="error_font">{{$t('OfflineUnlock.offlineTip')}}</div>
+      <!-- <button class="common-button button-top"
               @click="signTransfer"
-              v-if="wallet!=null">{{$t('unlock.sign')}}</button>
-      <div class="send_font"
-           @click="openSendSign">{{$t('unlock.sendSign')}}</div>
+              v-if="wallet!=null">{{$t('unlock.sign')}}</button> -->
     </div>
   </el-dialog>
 </template>
@@ -173,6 +173,7 @@ export default {
         this.password = ''
         this.keystoreError = false
         this.$refs.file.value = ''
+        this.signTransfer()
       }, () => {
         loading.close()
         this.keystoreError = true
@@ -223,6 +224,7 @@ export default {
           this.wallet = wallet
           this.privateKey = ''
           this.keyPrivateError = false
+          this.signTransfer()
         }
       } else if (this.unlockType === 'mnemonic') {
         if (this.mnemonic.split(' ').length !== 12) {
@@ -241,6 +243,7 @@ export default {
           this.wallet = wallet
           this.mnemonic = ''
           this.keyPrivateError = false
+          this.signTransfer()
         }
       }
     },
@@ -315,6 +318,17 @@ export default {
       cursor: pointer;
       margin-top: 1rem;
     }
+  }
+  .error_font {
+    font-size: 1rem;
+    color: #ed3c1c;
+    letter-spacing: 0.11px;
+    margin-top: 1rem
+  }
+  .font-blue {
+    font-size: 14px;
+    color: #1c51dd;
+    letter-spacing: 0;
   }
 }
 </style>

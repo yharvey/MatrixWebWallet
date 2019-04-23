@@ -5,6 +5,16 @@
              :model="ruleForm"
              class="demo-ruleForm">
       <div class="form-item">
+        <div class="input-name"
+             style="margin-top: 4px;">{{$t('transfer.Beneficiary')}}：</div>
+        <div class="common-input">
+          <el-form-item prop="to">
+            <el-input :placeholder="$t('transfer.enterRecipient')"
+                      v-model="ruleForm.to"></el-input>
+          </el-form-item>
+        </div>
+      </div>
+      <div class="form-item">
         <div class="input-name">{{$t('transfer.transferAmount')}}：</div>
         <div class="input-money">
           <div class="common-input">
@@ -35,21 +45,21 @@
           </div>
         </div>
       </div>
-      <div class="form-item">
-        <div class="input-name"
-             style="margin-top: 4px;">{{$t('transfer.Beneficiary')}}：</div>
-        <div class="common-input">
-          <el-form-item prop="to">
-            <el-input :placeholder="$t('transfer.enterRecipient')"
-                      v-model="ruleForm.to"></el-input>
-          </el-form-item>
-        </div>
-      </div>
       <hr style="border:0.5px #d5d7de dashed">
 
       <div v-if="ruleForm.addressList.length > 0"
            v-for="(item,index) in ruleForm.addressList"
            :key="index">
+        <div class="form-item">
+          <div class="input-name"
+               style="margin-top: 4px;">{{$t('transfer.Beneficiary')}}：</div>
+          <div class="common-input">
+            <el-form-item prop="to">
+              <el-input :placeholder="$t('transfer.enterRecipient')"
+                        v-model="item.to"></el-input>
+            </el-form-item>
+          </div>
+        </div>
         <div class="form-item">
           <div class="hint-error"
                @click="delrecords(index)">{{$t('transfer.deleteAddress')}}</div>
@@ -60,29 +70,9 @@
                 <el-input :placeholder="$t('transfer.enter') + ' ' + ruleForm.token.toLocaleUpperCase() + ' ' + $t('transfer.amount')"
                           v-model="item.value"
                           type="number">
-                  <!--<el-select v-model="item.token"-->
-                  <!--slot="append">-->
-                  <!--<el-option label="MAN"-->
-                  <!--value="man"></el-option>-->
-                  <!--<el-option label="EHC"-->
-                  <!--value="ehc"></el-option>-->
-                  <!--</el-select>-->
                 </el-input>
               </el-form-item>
             </div>
-            <div class="balance-height">
-              <span class="balance-font font-dis">{{$t('myWallet.balance')}}：{{balance | weiToNumber}}({{ruleForm.token.toLocaleUpperCase()}})</span>
-            </div>
-          </div>
-        </div>
-        <div class="form-item">
-          <div class="input-name"
-               style="margin-top: 4px;">{{$t('transfer.Beneficiary')}}：</div>
-          <div class="common-input">
-            <el-form-item prop="to">
-              <el-input :placeholder="$t('transfer.enterRecipient')"
-                        v-model="item.to"></el-input>
-            </el-form-item>
           </div>
         </div>
         <hr style="border:0.5px #d5d7de dashed">
@@ -102,8 +92,7 @@
                  @click="estimate">{{$t('transfer.estimate')}}</a>
             </div>
             <div class="common-input">
-              <el-input v-model="ruleForm.gas"
-                        readonly></el-input>
+              <el-input v-model="ruleForm.gas"></el-input>
             </div>
           </div>
           <div>
@@ -202,9 +191,7 @@
                       @changeSuccess="changeSuccess">
     </transfer-success>
   </div>
-
 </template>
-
 <script>
 import RichText from '@/components/RichText/RichText'
 import DistributedStorage from '@/components/DistributedStorage/DistributedStorage'
@@ -231,7 +218,7 @@ export default {
         to: '',
         IsEntrustTx: '',
         ExtraTimeTxType: '0',
-        gas: '',
+        gas: this.httpProvider.fromWei(210000 * 18000000000),
         token: 'MAN',
         gasLimit: 210000,
         gasPrice: 18000000000,
@@ -287,7 +274,7 @@ export default {
     },
     changeSendSign (data) {
       this.sendSignVisible = false
-      if (data != null) {
+      if (data != null && data !== false) {
         this.hash = data.hash
         this.successVisible = true
       }
@@ -504,6 +491,14 @@ export default {
       try {
         if (state === 'ok') {
           let hash = this.httpProvider.man.sendRawTransaction(this.newTxData)
+          let recordArray = localStorage.getItem(this.address)
+          if (recordArray == null) {
+            recordArray = []
+          } else {
+            recordArray = JSON.parse(recordArray)
+          }
+          recordArray.push({ hash: hash, newTxData: this.newTxData })
+          localStorage.setItem(this.address, JSON.stringify(recordArray))
           this.transferDialogVisible = true
           this.hash = hash
           this.confirmTransfer = false

@@ -37,7 +37,8 @@ export default {
         nonce: '',
         extra_to: [
           [14, 0, []]
-        ]
+        ],
+        value: 0
       },
       blackList: []
     }
