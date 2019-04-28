@@ -231,7 +231,7 @@ export default {
               } else {
                 recordArray = JSON.parse(recordArray)
               }
-              recordArray.push({ hash: this.hash, newTxData: this.newTxData })
+              recordArray.push({ hash: this.hash, newTxData: { commitTime: this.newTxData.commitTime, txType: this.newTxData.txType } })
               localStorage.setItem(this.address, JSON.stringify(recordArray))
               this.visible = true
             } else {

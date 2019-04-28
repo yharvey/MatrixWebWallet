@@ -136,6 +136,9 @@ export default {
         return this.httpProvider.man.getBalance(address)
       } catch (e) {
         this.$message.error(e.message)
+        this.$router.push({ path: '/my-wallet/myWalletFirst' })
+        this.$store.commit('OFFLINE', null)
+        this.$store.commit('UPDATE_WALLET', null)
       }
     },
     goTransfer (balance, currency) {

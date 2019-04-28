@@ -45,46 +45,53 @@ export default {
       this.$router.push({ path: '/my-wallet/' + route })
     },
     openWallet () {
-      let historyUrl = store.state.historyUrl
-      if (historyUrl === '/my-wallet/myWalletFirst' && store.state.beforeUrl != null) {
-        historyUrl = store.state.beforeUrl
-      }
-      this.address = this.$store.getters.wallet.address
-      let balance = this.httpProvider.man.getBalance(this.address)
-      let walletBlance = filter.weiToNumber(balance[0].balance)
-      this.$store.commit('BALANCE', walletBlance)
-      let greetings = localStorage.getItem('greetings')
-      let msg = this.$t('unlock.unlockSuccess')
-      if (greetings != null) {
-        let address = this.$store.state.wallet.address
-        greetings = JSON.parse(greetings)
-        for (let i = 0, length = greetings.length; i < length; i++) {
-          if (greetings[i].address === address) {
-            msg = greetings[i].content
-            break
-          }
+      try {
+        let historyUrl = store.state.historyUrl
+        if (historyUrl === '/my-wallet/myWalletFirst' && store.state.beforeUrl != null) {
+          historyUrl = store.state.beforeUrl
         }
-      }
-      this.$message({
-        message: msg,
-        duration: 3000,
-        type: 'success'
-      })
-      if (historyUrl.indexOf('green-mining') > -1 || historyUrl.indexOf('ai-application') > -1 || historyUrl.indexOf('contract') > -1) {
-        if (historyUrl.indexOf('green-mining') > -1) {
-          if (this.$store.state.wallet != null) {
-            let deposit = this.getDepositInfo()
-            if (!deposit) {
-              this.$router.push({ path: '/green-mining/campaignNode' })
-            } else {
-              this.$router.push({ path: '/green-mining/campaignNode' })
+        this.address = this.$store.getters.wallet.address
+        let balance = this.httpProvider.man.getBalance(this.address)
+        let walletBlance = filter.weiToNumber(balance[0].balance)
+        this.$store.commit('BALANCE', walletBlance)
+        let greetings = localStorage.getItem('greetings')
+        let msg = this.$t('unlock.unlockSuccess')
+        if (greetings != null) {
+          let address = this.$store.state.wallet.address
+          greetings = JSON.parse(greetings)
+          for (let i = 0, length = greetings.length; i < length; i++) {
+            if (greetings[i].address === address) {
+              msg = greetings[i].content
+              break
             }
           }
-        } else {
-          this.$router.push({ path: historyUrl })
         }
-      } else {
-        this.$router.push({ path: '/my-wallet/openWallet/myAssets' })
+        this.$message({
+          message: msg,
+          duration: 3000,
+          type: 'success'
+        })
+        if (historyUrl.indexOf('green-mining') > -1 || historyUrl.indexOf('ai-application') > -1 || historyUrl.indexOf('contract') > -1) {
+          if (historyUrl.indexOf('green-mining') > -1) {
+            if (this.$store.state.wallet != null) {
+              let deposit = this.getDepositInfo()
+              if (!deposit) {
+                this.$router.push({ path: '/green-mining/campaignNode' })
+              } else {
+                this.$router.push({ path: '/green-mining/campaignNode' })
+              }
+            }
+          } else {
+            this.$router.push({ path: historyUrl })
+          }
+        } else {
+          this.$router.push({ path: '/my-wallet/openWallet/myAssets' })
+        }
+      } catch (e) {
+        this.$message.error(e.message)
+        this.$router.push({ path: '/my-wallet/myWalletFirst' })
+        this.$store.commit('OFFLINE', null)
+        this.$store.commit('UPDATE_WALLET', null)
       }
     },
     getDepositInfo () {

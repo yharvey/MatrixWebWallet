@@ -23,6 +23,9 @@ const mutations = {
   },
   [types.OFFLINE] (state, status) {
     state.offline = status
+  },
+  [types.MODE] (state, status) {
+    state.mode = status
   }
 }
 

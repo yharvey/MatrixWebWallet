@@ -7,6 +7,7 @@
                 v-model="information"></el-input>
       <button class="common-button button-top"
               @click="sendTransfer">{{$t('unlock.sendSignInformation')}}</button>
+      <div class="error_font">{{$t('OfflineUnlock.sendSignTip')}}</div>
     </div>
     <all-dialog :visible="visible"
                 @changeVisible="changeVisible"
@@ -46,7 +47,7 @@ export default {
           } else {
             recordArray = JSON.parse(recordArray)
           }
-          recordArray.push({ hash: this.hash, newTxData: newTxData })
+          recordArray.push({ hash: this.hash, newTxData: { commitTime: newTxData.commitTime, txType: newTxData.txType } })
           localStorage.setItem(this.address, JSON.stringify(recordArray))
         }
         this.msg = this.$t('OfflineUnlock.sendSuccess')
@@ -101,6 +102,12 @@ export default {
     color: #1c51dd;
     font-size: 0.88rem;
     letter-spacing: 0.13px;
+  }
+  .error_font {
+    font-size: 1rem;
+    color: #ed3c1c;
+    letter-spacing: 0.11px;
+    margin-top: 1rem;
   }
 }
 </style>

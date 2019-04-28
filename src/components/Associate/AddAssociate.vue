@@ -2,6 +2,11 @@
   <div class="addAssociate">
     <div class="addForm">
       <h1>{{$t('associate.addAssociate')}}</h1>
+      <span class="back-tittle"
+            @click="backPage">
+        <i class="el-icon-arrow-left"></i>
+        {{$t('openWallet.back')}}
+      </span>
       <h4 v-html="$t('associate.associateHint')"></h4>
       <div v-for="(entrust,index) in entrustList"
            :key="entrust.EntrustAddress">
@@ -121,6 +126,16 @@ export default {
       if (data != null && data !== false) {
         this.hash = data.hash
         this.visible = true
+        this.entrustList = [{
+          EntrustAddres: '',
+          IsEntrustGas: true,
+          StartHeight: 0,
+          EndHeight: 0,
+          EnstrustSetType: 0,
+          useStartTime: '',
+          useEndTime: '',
+          EntrustCount: 0
+        }]
       }
     },
     changeConfirmOffline (data) {
@@ -230,13 +245,23 @@ export default {
           let newTxData = SendTransfer.getTxParams(serializedTx)
           this.hash = this.httpProvider.man.sendRawTransaction(newTxData)
           this.visible = true
+          this.entrustList = [{
+            EntrustAddres: '',
+            IsEntrustGas: true,
+            StartHeight: 0,
+            EndHeight: 0,
+            EnstrustSetType: 0,
+            useStartTime: '',
+            useEndTime: '',
+            EntrustCount: 0
+          }]
           let recordArray = localStorage.getItem(this.address)
           if (recordArray == null) {
             recordArray = []
           } else {
             recordArray = JSON.parse(recordArray)
           }
-          recordArray.push({ hash: this.hash, newTxData: this.newTxData })
+          recordArray.push({ hash: this.hash, newTxData: { commitTime: newTxData.commitTime, txType: newTxData.txType } })
           localStorage.setItem(this.address, JSON.stringify(recordArray))
         } else {
           this.jsonObj = JSON.stringify(jsonObj)
@@ -246,6 +271,9 @@ export default {
       } catch (e) {
         this.$message.error(e.message)
       }
+    },
+    backPage () {
+      this.$router.push({ path: '/my-wallet/openWallet/myAssets' })
     }
   },
   mounted () {
@@ -332,6 +360,15 @@ export default {
       letter-spacing: 0.13px;
       float: right;
       cursor: pointer;
+    }
+    .back-tittle {
+      position: relative;
+      left: 454px;
+      top: -33px;
+      cursor: pointer;
+      color: #1c51dd;
+      font-size: 0.88rem;
+      letter-spacing: 0.13px;
     }
   }
 }

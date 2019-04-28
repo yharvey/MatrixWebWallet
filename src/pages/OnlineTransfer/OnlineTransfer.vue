@@ -268,6 +268,20 @@ export default {
   methods: {
     changeSuccess () {
       this.successVisible = false
+      this.ruleForm = {
+        addressList: [],
+        value: '',
+        to: '',
+        IsEntrustTx: '',
+        ExtraTimeTxType: '0',
+        gas: this.httpProvider.fromWei(210000 * 18000000000),
+        token: 'MAN',
+        gasLimit: 210000,
+        gasPrice: 18000000000,
+        extra_to: [[0, 0, []]],
+        data: '',
+        nonce: ''
+      }
     },
     openSendSign () {
       this.sendSignVisible = true
@@ -372,6 +386,20 @@ export default {
     },
     changeTransferDialogVisible (val) {
       this.transferDialogVisible = val
+      this.ruleForm = {
+        addressList: [],
+        value: '',
+        to: '',
+        IsEntrustTx: '',
+        ExtraTimeTxType: '0',
+        gas: this.httpProvider.fromWei(210000 * 18000000000),
+        token: 'MAN',
+        gasLimit: 210000,
+        gasPrice: 18000000000,
+        extra_to: [[0, 0, []]],
+        data: '',
+        nonce: ''
+      }
     },
     queryRecordOrBalance (type) {
       this.balanceShow = type
@@ -497,7 +525,7 @@ export default {
           } else {
             recordArray = JSON.parse(recordArray)
           }
-          recordArray.push({ hash: hash, newTxData: this.newTxData })
+          recordArray.push({ hash: hash, newTxData: { commitTime: this.newTxData.commitTime, txType: this.newTxData.txType } })
           localStorage.setItem(this.address, JSON.stringify(recordArray))
           this.transferDialogVisible = true
           this.hash = hash
@@ -719,6 +747,9 @@ export default {
     letter-spacing: 0.13px;
     float: right;
     cursor: pointer;
+  }
+  /deep/.el-select {
+    min-width: 114px;
   }
 }
 /deep/.el-card__body {

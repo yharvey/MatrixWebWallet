@@ -4,11 +4,11 @@
       <el-switch v-model="offSwitch"
                  active-color="#13ce66">
       </el-switch>
-      <span v-html="offSwitch?$t('unlock.offline'):$t('unlock.online')"></span>
+      <span v-html="!offSwitch?$t('unlock.offline'):$t('unlock.online')"></span>
     </div>
     <h1>{{title === $t('myWallet.queryWallet') ? $t('myWallet.openWallet') : ''}}</h1>
-    <h4 v-if="!offSwitch">{{$t('myWallet.choose')}}</h4>
-    <div v-if="!offSwitch">
+    <h4 v-if="offSwitch">{{$t('myWallet.choose')}}</h4>
+    <div v-if="offSwitch">
       <div class="card_pos">
         <div class="card_way"
              @click="selectUnlock('keystore')">
@@ -99,10 +99,13 @@
              @click="openWallet">{{$t('myWallet.openWallet')}}</div>
       </div>
     </div>
-    <div v-if="offSwitch">
+    <div v-if="!offSwitch">
       <el-input type="text"
                 :placeholder="$t('queryWallet.pleaseInput')"
                 v-model="address"></el-input>
+      <div class="div-width">
+        <span class="spanStyle">{{$t('unlock.unlockTips')}}</span>
+      </div>
       <div class="file_btn"
            @click="loginOffline">{{$t('HistoricalIncome.determine')}}</div>
     </div>
@@ -114,7 +117,6 @@ import WalletUtil from '@/assets/js/WalletUtil'
 import Validate from '@/assets/js/Validate'
 import store from '@/store'
 import Bus from '@/assets/js/Bus'
-import filter from '@/assets/js/filters'
 
 export default {
   name: 'UnlockWallet',
@@ -130,7 +132,7 @@ export default {
       keystoreError: false,
       keyPrivateError: false,
       isEmit: true,
-      offSwitch: false,
+      offSwitch: this.$store.state.mode,
       address: ''
     }
   },
@@ -259,14 +261,11 @@ export default {
       try {
         if (WalletUtil.validateManAddress(this.address)) {
           this.$store.commit('OFFLINE', this.address)
+          this.address = this.$store.getters.offline
           let historyUrl = store.state.historyUrl
           if (historyUrl === '/my-wallet/myWalletFirst' && store.state.beforeUrl != null) {
             historyUrl = store.state.beforeUrl
           }
-          this.address = this.$store.getters.offline
-          let balance = this.httpProvider.man.getBalance(this.address)
-          let walletBlance = filter.weiToNumber(balance[0].balance)
-          this.$store.commit('BALANCE', walletBlance)
           let greetings = localStorage.getItem('greetings')
           let msg = this.$t('unlock.unlockSuccess')
           if (greetings != null) {
@@ -294,16 +293,32 @@ export default {
         }
       } catch (e) {
         this.$message.error(e.message)
+        // this.$router.push({ path: '/my-wallet/myWalletFirst' })
+        // this.$store.commit('OFFLINE', null)
       }
     }
   },
   components: {
+  },
+  watch: {
+    offSwitch: {
+      handler: function (val, oldval) {
+        this.$store.commit('MODE', val)
+      },
+      deep: true
+    }
   }
 }
 </script>
 
 <style scoped lang="less">
 .unlock-wallet {
+  .spanStyle {
+    font-size: 0.75rem;
+    color: #9298ae;
+    letter-spacing: 0.11px;
+    text-align: center;
+  }
   .switch_offline {
     position: relative;
     right: -413px;
@@ -376,6 +391,10 @@ export default {
     margin-top: 1.5rem !important;
   }
   /deep/.el-input {
+    margin-top: 1rem;
+    width: 26.5rem;
+  }
+  .div-width{
     width: 26.5rem;
   }
 }

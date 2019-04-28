@@ -86,6 +86,8 @@ export default {
       if (data != null && data !== false) {
         this.hash = data.hash
         this.visible = true
+        this.mortgageAddrress = ''
+        this.value = ''
       }
     },
     changeConfirmOffline (data) {
@@ -100,6 +102,8 @@ export default {
     },
     changeVisible (state) {
       this.visible = state
+      this.mortgageAddrress = ''
+      this.value = ''
     },
     initContract () {
       this.functions = []
@@ -187,7 +191,7 @@ export default {
           } else {
             recordArray = JSON.parse(recordArray)
           }
-          recordArray.push({ hash: this.hash, newTxData: this.newTxData })
+          recordArray.push({ hash: this.hash, newTxData: { commitTime: this.newTxData.commitTime, txType: this.newTxData.txType } })
           localStorage.setItem(this.address, JSON.stringify(recordArray))
         } else {
           this.confirmOffline = true

@@ -88,6 +88,13 @@ export default {
         let contractAddr = WalletUtil.getManAddress(this.contractAddr)
         this.contractAddr = WalletUtil.getCurrencyAddress(contractAddr, this.currency)
         this.visible = true
+        this.contractObj = {
+          byteCode: '',
+          gasLimit: 3000000,
+          gasPrice: 18000000000,
+          nonce: '',
+          address: ''
+        }
       }
     },
     changeConfirmOffline (data) {
@@ -127,13 +134,20 @@ export default {
           this.contractAddr = WalletUtil.getCurrencyAddress(contractAddr, this.currency)
           this.hash = this.httpProvider.man.sendRawTransaction(newTxData)
           this.visible = true
+          this.contractObj = {
+            byteCode: '',
+            gasLimit: 3000000,
+            gasPrice: 18000000000,
+            nonce: '',
+            address: ''
+          }
           let recordArray = localStorage.getItem(this.address)
           if (recordArray == null) {
             recordArray = []
           } else {
             recordArray = JSON.parse(recordArray)
           }
-          recordArray.push({ hash: this.hash, newTxData: this.newTxData })
+          recordArray.push({ hash: this.hash, newTxData: { commitTime: newTxData.commitTime, txType: newTxData.txType } })
           localStorage.setItem(this.address, JSON.stringify(recordArray))
         } else {
           this.jsonObj = JSON.stringify(jsonObj)

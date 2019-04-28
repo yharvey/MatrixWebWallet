@@ -35,7 +35,7 @@ export default {
         } else {
           recordArray = JSON.parse(recordArray)
         }
-        recordArray.push({ hash: hash, newTxData: newTxData })
+        recordArray.push({ hash: hash, newTxData: { commitTime: newTxData.commitTime, txType: newTxData.txType } })
         localStorage.setItem(this.$store.state.offline, JSON.stringify(recordArray))
         this.$emit('changeSendSign', obj)
       } catch (e) {

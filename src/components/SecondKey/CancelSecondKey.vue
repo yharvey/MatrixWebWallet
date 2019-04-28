@@ -185,7 +185,8 @@ export default {
           } else {
             recordArray = JSON.parse(recordArray)
           }
-          recordArray.push({ hash: this.hash, newTxData: this.newTxData })
+          // let commitTime = (new Date()).getTime() / 1000
+          recordArray.push({ hash: this.hash, newTxData: { commitTime: newTxData.commitTime, txType: newTxData.txType } })
           localStorage.setItem(this.address, JSON.stringify(recordArray))
         } else {
           this.jsonObj = JSON.stringify(jsonObj)

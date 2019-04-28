@@ -127,6 +127,15 @@ export default {
       if (data != null && data !== false) {
         this.hash = data.hash
         this.visible = true
+        this.entrustList = [{
+          EntrustAddres: '',
+          IsEntrustSign: true,
+          StartHeight: 0,
+          EndHeight: 0,
+          EnstrustSetType: 0,
+          useStartTime: '',
+          useEndTime: ''
+        }]
       }
     },
     changeConfirmOffline (data) {
@@ -205,13 +214,22 @@ export default {
           let newTxData = SendTransfer.getTxParams(serializedTx)
           this.hash = this.httpProvider.man.sendRawTransaction(newTxData)
           this.visible = true
+          this.entrustList = [{
+            EntrustAddres: '',
+            IsEntrustSign: true,
+            StartHeight: 0,
+            EndHeight: 0,
+            EnstrustSetType: 0,
+            useStartTime: '',
+            useEndTime: ''
+          }]
           let recordArray = localStorage.getItem(this.address)
           if (recordArray == null) {
             recordArray = []
           } else {
             recordArray = JSON.parse(recordArray)
           }
-          recordArray.push({ hash: this.hash, newTxData: this.newTxData })
+          recordArray.push({ hash: this.hash, newTxData: { commitTime: this.newTxData.commitTime, txType: this.newTxData.txType } })
           localStorage.setItem(this.address, JSON.stringify(recordArray))
         } else {
           this.jsonObj = JSON.stringify(jsonObj)

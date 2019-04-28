@@ -4,7 +4,8 @@ const state = {
   beforeUrl: null,
   mnemonic: '',
   balance: null,
-  offline: null
+  offline: null,
+  mode: true
 }
 
 export default state

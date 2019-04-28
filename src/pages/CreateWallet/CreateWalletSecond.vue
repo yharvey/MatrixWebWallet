@@ -3,6 +3,12 @@
     <el-card>
       <div>
         <h1>{{$t('createWallet.createWallet')}}</h1>
+        <span class="back-tittle"
+              v-show="backTittle"
+              @click="backPage">
+          <i class="el-icon-arrow-left"></i>
+          {{$t('openWallet.back')}}
+        </span>
         <div class="creat_walllet_hint">{{$t('createWallet.hint')}}</div>
         <span class="back"
               @click="back"
@@ -56,11 +62,18 @@
           </div>
         </div>
         <div v-show="!selectMnemonicKey && !selectKeystore && selectPrivateKey && !downShow">
+          <h5>{{$t('conversion.manAddress')}}</h5>
+          <div>
+            <input class="addressInput"
+                   v-model="wallet.address"
+                   readonly>
+          </div>
           <div class="pass_input">
             <input class="storeInput"
                    v-model="privateKey"
                    readonly>
-            <div class="copy_btn" v-clipboard="privateKey"
+            <div class="copy_btn"
+                 v-clipboard="privateKey"
                  @success="copySuccess"
                  @error="copyError">
               {{$t('createWallet.copy')}}
@@ -73,10 +86,17 @@
           </div>
         </div>
         <div v-show="selectMnemonicKey && !selectKeystore && !selectPrivateKey && !downShow">
+          <h5>{{$t('conversion.manAddress')}}</h5>
+          <div>
+            <input class="addressInput"
+                   v-model="wallet.address"
+                   readonly>
+          </div>
           <div class="pass_input">
             <input class="storeInput"
                    v-model="mnemonic">
-            <div class="copy_btn" v-clipboard="mnemonic"
+            <div class="copy_btn"
+                 v-clipboard="mnemonic"
                  @success="copySuccess"
                  @error="copyError">
               {{$t('createWallet.copy')}}
@@ -89,6 +109,12 @@
           </div>
         </div>
         <div v-show="!selectMnemonicKey && selectKeystore && !selectPrivateKey && !downShow">
+          <h5>{{$t('conversion.manAddress')}}</h5>
+          <div>
+            <input class="addressInput"
+                   v-model="wallet.address"
+                   readonly>
+          </div>
           <div class="pass_input">
             <input :placeholder="$t('myWallet.enterPassword')"
                    :type="isShowPassword ? 'text' : 'password'"
@@ -140,11 +166,15 @@ export default {
       password: '',
       keyStore: null,
       mnemonic: this.$store.state.mnemonic,
-      backShow: false
+      backShow: false,
+      wallet: {},
+      backTittle: true
     }
   },
   mounted () {
     // console.log(this.$store.state.mnemonic)
+    let privateKey = WalletUtil.mnemonicToPrivateKey(this.mnemonic).toString('hex')
+    this.wallet = WalletUtil.privateKeyToWallet(privateKey)
   },
   methods: {
     copySuccess () {
@@ -160,6 +190,7 @@ export default {
       this.$router.push({ path: '/my-wallet/' + route })
     },
     createWallet (type) {
+      this.backTittle = false
       this.backShow = true
       this.selectKeystore = false
       this.selectPrivateKey = false
@@ -223,6 +254,7 @@ export default {
       this.$router.push({ path: '/my-wallet/setGreetings', query: { address: address } })
     },
     back () {
+      this.backTittle = true
       if (this.downShow) {
         this.downShow = false
       } else {
@@ -231,6 +263,9 @@ export default {
         this.selectMnemonicKey = true
         this.backShow = false
       }
+    },
+    backPage () {
+      this.$router.back()
     }
   }
 }
@@ -307,13 +342,20 @@ export default {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    margin-top: 2.5rem;
+    margin-top: 1rem;
   }
   .storeInput {
     width: 23.125rem;
     height: 2.5rem;
     padding: 0;
     border: 1px solid #d5d7de;
+  }
+  .addressInput {
+    width: 26.5rem;
+    height: 2.5rem;
+    padding: 0;
+    border: 1px solid #d5d7de;
+    margin-top: 0.5rem;
   }
   .error_hint {
     font-size: 0.75rem;
@@ -360,6 +402,23 @@ export default {
   }
   .back {
     float: right;
+    cursor: pointer;
+    color: #1c51dd;
+    font-size: 0.88rem;
+    letter-spacing: 0.13px;
+  }
+  h5 {
+    font-size: 0.875rem;
+    color: #2c365c;
+    letter-spacing: 0.13px;
+    font-weight: bold;
+    display: flex;
+    margin-left: 15.75rem;
+  }
+  .back-tittle {
+    position: relative;
+    left: 470px;
+    top: -33px;
     cursor: pointer;
     color: #1c51dd;
     font-size: 0.88rem;

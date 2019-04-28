@@ -86,7 +86,7 @@ export default {
         this.tradingObj.nonce = WalletUtil.numToHex(this.tradingObj.nonce)
         this.tradingObj.to = this.address
         let jsonObj = TradingFuns.getTxData(this.tradingObj)
-        jsonObj.data = this.inputHash
+        jsonObj.data = this.inputHash.trim()
         if (this.$store.state.wallet != null) {
           let tx = WalletUtil.createTx(jsonObj)
           let privateKey = this.$store.state.wallet.privateKey
@@ -101,7 +101,7 @@ export default {
           } else {
             recordArray = JSON.parse(recordArray)
           }
-          recordArray.push({ hash: this.hash, newTxData: newTxData })
+          recordArray.push({ hash: this.hash, newTxData: { commitTime: newTxData.commitTime, txType: newTxData.txType } })
           localStorage.setItem(this.address, JSON.stringify(recordArray))
           this.visible = true
         } else {

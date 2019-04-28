@@ -111,6 +111,7 @@
     "contractsSuccess": "合约部署成功"
   },
   "errorMsgs": {
+    "jsonError":"签名结构有误",
     "keyStoreMsg": "keystore文件错误",
     "passwordError": "密码错误",
     "invalidTokenName": "无效token名称",
@@ -402,7 +403,7 @@
     "transactionState": "交易状态",
     "operation": "操作",
     "undo": "撤销",
-    "browser_detailed": "到浏览器中查询更详细",
+    "browser_detailed": "到浏览器中查询详细信息",
     "mortgageSuccess": "抵押成功",
     "undoSuccess": "撤销成功"
   },
@@ -504,7 +505,8 @@
     "sign": "签名交易",
     "sendSign": "发送签名交易",
     "sendSignInformation": "发送签名信息",
-    "sendSignature": "发送签名"
+    "sendSignature": "发送签名",
+    "unlockTips":"（打开钱包需要在连网状态，离线模式只需在签名交易时断网）"
   },
   "undo": {
     "title": "撤销交易",
@@ -514,7 +516,7 @@
     "title": "发送签名交易",
     "tip": "点击发送签名交易",
     "sendSuccess": "交易成功",
-    "offlineTip": "*请确认打开钱包时，设备处于离线状态",
+    "offlineTip": "*请确认签名交易时，处于断网状态",
     "sendSignTip": "*请确认发送签名时，设备处于连网状态",
     "sign": "交易签名",
     "noSignTransfer": "未签名交易",

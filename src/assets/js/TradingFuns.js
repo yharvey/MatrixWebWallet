@@ -40,7 +40,7 @@ TradingFuns.signRawTx = (rawTx) => {
 TradingFuns.getContractData = function (contractObj) {
   return {
     gasLimit: '0x' + new BigNumber(contractObj.gasLimit).toString(16),
-    data: contractObj.byteCode,
+    data: contractObj.byteCode.substring(0, 2) === '0x' ? contractObj.byteCode : '0x' + contractObj.byteCode,
     gasPrice: '0x' + new BigNumber(contractObj.gasPrice).toString(16),
     CommitTime: parseInt(new Date().getTime() / 1000),
     IsEntrustTx: '',

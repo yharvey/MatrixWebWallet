@@ -45,6 +45,8 @@
            src="../../assets/images/logout.svg"
            :title="$t('setUp.logout')"
            @click="logout">
+      <div v-if="$store.state.offline != null">&nbsp;&nbsp;&nbsp;{{$t('unlock.offline')}}</div>
+      <div v-if="$store.state.wallet != null">&nbsp;&nbsp;&nbsp;{{$t('unlock.online')}}</div>
     </div>
   </div>
 </template>
@@ -240,7 +242,11 @@ export default {
       // }
     },
     goFirst () {
-      this.$router.push({ path: '/my-wallet/openWallet/myAssets' })
+      if (this.$store.state.wallet != null || this.$store.state.offline != null) {
+        this.logout()
+      } else {
+        this.$router.push({ path: '/my-wallet/myWalletFirst' })
+      }
     }
   }
 }
@@ -314,7 +320,7 @@ export default {
       margin-left: -37px;
     }
     label:nth-child(5):after {
-      margin-left: -81px;
+      margin-left: -49px;
     }
     // label:last-child:after {
     //   margin-left: -36px;

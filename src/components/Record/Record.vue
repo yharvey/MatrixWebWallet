@@ -72,8 +72,10 @@ export default {
       this.address = this.$store.state.offline
     }
     this.localData = JSON.parse(localStorage.getItem(this.address))
-    this.total = this.localData.length
-    this.getTableData()
+    if (this.localData != null) {
+      this.total = this.localData.length
+      this.getTableData()
+    }
   },
   methods: {
     currentChange (status) {
@@ -84,7 +86,7 @@ export default {
       this.tableData = []
       let arrayLength = 0
       let i = 0
-      if (this.localData.length > 0) {
+      if (this.localData !== undefined && this.localData.length > 0) {
         if (this.localData.length - this.pageNumber * this.pageSize > 0) {
           arrayLength = this.localData.length - this.pageNumber * this.pageSize - 1
           i = this.localData.length - (this.pageNumber - 1) * this.pageSize - 1
@@ -99,7 +101,7 @@ export default {
     },
     openBrowser (hash) {
       if (hash === '') {
-        window.open(browserUrl)
+        window.open(browserUrl + '/addr/' + this.address)
       } else {
         window.open(browserUrl + '/tx/' + hash)
       }

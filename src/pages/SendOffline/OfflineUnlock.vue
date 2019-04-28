@@ -1,10 +1,12 @@
 <template>
   <div class="offlineUnlock">
-      <h5>{{$t('OfflineUnlock.noSignTransfer')}}：</h5>
-      <el-input type="textarea" class="input-bottom"
-                :autosize="{ minRows: 4, maxRows: 6}"
-                v-model="transferJson"></el-input>
-      <unlock-wallet @openWallet="openWallet"></unlock-wallet>
+    <h5>{{$t('OfflineUnlock.noSignTransfer')}}：</h5>
+    <el-input type="textarea"
+              class="input-bottom"
+              :autosize="{ minRows: 4, maxRows: 6}"
+              v-model="transferJson"></el-input>
+    <unlock-wallet @openWallet="openWallet"></unlock-wallet>
+    <div class="error_font">{{$t('OfflineUnlock.offlineTip')}}</div>
   </div>
 </template>
 
@@ -26,13 +28,17 @@ export default {
   },
   methods: {
     openWallet (data) {
-      this.wallet = data
-      let tx = WalletUtil.createTx(JSON.parse(this.transferJson))
-      let privateKey = this.wallet.privateKey
-      privateKey = Buffer.from(privateKey.indexOf('0x') > -1 ? privateKey.substring(2, privateKey.length) : privateKey, 'hex')
-      tx.sign(privateKey)
-      let serializedTx = '0x' + tx.serialize().toString('hex')
-      this.$router.push({ name: 'SendSignTransfer', params: { serializedTx: serializedTx } })
+      try {
+        this.wallet = data
+        let tx = WalletUtil.createTx(JSON.parse(this.transferJson))
+        let privateKey = this.wallet.privateKey
+        privateKey = Buffer.from(privateKey.indexOf('0x') > -1 ? privateKey.substring(2, privateKey.length) : privateKey, 'hex')
+        tx.sign(privateKey)
+        let serializedTx = '0x' + tx.serialize().toString('hex')
+        this.$router.push({ name: 'SendSignTransfer', params: { serializedTx: serializedTx } })
+      } catch (e) {
+        this.$message.error(this.$t('errorMsgs.jsonError'))
+      }
     },
     goPage () {
       this.$router.push({ path: '/sendOffline/sendSignTransfer' })
@@ -60,8 +66,14 @@ export default {
     line-height: 17px;
     cursor: pointer;
   }
-  .input-bottom{
-    margin-bottom: 1rem
+  .input-bottom {
+    margin-bottom: 1rem;
+  }
+  .error_font {
+    font-size: 1rem;
+    color: #ed3c1c;
+    letter-spacing: 0.11px;
+    margin-top: 1rem;
   }
 }
 </style>

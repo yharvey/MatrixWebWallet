@@ -6,11 +6,12 @@
              :before-close="handleClose"
              center>
     <div class="content">
-      <h1>{{$t('myWallet.openWallet')}}</h1>
+      <h1>{{$t('unlock.sign')}}</h1>
+      <h5>{{$t('OfflineUnlock.noSignTransfer')}}：</h5>
       <el-input type="textarea"
                 :autosize="{ minRows: 4, maxRows: 6}"
                 v-model="transferJson"></el-input>
-      <div >
+      <div>
         <div class="card_pos">
           <div class="card_way"
                @click="selectUnlock('keystore')">
@@ -248,14 +249,18 @@ export default {
       }
     },
     signTransfer () {
-      let tx = WalletUtil.createTx(JSON.parse(this.transferJson))
-      let privateKey = this.wallet.privateKey
-      privateKey = Buffer.from(privateKey.indexOf('0x') > -1 ? privateKey.substring(2, privateKey.length) : privateKey, 'hex')
-      tx.sign(privateKey)
-      let serializedTx = '0x' + tx.serialize().toString('hex')
-      this.changeConfirmOffline = false
-      this.wallet = null
-      this.$emit('changeConfirmOffline', serializedTx)
+      try {
+        let tx = WalletUtil.createTx(JSON.parse(this.transferJson))
+        let privateKey = this.wallet.privateKey
+        privateKey = Buffer.from(privateKey.indexOf('0x') > -1 ? privateKey.substring(2, privateKey.length) : privateKey, 'hex')
+        tx.sign(privateKey)
+        let serializedTx = '0x' + tx.serialize().toString('hex')
+        this.changeConfirmOffline = false
+        this.wallet = null
+        this.$emit('changeConfirmOffline', serializedTx)
+      } catch (e) {
+        this.$message.error(this.$t('errorMsgs.jsonError'))
+      }
     },
     handleClose () {
       this.$emit('changeConfirmOffline', false)
@@ -323,12 +328,38 @@ export default {
     font-size: 1rem;
     color: #ed3c1c;
     letter-spacing: 0.11px;
-    margin-top: 1rem
+    margin-top: 1rem;
   }
   .font-blue {
     font-size: 14px;
     color: #1c51dd;
     letter-spacing: 0;
+  }
+  .storeInput {
+    width: 22.625rem;
+    height: 2.5rem;
+    padding-left: 0.5rem;
+    border: 1px solid #d5d7de;
+  }
+  .pass_input {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 2.5rem;
+    .pass_pic {
+      width: 3.3125rem;
+      height: 2.6rem;
+      line-height: 3rem;
+      cursor: pointer;
+    }
+    .passwordClose {
+      background: #f2f4f8;
+      border: 1px solid #f2f4f8;
+    }
+    .passwordOpen {
+      background: #415eaa;
+      border: 1px solid #415eaa;
+    }
   }
 }
 </style>

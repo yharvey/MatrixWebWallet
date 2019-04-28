@@ -111,6 +111,7 @@
     "contractsSuccess": "Contract Deployed Successfully"
   },
   "errorMsgs": {
+    "jsonError":"Signature struct error",
     "keyStoreMsg": "Please correct wallet file",
     "passwordError": "The password you entered is incorrect",
     "invalidTokenName": "invalid token name",
@@ -504,7 +505,8 @@
     "sendSign": "Send signed transaction",
     "sendSignInformation": "Send signed information",
     "sign": "Sign",
-    "sendSignature":"Send signature"
+    "sendSignature":"Send signature",
+    "unlockTips":"Opening the wallet should in the status of connected network. It should be noted that in the offline mode, you only need to disconnect your network when carrying out signed transaction.）"
   },
   "undo": {
     "title": "Cancel Transaction",
@@ -514,11 +516,11 @@
     "title": "Send signed transaction",
     "tip": "Click to send signed transaction",
     "sendSuccess": "Success",
-    "offlineTip": "*Please ensure your device is offline when you unlock your wallet",
+    "offlineTip": "*Please ensure your device is offline when you sign the transaction",
     "sendSignTip": "*Please ensure your device is networked when you send the signed transaction",
     "sign": "Sign",
     "noSignTransfer":"unsigned transaction",
-    "signing":"Sign Tx",
+    "signing":"Sign Transaction",
     "selectSign":"Sign the transaction via one of  the following methods"
   },
   "refund": {

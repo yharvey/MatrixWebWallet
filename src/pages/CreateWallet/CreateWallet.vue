@@ -3,12 +3,17 @@
     <el-card>
       <div>
         <h1>{{$t('createWallet.createWallet')}}</h1>
+        <span class="back"
+              @click="back">
+          <i class="el-icon-arrow-left"></i>
+          {{$t('openWallet.back')}}
+        </span>
         <div class="creat_walllet_hint ">{{$t('createWallet.createWalletTip1')}}<br>{{$t('createWallet.createWalletTip2')}}<br>{{$t('createWallet.createWalletTip3')}}<br>{{$t('createWallet.createWalletTip4')}}</div>
         <div class="file_btn"
              @click="goPage('/my-wallet/CreateWalletSecond')">
           {{$t('createWallet.createWalletButton')}}
         </div>
-        <span class="keyStoneHintFont">{{$t('myWallet.msg1')}}<a @click="goPage('/')">{{$t('myWallet.openWallet')}}</a></span>
+        <!-- <span class="keyStoneHintFont">{{$t('myWallet.msg1')}}<a @click="goPage('/')">{{$t('myWallet.openWallet')}}</a></span> -->
       </div>
     </el-card>
   </div>
@@ -27,6 +32,9 @@ export default {
       let mnemonic = WalletUtil.createMnemonic()
       this.$store.commit('UPDATE_MNEMONIC', mnemonic)
       this.$router.push({ path: pathStr })
+    },
+    back () {
+      this.$router.back()
     }
   }
 }
@@ -55,7 +63,17 @@ export default {
     cursor: pointer;
   }
   /deep/.el-card__body {
-    padding: 2.5rem 0 5.875rem 0;
+    padding: 2.5rem 1rem 5.875rem 1rem;
+  }
+  .back {
+    // float: right;
+    position: relative;
+    left: 470px;
+    top: -33px;
+    cursor: pointer;
+    color: #1c51dd;
+    font-size: 0.88rem;
+    letter-spacing: 0.13px;
   }
 }
 </style>
