@@ -50,6 +50,14 @@ import SendOffline from '@/pages/SendOffline/SendOffline'
 import OfflineUnlock from '@/pages/SendOffline/OfflineUnlock'
 import SendSignTransfer from '@/pages/SendOffline/SendSignTransfer'
 import SendTransferData from '@/pages/SendOffline/SendTransferData'
+import DigAccount from '@/components/DigAccount/DigAccount'
+import CurrentMortgage from '@/components/CurrentMortgage/CurrentMortgage'
+import RemoveCurrentMortgage from '@/components/RemoveCurrentMortgage/RemoveCurrentMortgage'
+import RegularDetail from '@/components/RegularDetail/RegularDetail'
+import RefundValue from '@/components/RefundValue/RefundValue'
+import RefundDetail from '@/components/RefundDetail/RefundDetail'
+import RemoveRegularMortgage from '@/components/RemoveRegularMortgage/RemoveRegularMortgage'
+import RegularMortgage from '@/components/RegularMortgage/RegularMortgage'
 
 Vue.use(Router)
 
@@ -130,6 +138,39 @@ let router = new Router({
         path: 'refund',
         name: 'Refund',
         component: Refund
+      }, {
+        path: 'digAccount',
+        name: 'DigAccount',
+        component: DigAccount
+      }, {
+        path: 'currentMortgage',
+        name: 'CurrentMortgage',
+        component: CurrentMortgage
+      }, {
+        path: 'removeCurrentMortgage',
+        name: 'RemoveCurrentMortgage',
+        component: RemoveCurrentMortgage
+      }, {
+        path: 'regularDetail',
+        name: 'RegularDetail',
+        component: RegularDetail
+      }, {
+        path: 'refundValue',
+        name: 'RefundValue',
+        component: RefundValue
+      }, {
+        path: 'refundDetail',
+        name: 'RefundDetail',
+        component: RefundDetail
+      }, {
+        path: 'regularMortgage',
+        name: 'RegularMortgage',
+        component: RegularMortgage
+
+      }, {
+        path: 'removeRegularMortgage',
+        name: 'RemoveRegularMortgage',
+        component: RemoveRegularMortgage
       }, {
         path: 'mortgage-history',
         name: 'MortgageHistory',

@@ -12,7 +12,27 @@
         </el-option>
       </el-select>
       <h5>{{$t('CampaignNode.mortgage_man')}}</h5>
+      <div>
+        <el-select v-model="mortgageWay"
+                   :placeholder="$t('CampaignNode.selectMortgageWay')">
+          <el-option v-for="item in mortgageWayList"
+                     :key="item.key"
+                     :label="item.name"
+                     :value="item.key">
+          </el-option>
+        </el-select>
+      </div>
       <el-input v-model="value"></el-input>
+      <div v-show="mortgageWay==='regular'">
+        <el-select v-model="timeLimit"
+                   :placeholder="$t('CampaignNode.selectTimeLimit')">
+          <el-option v-for="item in timeLimitList"
+                     :key="item.key"
+                     :label="item.name"
+                     :value="item.key">
+          </el-option>
+        </el-select>
+      </div>
       <!-- <h5>{{$t('transfer.estimatedGas')}}</h5>
       <el-input disabled=""></el-input> -->
       <h5>{{$t('CampaignNode.dig_address')}}</h5>
@@ -59,6 +79,10 @@ export default {
     return {
       address: '',
       mortgageList: [{ name: '', key: 'minerDeposit' }, { name: '', key: 'valiDeposit' }],
+      mortgageWayList: [{ name: '', key: 'regular' }, { name: '', key: 'current' }],
+      timeLimitList: [{ name: 'oneMonth', key: '1' }, { name: 'threeMonth', key: '3' }, { name: 'sixMonth', key: '6' }],
+      timeLimit: '',
+      mortgageWay: '',
       mortgageType: '',
       functions: [],
       value: '',
@@ -142,12 +166,18 @@ export default {
         }
         let curFunc
         this.functions.forEach(e => {
-          if (e.name = this.mortgageType) {
+          if (e.name.indexOf(this.mortgageType) !== -1) {
             curFunc = e
           }
         })
         let addrTemp = this.mortgageAddrress
         curFunc.inputs[0].value = SendTransfer.sanitizeHex(WalletUtil.addressChange(addrTemp.split('.')[1]))
+
+        if (this.mortgageWay === 'current') {
+          curFunc.inputs[1].value = '0x' + new BigNumber(0).toString(16)
+        } else {
+          curFunc.inputs[1].value = '0x' + new BigNumber(parseInt(this.timeLimit)).toString(16)
+        }
         let fullFuncName = WalletUtil.solidityUtils.transformToFullName(curFunc)
         let funcSig = WalletUtil.getFunctionSignature(fullFuncName)
         let typeName = WalletUtil.solidityUtils.extractTypeName(fullFuncName)
@@ -206,6 +236,11 @@ export default {
   mounted () {
     this.mortgageList[0].name = this.$t('CampaignNode.Mining_mortgage')
     this.mortgageList[1].name = this.$t('CampaignNode.Validator_mortgage')
+    this.mortgageWayList[0].name = this.$t('CampaignNode.regular')
+    this.mortgageWayList[1].name = this.$t('CampaignNode.current')
+    this.timeLimitList[0].name = this.$t('CampaignNode.oneMonth')
+    this.timeLimitList[1].name = this.$t('CampaignNode.threeMonth')
+    this.timeLimitList[2].name = this.$t('CampaignNode.sixMonth')
     if (this.$store.state.offline != null) {
       this.address = this.$store.state.offline
     } else {

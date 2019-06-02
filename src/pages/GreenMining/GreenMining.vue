@@ -1,5 +1,5 @@
 <template>
-  <div class="green-mining align-center">
+  <div class="green-mining align-center ">
     <el-card class="box-card body-card">
       <div class="header">
         <!-- <label :class="{'active' : type === 'miningTransaction'}"
@@ -85,13 +85,13 @@ export default {
         this.type = status
       }
       if (status === 'campaignNode') {
-        this.$router.push({ path: '/green-mining/StartNode' })
+        this.$router.push({ path: '/green-mining/CampaignNode' })
       } else if (status === 'miningTransaction') {
         this.$router.push({ path: '/green-mining/mining-transaction-overview' })
       } else if (status === 'secondaryKey') {
         this.$router.push({ path: '/green-mining/secondKey' })
       } else if (status === 'refund') {
-        this.$router.push({ path: '/green-mining/refund' })
+        this.$router.push({ path: '/green-mining/digAccount' })
       }
     },
     back () {

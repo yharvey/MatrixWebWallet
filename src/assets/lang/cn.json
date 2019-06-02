@@ -11,7 +11,7 @@
     "hint": "提示",
     "sure": "确认",
     "cancel": "取消",
-    "refund": "退款",
+    "refund": "挖矿账户",
     "offlineSend": "离线交易"
   },
   "myWallet": {
@@ -204,7 +204,15 @@
     "campaignvalueError3": "验证者抵押金额需要大于100000man",
     "mortgageTypeError": "请选择抵押角色",
     "valueError": "请输入抵押man数量",
-    "cancelDepositError": "未退款不可抵押"
+    "cancelDepositError": "未退款不可抵押",
+    "regular":"定期抵押",
+    "current":"活期抵押",
+    "mortgage_number":"抵押数量",
+    "oneMonth":"一个月",
+    "threeMonth":"三个月",
+    "sixMonth":"六个月",
+    "selectTimeLimit":"请选择期限",
+    "selectMortgageWay":"请选择抵押方式"
   },
   "startNode": {
     "name": "启动节点",
@@ -443,7 +451,7 @@
   },
   "greenMining": {
     "mining_revenue": "挖矿收益",
-    "campaign_node": "竞选节点",
+    "campaign_node": "抵押",
     "secondKey": "二次密钥",
     "beNodeget": "成为节点将获得什么收益？",
     "howBeNode": "如何成为节点？",

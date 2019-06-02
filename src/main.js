@@ -31,6 +31,11 @@ import HttpProvider from '@/assets/js/HttpProvider'
 import EthProvider from '@/assets/js/EthProvider'
 // ipfs API
 import IpfsProvider from '@/assets/js/IpfsProvider'
+import 'babel-polyfill'
+import zhLocale from './assets/lang/cn'
+import enLocale from './assets/lang/en'
+import elementEnLocale from 'element-ui/lib/locale/lang/en' // element-ui lang
+import elementZhLocale from 'element-ui/lib/locale/lang/zh-CN'// element-ui lang
 
 // aiman API
 Vue.prototype.httpProvider = new HttpProvider(chainUrl)
@@ -46,15 +51,18 @@ Vue.use(VueQuillEditor)
 Vue.use(VueI18n)
 // axios封装
 Vue.use(http)
-Vue.use(ElementUI)
+// Vue.use(ElementUI)
+
 Vue.use(VueClipboards)
 const i18n = new VueI18n({
   // locale: 'EN', // 语言标识
   // locale: 'CN',
   locale: getCookie('PLAY_LANG', 'EN'), // 语言标识
   messages: {
-    'CN': require('./assets/lang/cn'), // 中文语言包
-    'EN': require('./assets/lang/en') // 英文语言包
+    // 中文语言包
+    'CN': { ...elementZhLocale, ...zhLocale },
+    // 英文语言包
+    'EN': { ...elementEnLocale, ...enLocale }
   }
 })
 
@@ -62,7 +70,9 @@ const i18n = new VueI18n({
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 })
-
+Vue.use(ElementUI, {
+  i18n: (key, value) => i18n.t(key, value)
+})
 window.i18n = i18n
 /* eslint-disable no-new */
 new Vue({

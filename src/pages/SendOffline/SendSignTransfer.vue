@@ -28,7 +28,7 @@ export default {
       hash: '',
       msg: '',
       visible: false,
-      address: ''
+      address: null
     }
   },
   methods: {
@@ -40,7 +40,7 @@ export default {
         let newTxData = SendTransfer.getTxParams(this.information)
         this.hash = this.httpProvider.man.sendRawTransaction(newTxData)
         this.visible = true
-        if (this.address !== undefined) {
+        if (this.address != null) {
           let recordArray = localStorage.getItem(this.address)
           if (recordArray == null) {
             recordArray = []
@@ -62,7 +62,7 @@ export default {
   mounted () {
     if (this.$store.state.offline != null) {
       this.address = this.$store.state.offline
-    } else {
+    } else if (this.$store.state.wallet != null) {
       this.address = this.$store.getters.wallet.address
     }
     this.information = this.$route.params.serializedTx

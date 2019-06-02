@@ -138,6 +138,7 @@ export default {
     cursor: pointer;
   }
   /deep/.el-card__body {
+    width: 1042px;
     padding: 2.5rem 0 3rem 0;
   }
 }

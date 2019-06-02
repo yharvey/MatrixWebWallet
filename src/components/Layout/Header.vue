@@ -270,7 +270,7 @@ export default {
       cursor: pointer;
     }
     label:not(:first-child) {
-      margin-left: 1.5rem;
+      margin-left: 3rem;
     }
     .active {
       opacity: 1;

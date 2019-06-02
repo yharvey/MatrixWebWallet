@@ -1,0 +1,7 @@
+ [{"constant": true,"inputs": [],"name": "getDepositList","outputs": [{"name": "","type": "address[]"}],"payable": false,"stateMutability": "view","type": "function"},  
+        {"constant": false,"inputs": [{"name": "address","type": "address"},{"name": "depositType","type": "uint256"}],"name": "valiDeposit","outputs": [],"payable": true,"stateMutability": "payable","type": "function"},
+        {"constant": false,"inputs": [{"name": "address","type": "address"},{"name": "depositType","type": "uint256"}],"name": "minerDeposit","outputs": [],"payable": true,"stateMutability": "payable","type": "function"},
+        {"constant": false,"inputs": [{"name": "depositNum","type": "uint256"},{"name": "withdrawAmount","type": "uint256"}],"name": "withdraw","outputs": [],"payable": false,"stateMutability": "nonpayable","type": "function"},
+        {"constant": false,"inputs": [{"name": "depositNum","type": "uint256"}],"name": "refund","outputs": [],"payable": false,"stateMutability": "nonpayable","type": "function"},
+      {"constant": false,"inputs": [{"name": "depositType","type": "address"},{"name": "depositType","type": "uint256"}],"name": "modifyDeposittype","outputs": [],"payable": true,"stateMutability": "payable","type": "function"},
+      {"constant": false,"inputs": [{"name": "addr","type": "address"}],"name": "getinterest","outputs": [],"payable": false,"stateMutability": "payable","type": "function"}]`

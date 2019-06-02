@@ -11,7 +11,7 @@
     "hint": "Tips",
     "sure": "Yes, close",
     "cancel": "Cancel",
-    "refund": "Refund",
+    "refund": "挖矿账户",
     "offlineSend": "Send Offline"
   },
   "myWallet": {
@@ -204,7 +204,15 @@
     "campaignvalueError3": "You should deposit at least 100000 MAN for a validator node",
     "mortgageTypeError": "Please choose your deposit type",
     "valueError": "Please enter your deposit amount",
-    "cancelDepositError": "No deposit allowed before refund is finished"
+    "cancelDepositError": "No deposit allowed before refund is finished",
+    "regular":"定期抵押",
+    "current":"活期抵押",
+    "mortgage_number":"抵押数量",
+    "oneMonth":"一个月",
+    "threeMonth":"三个月",
+    "sixMonth":"六个月",
+    "selectTimeLimit":"请选择期限",
+    "selectMortgageWay":"请选择抵押方式"
   },
   "startNode": {
     "name": "Startup Node",
@@ -443,7 +451,7 @@
   },
   "greenMining": {
     "mining_revenue": "Returns & Deposits",
-    "campaign_node": "Deposit for masternodes",
+    "campaign_node": "Deposit",
     "secondKey": "Secondary key",
     "beNodeget": "What returns are nodes eligible for",
     "howBeNode": "How to become a member node?",
@@ -506,7 +514,7 @@
     "sendSignInformation": "Send signed information",
     "sign": "Sign",
     "sendSignature":"Send signature",
-    "unlockTips":"Opening the wallet should in the status of connected network. It should be noted that in the offline mode, you only need to disconnect your network when carrying out signed transaction.）"
+    "unlockTips":"Opening the wallet should in the status of connected network. It should be noted that in the offline mode, you only need to disconnect your network when carrying out signed transaction."
   },
   "undo": {
     "title": "Cancel Transaction",
