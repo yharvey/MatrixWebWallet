@@ -100,7 +100,6 @@ export default {
     })
     let abiArray = JSON.parse(erc20Abi)
     let contractAddress = ethContractAddress
-    // let contractAddress = '0xe25bCec5D3801cE3a794079BF94adF1B8cCD802D'
     this.contract = this.ethProvider.eth.Contract(abiArray, contractAddress)
     this.getManBalance()
     this.getEthBalance()

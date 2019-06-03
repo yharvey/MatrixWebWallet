@@ -197,7 +197,7 @@ export default {
       }
     },
     getToken () { // 获本地token代币
-      let tokenArray = localStorage.getItem('token')
+      let tokenArray = window.localStorage.getItem('token')
       if (tokenArray !== null) {
         tokenArray = JSON.parse(tokenArray)
         tokenArray.forEach(e => {

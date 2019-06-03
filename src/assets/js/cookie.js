@@ -1,5 +1,6 @@
+import store from 'store'
 function getCookie (name, defaultValue) {
-  let lang = localStorage.getItem('lang')
+  let lang = store.set('lang')
   if (lang === null || lang === undefined) {
     let arr
     let reg = new RegExp('(^| )' + name + '=([^;]*)(;|$)')

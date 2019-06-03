@@ -141,14 +141,14 @@ export default {
             nonce: '',
             address: ''
           }
-          let recordArray = localStorage.getItem(this.address)
+          let recordArray = window.localStorage.getItem(this.address)
           if (recordArray == null) {
             recordArray = []
           } else {
             recordArray = JSON.parse(recordArray)
           }
           recordArray.push({ hash: this.hash, newTxData: { commitTime: newTxData.commitTime, txType: newTxData.txType } })
-          localStorage.setItem(this.address, JSON.stringify(recordArray))
+          window.localStorage.setItem(this.address, JSON.stringify(recordArray))
         } else {
           this.jsonObj = JSON.stringify(jsonObj)
           this.confirmOffline = true
