@@ -52,12 +52,13 @@ import SendSignTransfer from '@/pages/SendOffline/SendSignTransfer'
 import SendTransferData from '@/pages/SendOffline/SendTransferData'
 import DigAccount from '@/components/DigAccount/DigAccount'
 import CurrentMortgage from '@/components/CurrentMortgage/CurrentMortgage'
-import RemoveCurrentMortgage from '@/components/RemoveCurrentMortgage/RemoveCurrentMortgage'
 import RegularDetail from '@/components/RegularDetail/RegularDetail'
 import RefundValue from '@/components/RefundValue/RefundValue'
 import RefundDetail from '@/components/RefundDetail/RefundDetail'
-import RemoveRegularMortgage from '@/components/RemoveRegularMortgage/RemoveRegularMortgage'
 import RegularMortgage from '@/components/RegularMortgage/RegularMortgage'
+import RegularWithdrawals from '@/components/RegularWithdrawals/RegularWithdrawals'
+import CurrentWithdrawals from '@/components/CurrentWithdrawals/CurrentWithdrawals'
+import CurrentRefund from '@/components/CurrentRefund/CurrentRefund'
 
 Vue.use(Router)
 
@@ -147,10 +148,6 @@ let router = new Router({
         name: 'CurrentMortgage',
         component: CurrentMortgage
       }, {
-        path: 'removeCurrentMortgage',
-        name: 'RemoveCurrentMortgage',
-        component: RemoveCurrentMortgage
-      }, {
         path: 'regularDetail',
         name: 'RegularDetail',
         component: RegularDetail
@@ -166,11 +163,18 @@ let router = new Router({
         path: 'regularMortgage',
         name: 'RegularMortgage',
         component: RegularMortgage
-
       }, {
-        path: 'removeRegularMortgage',
-        name: 'RemoveRegularMortgage',
-        component: RemoveRegularMortgage
+        path: 'regularWithdrawals',
+        name: 'RegularWithdrawals',
+        component: RegularWithdrawals
+      }, {
+        path: 'currentWithdrawals',
+        name: 'CurrentWithdrawals',
+        component: CurrentWithdrawals
+      }, {
+        path: 'currentRefund',
+        name: 'CurrentRefund',
+        component: CurrentRefund
       }, {
         path: 'mortgage-history',
         name: 'MortgageHistory',

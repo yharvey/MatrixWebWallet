@@ -61,7 +61,6 @@ SolidityCoder.prototype.encodeParam = function (type, param) {
  * @return {String} encoded list of params
  */
 SolidityCoder.prototype.encodeParams = function (types, params) {
-  debugger
   var solidityTypes = this.getSolidityTypes(types)
 
   var encodeds = solidityTypes.map(function (solidityType, index) {

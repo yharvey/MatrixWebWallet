@@ -1,60 +1,44 @@
 <template>
-  <div class="regularMortgage">
+  <div class="regularWithdrawals">
     <div>
-      <div class="first-left">
-        定期抵押账户： {{regularDepositValue}} MAN
+      <div class="mortgage-font">
+        活期取款
       </div>
       <div class="commonTable top-spacing">
-        <el-table :data="regularDepositList"
+        <el-table :data="currentWithdrawalsList"
                   style="width: 100%">
-          <el-table-column label="抵押开始时间"
-                           prop="BeginTime">
-            <template slot-scope="scope">
-              {{scope.row.BeginTime | dateFormat('MM.DD.YYYY HH:mm')}}
-            </template>
-          </el-table-column>
-          <el-table-column label="抵押时间"
+          <el-table-column label="解除抵押时间"
                            prop="depositeTime">
             <template slot-scope="scope">
-              {{scope.row.DepositType }}月
+              {{scope.row.WithDrawTime | dateFormat('MM.DD.YYYY HH:mm')}}
             </template>
           </el-table-column>
-          <el-table-column label="抵押金额"
-                           prop="depositeValue">
+          <el-table-column label="金额">
             <template slot-scope="scope">
-              {{scope.row.DepositAmount | weiToNumber}}
-            </template>
-          </el-table-column>
-          <el-table-column label="利息收入"
-                           prop="depositeGet">
-            <template slot-scope="scope">
-              {{scope.row.Interest | weiToNumber}}
+              {{scope.row.WithDrawAmount | weiToNumber}}
             </template>
           </el-table-column>
           <!-- <el-table-column label="状态"
                            prop="states">
-            <template slot-scope="scope">
-             {{scope.row.Interest}}
-            </template>
           </el-table-column> -->
           <el-table-column label="操作"
                            class="font-blue">
             <template slot-scope="scope">
               <el-button @click="confirm(scope.row)"
                          type="text"
-                         size="small">解除抵押</el-button>
+                         size="small">取款</el-button>
             </template>
           </el-table-column>
         </el-table>
         <div class="content-between">
-          <el-pagination background
+          <!-- <el-pagination background
                          class="top_spacing"
                          layout="prev, pager, next"
                          :page-size="pageSize"
                          :current-page="pageNumber"
                          @current-change="currentChange"
                          :total="total">
-          </el-pagination>
+          </el-pagination> -->
         </div>
       </div>
     </div>
@@ -82,7 +66,6 @@ import { mortgage, contract } from '@/assets/js/config'
 import AllDialog from '@/components/TransferDialog/AllDialog'
 import OfflineDialog from '@/components/TransferDialog/TipOfflineDialog'
 import sendSign from '@/components/TransferDialog/sendSignTransfer'
-// import filter from '@/assets/js/filters'
 // import Man from 'aiman'
 // import BigNumber from 'bignumber.js'
 // const manUtil = new Man()
@@ -90,15 +73,12 @@ export default {
   name: 'currentMortgage',
   data () {
     return {
-      mortgageAddrress: '',
       functions: [],
       address: '',
-      regularDepositList: [
-      ],
+      currentWithdrawalsList: [],
       pageSize: 10,
       pageNumber: 0,
       total: 0,
-      regularDepositValue: 0,
       visible: false,
       confirmOffline: false,
       jsonObj: '',
@@ -134,10 +114,8 @@ export default {
     },
     changeVisible (state) {
       this.visible = state
-      this.mortgageAddrress = ''
-      this.value = ''
     },
-    confirm (obj) {
+    confirm () {
       try {
         let tAbi = JSON.parse(mortgage.abi)
         for (let i in tAbi) {
@@ -148,14 +126,13 @@ export default {
             this.functions.push(tAbi[i])
           }
         }
-        let curFunc = this.functions[3]
+        let curFunc = this.functions[4]
         let fullFuncName = WalletUtil.solidityUtils.transformToFullName(curFunc)
         let funcSig = WalletUtil.getFunctionSignature(fullFuncName)
         let typeName = WalletUtil.solidityUtils.extractTypeName(fullFuncName)
         var types = typeName.split(',')
         types = types[0] === '' ? [] : types
-        var values = [obj.Position, obj.DepositAmount]
-        // values = [0]
+        var values = [0]
         let nonce = this.httpProvider.man.getTransactionCount(this.address)
         nonce = WalletUtil.numToHex(nonce)
         let data = {
@@ -168,7 +145,6 @@ export default {
           nonce: nonce
         }
         let jsonObj = TradingFuns.getTxData(data)
-        debugger
         jsonObj.data = '0x' + funcSig + WalletUtil.solidityCoder.encodeParams(types, values)
         if (this.$store.state.wallet != null) {
           let tx = WalletUtil.createTx(jsonObj)
@@ -192,13 +168,11 @@ export default {
           this.jsonObj = JSON.stringify(jsonObj)
           this.confirmOffline = true
         }
-        this.msg = this.$t('mortgageHistory.mortgageSuccess')
       } catch (e) {
         this.$message.error(e.message)
       }
-    },
-    currentChange () {
     }
+
   },
   mounted () {
     if (this.$store.state.offline != null) {
@@ -206,10 +180,8 @@ export default {
     } else {
       this.address = this.$store.getters.wallet.address
     }
-    this.regularDepositList = []
-    this.regularDepositList = this.$route.params.regularDepositList
-    this.total = this.regularDepositList.length
-    this.regularDepositValue = this.$route.params.regularDepositValue
+    this.currentWithdrawalsList = this.$route.params.currentWithdrawalsList
+    console.log(this.currentWithdrawalsList)
   },
   components: {
     AllDialog,
@@ -218,19 +190,25 @@ export default {
   },
   watch: {
     $route (to, from) {
-      if (to.path.indexOf('regularDetail') > -1) {
-        this.regularDepositList = []
-        this.regularDepositList = this.$route.params.regularDepositList
-        console.log(this.regularDepositList)
-        this.total = this.regularDepositList.length
-        this.regularDepositValue = this.$route.params.regularDepositValue
+      if (to.path.indexOf('currentRefund') > -1) {
+        this.currentWithdrawalsList = []
+        this.currentWithdrawalsList = this.$route.params.currentWithdrawalsList
+        console.log(this.regularWithdrawalsList)
+        this.total = this.regularWithdrawalsList.length
       }
     }
   }
 }
 </script>
 <style scoped lang="less">
-.regularMortgage {
+.regularWithdrawals {
+  .mortgage-font {
+    text-align: left;
+    font-size: 1.25rem;
+    color: #2c365c;
+    letter-spacing: 0.18px;
+    font-weight: bold;
+  }
   .first-left {
     text-align: left;
   }

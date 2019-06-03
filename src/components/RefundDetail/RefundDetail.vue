@@ -36,11 +36,14 @@ export default {
   data () {
     return {
       mortgageAddrress: '',
-      tableData: []
+      tableData: [],
+      regularDepositList: []
     }
   },
   methods: {
-
+  },
+  mounted () {
+    this.regularDepositList = this.$route.params.regularDepositList
   }
 }
 </script>
