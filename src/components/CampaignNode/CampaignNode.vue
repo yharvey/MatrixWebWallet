@@ -215,14 +215,14 @@ export default {
           this.newTxData = SendTransfer.getTxParams(serializedTx)
           this.hash = this.httpProvider.man.sendRawTransaction(this.newTxData)
           this.visible = true
-          let recordArray = localStorage.getItem(this.address)
+          let recordArray = window.localStorage.getItem(this.address)
           if (recordArray == null) {
             recordArray = []
           } else {
             recordArray = JSON.parse(recordArray)
           }
           recordArray.push({ hash: this.hash, newTxData: { commitTime: this.newTxData.commitTime, txType: this.newTxData.txType } })
-          localStorage.setItem(this.address, JSON.stringify(recordArray))
+          window.localStorage.setItem(this.address, JSON.stringify(recordArray))
         } else {
           this.confirmOffline = true
           this.jsonObj = JSON.stringify(jsonObj)

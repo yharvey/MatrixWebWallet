@@ -91,7 +91,7 @@ export default {
       }
       let wallet = this.$store.state.wallet
       if (wallet != null) {
-        let greetings = localStorage.getItem('greetings')
+        let greetings = window.localStorage.getItem('greetings')
         if (greetings != null) {
           greetings = JSON.parse(greetings)
           greetings.forEach(element => {
@@ -131,7 +131,7 @@ export default {
     try {
       let wallet = this.$store.state.wallet
       if (wallet != null) {
-        let greetings = localStorage.getItem('greetings')
+        let greetings = window.localStorage.getItem('greetings')
         greetings = JSON.parse(greetings)
         if (greetings.address === wallet.address) {
           this.userName = greetings.content

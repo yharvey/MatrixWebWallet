@@ -130,7 +130,7 @@ export default {
             this.hash = hash
             this.allMsg = this.$t('successHint.refund')
             this.visible = true
-            let recordArray = localStorage.getItem(this.address)
+            let recordArray = window.localStorage.getItem(this.address)
             if (recordArray == null) {
               recordArray = []
             } else {

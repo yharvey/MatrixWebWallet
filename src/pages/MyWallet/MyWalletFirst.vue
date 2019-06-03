@@ -84,7 +84,7 @@ export default {
         let balance = this.httpProvider.man.getBalance(this.address)
         let walletBlance = filter.weiToNumber(balance[0].balance)
         this.$store.commit('BALANCE', walletBlance)
-        let greetings = localStorage.getItem('greetings')
+        let greetings = window.localStorage.getItem('greetings')
         let msg = this.$t('unlock.unlockSuccess')
         if (greetings != null) {
           let address = this.$store.state.wallet.address
