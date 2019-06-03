@@ -17,6 +17,7 @@
     "aiman": "0.0.4",
     "axios": "^0.18.0",
     "babel-plugin-component": "^1.1.1",
+    "babel-polyfill": "^6.26.0",
     "bignumber.js": "^8.1.1",
     "bip39": "^2.5.0",
     "bs58": "^4.0.1",

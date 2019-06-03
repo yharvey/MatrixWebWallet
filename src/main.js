@@ -14,9 +14,6 @@ import 'element-ui/lib/theme-chalk/index.css'
 import { getCookie } from './assets/js/cookie'
 // 引入全局css
 import './assets/css/global.css'
-import db from './assets/js/webSql.js'
-// import moment from 'moment'
-
 // 富文本
 import VueQuillEditor from 'vue-quill-editor'
 // require styles
@@ -45,7 +42,7 @@ Vue.prototype.ethProvider = new EthProvider(ethUrl)
 // ipfs API
 Vue.prototype.ipfsProvider = new IpfsProvider(ipfsUrl, ipfsPort, protocol)
 // websql
-Vue.prototype.webSql = db
+// Vue.prototype.webSql = db
 
 Vue.use(VueQuillEditor)
 Vue.use(VueI18n)
