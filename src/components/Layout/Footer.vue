@@ -18,6 +18,7 @@
 
 <script>
 import Bus from '@/assets/js/Bus'
+import store from 'store'
 export default {
   name: 'Footer',
   data () {
@@ -29,7 +30,7 @@ export default {
     changeLang (lang) {
       if (lang !== this.lang) {
         Bus.$emit('changeLang', lang)
-        localStorage.setItem('lang', lang)
+        store.set('lang', lang)
         this.lang = lang
         this.$i18n.locale = lang
       }
