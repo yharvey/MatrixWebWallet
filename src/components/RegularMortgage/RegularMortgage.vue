@@ -9,6 +9,16 @@
         <el-input v-model="value"
                   placeholder="活期抵押数量"></el-input>
       </div>
+      <div class="dis-bottom">
+        <el-select v-model="timeLimit"
+                   :placeholder="$t('CampaignNode.selectTimeLimit')">
+          <el-option v-for="item in timeLimitList"
+                     :key="item.key"
+                     :label="item.name"
+                     :value="item.key">
+          </el-option>
+        </el-select>
+      </div>
       <button class="common-button"
               @click="confirm">{{$t('transfer.confirm')}}</button>
     </div>
@@ -46,6 +56,8 @@ export default {
       currentDepositValue: '',
       functions: [],
       visible: false,
+      timeLimit: '1',
+      timeLimitList: [{ name: 'oneMonth', key: '1' }, { name: 'threeMonth', key: '3' }, { name: 'sixMonth', key: '6' }],
       confirmOffline: false,
       jsonObj: '',
       sendSignVisible: false,
@@ -100,7 +112,7 @@ export default {
         let typeName = WalletUtil.solidityUtils.extractTypeName(fullFuncName)
         var types = typeName.split(',')
         types = types[0] === '' ? [] : types
-        var values = [0, filter.numberToWei(this.value)]
+        var values = [parseInt(this.timeLimit), filter.numberToWei(this.value)]
         let nonce = this.httpProvider.man.getTransactionCount(this.address)
         nonce = WalletUtil.numToHex(nonce)
         let data = {
@@ -142,6 +154,9 @@ export default {
     }
   },
   mounted () {
+    this.timeLimitList[0].name = this.$t('CampaignNode.oneMonth')
+    this.timeLimitList[1].name = this.$t('CampaignNode.threeMonth')
+    this.timeLimitList[2].name = this.$t('CampaignNode.sixMonth')
     if (this.$store.state.offline != null) {
       this.address = this.$store.state.offline
     } else {
