@@ -90,7 +90,6 @@ export default {
             }
           }
           let curFunc = this.functions[4]
-          debugger
           let fullFuncName = WalletUtil.solidityUtils.transformToFullName(curFunc)
           let funcSig = WalletUtil.getFunctionSignature(fullFuncName)
           let typeName = WalletUtil.solidityUtils.extractTypeName(fullFuncName)
