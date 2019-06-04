@@ -115,12 +115,15 @@ export default {
         let currentWithdrawalsValue = new BigNumber(0)
         let regularDepositValue = new BigNumber(0)
         let currentDepositValue = new BigNumber(0)
-        console.log(depositList)
+        this.regularDepositList = []
+        this.regularWithdrawalsList = []
+        this.currentWithdrawalsList = []
         depositList.Dpstmsg.forEach(item => {
           if (item.Position !== 0) {
             if (item.WithDrawInfolist.length > 0) {
-              regularWithdrawalsValue = regularWithdrawalsValue.plus(filter.weiToNumber(item.WithDrawInfolist[0].WithDrawAmount))
+              regularWithdrawalsValue = regularWithdrawalsValue.plus(filter.weiToNumber(item.DepositAmount))
               item.WithDrawInfolist[0].position = item.Position
+              item.WithDrawInfolist[0].WithDrawAmount = item.DepositAmount
               this.regularWithdrawalsList.push(item.WithDrawInfolist[0])
             } else {
               this.regularDepositList.push(item)

@@ -26,7 +26,7 @@ export default {
     }
   },
   mounted () {
-    this.test()
+    // this.test()
     try {
       let address
       if (this.$store.state.offline != null) {

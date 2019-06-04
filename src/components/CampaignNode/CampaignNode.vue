@@ -155,6 +155,24 @@ export default {
           this.$message.error(this.$t('CampaignNode.valueError'))
           return
         }
+        if (this.mortgageWay === '') {
+          this.$message.error('请选择抵押方式（活期或定期）')
+          return
+        } else if (this.mortgageWay === 'regular') {
+          if (this.timeLimit === '') {
+            this.$message.error('请选择抵押期限')
+            return
+          }
+          if (parseInt(this.value) < 10000) {
+            this.$message.error('定期抵押应大于10000')
+            return
+          }
+        } else {
+          if (parseInt(this.value) < 100) {
+            this.$message.error('活期抵押应大于100')
+            return
+          }
+        }
         let balances = this.httpProvider.man.getBalance(this.address)
         let balance = this.httpProvider.fromWei(balances[0].balance)
         let compareBalance = new BigNumber(balance)

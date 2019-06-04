@@ -18,9 +18,12 @@
               {{scope.row.WithDrawAmount | weiToNumber}}
             </template>
           </el-table-column>
-          <!-- <el-table-column label="状态"
+          <el-table-column label="状态"
                            prop="states">
-          </el-table-column> -->
+             <template slot-scope="scope">
+              {{ (scope.row.WithDrawTime-new Date().getTime()) > 86400*7 ? '可取款':'解除抵押中'}}
+            </template>
+          </el-table-column>
           <el-table-column label="操作"
                            class="font-blue">
             <template slot-scope="scope">
@@ -31,14 +34,14 @@
           </el-table-column>
         </el-table>
         <div class="content-between">
-          <!-- <el-pagination background
+          <el-pagination background
                          class="top_spacing"
                          layout="prev, pager, next"
                          :page-size="pageSize"
                          :current-page="pageNumber"
                          @current-change="currentChange"
                          :total="total">
-          </el-pagination> -->
+          </el-pagination>
         </div>
       </div>
     </div>
@@ -77,7 +80,7 @@ export default {
       address: '',
       currentWithdrawalsList: [],
       pageSize: 10,
-      pageNumber: 0,
+      pageNumber: 1,
       total: 0,
       visible: false,
       confirmOffline: false,
@@ -171,6 +174,14 @@ export default {
       } catch (e) {
         this.$message.error(e.message)
       }
+    },
+    currentChange (status) {
+      this.pageNumber = status
+      if (this.allList >= this.pageNumber * this.pageSize) {
+        this.currentWithdrawalsList = this.allList.slice((this.pageNumber - 1) * 10, this.pageNumber * this.pageSize)
+      } else {
+        this.currentWithdrawalsList = this.allList.slice((this.pageNumber - 1) * 10, this.allList.length)
+      }
     }
 
   },
@@ -180,8 +191,13 @@ export default {
     } else {
       this.address = this.$store.getters.wallet.address
     }
-    this.currentWithdrawalsList = this.$route.params.currentWithdrawalsList
-    console.log(this.currentWithdrawalsList)
+    this.allList = this.$route.params.currentWithdrawalsList
+    if (this.allList.length <= 10) {
+      this.currentWithdrawalsList = this.allList
+    } else {
+      this.currentWithdrawalsList = this.allList.slice(0, 9)
+    }
+    this.total = this.allList.length
   },
   components: {
     AllDialog,
@@ -191,10 +207,13 @@ export default {
   watch: {
     $route (to, from) {
       if (to.path.indexOf('currentRefund') > -1) {
-        this.currentWithdrawalsList = []
-        this.currentWithdrawalsList = this.$route.params.currentWithdrawalsList
-        console.log(this.regularWithdrawalsList)
-        this.total = this.regularWithdrawalsList.length
+        this.allList = this.$route.params.currentWithdrawalsList
+        if (this.allList.length <= 10) {
+          this.currentWithdrawalsList = this.allList
+        } else {
+          this.currentWithdrawalsList = this.allList.slice(0, 9)
+        }
+        this.total = this.allList.length
       }
     }
   }

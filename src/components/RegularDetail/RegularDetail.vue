@@ -25,8 +25,7 @@
               {{scope.row.DepositAmount | weiToNumber}}
             </template>
           </el-table-column>
-          <el-table-column label="利息收入"
-                           prop="depositeGet">
+          <el-table-column label="利息收入">
             <template slot-scope="scope">
               {{scope.row.Interest | weiToNumber}}
             </template>
@@ -95,8 +94,9 @@ export default {
       address: '',
       regularDepositList: [
       ],
+      allList: [],
       pageSize: 10,
-      pageNumber: 0,
+      pageNumber: 1,
       total: 0,
       regularDepositValue: 0,
       visible: false,
@@ -155,7 +155,6 @@ export default {
         var types = typeName.split(',')
         types = types[0] === '' ? [] : types
         var values = [obj.Position, obj.DepositAmount]
-        // values = [0]
         let nonce = this.httpProvider.man.getTransactionCount(this.address)
         nonce = WalletUtil.numToHex(nonce)
         let data = {
@@ -168,7 +167,6 @@ export default {
           nonce: nonce
         }
         let jsonObj = TradingFuns.getTxData(data)
-        debugger
         jsonObj.data = '0x' + funcSig + WalletUtil.solidityCoder.encodeParams(types, values)
         if (this.$store.state.wallet != null) {
           let tx = WalletUtil.createTx(jsonObj)
@@ -197,7 +195,13 @@ export default {
         this.$message.error(e.message)
       }
     },
-    currentChange () {
+    currentChange (status) {
+      this.pageNumber = status
+      if (this.allList >= this.pageNumber * this.pageSize) {
+        this.regularDepositList = this.allList.slice((this.pageNumber - 1) * 10, this.pageNumber * this.pageSize)
+      } else {
+        this.regularDepositList = this.allList.slice((this.pageNumber - 1) * 10, this.allList.length)
+      }
     }
   },
   mounted () {
@@ -206,9 +210,80 @@ export default {
     } else {
       this.address = this.$store.getters.wallet.address
     }
-    this.regularDepositList = []
-    this.regularDepositList = this.$route.params.regularDepositList
-    this.total = this.regularDepositList.length
+    // this.allList = [
+    //   {
+    //     BeginTime: 1559618000,
+    //     DepositType: 1,
+    //     DepositAmount: 1000000000000000000000,
+    //     Interest: 1000000000000000000
+    //   },
+    //   {
+    //     BeginTime: 1559618000,
+    //     DepositType: 1,
+    //     DepositAmount: 1000000000000000000000,
+    //     Interest: 1000000000000000000
+    //   },
+    //   {
+    //     BeginTime: 1559618000,
+    //     DepositType: 1,
+    //     DepositAmount: 1000000000000000000000,
+    //     Interest: 1000000000000000000
+    //   },
+    //   {
+    //     BeginTime: 1559618000,
+    //     DepositType: 1,
+    //     DepositAmount: 1000000000000000000000,
+    //     Interest: 1000000000000000000
+    //   },
+    //   {
+    //     BeginTime: 1559618000,
+    //     DepositType: 1,
+    //     DepositAmount: 1000000000000000000000,
+    //     Interest: 1000000000000000000
+    //   }, {
+    //     BeginTime: 1559618000,
+    //     DepositType: 1,
+    //     DepositAmount: 1000000000000000000000,
+    //     Interest: 1000000000000000000
+    //   },
+    //   {
+    //     BeginTime: 1559618000,
+    //     DepositType: 1,
+    //     DepositAmount: 1000000000000000000000,
+    //     Interest: 1000000000000000000
+    //   },
+    //   {
+    //     BeginTime: 1559618000,
+    //     DepositType: 1,
+    //     DepositAmount: 1000000000000000000000,
+    //     Interest: 1000000000000000000
+    //   },
+    //   {
+    //     BeginTime: 1559618000,
+    //     DepositType: 1,
+    //     DepositAmount: 1000000000000000000000,
+    //     Interest: 1000000000000000000
+    //   },
+    //   {
+    //     BeginTime: 1559618000,
+    //     DepositType: 1,
+    //     DepositAmount: 1000000000000000000000,
+    //     Interest: 1000000000000000000
+    //   },
+    //   {
+    //     BeginTime: 1559618000,
+    //     DepositType: 1,
+    //     DepositAmount: 1000000000000000000000,
+    //     Interest: 1000000000000000000
+    //   }
+    // ]
+    this.allList = this.$route.params.regularDepositList
+    if (this.allList.length <= 10) {
+      this.regularDepositList = this.allList
+    } else {
+      this.regularDepositList = this.allList.slice(0, 9)
+    }
+    this.total = this.allList.length
     this.regularDepositValue = this.$route.params.regularDepositValue
   },
   components: {
@@ -219,10 +294,13 @@ export default {
   watch: {
     $route (to, from) {
       if (to.path.indexOf('regularDetail') > -1) {
-        this.regularDepositList = []
-        this.regularDepositList = this.$route.params.regularDepositList
-        console.log(this.regularDepositList)
-        this.total = this.regularDepositList.length
+        this.allList = this.$route.params.regularDepositList
+        if (this.allList.length <= 10) {
+          this.regularDepositList = this.allList
+        } else {
+          this.regularDepositList = this.allList.slice(0, 9)
+        }
+        this.total = this.allList.length
         this.regularDepositValue = this.$route.params.regularDepositValue
       }
     }
