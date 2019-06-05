@@ -255,6 +255,7 @@ export default {
 <style scoped lang="less">
 .header {
   align-items: center;
+  margin: auto;
   width: 65rem;
   .logo {
     height: 1rem;

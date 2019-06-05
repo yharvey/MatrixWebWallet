@@ -4,7 +4,7 @@ const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
 
-function resolve(dir) {
+function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
 
@@ -48,7 +48,44 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        include: [resolve('src'), resolve('test'), resolve('node_modules/webpack-dev-server/client')]
+        options: process.env.NODE_ENV === 'production' ? {
+          presets: [
+            ['babel-preset-env', {
+              targets: {
+                browsers: ['> 1%', 'last 2 versions']
+              }
+            }]
+          ]
+        } : {},
+        include: process.env.NODE_ENV === 'production' ? [resolve('src'),
+          resolve('node_modules/webpack-dev-server/client'),
+          resolve('node_modules/ipfs-api'),
+          resolve('node_modules/ipfs-unixfs/src'),
+          resolve('node_modules/ipfs-utils/src'),
+          resolve('node_modules/ipld-dag-pb'),
+          resolve('node_modules/ipld-dag-cbor/src'),
+          resolve('node_modules/libp2p-crypto/src'),
+          resolve('node_modules/libp2p-crypto-secp256k1'),
+          resolve('node_modules/web3-eth'),
+          resolve('node_modules/web3-utils'),
+          resolve('node_modules/peer-info'),
+          resolve('node_modules/multihashing-async'),
+          resolve('node_modules/iso-url'),
+          resolve('node_modules/cids'),
+          resolve('node_modules/is-ipfs'),
+          resolve('node_modules/ipfs-block/src'),
+          resolve('node_modules/multibase'),
+          resolve('node_modules/multicodec'),
+          resolve('node_modules/multiaddr/src'),
+          resolve('node_modules/polycrc'),
+          resolve('node_modules/borc'),
+          resolve('node_modules/multihashes'),
+          resolve('node_modules/matrixjs-tx'),
+          resolve('node_modules/es6-proxy-polyfill/src'),
+          resolve('node_modules/aiman'),
+          resolve('node_modules/class-is'),
+          resolve('node_modules/peer-id')] : [resolve('src'), resolve('test'),
+          resolve('node_modules/webpack-dev-server/client')]
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,

@@ -380,7 +380,7 @@ export default {
     letter-spacing: 0.11px;
     // position: relative;
     // left: -121px;
-    margin-top: 0.4rem;
+    margin: 0.4rem auto;
     width: 27.56rem;
     text-align: left;
   }
@@ -388,7 +388,7 @@ export default {
     display: none;
   }
   .file_btn {
-    margin-top: 1.5rem !important;
+    margin: 1.5rem auto !important;
   }
   /deep/.el-input {
     margin-top: 1rem;

@@ -42,6 +42,7 @@ export default {
 <style scoped lang="less">
   .footer {
     width: 65rem;
+    margin: auto;
     justify-content: space-between;
     .el-dropdown {
       cursor: pointer;

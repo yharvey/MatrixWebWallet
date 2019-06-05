@@ -1,5 +1,7 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
+import 'babel-polyfill'
+import 'es6-proxy-polyfill'
 import Vue from 'vue'
 import App from './App'
 import router from './router'
@@ -7,7 +9,7 @@ import store from './store'
 import VueI18n from 'vue-i18n'
 import ElementUI from 'element-ui'
 import filters from './assets/js/filters'
-import http from './assets/js/http'
+// import http from './assets/js/http'
 import { chainUrl, ipfsUrl, ipfsPort, protocol, ethUrl } from './assets/js/config' // 配置
 import VueClipboards from 'vue-clipboards'
 import 'element-ui/lib/theme-chalk/index.css'
@@ -28,7 +30,7 @@ import HttpProvider from '@/assets/js/HttpProvider'
 import EthProvider from '@/assets/js/EthProvider'
 // ipfs API
 import IpfsProvider from '@/assets/js/IpfsProvider'
-import 'babel-polyfill'
+
 import zhLocale from './assets/lang/cn'
 import enLocale from './assets/lang/en'
 import elementEnLocale from 'element-ui/lib/locale/lang/en' // element-ui lang
@@ -47,7 +49,7 @@ Vue.prototype.ipfsProvider = new IpfsProvider(ipfsUrl, ipfsPort, protocol)
 Vue.use(VueQuillEditor)
 Vue.use(VueI18n)
 // axios封装
-Vue.use(http)
+// Vue.use(http)
 // Vue.use(ElementUI)
 
 Vue.use(VueClipboards)

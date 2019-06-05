@@ -18,4 +18,7 @@ export default {
 </script>
 
 <style scoped lang="less">
+.my-wallet{
+  margin: 0 auto;
+}
 </style>
