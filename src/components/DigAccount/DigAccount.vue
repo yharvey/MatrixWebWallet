@@ -2,35 +2,35 @@
   <div class="digAccount">
     <div>
       <div class="mortgage-font">
-        抵押账户： {{totalValue}} MAN
+        {{$t('digAccount.deposit_account')}}： {{totalValue}} MAN
       </div>
       <table class="tab_info">
         <tbody>
           <tr class="tr1_info">
             <td>
               <div>
-                <span>定期</span>
+                <span> {{$t('digAccount.current')}}</span>
               </div>
               <div>
                 <label>{{regularDepositValue}} MAN</label>
               </div>
               <div>
-                <a @click="goPage('RegularDetail',{regularDepositList: regularDepositList,regularDepositValue:regularDepositValue})">解除抵押</a>
+                <a @click="goPage('RegularDetail',{regularDepositList: regularDepositList,regularDepositValue:regularDepositValue})">{{$t('digAccount.withdraw_deposit')}}</a>
               </div>
             </td>
           </tr>
           <tr class="tr2_info">
             <td>
               <div>
-                <span>活期</span>
+                <span>{{$t('digAccount.regular')}}</span>
               </div>
               <div>
                 <label> {{currentDepositValue}} MAN</label>
               </div>
               <div>
                 <a @click="goPage('CurrentWithdrawals',{currentDepositValue:currentDepositValue})"
-                   class="dis-right">解除抵押</a>
-                <a @click="goPage('RegularMortgage',{currentDepositValue:currentDepositValue})">转入定期抵押</a>
+                   class="dis-right">{{$t('digAccount.withdraw_deposit')}}</a>
+                <a @click="goPage('RegularMortgage',{currentDepositValue:currentDepositValue})">{{$t('digAccount.change_regular')}}</a>
               </div>
             </td>
           </tr>
@@ -38,34 +38,34 @@
       </table>
     </div>
     <div class="mortgage-font">
-      退款账户： {{totalWithdrawalsValue}} MAN
+      {{$t('digAccount.refund_account')}}： {{totalWithdrawalsValue}} MAN
     </div>
     <table class="tab_info">
       <tbody>
         <tr class="tr1_info">
           <td>
             <div>
-              <span>定期</span>
+              <span> {{$t('digAccount.current')}}</span>
             </div>
             <div>
               <label>{{regularWithdrawalsValue}} MAN</label>
             </div>
             <div>
-              <a @click="goPage('RegularWithdrawals',{regularWithdrawalsList:regularWithdrawalsList})">取款</a>
+              <a @click="goPage('RegularWithdrawals',{regularWithdrawalsList:regularWithdrawalsList})">{{$t('digAccount.withdrawals')}}</a>
             </div>
           </td>
         </tr>
         <tr class="tr2_info">
           <td>
             <div>
-              <span>活期</span>
+              <span>{{$t('digAccount.regular')}}</span>
             </div>
             <div>
               <label> {{currentWithdrawalsValue}} MAN</label>
             </div>
             <div>
               <a @click="goPage('CurrentRefund',{currentWithdrawalsList:currentWithdrawalsList})"
-                 class="dis-right">取款</a>
+                 class="dis-right">{{$t('digAccount.withdrawals')}}</a>
             </div>
           </td>
         </tr>
@@ -73,10 +73,10 @@
     </table>
     <hr>
     <div class="tip-font">
-      <p>1、定期抵押每个仓位最少一万个MAN</p>
-      <p>2、活期抵押每次最少100个MAN</p>
-      <p>3、验证是否满足相应的节点对MAN数量的要求已抵押的数量+活期抵押+定期抵押</p>
-      <p>4、修改节点类型时，可进行活期0的抵押进行修改</p>
+      <p>{{$t('digAccount.tips1')}}</p>
+      <p>{{$t('digAccount.tips2')}}</p>
+      <p>{{$t('digAccount.tips3')}}</p>
+      <p>{{$t('digAccount.tips4')}}</p>
     </div>
   </div>
 </template>

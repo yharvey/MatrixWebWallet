@@ -2,30 +2,30 @@
   <div class="regularMortgage">
     <div>
       <div class="first-left">
-        定期抵押账户： {{regularDepositValue}} MAN
+        {{$t('regularDetail.regular_account')}} {{regularDepositValue}} MAN
       </div>
       <div class="commonTable top-spacing">
         <el-table :data="regularDepositList"
                   style="width: 100%">
-          <el-table-column label="抵押开始时间"
+          <el-table-column :label="$t('regularDetail.begin_time')"
                            prop="BeginTime">
             <template slot-scope="scope">
               {{scope.row.BeginTime | dateFormat('MM.DD.YYYY HH:mm')}}
             </template>
           </el-table-column>
-          <el-table-column label="抵押时间"
+          <el-table-column :label="$t('regularDetail.deposit_time')"
                            prop="depositeTime">
             <template slot-scope="scope">
-              {{scope.row.DepositType }}月
+              {{scope.row.DepositType }}{{$t('regularDetail.month')}}
             </template>
           </el-table-column>
-          <el-table-column label="抵押金额"
+          <el-table-column :label="$t('regularDetail.deposit_value')"
                            prop="depositeValue">
             <template slot-scope="scope">
               {{scope.row.DepositAmount | weiToNumber}}
             </template>
           </el-table-column>
-          <el-table-column label="利息收入">
+          <el-table-column :label="$t('regularDetail.interest')">
             <template slot-scope="scope">
               {{scope.row.Interest | weiToNumber}}
             </template>
@@ -36,12 +36,12 @@
              {{scope.row.Interest}}
             </template>
           </el-table-column> -->
-          <el-table-column label="操作"
+          <el-table-column :label="$t('regularDetail.operation')"
                            class="font-blue">
             <template slot-scope="scope">
               <el-button @click="confirm(scope.row)"
                          type="text"
-                         size="small">解除抵押</el-button>
+                         size="small">{{$t('digAccount.withdraw_deposit')}}</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -190,7 +190,7 @@ export default {
           this.jsonObj = JSON.stringify(jsonObj)
           this.confirmOffline = true
         }
-        this.msg = this.$t('mortgageHistory.mortgageSuccess')
+        this.msg = this.$t('regularDetail.success')
       } catch (e) {
         this.$message.error(e.message)
       }

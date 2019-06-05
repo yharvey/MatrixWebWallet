@@ -2,34 +2,34 @@
   <div class="regularWithdrawals">
     <div>
       <div class="mortgage-font">
-        活期取款
+        {{$t('regularWithdrawals.current_withdrawals')}}
       </div>
       <div class="commonTable top-spacing">
         <el-table :data="currentWithdrawalsList"
                   style="width: 100%">
-          <el-table-column label="解除抵押时间"
+          <el-table-column :label="$t('regularWithdrawals.withdraw_time')"
                            prop="depositeTime">
             <template slot-scope="scope">
               {{scope.row.WithDrawTime | dateFormat('MM.DD.YYYY HH:mm')}}
             </template>
           </el-table-column>
-          <el-table-column label="金额">
+          <el-table-column :label="$t('regularWithdrawals.value')">
             <template slot-scope="scope">
               {{scope.row.WithDrawAmount | weiToNumber}}
             </template>
           </el-table-column>
-          <el-table-column label="状态"
+          <el-table-column :label="$t('regularWithdrawals.state')"
                            prop="states">
              <template slot-scope="scope">
-              {{ (scope.row.WithDrawTime-new Date().getTime()) > 86400*7 ? '可取款':'解除抵押中'}}
+              {{ (scope.row.WithDrawTime-new Date().getTime()) > 86400*7 ? $t('regularWithdrawals.can_withdrawals'):$t('regularWithdrawals.withdrawing')}}
             </template>
           </el-table-column>
-          <el-table-column label="操作"
+          <el-table-column :label="$t('regularDetail.operation')"
                            class="font-blue">
             <template slot-scope="scope">
               <el-button @click="confirm(scope.row)"
                          type="text"
-                         size="small">取款</el-button>
+                         size="small">{{$t('digAccount.withdrawals')}}</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -171,6 +171,7 @@ export default {
           this.jsonObj = JSON.stringify(jsonObj)
           this.confirmOffline = true
         }
+        this.msg = this.$t('regularWithdrawals.success')
       } catch (e) {
         this.$message.error(e.message)
       }

@@ -2,12 +2,11 @@
   <div class="regularMortgage">
     <div>
       <div class="first-left">
-        活期抵押账户： {{currentDepositValue}} MAN
+        {{$t('currentWithdraw.current_account')}} {{currentDepositValue}} MAN
       </div>
-      <h1>活期退款</h1>
+      <h1>{{$t('currentWithdraw.current_refund')}}</h1>
       <div class="dis-bottom">
-        <el-input v-model="value"
-                  placeholder="活期退款数量"></el-input>
+        <el-input v-model="value"  :placeholder="$t('currentWithdraw.refund_value')"></el-input>
       </div>
       <button class="common-button"
               @click="confirm">{{$t('transfer.confirm')}}</button>
@@ -136,7 +135,7 @@ export default {
           this.jsonObj = JSON.stringify(jsonObj)
           this.confirmOffline = true
         }
-        this.msg = this.$t('mortgageHistory.mortgageSuccess')
+        this.msg = this.$t('currentWithdraw.success')
       } catch (e) {
         this.$message.error(e.message)
       }

@@ -205,6 +205,7 @@ import BigNumber from 'bignumber.js'
 import OfflineDialog from '@/components/TransferDialog/TipOfflineDialog'
 import sendSign from '@/components/TransferDialog/sendSignTransfer'
 import transferSuccess from '@/components/TransferDialog/transferSuccess'
+// import store from '@/store'
 
 export default {
   name: 'OfflineTransferForm',
@@ -527,6 +528,7 @@ export default {
           }
           recordArray.push({ hash: hash, newTxData: { commitTime: this.newTxData.commitTime, txType: this.newTxData.txType } })
           localStorage.setItem(this.address, JSON.stringify(recordArray))
+          // store.set(this.address, recordArray)
           this.transferDialogVisible = true
           this.hash = hash
           this.confirmTransfer = false

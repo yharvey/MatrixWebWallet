@@ -2,7 +2,7 @@
   <div class="regularMortgage">
     <div>
       <div class="first-left">
-        退款账户: 100000 MAN
+        {{$t('digAccount.refund_account')}}: 100000 MAN
       </div>
       <div class="commonTable top-spacing">
         <el-table :data="tableData"

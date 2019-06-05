@@ -223,4 +223,5 @@ h5 {
 .lang-active {
   background-color: #ecf5ff !important;
   color: #66b1ff !important;
+  min-width: 96px;
 }

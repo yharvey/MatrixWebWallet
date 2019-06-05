@@ -2,12 +2,12 @@
   <div class="regularMortgage">
     <div>
       <div class="first-left">
-        活期抵押账户： {{currentDepositValue}} MAN
+        {{$t('currentWithdraw.current_account')}} {{currentDepositValue}} MAN
       </div>
-      <h1>转入定期抵押账户</h1>
+      <h1>{{$t('regularMortgage.change_regular')}}</h1>
       <div class="dis-bottom">
         <el-input v-model="value"
-                  placeholder="活期抵押数量"></el-input>
+                  :placeholder="$t('regularMortgage.current_value')"></el-input>
       </div>
       <div class="dis-bottom">
         <el-select v-model="timeLimit"
@@ -148,6 +148,7 @@ export default {
           this.jsonObj = JSON.stringify(jsonObj)
           this.confirmOffline = true
         }
+        this.msg = this.$t('regularMortgage.success')
       } catch (e) {
         this.$message.error(e.message)
       }
