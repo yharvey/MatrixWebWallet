@@ -1,6 +1,6 @@
 <template>
   <div class="ai-application align-center">
-    <el-card class="box-card body-card">
+    <el-card class="box-card">
       <div class="header">
         <label :class="{'active' : type === 22}"
                @click="changeType(22)">{{$t('ai.medical')}}&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</label>
@@ -56,7 +56,8 @@ export default {
 
 <style scoped lang="less">
 .ai-application {
-  .body-card {
+  width: 1040px;
+  .box-card {
     text-align: left;
     padding: 0 3rem 2.5rem;
     .header {

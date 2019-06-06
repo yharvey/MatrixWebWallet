@@ -139,6 +139,7 @@ import DistributedStorage from '@/components/DistributedStorage/DistributedStora
 import RichText from '@/components/RichText/RichText'
 import TradingFuns from '@/assets/js/TradingFuns'
 import WalletUtil from '@/assets/js/WalletUtil'
+import store from 'store'
 export default {
   name: 'OfflineTransferSecond',
   data () {
@@ -197,9 +198,9 @@ export default {
       }
     },
     getToken () { // 获本地token代币
-      let tokenArray = window.localStorage.getItem('token')
-      if (tokenArray !== null) {
-        tokenArray = JSON.parse(tokenArray)
+      let tokenArray = store.get('token')
+      if (tokenArray != null) {
+        // tokenArray = JSON.parse(tokenArray)
         tokenArray.forEach(e => {
           this.matrixCoin.push({
             name: e.tokenName,

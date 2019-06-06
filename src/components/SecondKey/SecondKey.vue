@@ -80,6 +80,7 @@ import TradingFuns from '@/assets/js/TradingFuns'
 import AllDialog from '@/components/TransferDialog/AllDialog'
 import OfflineDialog from '@/components/TransferDialog/TipOfflineDialog'
 import sendSign from '@/components/TransferDialog/sendSignTransfer'
+import store from 'store'
 
 export default {
   name: 'campaignNode',
@@ -223,14 +224,12 @@ export default {
             useStartTime: '',
             useEndTime: ''
           }]
-          let recordArray = window.localStorage.getItem(this.address)
+          let recordArray = store.get(this.address)
           if (recordArray == null) {
             recordArray = []
-          } else {
-            recordArray = JSON.parse(recordArray)
           }
-          recordArray.push({ hash: this.hash, newTxData: { commitTime: this.newTxData.commitTime, txType: this.newTxData.txType } })
-          window.localStorage.setItem(this.address, JSON.stringify(recordArray))
+          recordArray.push({ hash: this.hash, newTxData: { commitTime: newTxData.commitTime, txType: newTxData.txType } })
+          store.set(this.address, recordArray)
         } else {
           this.jsonObj = JSON.stringify(jsonObj)
           this.confirmOffline = true
@@ -297,7 +296,7 @@ export default {
     letter-spacing: 0.13px;
     font-weight: bold;
     display: flex;
-    margin-left: 308px;
+    margin-left: 260px;
     margin-bottom: 1rem;
   }
   .h4-delDis {

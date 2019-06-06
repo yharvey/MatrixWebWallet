@@ -205,8 +205,7 @@ import BigNumber from 'bignumber.js'
 import OfflineDialog from '@/components/TransferDialog/TipOfflineDialog'
 import sendSign from '@/components/TransferDialog/sendSignTransfer'
 import transferSuccess from '@/components/TransferDialog/transferSuccess'
-// import store from '@/store'
-
+import store from 'store'
 export default {
   name: 'OfflineTransferForm',
   data () {
@@ -319,9 +318,9 @@ export default {
       }
     },
     getToken () { // 获本地token代币
-      let tokenArray = localStorage.getItem('token')
-      if (tokenArray !== null) {
-        tokenArray = JSON.parse(tokenArray)
+      let tokenArray = store.get('token')
+      if (tokenArray != null) {
+        // tokenArray = JSON.parse(tokenArray)
         tokenArray.forEach(e => {
           this.matrixCoin.push({
             name: e.tokenName,
@@ -520,14 +519,12 @@ export default {
       try {
         if (state === 'ok') {
           let hash = this.httpProvider.man.sendRawTransaction(this.newTxData)
-          let recordArray = localStorage.getItem(this.address)
+          let recordArray = store.get(this.address)
           if (recordArray == null) {
             recordArray = []
-          } else {
-            recordArray = JSON.parse(recordArray)
           }
           recordArray.push({ hash: hash, newTxData: { commitTime: this.newTxData.commitTime, txType: this.newTxData.txType } })
-          localStorage.setItem(this.address, JSON.stringify(recordArray))
+          store.set(this.address, recordArray)
           // store.set(this.address, recordArray)
           this.transferDialogVisible = true
           this.hash = hash

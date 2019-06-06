@@ -102,6 +102,7 @@ import Validate from '@/assets/js/Validate'
 import store from '@/store'
 import Bus from '@/assets/js/Bus'
 import filter from '@/assets/js/filters'
+import * as storeLocal from 'store'
 
 export default {
   name: 'UnlockWallet',
@@ -253,7 +254,7 @@ export default {
         let balance = this.httpProvider.man.getBalance(this.address)
         let walletBlance = filter.weiToNumber(balance[0].balance)
         this.$store.commit('BALANCE', walletBlance)
-        let greetings = localStorage.getItem('greetings')
+        let greetings = storeLocal.get('greetings')
         let msg = this.$t('unlock.unlockSuccess')
         if (greetings != null) {
           let address = this.$store.state.offline

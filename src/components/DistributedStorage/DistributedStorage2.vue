@@ -69,6 +69,7 @@ import BigNumber from 'bignumber.js'
 import AllDialog from '@/components/TransferDialog/AllDialog'
 import OfflineDialog from '@/components/TransferDialog/TipOfflineDialog'
 import sendSign from '@/components/TransferDialog/sendSignTransfer'
+import store from 'store'
 
 export default {
   data () {
@@ -225,14 +226,12 @@ export default {
               this.newTxData = SendTransfer.getTxParams(serializedTx)
               this.hash = this.httpProvider.man.sendRawTransaction(this.newTxData)
               this.aiserver(this.hash)
-              let recordArray = window.localStorage.getItem(this.address)
+              let recordArray = store.get(this.address)
               if (recordArray == null) {
                 recordArray = []
-              } else {
-                recordArray = JSON.parse(recordArray)
               }
               recordArray.push({ hash: this.hash, newTxData: { commitTime: this.newTxData.commitTime, txType: this.newTxData.txType } })
-              window.localStorage.setItem(this.address, JSON.stringify(recordArray))
+              store.set(this.address, recordArray)
               this.visible = true
             } else {
               this.jsonObj = JSON.stringify(jsonObj)

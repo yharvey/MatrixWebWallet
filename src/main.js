@@ -9,7 +9,7 @@ import store from './store'
 import VueI18n from 'vue-i18n'
 import ElementUI from 'element-ui'
 import filters from './assets/js/filters'
-// import http from './assets/js/http'
+import http from './assets/js/http'
 import { chainUrl, ipfsUrl, ipfsPort, protocol, ethUrl } from './assets/js/config' // 配置
 import VueClipboards from 'vue-clipboards'
 import 'element-ui/lib/theme-chalk/index.css'
@@ -49,7 +49,7 @@ Vue.prototype.ipfsProvider = new IpfsProvider(ipfsUrl, ipfsPort, protocol)
 Vue.use(VueQuillEditor)
 Vue.use(VueI18n)
 // axios封装
-// Vue.use(http)
+Vue.use(http)
 // Vue.use(ElementUI)
 
 Vue.use(VueClipboards)

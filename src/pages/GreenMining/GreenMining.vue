@@ -1,6 +1,6 @@
 <template>
   <div class="green-mining align-center ">
-    <el-card class="box-card body-card">
+    <el-card class="box-card">
       <div class="header">
         <!-- <label :class="{'active' : type === 'miningTransaction'}"
                @click="changeType('miningTransaction')">{{$t('greenMining.mining_revenue')}}&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</label> -->
@@ -21,7 +21,7 @@
         <router-view />
       </keep-alive>
     </el-card>
-    <el-card class="box-card body-card campaign-tip"
+    <el-card class="box-card campaign-tip"
              v-if="showCampaignTip">
       <div class="title">{{$t('greenMining.beNodeget')}}</div>
       <img :src="lang === 'CN' ? require('../../assets/images/miningDistributionMethod_cn.png') : require('../../assets/images/miningDistributionMethod_en.png')" />
@@ -105,9 +105,14 @@ export default {
 
 <style scoped lang="less">
 .green-mining {
-  .body-card {
+  width: 1040px;
+  .box-card {
+    /deep/.el-card__body {
+      padding: 0px;
+    }
     text-align: left;
     padding: 0 3rem;
+    margin: auto;
     .header {
       height: 4rem;
       line-height: 4rem;

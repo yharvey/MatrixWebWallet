@@ -46,10 +46,7 @@
 </template>
 <script>
 import { browserUrl } from '@/assets/js/config'
-// import TradingFuns from '@/assets/js/TradingFuns'
-// import WalletUtil from '@/assets/js/WalletUtil'
-// import SendTransfer from '@/assets/js/SendTransfer'
-// import AllDialog from '@/components/TransferDialog/AllDialog'
+import store from 'store'
 
 export default {
   name: 'record',
@@ -71,10 +68,13 @@ export default {
     } else {
       this.address = this.$store.state.offline
     }
-    this.localData = JSON.parse(localStorage.getItem(this.address))
-    if (this.localData != null) {
-      this.total = this.localData.length
-      this.getTableData()
+    let data = store.get(this.address)
+    if (data) {
+      this.localData = store.get(this.address)
+      if (this.localData != null) {
+        this.total = this.localData.length
+        this.getTableData()
+      }
     }
   },
   methods: {

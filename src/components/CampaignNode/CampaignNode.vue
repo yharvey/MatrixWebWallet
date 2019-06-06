@@ -1,7 +1,42 @@
 <template>
   <div class="CampaignNode">
     <div class="addForm">
-      <h1 class="h1-dis">{{$t('CampaignNode.mortgage')}}</h1>
+      <div>
+        <div class="flex-style">
+          <div class="title">
+            {{$t('CampaignNode.mortgage')}}
+          </div>
+          <div v-if="checkShow">
+            <el-checkbox v-model="isEdit"
+                         @change="changeType"></el-checkbox><span class="check-font">仅修改抵押</span>
+          </div>
+        </div>
+        <div v-if="!isEdit">
+          <div>
+            <el-select v-model="mortgageWay"
+                       :placeholder="$t('CampaignNode.selectMortgageWay')">
+              <el-option v-for="item in mortgageWayList"
+                         :key="item.key"
+                         :label="item.name"
+                         :value="item.key">
+              </el-option>
+            </el-select>
+          </div>
+          <el-input v-model="value"
+                    :placeholder="$t('CampaignNode.mortgage_man')"></el-input>
+          <div v-show="mortgageWay==='regular'">
+            <el-select v-model="timeLimit"
+                       :placeholder="$t('CampaignNode.selectTimeLimit')">
+              <el-option v-for="item in timeLimitList"
+                         :key="item.key"
+                         :label="item.name"
+                         :value="item.key">
+              </el-option>
+            </el-select>
+          </div>
+        </div>
+
+      </div>
       <h5>{{$t('CampaignNode.Mining_type')}}</h5>
       <el-select v-model="mortgageType"
                  :placeholder="$t('CampaignNode.select')">
@@ -11,30 +46,6 @@
                    :value="item.key">
         </el-option>
       </el-select>
-      <h5>{{$t('CampaignNode.mortgage_man')}}</h5>
-      <div>
-        <el-select v-model="mortgageWay"
-                   :placeholder="$t('CampaignNode.selectMortgageWay')">
-          <el-option v-for="item in mortgageWayList"
-                     :key="item.key"
-                     :label="item.name"
-                     :value="item.key">
-          </el-option>
-        </el-select>
-      </div>
-      <el-input v-model="value"></el-input>
-      <div v-show="mortgageWay==='regular'">
-        <el-select v-model="timeLimit"
-                   :placeholder="$t('CampaignNode.selectTimeLimit')">
-          <el-option v-for="item in timeLimitList"
-                     :key="item.key"
-                     :label="item.name"
-                     :value="item.key">
-          </el-option>
-        </el-select>
-      </div>
-      <!-- <h5>{{$t('transfer.estimatedGas')}}</h5>
-      <el-input disabled=""></el-input> -->
       <h5>{{$t('CampaignNode.dig_address')}}</h5>
       <el-input v-model="mortgageAddrress"></el-input>
       <h4 class="h4-delDis"
@@ -72,11 +83,15 @@ import BigNumber from 'bignumber.js'
 import OfflineDialog from '@/components/TransferDialog/TipOfflineDialog'
 import sendSign from '@/components/TransferDialog/sendSignTransfer'
 import transferSuccess from '@/components/TransferDialog/transferSuccess'
+import store from 'store'
+import filter from '@/assets/js/filters'
 
 export default {
   name: 'campaignNode',
   data () {
     return {
+      isEdit: false,
+      mortgageTypeAgo: '',
       address: '',
       mortgageList: [{ name: '', key: 'minerDeposit' }, { name: '', key: 'valiDeposit' }],
       mortgageWayList: [{ name: '', key: 'regular' }, { name: '', key: 'current' }],
@@ -95,7 +110,8 @@ export default {
       jsonObj: '',
       sendSignVisible: false,
       information: '',
-      successVisible: false
+      successVisible: false,
+      checkShow: false
     }
   },
   methods: {
@@ -129,6 +145,13 @@ export default {
       this.mortgageAddrress = ''
       this.value = ''
     },
+    changeType () {
+      if (this.mortgageType === 'minerDeposit') {
+        this.mortgageType = 'valiDeposit'
+      } else {
+        this.mortgageType = 'minerDeposit'
+      }
+    },
     initContract () {
       this.functions = []
       let tAbi = JSON.parse(mortgage.abi)
@@ -141,8 +164,65 @@ export default {
         }
       }
     },
+    changeDeposit () {
+      try {
+        if (!WalletUtil.validateManAddress(this.mortgageAddrress)) {
+          this.$message.error(this.$t('transfer.addressTip'))
+          return
+        }
+        let abiArray = JSON.parse(mortgage.abi)
+        let contractAddress = mortgage.address
+        let contract = this.ethProvider.eth.Contract(abiArray, contractAddress)
+        let inputData = ''
+        console.log(WalletUtil.getEthAddress(this.mortgageAddrress))
+        if (this.mortgageTypeAgo === 'valiDeposit') {
+          inputData = contract.methods.minerDeposit(WalletUtil.getEthAddress(this.mortgageAddrress), 0).encodeABI()
+        } else {
+          inputData = contract.methods.valiDeposit(WalletUtil.getEthAddress(this.mortgageAddrress), 0).encodeABI()
+        }
+        let nonce = this.httpProvider.man.getTransactionCount(this.address)
+        nonce = WalletUtil.numToHex(nonce)
+        let data = {
+          to: contractAddress,
+          value: 0,
+          gasLimit: 210000,
+          data: '',
+          gasPrice: 18000000000,
+          extra_to: [[0, 0, []]],
+          nonce: nonce
+        }
+        let jsonObj = TradingFuns.getTxData(data)
+        jsonObj.data = inputData
+        if (this.$store.state.wallet != null) {
+          let tx = WalletUtil.createTx(jsonObj)
+          let privateKey = this.$store.state.wallet.privateKey
+          privateKey = Buffer.from(privateKey.indexOf('0x') > -1 ? privateKey.substring(2, privateKey.length) : privateKey, 'hex')
+          tx.sign(privateKey)
+          let serializedTx = tx.serialize()
+          this.newTxData = SendTransfer.getTxParams(serializedTx)
+          this.hash = this.httpProvider.man.sendRawTransaction(this.newTxData)
+          this.visible = true
+          let recordArray = store.get(this.address)
+          if (recordArray == null) {
+            recordArray = []
+          }
+          recordArray.push({ hash: this.hash, newTxData: { commitTime: this.newTxData.commitTime, txType: this.newTxData.txType } })
+          store.set(this.address, recordArray)
+        } else {
+          this.confirmOffline = true
+          this.jsonObj = JSON.stringify(jsonObj)
+        }
+        this.msg = this.$t('mortgageHistory.mortgageSuccess')
+      } catch (e) {
+        this.$message.error(e.message)
+      }
+    },
     getTxData () {
       try {
+        if (this.isEdit) {
+          this.changeDeposit()
+          return
+        }
         if (!WalletUtil.validateManAddress(this.mortgageAddrress)) {
           this.$message.error(this.$t('transfer.addressTip'))
           return
@@ -233,14 +313,12 @@ export default {
           this.newTxData = SendTransfer.getTxParams(serializedTx)
           this.hash = this.httpProvider.man.sendRawTransaction(this.newTxData)
           this.visible = true
-          let recordArray = window.localStorage.getItem(this.address)
+          let recordArray = store.get(this.address)
           if (recordArray == null) {
             recordArray = []
-          } else {
-            recordArray = JSON.parse(recordArray)
           }
           recordArray.push({ hash: this.hash, newTxData: { commitTime: this.newTxData.commitTime, txType: this.newTxData.txType } })
-          window.localStorage.setItem(this.address, JSON.stringify(recordArray))
+          store.set(this.address, recordArray)
         } else {
           this.confirmOffline = true
           this.jsonObj = JSON.stringify(jsonObj)
@@ -265,6 +343,26 @@ export default {
       this.address = this.$store.getters.wallet.address
     }
     this.initContract()
+    let depositList = this.httpProvider.man.getDepositbyaddr(this.address)
+    console.log(depositList)
+    if (depositList != null) {
+      this.mortgageAddrress = WalletUtil.getManAddress(depositList.AddressA1)
+      if (depositList.Role === 16) {
+        this.mortgageTypeAgo = 'minerDeposit'
+        this.mortgageType = 'minerDeposit'
+        let depositTotal = new BigNumber(0)
+        depositList.Dpstmsg.forEach(e => {
+          depositTotal = depositTotal.plus(filter.weiToNumber(e.DepositAmount))
+        })
+        if (depositTotal.comparedTo(new BigNumber(100000)) === 1) {
+          this.checkShow = true
+        }
+      } else {
+        this.checkShow = true
+        this.mortgageTypeAgo = 'valiDeposit'
+        this.mortgageType = 'valiDeposit'
+      }
+    }
   },
   components: {
     AllDialog,
@@ -298,7 +396,7 @@ export default {
     letter-spacing: 0.13px;
     font-weight: bold;
     display: flex;
-    margin-left: 308px;
+    margin-left: 260px;
     margin-bottom: 1rem;
   }
   .h4-delDis {
@@ -311,6 +409,24 @@ export default {
     margin-bottom: 1.5rem;
     border: none;
     height: 1px;
+  }
+  .flex-style {
+    margin: 1.5rem 0;
+    display: flex;
+    padding-left: 260px;
+    .title {
+      font-size: 0.875rem;
+      color: #2c365c;
+      letter-spacing: 0.13px;
+      font-weight: bold;
+      margin-right: 5rem;
+    }
+    /deep/.el-checkbox {
+      margin-right: 0.5rem;
+    }
+    .check-font {
+      font-size: 0.875rem;
+    }
   }
 }
 </style>

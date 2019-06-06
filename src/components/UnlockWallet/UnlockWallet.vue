@@ -117,6 +117,7 @@ import WalletUtil from '@/assets/js/WalletUtil'
 import Validate from '@/assets/js/Validate'
 import store from '@/store'
 import Bus from '@/assets/js/Bus'
+import * as storeLocal from 'store'
 
 export default {
   name: 'UnlockWallet',
@@ -266,7 +267,7 @@ export default {
           if (historyUrl === '/my-wallet/myWalletFirst' && store.state.beforeUrl != null) {
             historyUrl = store.state.beforeUrl
           }
-          let greetings = localStorage.getItem('greetings')
+          let greetings = storeLocal.get('greetings')
           let msg = this.$t('unlock.unlockSuccess')
           if (greetings != null) {
             let address = this.$store.state.offline
@@ -394,7 +395,7 @@ export default {
     margin-top: 1rem;
     width: 26.5rem;
   }
-  .div-width{
+  .div-width {
     width: 26.5rem;
   }
 }

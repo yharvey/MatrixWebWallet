@@ -18,6 +18,7 @@
 </template>
 <script>
 import SendTransfer from '@/assets/js/SendTransfer'
+import store from 'store'
 export default {
   name: 'TransferDialog',
   methods: {
@@ -29,14 +30,12 @@ export default {
         let newTxData = SendTransfer.getTxParams(this.information)
         let hash = this.httpProvider.man.sendRawTransaction(newTxData)
         let obj = { newTxData: newTxData, hash: hash }
-        let recordArray = window.localStorage.getItem(this.$store.state.offline)
+        let recordArray = store.get(this.$store.state.offline)
         if (recordArray == null) {
           recordArray = []
-        } else {
-          recordArray = JSON.parse(recordArray)
         }
         recordArray.push({ hash: hash, newTxData: { commitTime: newTxData.commitTime, txType: newTxData.txType } })
-        window.localStorage.setItem(this.$store.state.offline, JSON.stringify(recordArray))
+        store.set(this.$store.state.offline, recordArray)
         this.$emit('changeSendSign', obj)
       } catch (e) {
         this.$message.error(e.message)

@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import store from 'store'
 export default {
   name: 'SetGreetings',
   data () {
@@ -35,7 +36,7 @@ export default {
     save () {
       if (this.address !== '') {
         if (this.content !== '') {
-          let greetings = localStorage.getItem('greetings')
+          let greetings = store.get('greetings')
           if (greetings === null) {
             greetings = []
             greetings.push({ address: this.address, content: this.content })
@@ -53,7 +54,7 @@ export default {
               greetings.push({ address: this.address, content: this.content })
             }
           }
-          localStorage.setItem('greetings', JSON.stringify(greetings))
+          store.set('greetings', JSON.stringify(greetings))
           this.$message.success(this.$t('setGreeting.setSuccess'))
           this.contentError = false
           if (JSON.stringify(this.$route.query) === '{}') {

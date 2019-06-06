@@ -198,6 +198,7 @@
     "Mining_type": "Deposit Type",
     "Mining_mortgage": "Deposit for Miner",
     "Validator_mortgage": "Deposit for Validator",
+    "change_mortgage":"修改抵押角色",
     "select": "Please select",
     "campaignvalueError1": "You should deposit at least 10000 MAN for a miner node",
     "campaignvalueError2": "Your balance is less than the required deposit amount",

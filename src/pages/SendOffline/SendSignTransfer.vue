@@ -20,6 +20,7 @@
 <script>
 import SendTransfer from '@/assets/js/SendTransfer'
 import AllDialog from '@/components/TransferDialog/AllDialog'
+import store from 'store'
 export default {
   name: 'sendSignTransfer',
   data () {
@@ -41,14 +42,12 @@ export default {
         this.hash = this.httpProvider.man.sendRawTransaction(newTxData)
         this.visible = true
         if (this.address != null) {
-          let recordArray = localStorage.getItem(this.address)
+          let recordArray = store.get(this.address)
           if (recordArray == null) {
             recordArray = []
-          } else {
-            recordArray = JSON.parse(recordArray)
           }
           recordArray.push({ hash: this.hash, newTxData: { commitTime: newTxData.commitTime, txType: newTxData.txType } })
-          localStorage.setItem(this.address, JSON.stringify(recordArray))
+          store.set(this.address, recordArray)
         }
         this.msg = this.$t('OfflineUnlock.sendSuccess')
       } catch (e) {

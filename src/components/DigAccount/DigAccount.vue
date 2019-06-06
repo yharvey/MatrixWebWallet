@@ -232,7 +232,7 @@ export default {
           width: 30%;
         }
         :nth-child(3) {
-          width: 30%;
+          width: 40%;
         }
       }
       a {
@@ -260,7 +260,7 @@ export default {
           width: 30%;
         }
         :nth-child(3) {
-          width: 30%;
+          width: 40%;
         }
       }
       a {

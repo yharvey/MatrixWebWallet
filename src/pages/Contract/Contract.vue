@@ -52,6 +52,7 @@ import TradingFuns from '@/assets/js/TradingFuns'
 import AllDialog from '@/components/TransferDialog/contractDialog'
 import OfflineDialog from '@/components/TransferDialog/TipOfflineDialog'
 import sendSign from '@/components/TransferDialog/sendSignTransfer'
+import store from 'store'
 
 export default {
   name: 'Contract',
@@ -141,14 +142,12 @@ export default {
             nonce: '',
             address: ''
           }
-          let recordArray = window.localStorage.getItem(this.address)
+          let recordArray = store.get(this.address)
           if (recordArray == null) {
             recordArray = []
-          } else {
-            recordArray = JSON.parse(recordArray)
           }
           recordArray.push({ hash: this.hash, newTxData: { commitTime: newTxData.commitTime, txType: newTxData.txType } })
-          window.localStorage.setItem(this.address, JSON.stringify(recordArray))
+          store.set(this.address, recordArray)
         } else {
           this.jsonObj = JSON.stringify(jsonObj)
           this.confirmOffline = true

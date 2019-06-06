@@ -17,6 +17,7 @@ import WalletUtil from '@/assets/js/WalletUtil'
 import { mortgage } from '@/assets/js/config'
 import filter from '@/assets/js/filters'
 import SendTransfer from '@/assets/js/SendTransfer'
+import * as storeLocal from 'store'
 export default {
   name: 'MyWallet',
   data () {
@@ -84,7 +85,7 @@ export default {
         let balance = this.httpProvider.man.getBalance(this.address)
         let walletBlance = filter.weiToNumber(balance[0].balance)
         this.$store.commit('BALANCE', walletBlance)
-        let greetings = window.localStorage.getItem('greetings')
+        let greetings = storeLocal.get('greetings')
         let msg = this.$t('unlock.unlockSuccess')
         if (greetings != null) {
           let address = this.$store.state.wallet.address

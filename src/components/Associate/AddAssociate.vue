@@ -83,6 +83,7 @@ import SendTransfer from '@/assets/js/SendTransfer'
 import AllDialog from '@/components/TransferDialog/AllDialog'
 import OfflineDialog from '@/components/TransferDialog/TipOfflineDialog'
 import sendSign from '@/components/TransferDialog/sendSignTransfer'
+import store from 'store'
 export default {
   name: 'associate',
   data () {
@@ -255,14 +256,12 @@ export default {
             useEndTime: '',
             EntrustCount: 0
           }]
-          let recordArray = localStorage.getItem(this.address)
+          let recordArray = store.get(this.address)
           if (recordArray == null) {
             recordArray = []
-          } else {
-            recordArray = JSON.parse(recordArray)
           }
           recordArray.push({ hash: this.hash, newTxData: { commitTime: newTxData.commitTime, txType: newTxData.txType } })
-          localStorage.setItem(this.address, JSON.stringify(recordArray))
+          store.set(this.address, recordArray)
         } else {
           this.jsonObj = JSON.stringify(jsonObj)
           this.confirmOffline = true

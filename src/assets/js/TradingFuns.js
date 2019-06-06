@@ -45,7 +45,7 @@ TradingFuns.getContractData = function (contractObj) {
     CommitTime: parseInt(new Date().getTime() / 1000),
     IsEntrustTx: '',
     TxEnterType: '',
-    chainId: 3,
+    chainId: chainId,
     extra_to: [
       [0, 0, []]
     ],

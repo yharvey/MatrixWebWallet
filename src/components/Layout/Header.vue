@@ -55,6 +55,7 @@ import Bus from '@/assets/js/Bus'
 import store from '@/store'
 import { mortgage } from '@/assets/js/config'
 import WalletUtil from '@/assets/js/WalletUtil'
+import * as storeLocal from 'store'
 
 export default {
   name: 'Header',
@@ -91,7 +92,7 @@ export default {
       }
       let wallet = this.$store.state.wallet
       if (wallet != null) {
-        let greetings = window.localStorage.getItem('greetings')
+        let greetings = storeLocal.get('greetings')
         if (greetings != null) {
           greetings = JSON.parse(greetings)
           greetings.forEach(element => {
@@ -131,7 +132,7 @@ export default {
     try {
       let wallet = this.$store.state.wallet
       if (wallet != null) {
-        let greetings = window.localStorage.getItem('greetings')
+        let greetings = storeLocal.get('greetings')
         greetings = JSON.parse(greetings)
         if (greetings.address === wallet.address) {
           this.userName = greetings.content

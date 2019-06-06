@@ -41,7 +41,7 @@ import TradingFuns from '@/assets/js/TradingFuns'
 import OfflineDialog from '@/components/TransferDialog/TipOfflineDialog'
 import sendSign from '@/components/TransferDialog/sendSignTransfer'
 import AllDialog from '@/components/TransferDialog/AllDialog'
-
+import store from 'store'
 export default {
   name: 'CommonDialog',
   data () {
@@ -128,14 +128,12 @@ export default {
             this.hash = this.httpProvider.man.sendRawTransaction(this.newTxData)
             this.allMsg = this.$t('successHint.refund')
             this.visible = true
-            let recordArray = window.localStorage.getItem(this.address)
+            let recordArray = store.get(this.address)
             if (recordArray == null) {
               recordArray = []
-            } else {
-              recordArray = JSON.parse(recordArray)
             }
             recordArray.push({ hash: this.hash, newTxData: { commitTime: this.newTxData.commitTime, txType: this.newTxData.txType } })
-            window.localStorage.setItem(this.address, JSON.stringify(recordArray))
+            store.set(this.address, recordArray)
           } else {
             this.jsonObj = JSON.stringify(jsonObj)
             this.confirmOffline = true

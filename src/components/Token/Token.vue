@@ -16,7 +16,7 @@
           </el-form-item>
         </div>
         <div class="font-style">
-           {{$t('token.symbol')}}
+          {{$t('token.symbol')}}
         </div>
         <div class="common-input">
           <el-form-item prop="tokenName">
@@ -24,7 +24,7 @@
           </el-form-item>
         </div>
         <div class="font-style">
-           {{$t('token.decimal')}}
+          {{$t('token.decimal')}}
         </div>
         <div class="common-input">
           <el-form-item prop="digits">
@@ -45,6 +45,7 @@
 
 <script>
 import WalletUtil from '@/assets/js/WalletUtil'
+import store from 'store'
 export default {
   name: 'token',
   data () {
@@ -59,11 +60,9 @@ export default {
       if (!WalletUtil.isTokenName(tokenName) || tokenName === 'MAN') {
         callback(new Error(window.i18n.t('errorMsgs.invalidTokenName')))
       } else {
-        let tokenArray = localStorage.getItem('token')
+        let tokenArray = store.get('token')
         if (tokenArray == null) {
           tokenArray = []
-        } else {
-          tokenArray = JSON.parse(tokenArray)
         }
         tokenArray.forEach(e => {
           if (e.tokenName === tokenName) callback(new Error(window.i18n.t('errorMsgs.exsitTokenName')))
@@ -102,14 +101,12 @@ export default {
     addToken () {
       this.$refs['token'].validate((valid) => {
         if (valid) {
-          let tokenArray = localStorage.getItem('token')
+          let tokenArray = store.get('token')
           if (tokenArray == null) {
             tokenArray = []
-          } else {
-            tokenArray = JSON.parse(tokenArray)
           }
           tokenArray.push(this.token)
-          localStorage.setItem('token', JSON.stringify(tokenArray))
+          store.set('token', JSON.stringify(tokenArray))
           this.$message.success(this.$t('token.tokenSuccess'))
         } else {
           this.$message.success(this.$t('token.tokenFail'))
@@ -122,7 +119,7 @@ export default {
 
 <style scoped lang="less">
 .token {
-  .h-dis{
+  .h-dis {
     margin-left: 40px;
     width: 26.5rem;
   }
