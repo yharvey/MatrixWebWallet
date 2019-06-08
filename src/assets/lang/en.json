@@ -213,7 +213,10 @@
     "sixMonth":"Six months",
     "oneYear":"十二个月",
     "selectTimeLimit":"Please select the time limit",
-    "selectMortgageWay":"Please select the way of stake"
+    "selectMortgageWay":"Please select the way of stake",
+    "valueLessError1":"定期抵押应大于2000",
+    "valueLessError2":"首次定期抵押应大于10000",
+    "currentError":"活期抵押应大于100"
   },
   "startNode": {
     "name": "Startup Node",

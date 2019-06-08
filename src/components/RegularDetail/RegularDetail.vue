@@ -4,6 +4,11 @@
       <div class="first-left">
         {{$t('regularDetail.regular_account')}} {{regularDepositValue}} MAN
       </div>
+      <span class="back-tittle"
+            @click="backPage">
+        <i class="el-icon-arrow-left"></i>
+        {{$t('openWallet.back')}}
+      </span>
       <div class="commonTable top-spacing">
         <el-table :data="regularDepositList"
                   style="width: 100%">
@@ -137,6 +142,9 @@ export default {
       this.visible = state
       this.mortgageAddrress = ''
       this.value = ''
+    },
+    backPage () {
+      this.$router.back()
     },
     confirm (obj) {
       try {
@@ -333,5 +341,14 @@ export default {
       }
     }
   }
+  .back-tittle {
+      position: relative;
+      left: 446px;
+      top: -33px;
+      cursor: pointer;
+      color: #1c51dd;
+      font-size: 0.88rem;
+      letter-spacing: 0.13px;
+    }
 }
 </style>

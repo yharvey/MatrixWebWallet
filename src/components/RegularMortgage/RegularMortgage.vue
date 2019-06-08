@@ -4,6 +4,11 @@
       <div class="first-left">
         {{$t('currentWithdraw.current_account')}} {{currentDepositValue}} MAN
       </div>
+      <span class="back-tittle"
+            @click="backPage">
+        <i class="el-icon-arrow-left"></i>
+        {{$t('openWallet.back')}}
+      </span>
       <h1>{{$t('regularMortgage.change_regular')}}</h1>
       <div class="dis-bottom">
         <el-input v-model="value"
@@ -151,6 +156,9 @@ export default {
       } catch (e) {
         this.$message.error(e.message)
       }
+    },
+    backPage () {
+      this.$router.back()
     }
   },
   mounted () {
@@ -184,6 +192,15 @@ export default {
   .dis-bottom {
     margin-top: 1rem;
     margin-bottom: 1.5rem;
+  }
+  .back-tittle {
+    position: relative;
+    left: 446px;
+    top: -21px;
+    cursor: pointer;
+    color: #1c51dd;
+    font-size: 0.88rem;
+    letter-spacing: 0.13px;
   }
 }
 </style>

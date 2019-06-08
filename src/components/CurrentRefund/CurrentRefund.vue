@@ -4,6 +4,11 @@
       <div class="mortgage-font">
         {{$t('regularWithdrawals.current_withdrawals')}}
       </div>
+      <span class="back-tittle"
+            @click="backPage">
+        <i class="el-icon-arrow-left"></i>
+        {{$t('openWallet.back')}}
+      </span>
       <div class="commonTable top-spacing">
         <el-table :data="currentWithdrawalsList"
                   style="width: 100%">
@@ -20,7 +25,7 @@
           </el-table-column>
           <el-table-column :label="$t('regularWithdrawals.state')"
                            prop="states">
-             <template slot-scope="scope">
+            <template slot-scope="scope">
               {{ (scope.row.WithDrawTime-new Date().getTime()) > 86400*7 ? $t('regularWithdrawals.can_withdrawals'):$t('regularWithdrawals.withdrawing')}}
             </template>
           </el-table-column>
@@ -182,8 +187,10 @@ export default {
       } else {
         this.currentWithdrawalsList = this.allList.slice((this.pageNumber - 1) * 10, this.allList.length)
       }
+    },
+    backPage () {
+      this.$router.back()
     }
-
   },
   mounted () {
     if (this.$store.state.offline != null) {
@@ -252,6 +259,15 @@ export default {
         }
       }
     }
+  }
+  .back-tittle {
+    position: relative;
+    left: 446px;
+    top: -21px;
+    cursor: pointer;
+    color: #1c51dd;
+    font-size: 0.88rem;
+    letter-spacing: 0.13px;
   }
 }
 </style>

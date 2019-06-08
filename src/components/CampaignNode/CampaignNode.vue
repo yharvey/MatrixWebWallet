@@ -111,7 +111,8 @@ export default {
       sendSignVisible: false,
       information: '',
       successVisible: false,
-      checkShow: false
+      checkShow: false,
+      isDeposit: false
     }
   },
   methods: {
@@ -236,20 +237,27 @@ export default {
           return
         }
         if (this.mortgageWay === '') {
-          this.$message.error('请选择抵押方式（活期或定期）')
+          this.$message.error(this.$t('CampaignNode.selectMortgageWay'))
           return
         } else if (this.mortgageWay === 'regular') {
           if (this.timeLimit === '') {
-            this.$message.error('请选择抵押期限')
+            this.$message.error('CampaignNode.selectTimeLimit')
             return
           }
-          if (parseInt(this.value) < 10000) {
-            this.$message.error('定期抵押应大于10000')
-            return
+          if (this.isDeposit) {
+            if (parseInt(this.value) < 2000) {
+              this.$message.error('CampaignNode.valueLessError1')
+              return
+            }
+          } else {
+            if (parseInt(this.value) < 10000) {
+              this.$message.error('CampaignNode.valueLessError2')
+              return
+            }
           }
         } else {
           if (parseInt(this.value) < 100) {
-            this.$message.error('活期抵押应大于100')
+            this.$message.error('CampaignNode.currentError')
             return
           }
         }
@@ -347,6 +355,7 @@ export default {
     let depositList = this.httpProvider.man.getDepositbyaddr(this.address)
     console.log(depositList)
     if (depositList != null) {
+      this.isDeposit = true
       this.mortgageAddrress = WalletUtil.getManAddress(depositList.AddressA1)
       if (depositList.Role === 16) {
         this.mortgageTypeAgo = 'minerDeposit'

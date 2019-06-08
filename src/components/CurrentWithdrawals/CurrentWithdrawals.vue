@@ -4,9 +4,15 @@
       <div class="first-left">
         {{$t('currentWithdraw.current_account')}} {{currentDepositValue}} MAN
       </div>
+      <span class="back-tittle"
+            @click="backPage">
+        <i class="el-icon-arrow-left"></i>
+        {{$t('openWallet.back')}}
+      </span>
       <h1>{{$t('currentWithdraw.current_refund')}}</h1>
       <div class="dis-bottom">
-        <el-input v-model="value"  :placeholder="$t('currentWithdraw.refund_value')"></el-input>
+        <el-input v-model="value"
+                  :placeholder="$t('currentWithdraw.refund_value')"></el-input>
       </div>
       <button class="common-button"
               @click="confirm">{{$t('transfer.confirm')}}</button>
@@ -37,6 +43,7 @@ import TradingFuns from '@/assets/js/TradingFuns'
 import { mortgage, contract } from '@/assets/js/config'
 import filter from '@/assets/js/filters'
 import store from 'store'
+import BigNumber from 'bignumber.js'
 export default {
   name: 'currentMortgage',
   data () {
@@ -85,6 +92,10 @@ export default {
     },
     confirm () {
       try {
+        if (new BigNumber(this.value).comparedTo(new BigNumber(this.currentDepositValue))) {
+          this.$message.error('退选金额超过抵押金额')
+          return
+        }
         let tAbi = JSON.parse(mortgage.abi)
         for (let i in tAbi) {
           if (tAbi[i].type === 'function') {
@@ -138,6 +149,9 @@ export default {
       } catch (e) {
         this.$message.error(e.message)
       }
+    },
+    backPage () {
+      this.$router.back()
     }
   },
   mounted () {
@@ -168,6 +182,15 @@ export default {
   .dis-bottom {
     margin-top: 1rem;
     margin-bottom: 1.5rem;
+  }
+  .back-tittle {
+    position: relative;
+    left: 446px;
+    top: -21px;
+    cursor: pointer;
+    color: #1c51dd;
+    font-size: 0.88rem;
+    letter-spacing: 0.13px;
   }
 }
 </style>
