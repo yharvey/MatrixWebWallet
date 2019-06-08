@@ -211,12 +211,16 @@
     "oneMonth":"One month",
     "threeMonth":"Three months",
     "sixMonth":"Six months",
-    "oneYear":"十二个月",
+    "oneYear":"Twelve months",
     "selectTimeLimit":"Please select the time limit",
     "selectMortgageWay":"Please select the way of stake",
-    "valueLessError1":"定期抵押应大于2000",
-    "valueLessError2":"首次定期抵押应大于10000",
-    "currentError":"活期抵押应大于100"
+    "valueLessError1":"Fixed stake should be greater than 2000 MAN",
+    "valueLessError2":"The first fixed stake of miner should be greater than 10000 MAN",
+    "valueLessError3":"The first fixed stake of validator should be greater than 100000 MAN",
+    "currentError":"Flexible stake should be greater than 100 MAN",
+    "withdrawalsBigger":"Incorrect amount",
+    "withdrawalsNeed":"The value should be greater 100 MAN",
+    "onlyChange":"Change stake"
   },
   "startNode": {
     "name": "Startup Node",
@@ -553,10 +557,10 @@
     "refund_account":"Refund Account",
     "withdrawals":"Withdrawals",
     "change_regular":"Transfer to fixed stake",
-    "tips1":"1、At least 10,000 MAN tokens must be added each time you increase your fixed stake",
-    "tips2":"2、At least 100 MAN tokens must be added each time you increase you flexible stake",
-    "tips3":"3、At least 100,000 MAN tokens (combined fixed stake + flexible stake) are required to stake a Verification Masternode",
-    "tips4":"4、修改节点类型时，可进行活期0的抵押进行修改"
+    "tips1":"1、At least 2000 MAN must be added each time for the fixed stake",
+    "tips2":"2、At least 100 MAN must be added each time for the flexible stake",
+    "tips3":"3、At least 100,000 MAN (combined fixed stake + flexible stake) are required to stake a Verification Masternode",
+    "tips4":"4、At least 100,00 MAN (combined fixed stake + flexible stake) are required to stake a Miner Masternode"
   },
   "regularDetail":{
     "regular_account":"Fixed Stake Account:",

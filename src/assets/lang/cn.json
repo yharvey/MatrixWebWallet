@@ -215,8 +215,12 @@
     "selectTimeLimit":"请选择期限",
     "selectMortgageWay":"请选择抵押方式",
     "valueLessError1":"定期抵押应大于2000",
-    "valueLessError2":"首次定期抵押应大于10000",
-    "currentError":"活期抵押应大于100"
+    "valueLessError2":"首次矿工定期抵押应大于10000",
+    "valueLessError3":"首次验证者定期抵押应大于100000",
+    "currentError":"活期抵押应大于100",
+    "withdrawalsBigger":"退选金额超过抵押金额",
+    "withdrawalsNeed":"退选金额需要大于100",
+    "onlyChange":"仅修改抵押"
   },
   "startNode": {
     "name": "启动节点",
@@ -553,10 +557,10 @@
     "refund_account":"退款账户",
     "withdrawals":"取款",
     "change_regular":"转入定期抵押",
-    "tips1":"1、定期抵押每个仓位最少一万个MAN",
-    "tips2":"2、活期抵押每次最少100个MAN",
-    "tips3":"3、验证是否满足相应的节点对MAN数量的要求已抵押的数量+活期抵押+定期抵押",
-    "tips4":"4、修改节点类型时，可进行活期0的抵押进行修改"
+    "tips1":"1、“定期抵押”每次抵押最少2,000个MAN",
+    "tips2":"2、“活期抵押”每次抵押最少100个MAN",
+    "tips3":"3、抵押验证者，“定期+活期”需大于10万个MAN",
+    "tips4":"4、抵押矿工，“定期+活期”需大于1万个MAN"
   },
   "regularDetail":{
     "regular_account":"定期抵押账户:",

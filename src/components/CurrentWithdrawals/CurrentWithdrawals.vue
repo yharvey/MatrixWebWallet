@@ -92,8 +92,12 @@ export default {
     },
     confirm () {
       try {
-        if (new BigNumber(this.value).comparedTo(new BigNumber(this.currentDepositValue))) {
-          this.$message.error('退选金额超过抵押金额')
+        if (new BigNumber(this.value).comparedTo(new BigNumber(this.currentDepositValue)) === 1) {
+          this.$message.error(this.$t('CampaignNode.valueLessError1'))
+          return
+        }
+        if (new BigNumber(this.value).comparedTo(new BigNumber(100)) === -1) {
+          this.$message.error(this.$t('CampaignNode.withdrawalsNeed'))
           return
         }
         let tAbi = JSON.parse(mortgage.abi)
@@ -161,6 +165,13 @@ export default {
       this.address = this.$store.getters.wallet.address
     }
     this.currentDepositValue = this.$route.params.currentDepositValue
+  },
+  watch: {
+    $route (to, from) {
+      if (to.path.indexOf('currentWithdrawals') > -1) {
+        this.currentDepositValue = this.$route.params.currentDepositValue
+      }
+    }
   },
   components: {
     AllDialog,

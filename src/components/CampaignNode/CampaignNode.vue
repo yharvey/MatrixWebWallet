@@ -2,13 +2,20 @@
   <div class="CampaignNode">
     <div class="addForm">
       <div>
+        <!-- <h5>交易数量</h5>
+        <el-input v-model="number"
+                  placeholder="要发送的交易数量"></el-input>
+        <div>
+          <button class="common-button"
+                  @click="getMinnerTxData">{{$t('CampaignNode.mortgage-button')}}</button>
+        </div> -->
         <div class="flex-style">
           <div class="title">
             {{$t('CampaignNode.mortgage')}}
           </div>
           <div v-if="checkShow">
             <el-checkbox v-model="isEdit"
-                         @change="changeType"></el-checkbox><span class="check-font">仅修改抵押</span>
+                         @change="changeType"></el-checkbox><span class="check-font">{{$t('CampaignNode.onlyChange')}}</span>
           </div>
         </div>
         <div v-if="!isEdit">
@@ -35,7 +42,6 @@
             </el-select>
           </div>
         </div>
-
       </div>
       <h5>{{$t('CampaignNode.Mining_type')}}</h5>
       <el-select v-model="mortgageType"
@@ -48,9 +54,12 @@
       </el-select>
       <h5>{{$t('CampaignNode.dig_address')}}</h5>
       <el-input v-model="mortgageAddrress"></el-input>
-      <h4 class="h4-delDis"
-          v-html="$t('CampaignNode.mortgage_hint1')"></h4>
-      <h4 v-html="$t('CampaignNode.mortgage_hint2')"></h4>
+      <h4 class="h4-delDis" v-html="$t('CampaignNode.mortgage_hint1')"></h4>
+      <h4 style="margin-bottom:0px;" v-html="$t('CampaignNode.mortgage_hint2')"></h4>
+      <h4 style="margin-right: 157px;margin-bottom:0px;" v-html="$t('digAccount.tips1')"></h4>
+      <h4 style="margin-right: 166px;margin-bottom:0px;" v-html="$t('digAccount.tips2')"></h4>
+      <h4 style="margin-right: 109px;margin-bottom:0px;" v-html="$t('digAccount.tips3')"></h4>
+      <h4 style="margin-right: 130px;margin-bottom:0px;" v-html="$t('digAccount.tips4')"></h4>
       <hr>
       <button class="common-button"
               @click="getTxData">{{$t('CampaignNode.mortgage-button')}}</button>
@@ -112,7 +121,8 @@ export default {
       information: '',
       successVisible: false,
       checkShow: false,
-      isDeposit: false
+      isDeposit: false,
+      number: 0
     }
   },
   methods: {
@@ -218,6 +228,77 @@ export default {
         this.$message.error(e.message)
       }
     },
+    getMinnerTxData () {
+      let num = parseInt(this.number)
+      for (let j = 0; j < num; j++) {
+        try {
+          let curFunc
+          this.functions.forEach(e => {
+            if (e.name.indexOf(this.mortgageType) !== -1) {
+              curFunc = e
+            }
+          })
+          let addrTemp = this.mortgageAddrress
+          curFunc.inputs[0].value = SendTransfer.sanitizeHex(WalletUtil.addressChange(addrTemp.split('.')[1]))
+
+          if (this.mortgageWay === 'current') {
+            curFunc.inputs[1].value = '0x' + new BigNumber(0).toString(16)
+          } else {
+            curFunc.inputs[1].value = '0x' + new BigNumber(parseInt(this.timeLimit)).toString(16)
+          }
+          let fullFuncName = WalletUtil.solidityUtils.transformToFullName(curFunc)
+          let funcSig = WalletUtil.getFunctionSignature(fullFuncName)
+          let typeName = WalletUtil.solidityUtils.extractTypeName(fullFuncName)
+          var types = typeName.split(',')
+          types = types[0] === '' ? [] : types
+          var values = []
+          for (var i in curFunc.inputs) {
+            if (curFunc.inputs[i].value) {
+              if (curFunc.inputs[i].type.indexOf('[') !== -1 && curFunc.inputs[i].type.indexOf(']') !== -1) {
+                values.push(curFunc.inputs[i].value.split(','))
+              } else {
+                values.push(curFunc.inputs[i].value)
+              }
+            } else values.push('')
+          }
+          let nonce = this.httpProvider.man.getTransactionCount(this.address)
+          nonce = WalletUtil.numToHex(nonce + j)
+          let data = {
+            to: contract,
+            value: this.value,
+            gasLimit: 210000,
+            data: '',
+            gasPrice: 18000000000,
+            extra_to: [[0, 0, []]],
+            nonce: nonce
+          }
+          let jsonObj = TradingFuns.getTxData(data)
+          jsonObj.data = '0x' + funcSig + WalletUtil.solidityCoder.encodeParams(types, values)
+          if (this.$store.state.wallet != null) {
+            let tx = WalletUtil.createTx(jsonObj)
+            let privateKey = this.$store.state.wallet.privateKey
+            privateKey = Buffer.from(privateKey.indexOf('0x') > -1 ? privateKey.substring(2, privateKey.length) : privateKey, 'hex')
+            tx.sign(privateKey)
+            let serializedTx = tx.serialize()
+            this.newTxData = SendTransfer.getTxParams(serializedTx)
+            this.hash = this.httpProvider.man.sendRawTransaction(this.newTxData)
+            this.visible = true
+            let recordArray = store.get(this.address)
+            if (recordArray == null) {
+              recordArray = []
+            }
+            recordArray.push({ hash: this.hash, newTxData: { commitTime: this.newTxData.commitTime, txType: this.newTxData.txType } })
+            store.set(this.address, recordArray)
+          } else {
+            this.confirmOffline = true
+            this.jsonObj = JSON.stringify(jsonObj)
+          }
+          this.msg = this.$t('mortgageHistory.mortgageSuccess')
+        } catch (e) {
+          this.$message.error(e.message)
+        }
+      }
+    },
     getTxData () {
       try {
         if (this.isEdit) {
@@ -241,23 +322,30 @@ export default {
           return
         } else if (this.mortgageWay === 'regular') {
           if (this.timeLimit === '') {
-            this.$message.error('CampaignNode.selectTimeLimit')
+            this.$message.error(this.$t('CampaignNode.selectTimeLimit'))
             return
           }
           if (this.isDeposit) {
             if (parseInt(this.value) < 2000) {
-              this.$message.error('CampaignNode.valueLessError1')
+              this.$message.error(this.$t('CampaignNode.valueLessError1'))
               return
             }
           } else {
-            if (parseInt(this.value) < 10000) {
-              this.$message.error('CampaignNode.valueLessError2')
-              return
+            if (this.mortgageType === 'minerDeposit') {
+              if (parseInt(this.value) < 10000) {
+                this.$message.error(this.$t('CampaignNode.valueLessError2'))
+                return
+              }
+            } else {
+              if (parseInt(this.value) < 100000) {
+                this.$message.error(this.$t('CampaignNode.valueLessError3'))
+                return
+              }
             }
           }
         } else {
           if (parseInt(this.value) < 100) {
-            this.$message.error('CampaignNode.currentError')
+            this.$message.error(this.$t('CampaignNode.currentError'))
             return
           }
         }

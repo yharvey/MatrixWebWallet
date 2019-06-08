@@ -217,73 +217,6 @@ export default {
     } else {
       this.address = this.$store.getters.wallet.address
     }
-    // this.allList = [
-    //   {
-    //     BeginTime: 1559618000,
-    //     DepositType: 1,
-    //     DepositAmount: 1000000000000000000000,
-    //     Interest: 1000000000000000000
-    //   },
-    //   {
-    //     BeginTime: 1559618000,
-    //     DepositType: 1,
-    //     DepositAmount: 1000000000000000000000,
-    //     Interest: 1000000000000000000
-    //   },
-    //   {
-    //     BeginTime: 1559618000,
-    //     DepositType: 1,
-    //     DepositAmount: 1000000000000000000000,
-    //     Interest: 1000000000000000000
-    //   },
-    //   {
-    //     BeginTime: 1559618000,
-    //     DepositType: 1,
-    //     DepositAmount: 1000000000000000000000,
-    //     Interest: 1000000000000000000
-    //   },
-    //   {
-    //     BeginTime: 1559618000,
-    //     DepositType: 1,
-    //     DepositAmount: 1000000000000000000000,
-    //     Interest: 1000000000000000000
-    //   }, {
-    //     BeginTime: 1559618000,
-    //     DepositType: 1,
-    //     DepositAmount: 1000000000000000000000,
-    //     Interest: 1000000000000000000
-    //   },
-    //   {
-    //     BeginTime: 1559618000,
-    //     DepositType: 1,
-    //     DepositAmount: 1000000000000000000000,
-    //     Interest: 1000000000000000000
-    //   },
-    //   {
-    //     BeginTime: 1559618000,
-    //     DepositType: 1,
-    //     DepositAmount: 1000000000000000000000,
-    //     Interest: 1000000000000000000
-    //   },
-    //   {
-    //     BeginTime: 1559618000,
-    //     DepositType: 1,
-    //     DepositAmount: 1000000000000000000000,
-    //     Interest: 1000000000000000000
-    //   },
-    //   {
-    //     BeginTime: 1559618000,
-    //     DepositType: 1,
-    //     DepositAmount: 1000000000000000000000,
-    //     Interest: 1000000000000000000
-    //   },
-    //   {
-    //     BeginTime: 1559618000,
-    //     DepositType: 1,
-    //     DepositAmount: 1000000000000000000000,
-    //     Interest: 1000000000000000000
-    //   }
-    // ]
     this.allList = this.$route.params.regularDepositList
     if (this.allList.length <= 10) {
       this.regularDepositList = this.allList
@@ -292,11 +225,6 @@ export default {
     }
     this.total = this.allList.length
     this.regularDepositValue = this.$route.params.regularDepositValue
-  },
-  components: {
-    AllDialog,
-    OfflineDialog,
-    sendSign
   },
   watch: {
     $route (to, from) {
@@ -311,6 +239,11 @@ export default {
         this.regularDepositValue = this.$route.params.regularDepositValue
       }
     }
+  },
+  components: {
+    AllDialog,
+    OfflineDialog,
+    sendSign
   }
 }
 </script>
@@ -342,13 +275,13 @@ export default {
     }
   }
   .back-tittle {
-      position: relative;
-      left: 446px;
-      top: -33px;
-      cursor: pointer;
-      color: #1c51dd;
-      font-size: 0.88rem;
-      letter-spacing: 0.13px;
-    }
+    position: relative;
+    left: 446px;
+    top: -33px;
+    cursor: pointer;
+    color: #1c51dd;
+    font-size: 0.88rem;
+    letter-spacing: 0.13px;
+  }
 }
 </style>

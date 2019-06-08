@@ -72,12 +72,12 @@
       </tbody>
     </table>
     <hr>
-    <div class="tip-font">
+    <!-- <div class="tip-font">
       <p>{{$t('digAccount.tips1')}}</p>
       <p>{{$t('digAccount.tips2')}}</p>
       <p>{{$t('digAccount.tips3')}}</p>
       <p>{{$t('digAccount.tips4')}}</p>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -110,6 +110,7 @@ export default {
     },
     getDepositInfo () {
       let depositList = this.httpProvider.man.getDepositbyaddr(this.address)
+      console.log(depositList)
       if (depositList != null) {
         let regularWithdrawalsValue = new BigNumber(0)
         let currentWithdrawalsValue = new BigNumber(0)
@@ -140,11 +141,11 @@ export default {
             }
           }
         })
-        this.regularDepositValue = regularDepositValue
-        this.currentDepositValue = currentDepositValue
+        this.regularDepositValue = regularDepositValue.toString(10)
+        this.currentDepositValue = currentDepositValue.toString(10)
         this.totalValue = regularDepositValue.plus(currentDepositValue)
-        this.currentWithdrawalsValue = currentWithdrawalsValue
-        this.regularWithdrawalsValue = regularWithdrawalsValue
+        this.currentWithdrawalsValue = currentWithdrawalsValue.toString(10)
+        this.regularWithdrawalsValue = regularWithdrawalsValue.toString(10)
         this.totalWithdrawalsValue = currentWithdrawalsValue.plus(regularWithdrawalsValue)
       }
     }
