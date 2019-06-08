@@ -283,6 +283,9 @@ export default {
 .SecondKey {
   text-align: center;
   padding-bottom: 2.5rem;
+  .addForm{
+    margin-top: 1rem;
+  }
   /deep/.el-input {
     width: 26.5rem;
     margin-bottom: 2rem;

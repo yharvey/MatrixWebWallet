@@ -11,7 +11,7 @@
     "hint": "Tips",
     "sure": "Yes, close",
     "cancel": "Cancel",
-    "refund": "挖矿账户",
+    "refund": "Mining Account",
     "offlineSend": "Send Offline"
   },
   "myWallet": {
@@ -186,34 +186,34 @@
     "backupsSuccess": "Backup Success"
   },
   "CampaignNode": {
-    "mortgage": "Deposit",
+    "mortgage": "Stake",
     "query": "Query",
     "Mining_nodes": "Mining Node",
     "miners": "Miner",
-    "mortgage_man": "Deposited MAN",
+    "mortgage_man": "Staked MAN",
     "dig_address": "Address",
     "mortgage_hint1": "*This is a signature account for mining without any rewards. The rewards will go to your current wallet",
     "mortgage_hint2": "*You can only have one signature account.",
-    "mortgage-button": "Make Deposits",
-    "Mining_type": "Deposit Type",
-    "Mining_mortgage": "Deposit for Miner",
-    "Validator_mortgage": "Deposit for Validator",
-    "change_mortgage":"修改抵押角色",
+    "mortgage-button": "Make Stakes",
+    "Mining_type": "Stake Type",
+    "Mining_mortgage": "Stake for Miner",
+    "Validator_mortgage": "Stake for Validator",
     "select": "Please select",
-    "campaignvalueError1": "You should deposit at least 10000 MAN for a miner node",
-    "campaignvalueError2": "Your balance is less than the required deposit amount",
-    "campaignvalueError3": "You should deposit at least 100000 MAN for a validator node",
-    "mortgageTypeError": "Please choose your deposit type",
-    "valueError": "Please enter your deposit amount",
-    "cancelDepositError": "No deposit allowed before refund is finished",
-    "regular":"定期抵押",
-    "current":"活期抵押",
-    "mortgage_number":"抵押数量",
-    "oneMonth":"一个月",
-    "threeMonth":"三个月",
-    "sixMonth":"六个月",
-    "selectTimeLimit":"请选择期限",
-    "selectMortgageWay":"请选择抵押方式"
+    "campaignvalueError1": "You should stake at least 10000 MAN for a miner node",
+    "campaignvalueError2": "Your balance is less than the required stake amount",
+    "campaignvalueError3": "You should stake at least 100000 MAN for a validator node",
+    "mortgageTypeError": "Please choose your stake type",
+    "valueError": "Please enter your stake amount",
+    "cancelDepositError": "No stake allowed before refund is finished",
+    "regular":"Fixed stake",
+    "current":"Flexible stake",
+    "mortgage_number":"The amount of stake",
+    "oneMonth":"One month",
+    "threeMonth":"Three months",
+    "sixMonth":"Six months",
+    "oneYear":"十二个月",
+    "selectTimeLimit":"Please select the time limit",
+    "selectMortgageWay":"Please select the way of stake"
   },
   "startNode": {
     "name": "Startup Node",
@@ -222,7 +222,7 @@
     "startType": "Startup Type",
     "yourEmail": "Your Email",
     "repeatEmail": "Re-submit your Email",
-    "mortgage-button": "Make Deposits"
+    "mortgage-button": "Make Stakes"
   },
   "SecondKey": {
     "SecondKeyHint": "During block creation, your can authorize other wallets to provide a signature in place of a mining wallet to protect the receiving wallet.",
@@ -291,19 +291,19 @@
   "HistoricalIncome": {
     "total_revenue": "Rewards history",
     "mining_hint": "Total mining rewards include mining rewards and staking rewards",
-    "remove_mortgage": "Remove deposit",
-    "remove_tittle": "Once deposit is removed successfully, the available balance in the staking \n account can be transferred to a wallet",
+    "remove_mortgage": "Remove stake",
+    "remove_tittle": "Once stake is removed successfully, the available balance in the staking \n account can be transferred to a wallet",
     "determine": "Confirm",
     "cancel": "Cancel",
-    "refund": "Deposit refund",
+    "refund": "Stake refund",
     "determine_refund": "Confirm refund",
-    "refundHint": "Once the deposit is refunded successfully, the available balance in the staking /n account can be transferred to a wallet",
-    "refundError": "Deposits will be refunded 600 blocks after submitting the withdrawal request",
+    "refundHint": "Once the stake is refunded successfully, the available balance in the staking /n account can be transferred to a wallet",
+    "refundError": "Stakes will be refunded 600 blocks after submitting the withdrawal request",
     "validator_revenue": "Verification Rewards",
     "minner_revenue": "Mining Rewards",
     "gas": "gas fee",
     "history_revenue": "Reward history",
-    "mortgage": "deposit"
+    "mortgage": "stake"
   },
   "tip": {
     "tittle": "Safety Tips",
@@ -325,14 +325,14 @@
   "miningTransactionOverview": {
     "total_revenue": "Total mining rewards",
     "mining_hint": "Total mining rewards include block-generation rewards and gas fees",
-    "remove_mortgage": "Release deposit",
-    "remove_tittle": "Once deposit is removed successfully, the available balance in the staking \n account can be transferred to a wallet",
+    "remove_mortgage": "Release stake",
+    "remove_tittle": "Once stake is removed successfully, the available balance in the staking \n account can be transferred to a wallet",
     "determine": "Confirm",
     "cancel": "Cancel",
-    "refund": "Deposit refund",
+    "refund": "Stake refund",
     "determine_refund": "Confirm refund",
-    "refundHint": "Once the deposit is refunded successfully, the available balance in the staking /n account can be transferred to a wallet",
-    "refundError": "Deposit will be refunded 600 blocks after submitting the withdrawal request",
+    "refundHint": "Once the stake is refunded successfully, the available balance in the staking /n account can be transferred to a wallet",
+    "refundError": "Stake will be refunded 600 blocks after submitting the withdrawal request",
     "validator_revenue": "Verification Rewards",
     "minner_revenue": "Mining Rewards",
     "gas": "gas fee",
@@ -342,18 +342,18 @@
     "remove_tittle": "Total staked assets and available portion of staked assets",
     "campaign_node": "eligible nodes",
     "getRevenue": "To receive rewards, you must first ",
-    "nodeHint": "You have already withdraw from deposits, and will not compete for masternode from next cycle",
-    "mortgage": "Deposit"
+    "nodeHint": "You have already withdraw from stakes, and will not compete for masternode from next cycle",
+    "mortgage": "Stake"
   },
   "mortgageHistory": {
-    "mortgageHistory": "Deposit history",
-    "mortgageTime": "Deposit time",
-    "mortgageValue": "Deposit amount",
+    "mortgageHistory": "Stake history",
+    "mortgageTime": "Stake time",
+    "mortgageValue": "Stake amount",
     "mortgageWallet": "Account",
     "cancelMortgageTime": "Withdraw time",
     "state": "status",
     "unknown": "Unknown",
-    "mortgageSuccess": "Deposit Success",
+    "mortgageSuccess": "Stake Success",
     "cancelMortgageSuccess": "Withdraw Success",
     "alreadyWithdrawal": "Withdrawn",
     "alreadyRefund": "Refunded"
@@ -413,7 +413,7 @@
     "operation": "Operation",
     "undo": "Undo",
     "browser_detailed": "View more details in the blockchain browser",
-    "mortgageSuccess": "Deposit successful",
+    "mortgageSuccess": "Stake successful",
     "undoSuccess": "Successfully undone"
   },
   "token": {
@@ -451,8 +451,8 @@
     "signTransaction": "Sign transaction"
   },
   "greenMining": {
-    "mining_revenue": "Returns & Deposits",
-    "campaign_node": "Deposit",
+    "mining_revenue": "Returns & Stakes",
+    "campaign_node": "Stake",
     "secondKey": "Secondary key",
     "beNodeget": "What returns are nodes eligible for",
     "howBeNode": "How to become a member node?",
@@ -533,57 +533,57 @@
     "selectSign":"Sign the transaction via one of  the following methods"
   },
   "refund": {
-    "deposit_amount": "Deposit amount",
-    "deposit_status": "Deposit status",
+    "deposit_amount": "Stake amount",
+    "deposit_status": "Stake status",
     "node_address": "Address",
-    "no_deposit": "No Deposit Info Found",
+    "no_deposit": "No Stake Info Found",
     "Set_Miner": "Set to Miner node",
     "Set_validator": "Set to validator node",
     "withdraw_block": "withdraw at block ",
     "block": " block"
   },
   "digAccount":{
-    "deposit_account":"抵押账户",
-    "current":"定期",
-    "regular":"活期",
-    "withdraw_deposit":"解除抵押",
-    "refund_account":"退款账户",
-    "withdrawals":"取款",
-    "change_regular":"转入定期抵押",
-    "tips1":"1、定期抵押每个仓位最少一万个MAN",
-    "tips2":"2、活期抵押每次最少100个MAN",
-    "tips3":"3、验证是否满足相应的节点对MAN数量的要求已抵押的数量+活期抵押+定期抵押",
+    "deposit_account":"Stake Account",
+    "current":"Fixed",
+    "regular":"Flexible",
+    "withdraw_deposit":"Unstake",
+    "refund_account":"Refund Account",
+    "withdrawals":"Withdrawals",
+    "change_regular":"Transfer to fixed stake",
+    "tips1":"1、At least 10,000 MAN tokens must be added each time you increase your fixed stake",
+    "tips2":"2、At least 100 MAN tokens must be added each time you increase you flexible stake",
+    "tips3":"3、At least 100,000 MAN tokens (combined fixed stake + flexible stake) are required to stake a Verification Masternode",
     "tips4":"4、修改节点类型时，可进行活期0的抵押进行修改"
   },
   "regularDetail":{
-    "regular_account":"定期抵押账户:",
-    "begin_time":"抵押开始时间",
-    "deposit_time":"抵押时间",
-    "month":"月",
-    "deposit_value":"抵押金额",
-    "interest":"利息收入",
-    "operation":"操作",
-    "success":"解除抵押成功"
+    "regular_account":"Fixed Stake Account:",
+    "begin_time":"Start time of stake",
+    "deposit_time":"Time of Stake",
+    "month":"Month",
+    "deposit_value":"The amount of stake",
+    "interest":"Interest",
+    "operation":"Operation",
+    "success":"Unstake successfully"
   },
   "currentWithdraw":{
-    "current_account":"活期抵押账户:",
-    "current_refund":"活期退款",
-    "refund_value":"活期退款数量",
-    "success":"活期退款成功"
+    "current_account":"Flexible Stake Account:",
+    "current_refund":"Flexible Refund",
+    "refund_value":"The amount of flexible refund",
+    "success":"Flexible refund success"
   },
   "regularMortgage":{
-    "change_regular":"转入定期抵押",
-    "current_value":"活期抵押数量",
-    "success":"转入定期抵押成功"
+    "change_regular":"Transfer to fixed stake",
+    "current_value":"The amount of flexible stake",
+    "success":"Transfer to fixed stake successfully"
   },
   "regularWithdrawals":{
-    "regularWithdrawals":"定期取款",
-    "withdraw_time":"解除抵押时间",
-    "value":"金额",
-    "state":"状态",
-    "can_withdrawals":"可取款",
-    "withdrawing":"解除抵押中",
-    "current_withdrawals":"活期取款",
-    "success":"取款成功"
+    "regularWithdrawals":"Fixed Withdrawals",
+    "withdraw_time":"The time of unstake",
+    "value":"Amount",
+    "state":"State",
+    "can_withdrawals":"Available for withdrawals",
+    "withdrawing":"Unstaking",
+    "current_withdrawals":"Flexible Withdrawals",
+    "success":"Withdrawals success"
   }
 }

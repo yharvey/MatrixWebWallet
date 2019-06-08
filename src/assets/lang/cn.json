@@ -198,7 +198,6 @@
     "Mining_type": "挖矿类型",
     "Mining_mortgage": "矿工抵押",
     "Validator_mortgage": "验证者抵押",
-    "change_mortgage":"修改抵押角色",
     "select": "请选择",
     "campaignvalueError1": "矿工抵押金额需要大于10000man",
     "campaignvalueError2": "余额小于抵押金额",
@@ -212,6 +211,7 @@
     "oneMonth":"一个月",
     "threeMonth":"三个月",
     "sixMonth":"六个月",
+    "oneYear":"十二个月",
     "selectTimeLimit":"请选择期限",
     "selectMortgageWay":"请选择抵押方式"
   },

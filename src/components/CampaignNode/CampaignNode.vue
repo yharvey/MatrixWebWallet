@@ -95,7 +95,7 @@ export default {
       address: '',
       mortgageList: [{ name: '', key: 'minerDeposit' }, { name: '', key: 'valiDeposit' }],
       mortgageWayList: [{ name: '', key: 'regular' }, { name: '', key: 'current' }],
-      timeLimitList: [{ name: 'oneMonth', key: '1' }, { name: 'threeMonth', key: '3' }, { name: 'sixMonth', key: '6' }],
+      timeLimitList: [{ name: 'oneMonth', key: '1' }, { name: 'threeMonth', key: '3' }, { name: 'sixMonth', key: '6' }, { name: 'oneYear', key: '12' }],
       timeLimit: '',
       mortgageWay: '',
       mortgageType: '',
@@ -337,6 +337,7 @@ export default {
     this.timeLimitList[0].name = this.$t('CampaignNode.oneMonth')
     this.timeLimitList[1].name = this.$t('CampaignNode.threeMonth')
     this.timeLimitList[2].name = this.$t('CampaignNode.sixMonth')
+    this.timeLimitList[3].name = this.$t('CampaignNode.oneYear')
     if (this.$store.state.offline != null) {
       this.address = this.$store.state.offline
     } else {
