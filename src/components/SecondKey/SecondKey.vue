@@ -151,12 +151,14 @@ export default {
     },
     confirm () {
       try {
+        this.entrustList[0].EntrustAddres = this.entrustList[0].EntrustAddres.trim()
         let currency = this.entrustList[0].EntrustAddres.split('.')[0]
         this.tradingObj.nonce = this.httpProvider.man.getTransactionCount(this.address)
         this.tradingObj.nonce = WalletUtil.numToHex(this.tradingObj.nonce)
         for (let index = 0; index < this.entrustList.length; index++) {
           const entrust = this.entrustList[index]
-          if (!WalletUtil.validateManAddress(entrust.EntrustAddres)) {
+          entrust.EntrustAddres = entrust.EntrustAddres.trim()
+          if (!WalletUtil.validateAddress(entrust.EntrustAddres)) {
             this.$message.error(this.$t('errorMsgs.invalidManAddress'))
             return
           }
@@ -187,18 +189,20 @@ export default {
           }
           let nowAddress = (WalletUtil.getCurrencyAddress(this.address, currency))
           this.cancelList = this.httpProvider.man.getEntrustList(nowAddress)
-          for (let j = 0; j < this.cancelList.length; j++) {
-            const cannel = this.cancelList[j]
-            if (cannel.EntrustAddres === entrust.EntrustAddres) {
-              if (entrust.EnstrustSetType === 0) {
-                if (entrust.StartHeight < cannel.EndHeight) {
-                  this.$message.error(this.$t('errorMsgs.entrustHeight'))
-                  return
-                }
-              } else if (entrust.EnstrustSetType === 1) {
-                if (entrust.StartTime < cannel.EndTime) {
-                  this.$message.error(this.$t('errorMsgs.secondTime'))
-                  return
+          if (this.cancelList != null) {
+            for (let j = 0; j < this.cancelList.length; j++) {
+              const cannel = this.cancelList[j]
+              if (cannel.EntrustAddres === entrust.EntrustAddres) {
+                if (entrust.EnstrustSetType === 0) {
+                  if (entrust.StartHeight < cannel.EndHeight) {
+                    this.$message.error(this.$t('errorMsgs.entrustHeight'))
+                    return
+                  }
+                } else if (entrust.EnstrustSetType === 1) {
+                  if (entrust.StartTime < cannel.EndTime) {
+                    this.$message.error(this.$t('errorMsgs.secondTime'))
+                    return
+                  }
                 }
               }
             }
@@ -283,7 +287,7 @@ export default {
 .SecondKey {
   text-align: center;
   padding-bottom: 2.5rem;
-  .addForm{
+  .addForm {
     margin-top: 1rem;
   }
   /deep/.el-input {

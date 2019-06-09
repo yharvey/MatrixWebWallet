@@ -44,6 +44,9 @@ export default {
 
 <style scoped lang="less">
 .privateKey {
+  .card-width{
+    margin: auto;
+  }
   /deep/.el-card__body {
     padding: 2rem 0 2.5rem;
   }

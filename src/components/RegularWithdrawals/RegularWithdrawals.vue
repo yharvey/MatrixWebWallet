@@ -26,7 +26,7 @@
           <el-table-column :label="$t('regularWithdrawals.state')"
                            prop="states">
             <template slot-scope="scope">
-              {{ (scope.row.WithDrawTime-new Date().getTime()) > 86400*7 ? $t('regularWithdrawals.can_withdrawals'):$t('regularWithdrawals.withdrawing')}}
+              {{ (parseInt(new Date().getTime()/1000)-scope.row.WithDrawTime) > 86400*7 ? $t('regularWithdrawals.can_withdrawals'):$t('regularWithdrawals.withdrawing')}}
             </template>
           </el-table-column>
           <el-table-column :label="$t('regularDetail.operation')"

@@ -75,6 +75,9 @@ export default {
 
 <style scoped lang="less">
 .privateKey {
+  .card-width{
+    margin: auto;
+  }
   /deep/.el-card__body {
     padding: 2rem 0 2.5rem;
   }
@@ -92,6 +95,9 @@ export default {
   .item {
     margin-top: 2rem;
     cursor: pointer;
+    .card_way{
+      margin: auto;
+    }
     .pass_input {
       display: flex;
       flex-direction: row;
@@ -126,7 +132,7 @@ export default {
       color: #9298ae;
       letter-spacing: 0.13px;
       text-align: center;
-      margin-top: 1rem;
+      margin: 1rem auto;
     }
   }
   img {

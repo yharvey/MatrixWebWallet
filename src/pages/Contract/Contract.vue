@@ -176,6 +176,9 @@ export default {
 
 <style scoped lang="less">
 .contract {
+  .box-card{
+    margin: auto;
+  }
   .title {
     font-size: 1.25rem;
     color: #2c365c;
@@ -183,6 +186,7 @@ export default {
     margin-top: 2.06rem;
   }
   .form {
+    margin: auto;
     width: 26.5rem;
     text-align: left;
     .input-title {

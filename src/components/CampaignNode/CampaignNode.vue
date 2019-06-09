@@ -54,12 +54,26 @@
       </el-select>
       <h5>{{$t('CampaignNode.dig_address')}}</h5>
       <el-input v-model="mortgageAddrress"></el-input>
-      <h4 class="h4-delDis" v-html="$t('CampaignNode.mortgage_hint1')"></h4>
-      <h4 style="margin-bottom:0px;" v-html="$t('CampaignNode.mortgage_hint2')"></h4>
-      <h4 style="margin-right: 157px;margin-bottom:0px;" v-html="$t('digAccount.tips1')"></h4>
-      <h4 style="margin-right: 166px;margin-bottom:0px;" v-html="$t('digAccount.tips2')"></h4>
-      <h4 style="margin-right: 109px;margin-bottom:0px;" v-html="$t('digAccount.tips3')"></h4>
-      <h4 style="margin-right: 130px;margin-bottom:0px;" v-html="$t('digAccount.tips4')"></h4>
+      <div style="display: flex; justify-content: center;">
+        <div style="text-align:left">
+          <p>{{$t('CampaignNode.mortgage_hint1')}}</p>
+          <p>{{$t('CampaignNode.mortgage_hint2')}}</p>
+          <p>{{$t('digAccount.tips1')}}</p>
+          <p>{{$t('digAccount.tips2')}}</p>
+          <p>{{$t('digAccount.tips3')}}</p>
+          <p>{{$t('digAccount.tips4')}}</p>
+        <!--<h4 class="h4-botDis"
+            v-html="$t('CampaignNode.mortgage_hint2')"></h4>
+        <h4 class="h4-botDis"
+            v-html="$t('digAccount.tips1')"></h4>
+        <h4 class="h4-botDis"
+            v-html="$t('digAccount.tips2')"></h4>
+        <h4 class="h4-botDis"
+            v-html="$t('digAccount.tips3')"></h4>
+        <h4 class="h4-botDis"
+            v-html="$t('digAccount.tips4')"></h4> -->
+        </div>
+      </div>
       <hr>
       <button class="common-button"
               @click="getTxData">{{$t('CampaignNode.mortgage-button')}}</button>
@@ -177,6 +191,7 @@ export default {
     },
     changeDeposit () {
       try {
+        this.mortgageAddrress = this.mortgageAddrress.trim()
         if (!WalletUtil.validateManAddress(this.mortgageAddrress)) {
           this.$message.error(this.$t('transfer.addressTip'))
           return
@@ -301,6 +316,7 @@ export default {
     },
     getTxData () {
       try {
+        this.mortgageAddrress = this.mortgageAddrress.trim()
         if (this.isEdit) {
           this.changeDeposit()
           return
@@ -485,6 +501,13 @@ export default {
     width: 26.5rem;
     margin-bottom: 2rem;
   }
+  p{
+    font-size: 0.875rem;
+    color: #9298ae;
+    letter-spacing: 0.13px;
+    font-weight: 400;
+    margin-bottom: 0;
+  }
   .h1-dis {
     margin: 2rem 0 1.5rem;
   }
@@ -500,6 +523,9 @@ export default {
   .h4-delDis {
     margin-bottom: 0;
     margin-left: 129px;
+  }
+  .h4-botDis {
+    margin-bottom: 0;
   }
   hr {
     background-color: #d5d7de;

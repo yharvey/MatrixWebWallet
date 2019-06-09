@@ -56,6 +56,7 @@ export default {
 
 <style scoped lang="less">
 .ai-application {
+  margin: auto;
   width: 1040px;
   .box-card {
     text-align: left;

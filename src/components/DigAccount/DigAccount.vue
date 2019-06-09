@@ -227,10 +227,10 @@ export default {
         height: 3rem;
         align-items: center;
         :nth-child(1) {
-          width: 30%;
+          width: 15%;
         }
         :nth-child(2) {
-          width: 30%;
+          width: 45%;
         }
         :nth-child(3) {
           width: 40%;
@@ -255,10 +255,10 @@ export default {
         height: 3rem;
         align-items: center;
         :nth-child(1) {
-          width: 30%;
+          width: 15%;
         }
         :nth-child(2) {
-          width: 30%;
+          width: 45%;
         }
         :nth-child(3) {
           width: 40%;

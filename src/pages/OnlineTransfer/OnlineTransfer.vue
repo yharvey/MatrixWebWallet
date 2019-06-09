@@ -408,6 +408,7 @@ export default {
       this.$refs['ruleForm'].validate((valid) => {
         if (valid) {
           try {
+            this.ruleForm.to = this.ruleForm.to.trim()
             if (this.coinType === 'more') {
               let address = WalletUtil.getCurrencyAddress(this.address, this.moreType)
               this.ruleForm.nonce = this.httpProvider.man.getTransactionCount(address)
@@ -431,6 +432,7 @@ export default {
                   this.$message.error(this.$t('transfer.addressTip'))
                   return false
                 }
+                item.to = item.to.trim()
                 if (!WalletUtil.validateManAddress(item.to)) {
                   this.$message.error(this.$t('transfer.addressTip'))
                   return false
@@ -537,7 +539,7 @@ export default {
       }
     },
     validAddress (rule, address, callback) {
-      if (!WalletUtil.validateManAddress(address)) {
+      if (!WalletUtil.validateManAddress(address.trim())) {
         callback(new Error(window.i18n.t('transfer.addressTip')))
       } else if (this.coinType === 'more' && address.split('.')[0] !== this.moreType) {
         callback(new Error(window.i18n.t('transfer.addressTip')))

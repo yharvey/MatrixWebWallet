@@ -126,7 +126,7 @@
     "entrustTime3": "结束时间应该大于开始时间",
     "entrustTime4": "和之前委托此地址时间不能重合",
     "secondTime": "和之前授权此地址时间不能重合",
-    "invalidManAddress": "无效man地址",
+    "invalidManAddress": "无效地址",
     "entrustBlock": "开始块高不能大于结束块高",
     "entrustSelf": "不能委托自己",
     "invalidCoinName": "请输入正确的币种名称",

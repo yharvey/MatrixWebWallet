@@ -171,15 +171,17 @@ export default {
     },
     confirm () {
       try {
+        this.entrustList[0].EntrustAddres = this.entrustList[0].EntrustAddres.trim()
         let currency = this.entrustList[0].EntrustAddres.split('.')[0]
         for (let index = 0; index < this.entrustList.length; index++) {
           const entrust = this.entrustList[index]
-          let nowCurrency = entrust.EntrustAddres.split('.')[0]
+          let nowCurrency = entrust.EntrustAddres.trim().split('.')[0]
           if (nowCurrency !== currency) {
             this.$message.error(this.$t('errorMsgs.currencyError'))
             return
           }
-          if (!WalletUtil.validateManAddress(entrust.EntrustAddres)) {
+          entrust.EntrustAddres = entrust.EntrustAddres.trim()
+          if (!WalletUtil.validateAddress(entrust.EntrustAddres)) {
             this.$message.error(this.$t('errorMsgs.invalidManAddress'))
             return
           }
@@ -210,18 +212,20 @@ export default {
           }
           let nowAddress = (WalletUtil.getCurrencyAddress(this.address, currency))
           this.cancelList = this.httpProvider.man.getEntrustList(nowAddress)
-          for (let j = 0; j < this.cancelList.length; j++) {
-            const cannel = this.cancelList[j]
-            if (cannel.EntrustAddres === entrust.EntrustAddres) {
-              if (entrust.EnstrustSetType === 0) {
-                if (entrust.StartHeight < cannel.EndHeight) {
-                  this.$message.error(this.$t('errorMsgs.entrustHeight'))
-                  return
-                }
-              } else if (entrust.EnstrustSetType === 1) {
-                if (entrust.StartTime < cannel.EndTime) {
-                  this.$message.error(this.$t('errorMsgs.entrustTime4'))
-                  return
+          if (this.cancelList != null) {
+            for (let j = 0; j < this.cancelList.length; j++) {
+              const cannel = this.cancelList[j]
+              if (cannel.EntrustAddres === entrust.EntrustAddres) {
+                if (entrust.EnstrustSetType === 0) {
+                  if (entrust.StartHeight < cannel.EndHeight) {
+                    this.$message.error(this.$t('errorMsgs.entrustHeight'))
+                    return
+                  }
+                } else if (entrust.EnstrustSetType === 1) {
+                  if (entrust.StartTime < cannel.EndTime) {
+                    this.$message.error(this.$t('errorMsgs.entrustTime4'))
+                    return
+                  }
                 }
               }
             }
@@ -338,6 +342,7 @@ export default {
     .dash {
       border: 1px dashed #d5d7de;
       width: 424px;
+      margin: auto;
     }
     .addButton {
       font-size: 0.875rem;

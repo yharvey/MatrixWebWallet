@@ -64,6 +64,7 @@ export default {
       background: #f2f4f8;
       width: 22.5rem;
       height: 17.5rem;
+      margin: auto;
       img {
         width: 21.25rem;
         height: 16.25rem;

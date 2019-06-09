@@ -103,6 +103,8 @@ export default {
   },
   methods: {
     change () {
+      this.changeAddress = this.changeAddress.trim()
+      this.changeName = this.changeName.trim()
       if (/^[A-Z]{2,8}\.[0-9a-zA-Z]{17,29}$/.test(this.changeAddress) && this.changeAddress.split('.')[0] === 'MAN') {
         if (/^[A-Z]{2,8}$/.test(this.changeName)) {
           this.changeResult = WalletUtil.getCurrencyAddress(this.changeAddress, this.changeName)
@@ -114,6 +116,11 @@ export default {
       }
     },
     conversion (type) {
+      this.content.manAddress = this.content.manAddress.trim()
+      this.content.ethAddress = this.content.ethAddress.trim()
+      this.content.text = this.content.text.trim()
+      this.content.hex = this.content.hex.trim()
+      this.content.moreCoinAddress = this.content.moreCoinAddress.trim()
       if (type === 'man') {
         if ((/^[A-Z]{2,8}\.[0-9a-zA-Z]{17,29}$/.test(this.content.manAddress))) {
           this.content.ethAddress = WalletUtil.getEthAddress(this.content.manAddress)
@@ -152,6 +159,9 @@ export default {
 
 <style scoped lang="less">
 .conversion {
+  .card-width{
+    margin: auto;
+  }
   /deep/.el-card__body {
     padding: 2rem 70px 2.5rem;
     text-align: left;

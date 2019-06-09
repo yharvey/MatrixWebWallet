@@ -4,7 +4,7 @@
       <el-header>
         <x-header></x-header>
       </el-header>
-      <el-main>
+      <el-main class="main-width">
         <router-view></router-view>
         <x-tip></x-tip>
       </el-main>
@@ -33,6 +33,7 @@ export default {
 .layout {
   .el-container {
     min-height: 100vh;
+    // height: 10%;
     .el-header,
     .el-footer {
       padding: 0;
@@ -45,6 +46,9 @@ export default {
       height: 3.5rem !important;
       line-height: 3.5rem !important;
     }
+    // .main-width{
+    //   min-height: 90vh;
+    // }
     .el-footer {
       height: 3rem !important;
       line-height: 3rem !important;

@@ -53,6 +53,7 @@ import TradingFuns from '@/assets/js/TradingFuns'
 import { mortgage, contract } from '@/assets/js/config'
 import filter from '@/assets/js/filters'
 import store from 'store'
+import BigNumber from 'bignumber.js'
 export default {
   name: 'currentMortgage',
   data () {
@@ -63,7 +64,7 @@ export default {
       functions: [],
       visible: false,
       timeLimit: '1',
-      timeLimitList: [{ name: 'oneMonth', key: '1' }, { name: 'threeMonth', key: '3' }, { name: 'sixMonth', key: '6' }],
+      timeLimitList: [{ name: 'oneMonth', key: '1' }, { name: 'threeMonth', key: '3' }, { name: 'sixMonth', key: '6' }, { name: 'oneYear', key: '12' }],
       confirmOffline: false,
       jsonObj: '',
       sendSignVisible: false,
@@ -103,6 +104,17 @@ export default {
     },
     confirm () {
       try {
+        let currentDepositValue = new BigNumber(this.currentDepositValue)
+        let campaignValue = new BigNumber(this.value)
+        let flag = campaignValue.comparedTo(currentDepositValue)
+        if (flag > 0) {
+          this.$message.error(this.$t('CampaignNode.campaignvalueError2'))
+          return
+        }
+        if (parseInt(this.value) < 2000) {
+          this.$message.error(this.$t('CampaignNode.valueLessError1'))
+          return
+        }
         let tAbi = JSON.parse(mortgage.abi)
         for (let i in tAbi) {
           if (tAbi[i].type === 'function') {
@@ -161,10 +173,19 @@ export default {
       this.$router.back()
     }
   },
+  watch: {
+    $route (to, from) {
+      if (to.path.indexOf('regularMortgage') > -1) {
+        debugger
+        this.currentDepositValue = this.$route.params.currentDepositValue
+      }
+    }
+  },
   mounted () {
     this.timeLimitList[0].name = this.$t('CampaignNode.oneMonth')
     this.timeLimitList[1].name = this.$t('CampaignNode.threeMonth')
     this.timeLimitList[2].name = this.$t('CampaignNode.sixMonth')
+    this.timeLimitList[3].name = this.$t('CampaignNode.oneYear')
     if (this.$store.state.offline != null) {
       this.address = this.$store.state.offline
     } else {

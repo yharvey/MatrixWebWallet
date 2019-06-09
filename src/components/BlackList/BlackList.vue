@@ -1,6 +1,6 @@
 <template>
-  <div class="blackList card-width">
-    <el-card>
+  <div class="blackList">
+    <el-card class="card-width">
       <div class="addForm">
         <h1>{{$t('blackList.tittle')}}</h1>
         <h5 class="center">{{$t('blackList.list')}}</h5>
@@ -92,6 +92,9 @@ export default {
 </script>
 <style scoped lang="less">
 .blackList {
+  .card-width{
+    margin: auto;
+  }
   .div-dis {
     margin-top: 1rem;
   }

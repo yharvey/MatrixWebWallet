@@ -126,7 +126,7 @@
     "entrustTime3": "The start time should not be later than the end time",
     "entrustTime4": "You've already specified an entrust which overlaps this time range",
     "secondTime": "You've already specified an authorization which overlaps this time range",
-    "invalidManAddress": "The MAN Address is invalid",
+    "invalidManAddress": "The Address is invalid",
     "entrustBlock": "The start block shall be smaller than the end block",
     "entrustSelf": "You can't entrust to yourself",
     "invalidCoinName": "Please input the correct currency name",

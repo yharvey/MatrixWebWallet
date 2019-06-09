@@ -3,18 +3,15 @@
     <div class="content-left">
       <div class="commonTable">
         <div class="cannel-div">
-          <!-- <el-select v-model="currency"
-                     slot="append"
-                     @change="changeCoin">
-            <el-option label="MAN"
-                       value="MAN"></el-option>
-            <el-option v-for="item in matrixCoins"
-                       :key="item"
-                       :label="item"
-                       :value="item"></el-option>
-          </el-select> -->
           <button class="common-button button-width"
                   @click="cannel">{{$t('cancel.cancelAssociate1')}}</button>
+          <div>
+            <span class="back-tittle"
+                  @click="backPage">
+              <i class="el-icon-arrow-left"></i>
+              {{$t('openWallet.back')}}
+            </span>
+          </div>
         </div>
         <el-table :data="tableData"
                   @selection-change="handleSelectionChange"
@@ -211,6 +208,9 @@ export default {
           this.tableData.push(item)
         }
       }
+    },
+    backPage () {
+      this.$router.back()
     }
   },
   components: {
@@ -241,6 +241,12 @@ export default {
   .button-width {
     width: 10rem;
     margin-bottom: 1.5rem;
+  }
+  .back-tittle {
+    cursor: pointer;
+    color: #1c51dd;
+    font-size: 0.88rem;
+    letter-spacing: 0.13px;
   }
 }
 </style>

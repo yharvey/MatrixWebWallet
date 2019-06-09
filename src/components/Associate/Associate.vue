@@ -38,6 +38,9 @@ export default {
 </script>
 <style scoped lang="less">
 .associate {
+  .card-width{
+    margin: auto;
+  }
   /deep/.el-card__body {
     padding: 1rem 2.5rem 3rem 2.5rem;
   }

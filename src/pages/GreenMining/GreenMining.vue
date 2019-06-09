@@ -105,6 +105,7 @@ export default {
 
 <style scoped lang="less">
 .green-mining {
+  margin: auto;
   width: 1040px;
   .box-card {
     /deep/.el-card__body {
@@ -112,7 +113,6 @@ export default {
     }
     text-align: left;
     padding: 0 3rem;
-    margin: auto;
     .header {
       height: 4rem;
       line-height: 4rem;

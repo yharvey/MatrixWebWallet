@@ -357,7 +357,7 @@ export default {
     display: none;
   }
   .file_btn {
-    margin-top: 1.5rem !important;
+    margin: 1.5rem auto !important ;
   }
   /deep/.el-input {
     width: 26.5rem;

@@ -226,6 +226,13 @@ WalletUtil.padLeftEven = function (hex) {
 
 // 校验man地址
 WalletUtil.validateManAddress = function (address) {
+  return (/MAN\.[0-9a-zA-Z]{21,29}$/.test(address))
+  // return (/^[A-Z]{2,8}\.[0-9a-zA-Z]{21,29}$/.test(address))
+}
+
+// 校验man地址
+WalletUtil.validateAddress = function (address) {
+  // return (/MAN\.[0-9a-zA-Z]{21,29}$/.test(address))
   return (/^[A-Z]{2,8}\.[0-9a-zA-Z]{21,29}$/.test(address))
 }
 

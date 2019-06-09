@@ -48,6 +48,7 @@ export default {
 
 <style scoped lang="less">
 .sendOffline {
+  margin: auto;
   /deep/.el-card__body {
     padding: 1rem 2.5rem 3rem 2.5rem;
   }

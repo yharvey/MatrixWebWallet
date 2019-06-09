@@ -53,7 +53,6 @@ import SendTransferData from '@/pages/SendOffline/SendTransferData'
 import DigAccount from '@/components/DigAccount/DigAccount'
 import CurrentMortgage from '@/components/CurrentMortgage/CurrentMortgage'
 import RegularDetail from '@/components/RegularDetail/RegularDetail'
-import RefundValue from '@/components/RefundValue/RefundValue'
 import RefundDetail from '@/components/RefundDetail/RefundDetail'
 import RegularMortgage from '@/components/RegularMortgage/RegularMortgage'
 import RegularWithdrawals from '@/components/RegularWithdrawals/RegularWithdrawals'
@@ -151,10 +150,6 @@ let router = new Router({
         path: 'regularDetail',
         name: 'RegularDetail',
         component: RegularDetail
-      }, {
-        path: 'refundValue',
-        name: 'RefundValue',
-        component: RefundValue
       }, {
         path: 'refundDetail',
         name: 'RefundDetail',
