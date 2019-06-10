@@ -143,6 +143,9 @@ export default {
             address: ''
           }
           let recordArray = store.get(this.address)
+          if ((typeof (recordArray) === 'string')) {
+            recordArray = JSON.parse(recordArray)
+          }
           if (recordArray == null) {
             recordArray = []
           }
@@ -176,7 +179,7 @@ export default {
 
 <style scoped lang="less">
 .contract {
-  .box-card{
+  .box-card {
     margin: auto;
   }
   .title {

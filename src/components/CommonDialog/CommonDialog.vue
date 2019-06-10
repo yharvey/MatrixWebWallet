@@ -131,6 +131,9 @@ export default {
             this.allMsg = this.$t('successHint.refund')
             this.visible = true
             let recordArray = store.get(this.address)
+            if ((typeof (recordArray) === 'string')) {
+              recordArray = JSON.parse(recordArray)
+            }
             if (recordArray == null) {
               recordArray = []
             }

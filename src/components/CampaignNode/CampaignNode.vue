@@ -61,7 +61,7 @@
           <p>{{$t('digAccount.tips2')}}</p>
           <p>{{$t('digAccount.tips3')}}</p>
           <p>{{$t('digAccount.tips4')}}</p>
-        <!--<h4 class="h4-botDis"
+          <!--<h4 class="h4-botDis"
             v-html="$t('CampaignNode.mortgage_hint2')"></h4>
         <h4 class="h4-botDis"
             v-html="$t('digAccount.tips1')"></h4>
@@ -228,6 +228,9 @@ export default {
           this.hash = this.httpProvider.man.sendRawTransaction(this.newTxData)
           this.visible = true
           let recordArray = store.get(this.address)
+          if ((typeof (recordArray) === 'string')) {
+            recordArray = JSON.parse(recordArray)
+          }
           if (recordArray == null) {
             recordArray = []
           }
@@ -298,6 +301,9 @@ export default {
             this.hash = this.httpProvider.man.sendRawTransaction(this.newTxData)
             this.visible = true
             let recordArray = store.get(this.address)
+            if ((typeof (recordArray) === 'string')) {
+              recordArray = JSON.parse(recordArray)
+            }
             if (recordArray == null) {
               recordArray = []
             }
@@ -425,6 +431,9 @@ export default {
           this.hash = this.httpProvider.man.sendRawTransaction(this.newTxData)
           this.visible = true
           let recordArray = store.get(this.address)
+          if ((typeof (recordArray) === 'string')) {
+            recordArray = JSON.parse(recordArray)
+          }
           if (recordArray == null) {
             recordArray = []
           }
@@ -500,7 +509,7 @@ export default {
     width: 26.5rem;
     margin-bottom: 2rem;
   }
-  p{
+  p {
     font-size: 0.875rem;
     color: #9298ae;
     letter-spacing: 0.13px;

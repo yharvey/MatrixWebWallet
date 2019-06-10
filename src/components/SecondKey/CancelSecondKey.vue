@@ -178,6 +178,9 @@ export default {
           this.hash = this.httpProvider.man.sendRawTransaction(newTxData)
           this.visible = true
           let recordArray = store.get(this.address)
+          if ((typeof (recordArray) === 'string')) {
+            recordArray = JSON.parse(recordArray)
+          }
           if (recordArray == null) {
             recordArray = []
           }

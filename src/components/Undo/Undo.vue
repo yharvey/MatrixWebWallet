@@ -97,6 +97,9 @@ export default {
           let newTxData = SendTransfer.getTxParams(serializedTx)
           this.hash = this.httpProvider.man.sendRawTransaction(newTxData)
           let recordArray = store.get(this.address)
+          if ((typeof (recordArray) === 'string')) {
+            recordArray = JSON.parse(recordArray)
+          }
           if (recordArray == null) {
             recordArray = []
           }

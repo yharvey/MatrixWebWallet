@@ -31,6 +31,9 @@ export default {
         let hash = this.httpProvider.man.sendRawTransaction(newTxData)
         let obj = { newTxData: newTxData, hash: hash }
         let recordArray = store.get(this.$store.state.offline)
+        if ((typeof (recordArray) === 'string')) {
+          recordArray = JSON.parse(recordArray)
+        }
         if (recordArray == null) {
           recordArray = []
         }

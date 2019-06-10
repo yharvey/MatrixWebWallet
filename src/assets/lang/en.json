@@ -597,6 +597,6 @@
     "success":"Withdrawals success"
   },
   "currentRefund":{
-    "tips":"取款确认后所有可取款的活期抵押都将退款到账户余额"
+    "tips":"All withdrawalable flexible stake will be refunded to the account balance after withdrawal confirmation"
   }
 }

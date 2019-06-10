@@ -43,6 +43,9 @@ export default {
         this.visible = true
         if (this.address != null) {
           let recordArray = store.get(this.address)
+          if ((typeof (recordArray) === 'string')) {
+            recordArray = JSON.parse(recordArray)
+          }
           if (recordArray == null) {
             recordArray = []
           }
