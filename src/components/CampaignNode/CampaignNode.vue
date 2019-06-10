@@ -135,7 +135,8 @@ export default {
       successVisible: false,
       checkShow: false,
       isDeposit: false,
-      number: 0
+      number: 0,
+      depositTotal: new BigNumber(0)
     }
   },
   methods: {
@@ -248,6 +249,8 @@ export default {
     getTxData () {
       try {
         this.mortgageAddrress = this.mortgageAddrress.trim()
+        this.value = new BigNumber(this.value)
+        let totalVal = this.value.plus(this.depositTotal)
         if (this.isEdit) {
           this.changeDeposit()
           return
@@ -273,12 +276,25 @@ export default {
             return
           }
           if (this.isDeposit) {
+            if (this.mortgageType === 'minerDeposit') {
+              if (totalVal.comparedTo(new BigNumber(10000)) === -1) {
+                this.$message.error(this.$t('CampaignNode.leastError') + new BigNumber(10000).minus(this.depositTotal).toString(10) + this.$t('CampaignNode.man'))
+                return
+              }
+            } else {
+              if (totalVal.comparedTo(new BigNumber(100000)) === -1) {
+                this.$message.error(this.$t('CampaignNode.leastError') + new BigNumber(100000).minus(this.depositTotal).toString(10) + this.$t('CampaignNode.man'))
+                return
+              }
+            }
             if (parseInt(this.value) < 2000) {
               this.$message.error(this.$t('CampaignNode.valueLessError1'))
               return
             }
           } else {
             if (this.mortgageType === 'minerDeposit') {
+              this.value = new BigNumber(this.value)
+              this.value.plus()
               if (parseInt(this.value) < 10000) {
                 this.$message.error(this.$t('CampaignNode.valueLessError2'))
                 return
@@ -292,6 +308,17 @@ export default {
           }
         } else {
           if (this.isDeposit) {
+            if (this.mortgageType === 'minerDeposit') {
+              if (totalVal.comparedTo(new BigNumber(10000)) === -1) {
+                this.$message.error(this.$t('CampaignNode.leastError') + new BigNumber(10000).minus(this.depositTotal).toString(10) + this.$t('CampaignNode.man'))
+                return
+              }
+            } else {
+              if (totalVal.comparedTo(new BigNumber(100000)) === -1) {
+                this.$message.error(this.$t('CampaignNode.leastError') + new BigNumber(100000).minus(this.depositTotal).toString(10) + this.$t('CampaignNode.man'))
+                return
+              }
+            }
             if (parseInt(this.value) < 100) {
               this.$message.error(this.$t('CampaignNode.currentError'))
               return
@@ -392,12 +419,15 @@ export default {
   watch: {
     $route (to, from) {
       if (to.path.indexOf('campaignNode') > -1) {
-        console.log('aaaaaaaaaaaaa')
+        this.isDeposit = false
+        this.checkShow = false
         let depositList = this.httpProvider.man.getDepositbyaddr(this.address)
+        console.log(depositList)
         if (depositList != null) {
           this.isDeposit = true
           this.mortgageAddrress = depositList.AddressA1
-          if (depositList.Role === 16) {
+          if (depositList.Role === '0x10') {
+            // if (depositList.Role === 16) {
             this.mortgageTypeAgo = 'minerDeposit'
             this.mortgageType = 'minerDeposit'
             let depositTotal = new BigNumber(0)
@@ -437,16 +467,19 @@ export default {
     }
     this.initContract()
     let depositList = this.httpProvider.man.getDepositbyaddr(this.address)
+    console.log(depositList)
     if (depositList != null) {
       this.isDeposit = true
       this.mortgageAddrress = depositList.AddressA1
-      if (depositList.Role === 16) {
+      if (depositList.Role === '0x10') {
+        // if (depositList.Role === 16) {
         this.mortgageTypeAgo = 'minerDeposit'
         this.mortgageType = 'minerDeposit'
         let depositTotal = new BigNumber(0)
         depositList.Dpstmsg.forEach(e => {
           depositTotal = depositTotal.plus(filter.weiToNumber(e.DepositAmount))
         })
+        this.depositTotal = depositTotal
         if (depositTotal.comparedTo(new BigNumber(100000)) === 1) {
           this.checkShow = true
         }

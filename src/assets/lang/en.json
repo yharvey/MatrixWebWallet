@@ -220,7 +220,11 @@
     "currentError":"Flexible stake should be greater than 100 MAN",
     "withdrawalsBigger":"Incorrect amount",
     "withdrawalsNeed":"The value should be greater 100 MAN",
-    "onlyChange":"Change stake"
+    "onlyChange":"Change stake",
+    "minnerTotalError": "新抵押的金额和之前抵押总和需要大于10000才可抵押矿工",
+    "valTotalError": "新抵押的金额和之前抵押总和需要大于100000才可抵押验证者",
+    "leastError":"At least",
+    "man":"MAN"
   },
   "startNode": {
     "name": "Startup Node",

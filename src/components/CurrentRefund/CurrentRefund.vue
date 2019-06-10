@@ -31,8 +31,8 @@
           </el-table-column>
           <el-table-column :label="$t('regularDetail.operation')"
                            class="font-blue">
-            <template>
-              <el-button @click="openDialog()"
+            <template slot-scope="scope">
+              <el-button @click="openDialog()" v-if="parseInt(new Date().getTime()/1000) > scope.row.WithDrawTime"
                          type="text"
                          size="small">{{$t('digAccount.withdrawals')}}</el-button>
             </template>

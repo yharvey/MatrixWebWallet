@@ -220,7 +220,11 @@
     "currentError":"活期抵押应大于100",
     "withdrawalsBigger":"退选金额超过抵押金额",
     "withdrawalsNeed":"退选金额需要大于100",
-    "onlyChange":"仅修改抵押"
+    "onlyChange":"仅修改抵押",
+    "minnerTotalError": "新抵押的金额和之前抵押总和需要大于10000才可抵押矿工",
+    "valTotalError": "新抵押的金额和之前抵押总和需要大于100000才可抵押验证者",
+    "leastError":"最少",
+    "man":"MAN"
   },
   "startNode": {
     "name": "启动节点",
