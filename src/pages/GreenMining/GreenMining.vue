@@ -85,7 +85,7 @@ export default {
         this.type = status
       }
       if (status === 'campaignNode') {
-        this.$router.push({ path: '/green-mining/CampaignNode' })
+        this.$router.push({ path: '/green-mining/campaignNode' })
       } else if (status === 'miningTransaction') {
         this.$router.push({ path: '/green-mining/mining-transaction-overview' })
       } else if (status === 'secondaryKey') {

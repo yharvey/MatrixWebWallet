@@ -107,7 +107,7 @@ import sendSign from '@/components/TransferDialog/sendSignTransfer'
 import transferSuccess from '@/components/TransferDialog/transferSuccess'
 import store from 'store'
 import filter from '@/assets/js/filters'
-
+import Bus from '@/assets/js/Bus'
 export default {
   name: 'campaignNode',
   data () {
@@ -115,9 +115,9 @@ export default {
       isEdit: false,
       mortgageTypeAgo: '',
       address: '',
-      mortgageList: [{ name: '', key: 'minerDeposit' }, { name: '', key: 'valiDeposit' }],
-      mortgageWayList: [{ name: '', key: 'regular' }, { name: '', key: 'current' }],
-      timeLimitList: [{ name: 'oneMonth', key: '1' }, { name: 'threeMonth', key: '3' }, { name: 'sixMonth', key: '6' }, { name: 'oneYear', key: '12' }],
+      mortgageList: [{ name: this.$t('CampaignNode.Mining_mortgage'), key: 'minerDeposit' }, { name: this.$t('CampaignNode.Validator_mortgage'), key: 'valiDeposit' }],
+      mortgageWayList: [{ name: this.$t('CampaignNode.regular'), key: 'regular' }, { name: this.$t('CampaignNode.current'), key: 'current' }],
+      timeLimitList: [{ name: this.$t('CampaignNode.oneMonth'), key: '1' }, { name: this.$t('CampaignNode.threeMonth'), key: '3' }, { name: this.$t('CampaignNode.sixMonth'), key: '6' }, { name: this.$t('CampaignNode.oneYear'), key: '12' }],
       timeLimit: '',
       mortgageWay: '',
       mortgageType: '',
@@ -243,80 +243,6 @@ export default {
         this.msg = this.$t('mortgageHistory.mortgageSuccess')
       } catch (e) {
         this.$message.error(e.message)
-      }
-    },
-    getMinnerTxData () {
-      let num = parseInt(this.number)
-      for (let j = 0; j < num; j++) {
-        try {
-          let curFunc
-          this.functions.forEach(e => {
-            if (e.name.indexOf(this.mortgageType) !== -1) {
-              curFunc = e
-            }
-          })
-          let addrTemp = this.mortgageAddrress
-          curFunc.inputs[0].value = SendTransfer.sanitizeHex(WalletUtil.addressChange(addrTemp.split('.')[1]))
-
-          if (this.mortgageWay === 'current') {
-            curFunc.inputs[1].value = '0x' + new BigNumber(0).toString(16)
-          } else {
-            curFunc.inputs[1].value = '0x' + new BigNumber(parseInt(this.timeLimit)).toString(16)
-          }
-          let fullFuncName = WalletUtil.solidityUtils.transformToFullName(curFunc)
-          let funcSig = WalletUtil.getFunctionSignature(fullFuncName)
-          let typeName = WalletUtil.solidityUtils.extractTypeName(fullFuncName)
-          var types = typeName.split(',')
-          types = types[0] === '' ? [] : types
-          var values = []
-          for (var i in curFunc.inputs) {
-            if (curFunc.inputs[i].value) {
-              if (curFunc.inputs[i].type.indexOf('[') !== -1 && curFunc.inputs[i].type.indexOf(']') !== -1) {
-                values.push(curFunc.inputs[i].value.split(','))
-              } else {
-                values.push(curFunc.inputs[i].value)
-              }
-            } else values.push('')
-          }
-          let nonce = this.httpProvider.man.getTransactionCount(this.address)
-          nonce = WalletUtil.numToHex(nonce + j)
-          let data = {
-            to: contract,
-            value: this.value,
-            gasLimit: 210000,
-            data: '',
-            gasPrice: 18000000000,
-            extra_to: [[0, 0, []]],
-            nonce: nonce
-          }
-          let jsonObj = TradingFuns.getTxData(data)
-          jsonObj.data = '0x' + funcSig + WalletUtil.solidityCoder.encodeParams(types, values)
-          if (this.$store.state.wallet != null) {
-            let tx = WalletUtil.createTx(jsonObj)
-            let privateKey = this.$store.state.wallet.privateKey
-            privateKey = Buffer.from(privateKey.indexOf('0x') > -1 ? privateKey.substring(2, privateKey.length) : privateKey, 'hex')
-            tx.sign(privateKey)
-            let serializedTx = tx.serialize()
-            this.newTxData = SendTransfer.getTxParams(serializedTx)
-            this.hash = this.httpProvider.man.sendRawTransaction(this.newTxData)
-            this.visible = true
-            let recordArray = store.get(this.address)
-            if ((typeof (recordArray) === 'string')) {
-              recordArray = JSON.parse(recordArray)
-            }
-            if (recordArray == null) {
-              recordArray = []
-            }
-            recordArray.push({ hash: this.hash, newTxData: { commitTime: this.newTxData.commitTime, txType: this.newTxData.txType } })
-            store.set(this.address, recordArray)
-          } else {
-            this.confirmOffline = true
-            this.jsonObj = JSON.stringify(jsonObj)
-          }
-          this.msg = this.$t('mortgageHistory.mortgageSuccess')
-        } catch (e) {
-          this.$message.error(e.message)
-        }
       }
     },
     getTxData () {
@@ -463,15 +389,47 @@ export default {
       }
     }
   },
+  watch: {
+    $route (to, from) {
+      if (to.path.indexOf('campaignNode') > -1) {
+        console.log('aaaaaaaaaaaaa')
+        let depositList = this.httpProvider.man.getDepositbyaddr(this.address)
+        if (depositList != null) {
+          this.isDeposit = true
+          this.mortgageAddrress = depositList.AddressA1
+          if (depositList.Role === 16) {
+            this.mortgageTypeAgo = 'minerDeposit'
+            this.mortgageType = 'minerDeposit'
+            let depositTotal = new BigNumber(0)
+            depositList.Dpstmsg.forEach(e => {
+              depositTotal = depositTotal.plus(filter.weiToNumber(e.DepositAmount))
+            })
+            if (depositTotal.comparedTo(new BigNumber(100000)) === 1) {
+              this.checkShow = true
+            }
+          } else {
+            this.checkShow = true
+            this.mortgageTypeAgo = 'valiDeposit'
+            this.mortgageType = 'valiDeposit'
+          }
+        }
+      }
+    }
+  },
   mounted () {
-    this.mortgageList[0].name = this.$t('CampaignNode.Mining_mortgage')
-    this.mortgageList[1].name = this.$t('CampaignNode.Validator_mortgage')
-    this.mortgageWayList[0].name = this.$t('CampaignNode.regular')
-    this.mortgageWayList[1].name = this.$t('CampaignNode.current')
-    this.timeLimitList[0].name = this.$t('CampaignNode.oneMonth')
-    this.timeLimitList[1].name = this.$t('CampaignNode.threeMonth')
-    this.timeLimitList[2].name = this.$t('CampaignNode.sixMonth')
-    this.timeLimitList[3].name = this.$t('CampaignNode.oneYear')
+    let self = this
+    Bus.$on('changeLang', (data) => {
+      setTimeout(() => {
+        self.mortgageList[0].name = self.$t('CampaignNode.Mining_mortgage')
+        self.mortgageList[1].name = self.$t('CampaignNode.Validator_mortgage')
+        self.mortgageWayList[0].name = self.$t('CampaignNode.regular')
+        self.mortgageWayList[1].name = self.$t('CampaignNode.current')
+        self.timeLimitList[0].name = self.$t('CampaignNode.oneMonth')
+        self.timeLimitList[1].name = self.$t('CampaignNode.threeMonth')
+        self.timeLimitList[2].name = self.$t('CampaignNode.sixMonth')
+        self.timeLimitList[3].name = self.$t('CampaignNode.oneYear')
+      }, 2000)
+    })
     if (this.$store.state.offline != null) {
       this.address = this.$store.state.offline
     } else {
@@ -479,7 +437,6 @@ export default {
     }
     this.initContract()
     let depositList = this.httpProvider.man.getDepositbyaddr(this.address)
-    console.log(depositList)
     if (depositList != null) {
       this.isDeposit = true
       this.mortgageAddrress = depositList.AddressA1

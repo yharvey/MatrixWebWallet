@@ -54,6 +54,7 @@ import { mortgage, contract } from '@/assets/js/config'
 import filter from '@/assets/js/filters'
 import store from 'store'
 import BigNumber from 'bignumber.js'
+import Bus from '@/assets/js/Bus'
 export default {
   name: 'currentMortgage',
   data () {
@@ -184,6 +185,15 @@ export default {
     }
   },
   mounted () {
+    let self = this
+    Bus.$on('changeLang', (data) => {
+      setTimeout(() => {
+        self.timeLimitList[0].name = self.$t('CampaignNode.oneMonth')
+        self.timeLimitList[1].name = self.$t('CampaignNode.threeMonth')
+        self.timeLimitList[2].name = self.$t('CampaignNode.sixMonth')
+        self.timeLimitList[3].name = self.$t('CampaignNode.oneYear')
+      }, 1000)
+    })
     this.timeLimitList[0].name = this.$t('CampaignNode.oneMonth')
     this.timeLimitList[1].name = this.$t('CampaignNode.threeMonth')
     this.timeLimitList[2].name = this.$t('CampaignNode.sixMonth')
