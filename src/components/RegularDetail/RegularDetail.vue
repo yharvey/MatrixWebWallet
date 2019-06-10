@@ -35,16 +35,10 @@
               {{scope.row.Interest | weiToNumber}}
             </template>
           </el-table-column>
-          <!-- <el-table-column label="状态"
-                           prop="states">
-            <template slot-scope="scope">
-             {{scope.row.Interest}}
-            </template>
-          </el-table-column> -->
           <el-table-column :label="$t('regularDetail.operation')"
                            class="font-blue">
             <template slot-scope="scope">
-              <el-button @click="confirm(scope.row)"
+              <el-button @click="openDialog(scope.row)"
                          type="text"
                          size="small">{{$t('digAccount.withdraw_deposit')}}</el-button>
             </template>
@@ -76,6 +70,15 @@
                :width="'800px'"
                :information="information"
                @changeSendSign="changeSendSign"></send-sign>
+    <common-dialog-cancel :commonDialogExitVisible="commonDialogExitVisible"
+                          :address="address"
+                          :title="$t('HistoricalIncome.remove_mortgage')"
+                          :msg="$t('regularDetail.regularDetailMsg')"
+                          :time="ExpecteTime"
+                          :okText="$t('miningTransactionOverview.determine')"
+                          :cancelText="$t('miningTransactionOverview.cancel')"
+                          :width="'365px'"
+                          @closeExitDialog="closeExitDialog"></common-dialog-cancel>
   </div>
 </template>
 <script>
@@ -86,11 +89,9 @@ import { mortgage, contract } from '@/assets/js/config'
 import AllDialog from '@/components/TransferDialog/AllDialog'
 import OfflineDialog from '@/components/TransferDialog/TipOfflineDialog'
 import sendSign from '@/components/TransferDialog/sendSignTransfer'
+import CommonDialogCancel from '@/components/CommonDialog/CommonDialogCancel'
 import store from 'store'
-// import filter from '@/assets/js/filters'
-// import Man from 'aiman'
-// import BigNumber from 'bignumber.js'
-// const manUtil = new Man()
+import filter from '@/assets/js/filters'
 export default {
   name: 'currentMortgage',
   data () {
@@ -112,7 +113,10 @@ export default {
       information: '',
       successVisible: false,
       hash: '',
-      msg: ''
+      msg: '',
+      obj: {},
+      commonDialogExitVisible: false,
+      ExpecteTime: ''
     }
   },
   methods: {
@@ -209,6 +213,17 @@ export default {
       } else {
         this.regularDepositList = this.allList.slice((this.pageNumber - 1) * 10, this.allList.length)
       }
+    },
+    closeExitDialog (state) {
+      if (state === 'ok') {
+        this.confirm(this.obj)
+      }
+      this.commonDialogExitVisible = false
+    },
+    openDialog (obj) {
+      this.obj = obj
+      this.commonDialogExitVisible = true
+      this.ExpecteTime = this.$t('regularDetail.expected') + filter.dateFormat((parseInt(new Date().getTime() / 1000) + parseInt(obj.DepositType) * 2592000 + 7200), 'YYYY/MM/DD HH:mm:ss')
     }
   },
   mounted () {
@@ -243,7 +258,8 @@ export default {
   components: {
     AllDialog,
     OfflineDialog,
-    sendSign
+    sendSign,
+    CommonDialogCancel
   }
 }
 </script>

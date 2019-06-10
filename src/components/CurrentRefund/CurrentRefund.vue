@@ -26,13 +26,13 @@
           <el-table-column :label="$t('regularWithdrawals.state')"
                            prop="states">
             <template slot-scope="scope">
-              {{ (parseInt(new Date().getTime()/1000)-scope.row.WithDrawTime) > 86400*7 ? $t('regularWithdrawals.can_withdrawals'):$t('regularWithdrawals.withdrawing')}}
+              {{ parseInt(new Date().getTime()/1000) > scope.row.WithDrawTime ? $t('regularWithdrawals.can_withdrawals'):$t('regularWithdrawals.withdrawing')}}
             </template>
           </el-table-column>
           <el-table-column :label="$t('regularDetail.operation')"
                            class="font-blue">
-            <template slot-scope="scope">
-              <el-button @click="confirm(scope.row)"
+            <template>
+              <el-button @click="openDialog()"
                          type="text"
                          size="small">{{$t('digAccount.withdrawals')}}</el-button>
             </template>
@@ -64,6 +64,15 @@
                :width="'800px'"
                :information="information"
                @changeSendSign="changeSendSign"></send-sign>
+    <common-dialog-cancel :commonDialogExitVisible="commonDialogExitVisible"
+                          :address="address"
+                          :title="$t('regularWithdrawals.current_withdrawals')"
+                          :msg="$t('currentRefund.tips')"
+                          :time="''"
+                          :okText="$t('miningTransactionOverview.determine')"
+                          :cancelText="$t('miningTransactionOverview.cancel')"
+                          :width="'365px'"
+                          @closeExitDialog="closeExitDialog"></common-dialog-cancel>
   </div>
 </template>
 <script>
@@ -75,6 +84,7 @@ import AllDialog from '@/components/TransferDialog/AllDialog'
 import OfflineDialog from '@/components/TransferDialog/TipOfflineDialog'
 import sendSign from '@/components/TransferDialog/sendSignTransfer'
 import store from 'store'
+import CommonDialogCancel from '@/components/CommonDialog/CommonDialogCancel'
 // import Man from 'aiman'
 // import BigNumber from 'bignumber.js'
 // const manUtil = new Man()
@@ -95,7 +105,8 @@ export default {
       information: '',
       successVisible: false,
       hash: '',
-      msg: ''
+      msg: '',
+      commonDialogExitVisible: false
     }
   },
   methods: {
@@ -123,6 +134,15 @@ export default {
     },
     changeVisible (state) {
       this.visible = state
+    },
+    closeExitDialog (state) {
+      if (state === 'ok') {
+        this.confirm()
+      }
+      this.commonDialogExitVisible = false
+    },
+    openDialog () {
+      this.commonDialogExitVisible = true
     },
     confirm () {
       try {
@@ -209,7 +229,8 @@ export default {
   components: {
     AllDialog,
     OfflineDialog,
-    sendSign
+    sendSign,
+    CommonDialogCancel
   },
   watch: {
     $route (to, from) {

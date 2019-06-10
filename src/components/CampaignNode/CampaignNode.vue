@@ -56,7 +56,6 @@
       <el-input v-model="mortgageAddrress"></el-input>
       <div style="display: flex; justify-content: center;">
         <div style="text-align:left">
-          <p>{{$t('CampaignNode.mortgage_hint1')}}</p>
           <p>{{$t('CampaignNode.mortgage_hint2')}}</p>
           <p>{{$t('digAccount.tips1')}}</p>
           <p>{{$t('digAccount.tips2')}}</p>
@@ -460,7 +459,7 @@ export default {
     console.log(depositList)
     if (depositList != null) {
       this.isDeposit = true
-      this.mortgageAddrress = WalletUtil.getManAddress(depositList.AddressA1)
+      this.mortgageAddrress = depositList.AddressA1
       if (depositList.Role === 16) {
         this.mortgageTypeAgo = 'minerDeposit'
         this.mortgageType = 'minerDeposit'

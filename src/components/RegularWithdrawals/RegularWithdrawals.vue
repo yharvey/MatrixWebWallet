@@ -26,13 +26,13 @@
           <el-table-column :label="$t('regularWithdrawals.state')"
                            prop="states">
             <template slot-scope="scope">
-              {{ (parseInt(new Date().getTime()/1000)-scope.row.WithDrawTime) > 86400*7 ? $t('regularWithdrawals.can_withdrawals'):$t('regularWithdrawals.withdrawing')}}
+              {{ parseInt(new Date().getTime()/1000) > scope.row.WithDrawTime ? $t('regularWithdrawals.can_withdrawals'):$t('regularWithdrawals.withdrawing')}}
             </template>
           </el-table-column>
           <el-table-column :label="$t('regularDetail.operation')"
                            class="font-blue">
             <template slot-scope="scope">
-              <el-button @click="confirm(scope.row)"
+              <el-button v-if="parseInt(new Date().getTime()/1000) > scope.row.WithDrawTime"  @click="confirm(scope.row)"
                          type="text"
                          size="small">{{$t('digAccount.withdrawals')}}</el-button>
             </template>

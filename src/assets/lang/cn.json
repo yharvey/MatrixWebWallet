@@ -570,13 +570,16 @@
     "deposit_value":"抵押金额",
     "interest":"利息收入",
     "operation":"操作",
-    "success":"解除抵押成功"
+    "success":"解除抵押成功",
+    "regularDetailMsg":"解除抵押成功起，定期到期2小时后可提款到余额账户",
+    "expected": "预计在"
   },
   "currentWithdraw":{
     "current_account":"活期抵押账户:",
     "current_refund":"活期退款",
     "refund_value":"活期退款数量",
-    "success":"活期退款成功"
+    "success":"活期退款成功",
+    "confirmWithdrawMsg":"解除抵押成功起，7日后可提款到余额账户"
   },
   "regularMortgage":{
     "change_regular":"转入定期抵押",
@@ -585,12 +588,15 @@
   },
   "regularWithdrawals":{
     "regularWithdrawals":"定期取款",
-    "withdraw_time":"解除抵押时间",
+    "withdraw_time":"可取款时间",
     "value":"金额",
     "state":"状态",
     "can_withdrawals":"可取款",
     "withdrawing":"解除抵押中",
     "current_withdrawals":"活期取款",
     "success":"取款成功"
+  },
+  "currentRefund":{
+    "tips":"取款确认后所有可取款的活期抵押都将退款到账户余额"
   }
 }

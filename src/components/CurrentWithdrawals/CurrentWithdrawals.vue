@@ -15,7 +15,7 @@
                   :placeholder="$t('currentWithdraw.refund_value')"></el-input>
       </div>
       <button class="common-button"
-              @click="confirm">{{$t('transfer.confirm')}}</button>
+              @click="openDialog">{{$t('transfer.confirm')}}</button>
     </div>
     <all-dialog :visible="visible"
                 @changeVisible="changeVisible"
@@ -31,6 +31,15 @@
                :width="'800px'"
                :information="information"
                @changeSendSign="changeSendSign"></send-sign>
+    <common-dialog-cancel :commonDialogExitVisible="commonDialogExitVisible"
+                          :address="address"
+                          :title="$t('HistoricalIncome.remove_mortgage')"
+                          :msg="$t('currentWithdraw.confirmWithdrawMsg')"
+                          :time="ExpecteTime"
+                          :okText="$t('miningTransactionOverview.determine')"
+                          :cancelText="$t('miningTransactionOverview.cancel')"
+                          :width="'365px'"
+                          @closeExitDialog="closeExitDialog"></common-dialog-cancel>
   </div>
 </template>
 <script>
@@ -44,6 +53,7 @@ import { mortgage, contract } from '@/assets/js/config'
 import filter from '@/assets/js/filters'
 import store from 'store'
 import BigNumber from 'bignumber.js'
+import CommonDialogCancel from '@/components/CommonDialog/CommonDialogCancel'
 export default {
   name: 'currentMortgage',
   data () {
@@ -59,7 +69,9 @@ export default {
       information: '',
       successVisible: false,
       hash: '',
-      msg: ''
+      msg: '',
+      commonDialogExitVisible: false,
+      ExpecteTime: ''
     }
   },
   methods: {
@@ -90,12 +102,27 @@ export default {
       this.mortgageAddrress = ''
       this.value = ''
     },
+    closeExitDialog (state) {
+      if (state === 'ok') {
+        this.confirm()
+      }
+      this.commonDialogExitVisible = false
+    },
+    openDialog () {
+      this.commonDialogExitVisible = true
+      this.ExpecteTime = this.$t('regularDetail.expected') + filter.dateFormat((parseInt(new Date().getTime() / 1000) + 7 * 86400), 'YYYY/MM/DD HH:mm:ss')
+    },
     confirm () {
       try {
+        if (this.value === '') {
+          this.$message.error(this.$t('errorMsgs.valueError'))
+          return
+        }
         if (new BigNumber(this.value).comparedTo(new BigNumber(this.currentDepositValue)) === 1) {
           this.$message.error(this.$t('CampaignNode.valueLessError1'))
           return
         }
+        console.log(new BigNumber(this.value).comparedTo(new BigNumber(100)))
         if (new BigNumber(this.value).comparedTo(new BigNumber(100)) === -1) {
           this.$message.error(this.$t('CampaignNode.withdrawalsNeed'))
           return
@@ -176,7 +203,8 @@ export default {
   components: {
     AllDialog,
     OfflineDialog,
-    sendSign
+    sendSign,
+    CommonDialogCancel
   }
 }
 </script>

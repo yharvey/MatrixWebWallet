@@ -570,13 +570,16 @@
     "deposit_value":"The amount of stake",
     "interest":"Interest",
     "operation":"Operation",
-    "success":"Unstake successfully"
+    "success":"Unstake successfully",
+    "regularDetailMsg":"After unstaking successfully, you can withdrawal your staked assets to your available assets 2 hours after the regular maturity.",
+    "expected": "Expected at"
   },
   "currentWithdraw":{
     "current_account":"Flexible Stake Account:",
     "current_refund":"Flexible Refund",
     "refund_value":"The amount of flexible refund",
-    "success":"Flexible refund success"
+    "success":"Flexible refund success",
+    "confirmWithdrawMsg":"After unstaking successfully, you can withdrawal your staked assets to your available assets after 7 days"
   },
   "regularMortgage":{
     "change_regular":"Transfer to fixed stake",
@@ -585,12 +588,15 @@
   },
   "regularWithdrawals":{
     "regularWithdrawals":"Fixed Withdrawals",
-    "withdraw_time":"The time of unstake",
+    "withdraw_time":"The time of withdrawals",
     "value":"Amount",
     "state":"State",
     "can_withdrawals":"Available for withdrawals",
     "withdrawing":"Unstaking",
     "current_withdrawals":"Flexible Withdrawals",
     "success":"Withdrawals success"
+  },
+  "currentRefund":{
+    "tips":"取款确认后所有可取款的活期抵押都将退款到账户余额"
   }
 }
