@@ -119,7 +119,7 @@ export default {
           return
         }
         if (new BigNumber(this.value).comparedTo(new BigNumber(this.currentDepositValue)) === 1) {
-          this.$message.error(this.$t('CampaignNode.valueLessError1'))
+          this.$message.error(this.$t('CampaignNode.withdrawalsBigger'))
           return
         }
         console.log(new BigNumber(this.value).comparedTo(new BigNumber(100)))

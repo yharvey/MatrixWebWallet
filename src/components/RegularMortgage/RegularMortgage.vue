@@ -179,7 +179,6 @@ export default {
   watch: {
     $route (to, from) {
       if (to.path.indexOf('regularMortgage') > -1) {
-        debugger
         this.currentDepositValue = this.$route.params.currentDepositValue
       }
     }

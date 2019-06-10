@@ -365,9 +365,23 @@ export default {
             }
           }
         } else {
-          if (parseInt(this.value) < 100) {
-            this.$message.error(this.$t('CampaignNode.currentError'))
-            return
+          if (this.isDeposit) {
+            if (parseInt(this.value) < 100) {
+              this.$message.error(this.$t('CampaignNode.currentError'))
+              return
+            }
+          } else {
+            if (this.mortgageType === 'minerDeposit') {
+              if (parseInt(this.value) < 10000) {
+                this.$message.error(this.$t('CampaignNode.valueLessError2'))
+                return
+              }
+            } else {
+              if (parseInt(this.value) < 100000) {
+                this.$message.error(this.$t('CampaignNode.valueLessError3'))
+                return
+              }
+            }
           }
         }
         let balances = this.httpProvider.man.getBalance(this.address)

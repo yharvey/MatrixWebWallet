@@ -239,6 +239,10 @@ export default {
           this.tradingObj.nonce = WalletUtil.numToHex(this.tradingObj.nonce)
         }
         this.tradingObj.to = WalletUtil.getCurrencyAddress(this.address, this.entrustList[0].EntrustAddres.split('.')[0])
+        this.entrustList.forEach(item => {
+          item.StartHeight = parseInt(item.StartHeight)
+          item.EndHeight = parseInt(item.EndHeight)
+        })
         this.tradingObj.data = JSON.stringify(this.entrustList)
         let jsonObj = TradingFuns.getEntrustData(this.tradingObj)
         if (this.$store.state.wallet != null) {
