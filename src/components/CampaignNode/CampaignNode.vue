@@ -249,8 +249,8 @@ export default {
     getTxData () {
       try {
         this.mortgageAddrress = this.mortgageAddrress.trim()
-        this.value = new BigNumber(this.value)
-        let totalVal = this.value.plus(this.depositTotal)
+        let value = new BigNumber(this.value)
+        let totalVal = value.plus(this.depositTotal)
         if (this.isEdit) {
           this.changeDeposit()
           return
@@ -263,10 +263,10 @@ export default {
           this.$message.error(this.$t('CampaignNode.mortgageTypeError'))
           return
         }
-        if (this.value.trim() === '') {
-          this.$message.error(this.$t('CampaignNode.valueError'))
-          return
-        }
+        // if (this.value.trim() === '') {
+        //   this.$message.error(this.$t('CampaignNode.valueError'))
+        //   return
+        // }
         if (this.mortgageWay === '') {
           this.$message.error(this.$t('CampaignNode.selectMortgageWay'))
           return
@@ -287,20 +287,18 @@ export default {
                 return
               }
             }
-            if (parseInt(this.value) < 2000) {
+            if (value.comparedTo(new BigNumber(2000)) === -1) {
               this.$message.error(this.$t('CampaignNode.valueLessError1'))
               return
             }
           } else {
             if (this.mortgageType === 'minerDeposit') {
-              this.value = new BigNumber(this.value)
-              this.value.plus()
-              if (parseInt(this.value) < 10000) {
+              if (value.comparedTo(new BigNumber(10000)) === -1) {
                 this.$message.error(this.$t('CampaignNode.valueLessError2'))
                 return
               }
             } else {
-              if (parseInt(this.value) < 100000) {
+              if (value.comparedTo(new BigNumber(100000)) === -1) {
                 this.$message.error(this.$t('CampaignNode.valueLessError3'))
                 return
               }
@@ -319,18 +317,18 @@ export default {
                 return
               }
             }
-            if (parseInt(this.value) < 100) {
+            if (value.comparedTo(new BigNumber(100)) === -1) {
               this.$message.error(this.$t('CampaignNode.currentError'))
               return
             }
           } else {
             if (this.mortgageType === 'minerDeposit') {
-              if (parseInt(this.value) < 10000) {
+              if (value.comparedTo(new BigNumber(10000)) === -1) {
                 this.$message.error(this.$t('CampaignNode.valueLessError2'))
                 return
               }
             } else {
-              if (parseInt(this.value) < 100000) {
+              if (value.comparedTo(new BigNumber(100000)) === -1) {
                 this.$message.error(this.$t('CampaignNode.valueLessError3'))
                 return
               }
@@ -426,19 +424,30 @@ export default {
         if (depositList != null) {
           this.isDeposit = true
           this.mortgageAddrress = depositList.AddressA1
+          let depositTotal = new BigNumber(0)
+          for (let index = 0; index < depositList.Dpstmsg.length; index++) {
+            const element = depositList.Dpstmsg[index]
+            if (index === 0) {
+              depositTotal = depositTotal.plus(filter.weiToNumber(element.DepositAmount))
+            } else {
+              if (!(element.WithDrawInfolist.length > 0)) {
+                depositTotal = depositTotal.plus(filter.weiToNumber(element.DepositAmount))
+              }
+            }
+          }
+          this.depositTotal = depositTotal
           if (depositList.Role === '0x10') {
             // if (depositList.Role === 16) {
             this.mortgageTypeAgo = 'minerDeposit'
             this.mortgageType = 'minerDeposit'
-            let depositTotal = new BigNumber(0)
-            depositList.Dpstmsg.forEach(e => {
-              depositTotal = depositTotal.plus(filter.weiToNumber(e.DepositAmount))
-            })
+            this.depositTotal = depositTotal
             if (depositTotal.comparedTo(new BigNumber(100000)) === 1) {
               this.checkShow = true
             }
           } else {
-            this.checkShow = true
+            if (depositTotal.comparedTo(new BigNumber(10000)) === 1) {
+              this.checkShow = true
+            }
             this.mortgageTypeAgo = 'valiDeposit'
             this.mortgageType = 'valiDeposit'
           }
@@ -471,20 +480,30 @@ export default {
     if (depositList != null) {
       this.isDeposit = true
       this.mortgageAddrress = depositList.AddressA1
+      let depositTotal = new BigNumber(0)
+      for (let index = 0; index < depositList.Dpstmsg.length; index++) {
+        const element = depositList.Dpstmsg[index]
+        if (index === 0) {
+          depositTotal = depositTotal.plus(filter.weiToNumber(element.DepositAmount))
+        } else {
+          if (!(element.WithDrawInfolist.length > 0)) {
+            depositTotal = depositTotal.plus(filter.weiToNumber(element.DepositAmount))
+          }
+        }
+      }
+      this.depositTotal = depositTotal
       if (depositList.Role === '0x10') {
         // if (depositList.Role === 16) {
         this.mortgageTypeAgo = 'minerDeposit'
         this.mortgageType = 'minerDeposit'
-        let depositTotal = new BigNumber(0)
-        depositList.Dpstmsg.forEach(e => {
-          depositTotal = depositTotal.plus(filter.weiToNumber(e.DepositAmount))
-        })
         this.depositTotal = depositTotal
         if (depositTotal.comparedTo(new BigNumber(100000)) === 1) {
           this.checkShow = true
         }
       } else {
-        this.checkShow = true
+        if (depositTotal.comparedTo(new BigNumber(10000)) === 1) {
+          this.checkShow = true
+        }
         this.mortgageTypeAgo = 'valiDeposit'
         this.mortgageType = 'valiDeposit'
       }

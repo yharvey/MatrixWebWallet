@@ -1,8 +1,8 @@
-export const chainUrl = 'http://192.168.3.40:8342'
+export const chainUrl = 'http://192.168.3.40:8344'
 // export const chainUrl = 'https://testnet.matrix.io'
 export const ethUrl = 'https://mainnet.infura.io/v3/473f108e531843db9529fd549e61ad6e'
 export const ethChainId = 1
-export const chainId = 88
+export const chainId = 666
 // export const chainId = 3
 export const ipfsUrl = 'ipfsup.gantenwater.net'
 export const ipfsPort = '443'
