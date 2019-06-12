@@ -9,28 +9,50 @@
           {{$t('openWallet.back')}}
         </span>
         <!-- <h5>{{$t('associate.associateAddress')}}</h5> -->
-        <el-input placeholder="抵押金额 大于10万MAN"></el-input>
-        <el-input placeholder="签名地址后期可修改"></el-input>
-        <el-input placeholder="抵押类型（活期/定期）"></el-input>
-        <el-input placeholder="抵押类型（活期/定期）"></el-input>
-        <el-input placeholder="创建者加权系数"></el-input>
+        <el-input placeholder="抵押金额 大于10万MAN"
+                  v-model="value"
+                  type="number"></el-input>
+        <el-input placeholder="签名地址后期可修改"
+                  v-model="signAddress"></el-input>
+        <div>
+          <el-select v-model="mortgageWay"
+                     :placeholder="$t('CampaignNode.selectMortgageWay')">
+            <el-option v-for="item in mortgageWayList"
+                       :key="item.key"
+                       :label="item.name"
+                       :value="item.key">
+            </el-option>
+          </el-select>
+        </div>
+        <div v-show="mortgageWay==='regular'">
+          <el-select v-model="timeLimit"
+                     :placeholder="$t('CampaignNode.selectTimeLimit')">
+            <el-option v-for="item in timeLimitList"
+                       :key="item.key"
+                       :label="item.name"
+                       :value="item.key">
+            </el-option>
+          </el-select>
+        </div>
+        <el-input placeholder="创建者加权系数"
+                  v-model="ownerRate"></el-input>
         <div class="show-flex-between">
           <div>
-            <el-input class="small-input"
+            <el-input class="small-input" v-model="lvlRate1"
                       placeholder="参与者加权系数1"></el-input>
           </div>
           <div>小于 1万 MAN</div>
         </div>
         <div class="show-flex-between">
           <div>
-            <el-input class="small-input"
+            <el-input class="small-input" v-model="lvlRate2"
                       placeholder="参与者加权系数2"></el-input>
           </div>
           <div>1万 -- 10万 MAN</div>
         </div>
         <div class="show-flex-between">
           <div>
-            <el-input class="small-input"
+            <el-input class="small-input" v-model="lvlRate3"
                       placeholder="参与者加权系数3"></el-input>
           </div>
           <div>大于 10万 MAN</div>
@@ -52,6 +74,16 @@ export default {
   name: 'createJoin',
   data () {
     return {
+      value: '',
+      signAddress: '',
+      mortgageWayList: [{ name: this.$t('CampaignNode.regular'), key: 'regular' }, { name: this.$t('CampaignNode.current'), key: 'current' }],
+      timeLimitList: [{ name: this.$t('CampaignNode.oneMonth'), key: '1' }, { name: this.$t('CampaignNode.threeMonth'), key: '3' }, { name: this.$t('CampaignNode.sixMonth'), key: '6' }, { name: this.$t('CampaignNode.oneYear'), key: '12' }],
+      timeLimit: '',
+      mortgageWay: '',
+      ownerRate: '',
+      lvlRate1: '',
+      lvlRate2: '',
+      lvlRate3: ''
     }
   },
   methods: {
@@ -64,9 +96,18 @@ export default {
       let contract = this.ethProvider.eth.Contract(abiArray, contractAddress)
       let nonce = this.httpProvider.man.getTransactionCount(this.address)
       nonce = WalletUtil.numToHex(nonce)
+      this.signAddress = this.signAddress.trim()
+      if (!WalletUtil.validateManAddress(this.signAddress)) {
+        this.$message.error(this.$t('transfer.addressTip'))
+        return
+      }
+      if (parseInt(this.value) < 100000) {
+        this.$message.error('请填写大于100000金额')
+        return
+      }
       let data = {
-        to: contract,
-        value: 0,
+        to: contractAddress,
+        value: this.value,
         gasLimit: 210000,
         data: '',
         gasPrice: 18000000000,
@@ -74,9 +115,72 @@ export default {
         nonce: nonce
       }
       let jsonObj = TradingFuns.getTxData(data)
-      // console.log('0x' + WalletUtil.str2hex(JSON.stringify([1, 1, 1])))
+      let dType = 0
+      if (this.mortgageWay === '') {
+        this.$message.error(this.$t('CampaignNode.selectMortgageWay'))
+        return
+      } else if (this.mortgageWay === 'regular') {
+        if (this.timeLimit === '') {
+          this.$message.error(this.$t('CampaignNode.selectTimeLimit'))
+          return
+        }
+        dType = parseInt(this.timeLimit)
+      }
+      if (this.ownerRate === '') {
+        this.$message.error(this.$t('创建者加权系数'))
+        return
+      }
+      if (this.lvlRate1 === '') {
+        this.$message.error(this.$t('参与者加权系数1'))
+        return
+      }
+      if (this.lvlRate2 === '') {
+        this.$message.error(this.$t('参与者加权系数2'))
+        return
+      }
+      if (this.lvlRate3 === '') {
+        this.$message.error(this.$t('参与者加权系数3'))
+        return
+      }
+      jsonObj.data = contract.methods.createValidatorGroup(WalletUtil.getEthAddress(this.signAddress), dType, parseInt(this.ownerRate), [parseInt(this.lvlRate1), parseInt(this.lvlRate2), parseInt(this.lvlRate3)]).encodeABI()
+      if (this.$store.state.wallet != null) {
+        let tx = WalletUtil.createTx(jsonObj)
+        let privateKey = this.$store.state.wallet.privateKey
+        privateKey = Buffer.from(privateKey.indexOf('0x') > -1 ? privateKey.substring(2, privateKey.length) : privateKey, 'hex')
+        tx.sign(privateKey)
+        let serializedTx = tx.serialize()
+        this.newTxData = SendTransfer.getTxParams(serializedTx)
+        let hash = this.httpProvider.man.sendRawTransaction(this.newTxData)
+        this.hash = hash
+        this.visible = true
+        let recordArray = store.get(this.address)
+        if ((typeof (recordArray) === 'string')) {
+          recordArray = JSON.parse(recordArray)
+        }
+        if (recordArray == null) {
+          recordArray = []
+        }
+        recordArray.push({ hash: this.hash, newTxData: { commitTime: this.newTxData.commitTime, txType: this.newTxData.txType } })
+        store.set(this.address, recordArray)
+      }
+    },
+    confirm1 () {
+      let abiArray = JSON.parse(joinAbi)
+      let contractAddress = joinContract
+      let contract = this.ethProvider.eth.Contract(abiArray, contractAddress)
+      let nonce = this.httpProvider.man.getTransactionCount(this.address)
+      nonce = WalletUtil.numToHex(nonce)
+      let data = {
+        to: contractAddress,
+        value: 100000,
+        gasLimit: 210000,
+        data: '',
+        gasPrice: 18000000000,
+        extra_to: [[0, 0, []]],
+        nonce: nonce
+      }
+      let jsonObj = TradingFuns.getTxData(data)
       jsonObj.data = contract.methods.createValidatorGroup(WalletUtil.getEthAddress(this.address), 0, 1, [1, 10, 1]).encodeABI()
-      debugger
       if (this.$store.state.wallet != null) {
         let tx = WalletUtil.createTx(jsonObj)
         let privateKey = this.$store.state.wallet.privateKey
