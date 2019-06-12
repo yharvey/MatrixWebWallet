@@ -32,6 +32,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         to: path.posix.join(config.dev.assetsPublicPath, 'index.html')
       }, ],
     },
+    https: true,
     hot: true,
     contentBase: false, // since we use CopyWebpackPlugin.
     compress: true,
@@ -87,7 +88,7 @@ module.exports = new Promise((resolve, reject) => {
       // Add FriendlyErrorsPlugin
       devWebpackConfig.plugins.push(new FriendlyErrorsPlugin({
         compilationSuccessInfo: {
-          messages: [`Your application is running here: http://${devWebpackConfig.devServer.host}:${port}`],
+          messages: [`Your application is running here: https://${devWebpackConfig.devServer.host}:${port}`],
         },
         onErrors: config.dev.notifyOnErrors ?
           utils.createNotifierCallback() :

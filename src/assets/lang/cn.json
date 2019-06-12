@@ -30,6 +30,7 @@
     "enterPassword": "请输入密码",
     "enterPrivate": "请输入私钥",
     "privateIncorrect": "私钥错误",
+    "ledgerIncorrect": "无法获取您的钱包",
     "enterMnemonic": "请输入助记词",
     "mnemonicIncorrect": "助记词错误",
     "copySuccess": "复制成功",

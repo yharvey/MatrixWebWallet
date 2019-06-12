@@ -10,6 +10,7 @@
     <h4 v-if="offSwitch">{{$t('myWallet.choose')}}</h4>
     <div v-if="offSwitch">
       <div class="card_pos">
+        <!--keystore Card-->
         <div class="card_way"
              @click="selectUnlock('keystore')">
           <div class="pic_dis">
@@ -22,6 +23,7 @@
             <label>Keystore {{$t('myWallet.file')}}</label>
           </div>
         </div>
+        <!--私钥 Card-->
         <div class="card_way div_dis"
              @click="selectUnlock('privateKey')">
           <div class="pic_dis">
@@ -34,9 +36,10 @@
             <label>{{$t('myWallet.privateKey')}}</label>
           </div>
         </div>
+        <!--助记词 Card-->
         <div class="card_way div_dis"
              @click="selectUnlock('mnemonic')">
-          <div class="pic_dis">
+          <div class="pic_dis mnemonic">
             <img src="../../assets/images/mnemonic.png">
           </div>
           <div class="check_font">
@@ -47,7 +50,21 @@
             <div class="font-blue">{{$t('myWallet.mnemonicMan')}}</div>
           </div>
         </div>
+        <!--ledger硬件钱包 Card-->
+        <div class="card_way div_dis"
+             @click="selectUnlock('ledger')">
+          <div class="pic_dis">
+            <img src="../../assets/images/ledger.svg">
+          </div>
+          <div class="check_font">
+            <input type="radio"
+                   v-model="unlockType"
+                   value="ledger">
+            <label>ledger</label>
+          </div>
+        </div>
       </div>
+      <!--keystore 输入密码-->
       <div v-show="unlockType == 'keystore'">
         <div class="pass_input"
              v-if="keyStore != null">
@@ -74,6 +91,7 @@
                ref="file"
                @change="changeFile($event)" />
       </div>
+      <!--私钥解锁-->
       <div v-show="unlockType == 'privateKey'">
         <div>
           <textarea class="key_text"
@@ -86,6 +104,7 @@
         <div class="file_btn"
              @click="openWallet">{{$t('myWallet.openWallet')}}</div>
       </div>
+      <!--助记词-->
       <div v-show="unlockType == 'mnemonic'">
         <div>
           <textarea class="key_text"
@@ -95,6 +114,14 @@
         </div>
         <div class="hint_error"
              v-show="keyPrivateError">*{{$t('myWallet.mnemonicIncorrect')}}</div>
+        <div class="file_btn"
+             @click="openWallet">{{$t('myWallet.openWallet')}}</div>
+      </div>
+      <!--ledger-->
+      <div v-show="unlockType == 'ledger'" class="ledger">
+        <h4>请连接您的ledger硬件钱包</h4>
+        <div class="hint_error"
+             v-show="keyPrivateError">*{{$t('myWallet.ledgerIncorrect')}}</div>
         <div class="file_btn"
              @click="openWallet">{{$t('myWallet.openWallet')}}</div>
       </div>
@@ -114,6 +141,7 @@
 
 <script>
 import WalletUtil from '@/assets/js/WalletUtil'
+import LedgerUtil from '@/assets/js/LedgerUtil'
 import Validate from '@/assets/js/Validate'
 import store from '@/store'
 import Bus from '@/assets/js/Bus'
@@ -163,10 +191,6 @@ export default {
         spinner: 'el-icon-loading',
         background: 'rgba(0, 0, 0, 0.7)'
       })
-      // if (this.password.length < 9) {
-      //   this.keystoreError = true
-      //   loading.close()
-      // } else {
       this.keystoreError = false
       WalletUtil.keyStoreToWallet(this.keyStore, this.password).then((result) => {
         loading.close()
@@ -256,6 +280,30 @@ export default {
             Bus.$emit('openWallet')
           }
         }
+      } else if (this.unlockType === 'ledger') {
+        let loading = this.$loading({
+          lock: true,
+          text: 'Loading',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.7)'
+        })
+        LedgerUtil.getAddress(0, 0, 0).then((result) => {
+          loading.close()
+          let wallet = {
+            address: '',
+            pubKey: ''
+          }
+          wallet.address = result.address
+          wallet.pubKey = result.pubKey
+          store.commit('UPDATE_WALLET', wallet)
+          this.$emit('openWallet')
+          if (this.isEmit) {
+            Bus.$emit('openWallet')
+          }
+        }).catch(err => {
+          loading.close()
+          this.$message.error(err.message)
+        })
       }
     },
     loginOffline () {
@@ -271,7 +319,6 @@ export default {
           let msg = this.$t('unlock.unlockSuccess')
           if (greetings != null) {
             let address = this.$store.state.offline
-            // greetings = JSON.parse(greetings)
             if (typeof (greetings) === 'string') {
               greetings = JSON.parse(greetings)
             }
@@ -297,8 +344,6 @@ export default {
         }
       } catch (e) {
         this.$message.error(e.message)
-        // this.$router.push({ path: '/my-wallet/myWalletFirst' })
-        // this.$store.commit('OFFLINE', null)
       }
     }
   },
@@ -317,6 +362,11 @@ export default {
 
 <style scoped lang="less">
 .unlock-wallet {
+  .ledger {
+    h4 {
+      margin-top: 1rem;
+    }
+  }
   .spanStyle {
     font-size: 0.75rem;
     color: #9298ae;
@@ -333,6 +383,9 @@ export default {
   }
   .div_dis {
     margin-left: 2.5rem;
+    .mnemonic {
+      margin-bottom: 0;
+    }
   }
   h4 {
     margin: 0 auto 2rem;
@@ -382,8 +435,6 @@ export default {
     font-size: 12px;
     color: #ed3c1c;
     letter-spacing: 0.11px;
-    // position: relative;
-    // left: -121px;
     margin: 0.4rem auto;
     width: 27.56rem;
     text-align: left;

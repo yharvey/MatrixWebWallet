@@ -16,7 +16,6 @@ import store from '@/store'
 import WalletUtil from '@/assets/js/WalletUtil'
 import { mortgage } from '@/assets/js/config'
 import filter from '@/assets/js/filters'
-import SendTransfer from '@/assets/js/SendTransfer'
 import * as storeLocal from 'store'
 export default {
   name: 'MyWallet',
@@ -44,36 +43,6 @@ export default {
   methods: {
     goPage (route) {
       this.$router.push({ path: '/my-wallet/' + route })
-    },
-
-    test () {
-      let abiArray = JSON.parse(mortgage.abi)
-      let contractAddress = mortgage.address
-      let contract = this.ethProvider.eth.Contract(abiArray, contractAddress)
-      console.log(contract.methods.modifyDeposittype(1, this.httpProvider.toWei(10000)).encodeABI())
-      let rawTx = {
-        nonce: this.httpProvider.man.getTransactionCount('MAN.3nbU6CJTnJLq36cVqhiY9Yy3FqYyR'),
-        gasPrice: 18000000000,
-        gasLimit: 210000,
-        to: contractAddress,
-        value: 0,
-        data: contract.methods.modifyDeposittype(1, this.httpProvider.toWei(10000)).encodeABI(),
-        chainId: 20,
-        TxEnterType: '',
-        IsEntrustTx: '',
-        CommitTime: new Date().getTime(),
-        extra_to: [[0, 0, []]]
-      }
-      let tx = WalletUtil.createTx(rawTx)
-      let privateKey = '645945744a49aa62821f13492e0123e8e72fad55fcda9846aa4fa817b20b8065'
-      privateKey = Buffer.from(privateKey.indexOf('0x') > -1 ? privateKey.substring(2, privateKey.length) : privateKey, 'hex')
-      tx.sign(privateKey)
-      let serializedTx = tx.serialize()
-      let newTxData = SendTransfer.getTxParams(serializedTx)
-      this.httpProvider.man.sendRawTransaction(newTxData, (err, hash) => {
-        console.log(err)
-        console.log(hash)
-      })
     },
     openWallet () {
       try {

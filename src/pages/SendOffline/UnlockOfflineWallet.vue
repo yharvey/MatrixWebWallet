@@ -30,7 +30,7 @@
         </div>
         <div class="card_way div_dis"
              @click="selectUnlock('mnemonic')">
-          <div class="pic_dis">
+          <div class="pic_dis mnemonic">
             <img src="../../assets/images/mnemonic.png">
           </div>
           <div class="check_font">
@@ -39,6 +39,18 @@
                    value="mnemonic">
             <label>{{$t('myWallet.mnemonic')}}</label>
             <div class="font-blue">{{$t('myWallet.mnemonicMan')}}</div>
+          </div>
+        </div>
+        <div class="card_way div_dis"
+             @click="selectUnlock('ledger')">
+          <div class="pic_dis">
+            <img src="../../assets/images/ledger.svg">
+          </div>
+          <div class="check_font">
+            <input type="radio"
+                   v-model="unlockType"
+                   value="ledger">
+            <label>ledger</label>
           </div>
         </div>
       </div>
@@ -92,6 +104,14 @@
         <div class="file_btn"
              @click="openWallet">{{$t('myWallet.openWallet')}}</div>
       </div>
+      <!--ledger-->
+      <div v-show="unlockType == 'ledger'" class="ledger">
+        <h4>请连接您的ledger硬件钱包</h4>
+        <div class="hint_error"
+             v-show="keyPrivateError">*{{$t('myWallet.ledgerIncorrect')}}</div>
+        <div class="file_btn"
+             @click="openWallet">{{$t('myWallet.openWallet')}}</div>
+      </div>
     </div>
   </div>
 </template>
@@ -103,6 +123,7 @@ import store from '@/store'
 import Bus from '@/assets/js/Bus'
 import filter from '@/assets/js/filters'
 import * as storeLocal from 'store'
+import LedgerUtil from '@/assets/js/LedgerUtil'
 
 export default {
   name: 'UnlockWallet',
@@ -241,6 +262,30 @@ export default {
             Bus.$emit('openWallet', this.wallet)
           }
         }
+      } else if (this.unlockType === 'ledger') {
+        let loading = this.$loading({
+          lock: true,
+          text: 'Loading',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.7)'
+        })
+        LedgerUtil.getAddress(0, 0, 0).then((result) => {
+          loading.close()
+          let wallet = {
+            address: '',
+            pubKey: ''
+          }
+          wallet.address = result.address
+          wallet.pubKey = result.pubKey
+          store.commit('UPDATE_WALLET', wallet)
+          this.$emit('openWallet')
+          if (this.isEmit) {
+            Bus.$emit('openWallet')
+          }
+        }).catch(err => {
+          loading.close()
+          this.$message.error(err.message)
+        })
       }
     },
     loginOffline () {
@@ -291,6 +336,11 @@ export default {
 
 <style scoped lang="less">
 .unlock-wallet {
+  .ledger {
+    h4 {
+      margin-top: 1rem;
+    }
+  }
   .switch_offline {
     position: relative;
     right: -413px;
@@ -301,6 +351,9 @@ export default {
   }
   .div_dis {
     margin-left: 2.5rem;
+    .mnemonic {
+      margin-bottom: 0;
+    }
   }
   h4 {
     margin: 0 auto 2rem;

@@ -13,10 +13,6 @@ const hdkey = require('ethereumjs-wallet/hdkey')
 const manUtil = new Man()
 
 // const _ = require('lodash')
-const bs58Arr = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P',
-  'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i',
-  'j', 'k', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
-]
 let WalletUtil = {}
 
 // 创建组记词
@@ -141,16 +137,6 @@ WalletUtil.getManAddress = function (address) {
     'j', 'k', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
   ]
   return ('MAN.' + manAddress) + arr[crc8('MAN.' + manAddress) % 58]
-}
-
-// 多币种根据MAN地址获取具体币种地址
-WalletUtil.getCurrencyAddress = function (address, currency) {
-  address = this.getEthAddress(address)
-  let crc8 = polycrc.crc(8, 0x07, 0x00, 0x00, false)
-  const bytes = Buffer.from(address.substring(2, address.length), 'hex')
-  const manAddress = bs58.encode(bytes)
-
-  return (currency.toLocaleUpperCase() + '.' + manAddress) + bs58Arr[crc8(currency.toLocaleUpperCase() + '.' + manAddress) % 58]
 }
 
 // 字符串转16进制

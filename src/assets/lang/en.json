@@ -30,6 +30,7 @@
     "enterPassword": "Please enter your password",
     "enterPrivate": "Please enter private key",
     "privateIncorrect": "The private key you entered is incorrect",
+    "ledgerIncorrect": "Unable to get your wallet",
     "enterMnemonic": "Please enter Mnemonic",
     "mnemonicIncorrect": "The Mnemonic you entered is incorrect",
     "copySuccess": "Copied successfully",
