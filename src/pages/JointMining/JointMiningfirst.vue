@@ -87,7 +87,7 @@ export default {
   name: 'jointMining',
   data () {
     return {
-      address: ''
+      validatorList: []
     }
   },
   methods: {
@@ -339,6 +339,13 @@ export default {
     } else {
       this.address = this.$store.getters.wallet.address
     }
+    // let data = this.httpProvider.man.getValidatorGroupInfo()
+    // // data.forEach(item => {
+    // //   this.validatorList.push({
+    // //     joinAddress: item
+    // //     activeNumber: 0
+    // //   })
+    // // });
   }
 }
 </script>
