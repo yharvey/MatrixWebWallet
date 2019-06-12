@@ -9,14 +9,12 @@
              @click="changeMenu('my-wallet')">{{$t('header.myWallet')}}</label>
       <label :class="{'active' : type === 'green-mining'}"
              @click="changeMenu('green-mining')">{{$t('header.greenMining')}}</label>
-      <!-- <label :class="{'active' : type === 'offline-transfer'}"
-             @click="changeMenu('offline-transfer')">{{$t('header.offlineTransfer')}}</label> -->
+      <label :class="{'active' : type === 'jointMining'}"
+             @click="changeMenu('jointMining')">{{$t('header.jointMining')}}</label>
       <label :class="{'active' : type === 'ai-application'}"
              @click="changeMenu('ai-application')">{{$t('header.aiApplication')}}</label>
       <label :class="{'active' : type === 'contract'}"
              @click="changeMenu('contract')">{{$t('header.contracts')}}</label>
-      <!-- <label :class="{'active' : type === 'mapping'}"
-             @click="changeMenu('mapping')">{{$t('header.mapping')}}</label> -->
       <label :class="{'active' : type === 'offlineSend'}"
              @click="changeMenu('offlineSend')">{{$t('header.offlineSend')}}</label>
     </div>
@@ -53,8 +51,6 @@
 <script>
 import Bus from '@/assets/js/Bus'
 import store from '@/store'
-import { mortgage } from '@/assets/js/config'
-import WalletUtil from '@/assets/js/WalletUtil'
 import * as storeLocal from 'store'
 
 export default {
@@ -89,12 +85,16 @@ export default {
         this.type = 'contract'
       } else if (to.path.indexOf('mapping') > -1) {
         this.type = 'mapping'
+      } else if (to.path.indexOf('jointMining') > -1) {
+        this.type = 'jointMining'
       }
       let wallet = this.$store.state.wallet
       if (wallet != null) {
         let greetings = storeLocal.get('greetings')
         if (greetings != null) {
-          greetings = JSON.parse(greetings)
+          if (typeof (greetings) === 'string') {
+            greetings = JSON.parse(greetings)
+          }
           greetings.forEach(element => {
             if (element.address === this.$store.state.wallet.address) {
               this.userName = element.content
@@ -115,25 +115,14 @@ export default {
         this.isUnlock = true
       }
     })
-    // let route = this.$route
-    // if (route.path.indexOf('my-wallet') > -1) {
-    //   this.type = 'my-wallet'
-    // } else if (route.path.indexOf('green-mining') > -1) {
-    //   this.type = 'green-mining'
-    // } else if (route.path.indexOf('offline-transfer') > -1) {
-    //   this.type = 'offline-transfer'
-    // } else if (route.path.indexOf('ai-application') > -1) {
-    //   this.type = 'ai-application'
-    // } else if (route.path.indexOf('contract') > -1) {
-    //   this.type = 'contract'
-    // } else if (route.path.indexOf('mapping') > -1) {
-    //   this.type = 'mapping'
-    // }
     try {
       let wallet = this.$store.state.wallet
       if (wallet != null) {
         let greetings = storeLocal.get('greetings')
-        greetings = JSON.parse(greetings)
+        if (typeof (greetings) === 'string') {
+          greetings = JSON.parse(greetings)
+        }
+        // greetings = JSON.parse(greetings)
         if (greetings.address === wallet.address) {
           this.userName = greetings.content
         }
@@ -170,30 +159,22 @@ export default {
           this.type = status
           if (status === 'green-mining') {
             store.commit('UPDATE_BEFOREURL', '/green-mining/campaignNode')
-            // if (store.state.wallet != null) {
-            //   let deposit = this.getDepositInfo()
-            //   if (!deposit) {
-            //     this.$router.push({ path: '/green-mining/campaignNode' })
-            //   } else {
-            //     store.commit('UPDATE_BEFOREURL', '/green-mining/mining-transaction-overview')
-            //     store.commit('UPDATE_HISTORYURL', '/green-mining/mining-transaction-overview')
-            //     this.$router.push({ name: 'MiningTransactionOverview', params: { deposit: this.deposit } })
-            //   }
-            // } else {
             this.$router.push({ path: '/green-mining/campaignNode' })
-            // }
           } else if (status === 'my-wallet') {
             store.commit('UPDATE_HISTORYURL', '/my-wallet/openWallet/myAssets')
             this.$router.push({ path: '/my-wallet/myWalletFirst' })
           } else if (status === 'ai-application') {
             store.commit('UPDATE_BEFOREURL', '/ai-application/medical')
-
             store.commit('UPDATE_HISTORYURL', '/ai-application/medical')
             this.$router.push({ path: '/ai-application/medical' })
           } else if (status === 'offlineSend') {
             store.commit('UPDATE_BEFOREURL', '/sendOffline/offlineUnlock')
             store.commit('UPDATE_HISTORYURL', '/sendOffline/offlineUnlock')
             this.$router.push({ path: '/sendOffline/offlineUnlock' })
+          } else if (status === 'jointMining') {
+            store.commit('UPDATE_BEFOREURL', '/jointMining')
+            store.commit('UPDATE_HISTORYURL', '/jointMining')
+            this.$router.push({ path: '/jointMining/JointMiningfirst' })
           } else {
             store.commit('UPDATE_BEFOREURL', '/' + status)
             this.$router.push({ path: '/' + status })
@@ -206,41 +187,6 @@ export default {
     },
     goGreeting () {
       this.$router.push({ path: '/my-wallet/setGreetings' })
-    },
-    getDepositInfo () {
-      let loading = this.$loading({
-        lock: true,
-        text: 'Loading',
-        spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0.7)'
-      })
-      let abiArray = JSON.parse(mortgage.abi)
-      let contractAddress = mortgage.address
-      let contract = this.httpProvider.man.contract(abiArray)
-      let myContractInstance = contract.at(contractAddress)
-      let deposit = myContractInstance.getDepositInfo(WalletUtil.getEthAddress(store.state.wallet.address), { currency: 'MAN' })
-      this.deposit = deposit
-      loading.close()
-      if (deposit[1] !== '0x') {
-        return true
-      } else {
-        return false
-      }
-      // if (deposit[3].toNumber() === 128) {
-      //   if (deposit[2].toNumber() === 0) {
-      //     return false
-      //   } else {
-      //     return true
-      //   }
-      // } else if (deposit[3].toNumber() === 16) {
-      //   if (deposit[2].toNumber() === 0) {
-      //     return false
-      //   } else {
-      //     return true
-      //   }
-      // } else {
-      //   return false
-      // }
     },
     goFirst () {
       if (this.$store.state.wallet != null || this.$store.state.offline != null) {
@@ -263,7 +209,7 @@ export default {
     width: 90px;
   }
   .menus {
-    margin-left: 14.31rem;
+    margin-left: 12.31rem;
     label {
       opacity: 0.5;
       font-size: 14px;
@@ -301,7 +247,7 @@ export default {
     // }
   }
   .en {
-    margin-left: 5rem;
+    margin-left: 3rem;
     .active:after {
       content: "";
       display: inline-block;

@@ -258,10 +258,13 @@ export default {
         let msg = this.$t('unlock.unlockSuccess')
         if (greetings != null) {
           let address = this.$store.state.offline
-          greetings = JSON.parse(greetings)
+          // greetings = JSON.parse(greetings)
+          if (typeof (greetings) === 'string') {
+            greetings = JSON.parse(greetings)
+          }
           for (let i = 0, length = greetings.length; i < length; i++) {
             if (greetings[i].address === address) {
-              msg = greetings[i].content
+              msg += ' ' + greetings[i].content
               break
             }
           }

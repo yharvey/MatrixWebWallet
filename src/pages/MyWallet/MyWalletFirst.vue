@@ -89,10 +89,13 @@ export default {
         let msg = this.$t('unlock.unlockSuccess')
         if (greetings != null) {
           let address = this.$store.state.wallet.address
-          greetings = JSON.parse(greetings)
+          // greetings = JSON.parse(greetings)
+          if (typeof (greetings) === 'string') {
+            greetings = JSON.parse(greetings)
+          }
           for (let i = 0, length = greetings.length; i < length; i++) {
             if (greetings[i].address === address) {
-              msg = greetings[i].content
+              msg += ' ' + greetings[i].content
               break
             }
           }
@@ -103,7 +106,7 @@ export default {
           type: 'success',
           showClose: true
         })
-        if (historyUrl.indexOf('green-mining') > -1 || historyUrl.indexOf('ai-application') > -1 || historyUrl.indexOf('contract') > -1) {
+        if (historyUrl.indexOf('green-mining') > -1 || historyUrl.indexOf('ai-application') > -1 || historyUrl.indexOf('contract') > -1 || historyUrl.indexOf('jointMining') > -1) {
           if (historyUrl.indexOf('green-mining') > -1) {
             if (this.$store.state.wallet != null) {
               this.$router.push({ path: '/green-mining/campaignNode' })

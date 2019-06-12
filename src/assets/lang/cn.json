@@ -12,7 +12,8 @@
     "sure": "确认",
     "cancel": "取消",
     "refund": "挖矿账户",
-    "offlineSend": "离线交易"
+    "offlineSend": "离线交易",
+    "jointMining":"联合挖矿"
   },
   "myWallet": {
     "queryWallet": "查询钱包",

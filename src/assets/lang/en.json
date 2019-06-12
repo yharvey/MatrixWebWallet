@@ -12,7 +12,8 @@
     "sure": "Yes, close",
     "cancel": "Cancel",
     "refund": "Mining Account",
-    "offlineSend": "Send Offline"
+    "offlineSend": "Send Offline",
+    "jointMining":"联合挖矿"
   },
   "myWallet": {
     "queryWallet": "Open Wallet Using",

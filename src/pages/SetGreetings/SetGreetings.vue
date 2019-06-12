@@ -34,14 +34,18 @@ export default {
   },
   methods: {
     save () {
+      debugger
       if (this.address !== '') {
         if (this.content !== '') {
           let greetings = store.get('greetings')
-          if (greetings === null) {
+          if (typeof (greetings) === 'string') {
+            greetings = JSON.parse(greetings)
+          }
+          if (greetings == null) {
             greetings = []
             greetings.push({ address: this.address, content: this.content })
           } else {
-            greetings = JSON.parse(greetings)
+            // greetings = JSON.parse(greetings)
             let index = -1
             for (let i = 0, length = greetings.length; i < length; i++) {
               if (greetings[i].address === this.address) {
@@ -54,7 +58,7 @@ export default {
               greetings.push({ address: this.address, content: this.content })
             }
           }
-          store.set('greetings', JSON.stringify(greetings))
+          store.set('greetings', greetings)
           this.$message.success(this.$t('setGreeting.setSuccess'))
           this.contentError = false
           if (JSON.stringify(this.$route.query) === '{}') {

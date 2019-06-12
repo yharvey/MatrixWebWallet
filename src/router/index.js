@@ -58,6 +58,13 @@ import RegularMortgage from '@/components/RegularMortgage/RegularMortgage'
 import RegularWithdrawals from '@/components/RegularWithdrawals/RegularWithdrawals'
 import CurrentWithdrawals from '@/components/CurrentWithdrawals/CurrentWithdrawals'
 import CurrentRefund from '@/components/CurrentRefund/CurrentRefund'
+import JointMining from '@/pages/JointMining/JointMining'
+import JointMiningfirst from '@/pages/JointMining/JointMiningfirst'
+import CreateJoin from '@/components/CreateJoin/CreateJoin'
+import JointDetail from '@/components/JointDetail/JointDetail'
+import ParticipantsDetail from '@/components/ParticipantsDetail/ParticipantsDetail'
+import JoinRegular from '@/components/JoinRegular/JoinRegular'
+import JoinCurrent from '@/components/JoinCurrent/JoinCurrent'
 
 Vue.use(Router)
 
@@ -301,6 +308,40 @@ let router = new Router({
         name: 'SendTransferData',
         component: SendTransferData
       }]
+    }, {
+      path: '/jointMining',
+      name: 'JointMining',
+      component: JointMining,
+      children: [{
+        path: 'jointMiningfirst',
+        name: 'JointMiningfirst',
+        component: JointMiningfirst
+      },
+      {
+        path: 'createJoin',
+        name: 'CreateJoin',
+        component: CreateJoin
+      },
+      {
+        path: 'jointDetail',
+        name: 'JointDetail',
+        component: JointDetail
+      },
+      {
+        path: 'participantsDetail',
+        name: 'ParticipantsDetail',
+        component: ParticipantsDetail
+      }, {
+        path: 'joinCurrent',
+        name: 'JoinCurrent',
+        component: JoinCurrent
+      }, {
+        path: 'joinRegular',
+        name: 'JoinRegular',
+        component: JoinRegular
+      }
+
+      ]
     }]
   }]
 })
