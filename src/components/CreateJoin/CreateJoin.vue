@@ -65,8 +65,8 @@ export default {
       let nonce = this.httpProvider.man.getTransactionCount(this.address)
       nonce = WalletUtil.numToHex(nonce)
       let data = {
-        to: contract,
-        value: 0,
+        to: contractAddress,
+        value: 100000,
         gasLimit: 210000,
         data: '',
         gasPrice: 18000000000,

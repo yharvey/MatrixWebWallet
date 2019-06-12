@@ -172,8 +172,8 @@ export default {
             store.commit('UPDATE_HISTORYURL', '/sendOffline/offlineUnlock')
             this.$router.push({ path: '/sendOffline/offlineUnlock' })
           } else if (status === 'jointMining') {
-            store.commit('UPDATE_BEFOREURL', '/jointMining')
-            store.commit('UPDATE_HISTORYURL', '/jointMining')
+            store.commit('UPDATE_BEFOREURL', '/jointMining/JointMiningfirst')
+            store.commit('UPDATE_HISTORYURL', '/jointMining/JointMiningfirst')
             this.$router.push({ path: '/jointMining/JointMiningfirst' })
           } else {
             store.commit('UPDATE_BEFOREURL', '/' + status)

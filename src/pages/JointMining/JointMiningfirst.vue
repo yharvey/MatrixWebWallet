@@ -92,6 +92,8 @@ export default {
   components: {
   },
   mounted () {
+    let nonce = this.httpProvider.man.getValidatorGroupInfo()
+    console.log(nonce)
   }
 }
 </script>
