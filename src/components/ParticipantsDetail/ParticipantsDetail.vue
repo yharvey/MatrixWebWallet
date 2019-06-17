@@ -4,17 +4,18 @@
       <div class="header">
         <div class="line-center between">
           <div class="line-center">
-            <div><span class="font-weight-style">账户：</span>MAN.4Pn182LSJ3JNr9by4T5kDKsf127Jb</div>
-            <div style="margin-left: 7rem;"><a>退出所有抵押</a> </div>
+            <div><span class="font-weight-style">账户：</span>{{participantsDetail.Address}}</div>
+            <div style="margin-left: 7rem;"
+                 v-if="address === creatAddress"><a @click="withdrawAll()">退出所有抵押</a> </div>
           </div>
-          <div style=" text-align:right"><a>返回</a> </div>
+          <div style=" text-align:right"><a @click="backPage()">返回</a> </div>
         </div>
         <div class="line-center distance-top between">
           <div class="line-center">
-            <div><span class="font-weight-style">抵押总额:</span>300000.992929929</div>
-            <div style="margin-left: 17rem;"><span class="font-weight-style">累计奖励: 1000MAN</span> </div>
+            <div><span class="font-weight-style">抵押总额:</span>{{participantsDetail.AllAmount |weiToNumber}}MAN</div>
+            <div style="margin-left: 17rem;"><span class="font-weight-style">累计奖励: {{participantsDetail.Reward |weiToNumber}}MAN</span> </div>
           </div>
-          <div style="text-align:right"><a>奖励提款</a> </div>
+          <div style="text-align:right"><a @click="getReward()">奖励提款</a> </div>
         </div>
       </div>
     </el-card>
@@ -22,24 +23,33 @@
       <div class="commonTable">
         <el-table :data="tableData"
                   style="width: 100%">
-          <el-table-column label="类型"
-                           prop="type">
+          <el-table-column label="类型">
+            <template slot-scope="scope">
+              {{scope.row.type===0?'活期':'定期'}}
+            </template>
           </el-table-column>
           <el-table-column label="金额"
                            prop="value">
+            <template slot-scope="scope">
+              {{scope.row.value | weiToNumber}}
+            </template>
           </el-table-column>
-          <el-table-column label="时间"
-                           prop="time">
-          </el-table-column>
-          <el-table-column label="状态"
-                           prop="state">
+          <el-table-column label="状态">
+            <template slot-scope="scope">
+              {{scope.row.isDeposite === 0?'抵押中':'已解除抵押'}}
+            </template>
           </el-table-column>
           <el-table-column label="操作"
                            prop="opration">
             <template slot-scope="scope">
               <el-button @click="opration(scope.row)"
+                         v-if="scope.row.isDeposite===0"
                          type="text"
-                         size="small">{{scope.row.opration}}</el-button>
+                         size="small">{{'解除抵押'}}</el-button>
+              <el-button @click="refund(scope.row.Position)"
+                         v-if="scope.row.isDeposite===1"
+                         type="text"
+                         size="small">{{'取款'}}</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -55,61 +65,284 @@
         </div>
       </div>
     </el-card>
+    <all-dialog :visible="visible"
+                @changeVisible="changeVisible"
+                :width="'800px'"
+                :msg="msg"
+                :hash="hash"></all-dialog>
+    <offline-dialog :width="'800px'"
+                    :transferJson="jsonObj"
+                    :confirmOffline="confirmOffline"
+                    @changeConfirmOffline="changeConfirmOffline"
+                    @openSendSign="openSendSign"></offline-dialog>
+    <send-sign :visible="sendSignVisible"
+               :width="'800px'"
+               :information="information"
+               @changeSendSign="changeSendSign"></send-sign>
   </div>
 </template>
-
 <script>
+import { joinChildAbi } from '@/assets/js/config.js'
+import filter from '@/assets/js/filters'
+import store from 'store'
+import WalletUtil from '@/assets/js/WalletUtil'
+import TradingFuns from '@/assets/js/TradingFuns'
+import SendTransfer from '@/assets/js/SendTransfer'
+import OfflineDialog from '@/components/TransferDialog/TipOfflineDialog'
+import sendSign from '@/components/TransferDialog/sendSignTransfer'
+import transferSuccess from '@/components/TransferDialog/transferSuccess'
+import AllDialog from '@/components/TransferDialog/AllDialog'
 export default {
-  name: 'jointDetail',
+  name: 'participantsDetail',
   data () {
     return {
       tableData: [
-        {
-          type: '定期',
-          value: '1000MAN',
-          time: '2019/6/10 12:00:00',
-          state: '抵押中',
-          opration: '解除抵押'
-        },
-        {
-          type: '活期',
-          value: '1000MAN',
-          time: '2019/6/10 12:00:00',
-          state: '抵押中',
-          opration: '解除抵押'
-        },
-        {
-          type: '活期',
-          value: '1000MAN',
-          time: '2019/6/10 12:00:00',
-          state: '抵押中',
-          opration: '解除抵押'
-        }, {
-          type: '活期',
-          value: '1000MAN',
-          time: '2019/6/10 12:00:00',
-          state: '抵押中',
-          opration: '解除抵押'
-        }
-
-      ]
+      ],
+      participantsDetail: {
+      },
+      jointAccount: '',
+      address: '',
+      msg: '',
+      hash: '',
+      confirmOffline: false,
+      jsonObj: '',
+      sendSignVisible: false,
+      information: '',
+      visible: false,
+      creatAddress: ''
     }
   },
   methods: {
+    openSendSign () {
+      this.sendSignVisible = true
+    },
+    changeSendSign (data) {
+      this.sendSignVisible = false
+      if (data != null && data !== false) {
+        this.hash = data.hash
+        this.visible = true
+        this.mortgageAddrress = ''
+        this.value = ''
+      }
+    },
+    changeConfirmOffline (data) {
+      this.confirmOffline = false
+      if (data !== false) {
+        this.sendSignVisible = true
+        this.information = data
+      }
+    },
+    changeVisible (state) {
+      this.visible = state
+    },
+    backPage () {
+      this.$router.back()
+    },
     goPage (url) {
       this.$router.push({ path: '/jointMining/' + url })
     },
     opration (row) {
-      if (row.type === '定期') {
-        this.$router.push({ path: '/jointMining/joinRegular' })
+      row.jointAccount = this.jointAccount
+      if (row.type === 1) {
+        this.$router.push({ name: 'JoinRegular', params: { data: row } })
       } else {
-        this.$router.push({ path: '/jointMining/joinCurrent' })
+        this.$router.push({ name: 'JoinCurrent', params: { data: row } })
+      }
+    },
+    refund (position) {
+      let abiArray = JSON.parse(joinChildAbi)
+      let contractAddress = this.jointAccount
+      let contract = this.ethProvider.eth.Contract(abiArray, contractAddress)
+      let nonce = this.httpProvider.man.getTransactionCount(this.address)
+      nonce = WalletUtil.numToHex(nonce)
+      let data = {
+        to: this.jointAccount,
+        value: 0,
+        gasLimit: 210000,
+        data: '',
+        gasPrice: 18000000000,
+        extra_to: [[0, 0, []]],
+        nonce: nonce
+      }
+      let jsonObj = TradingFuns.getTxData(data)
+      jsonObj.data = contract.methods.refund(position).encodeABI()
+      if (this.$store.state.wallet != null) {
+        let tx = WalletUtil.createTx(jsonObj)
+        let privateKey = this.$store.state.wallet.privateKey
+        privateKey = Buffer.from(privateKey.indexOf('0x') > -1 ? privateKey.substring(2, privateKey.length) : privateKey, 'hex')
+        tx.sign(privateKey)
+        let serializedTx = tx.serialize()
+        this.newTxData = SendTransfer.getTxParams(serializedTx)
+        let hash = this.httpProvider.man.sendRawTransaction(this.newTxData)
+        this.hash = hash
+        console.log(hash)
+        this.visible = true
+        let recordArray = store.get(this.address)
+        if ((typeof (recordArray) === 'string')) {
+          recordArray = JSON.parse(recordArray)
+        }
+        if (recordArray == null) {
+          recordArray = []
+        }
+        recordArray.push({ hash: this.hash, newTxData: { commitTime: this.newTxData.commitTime, txType: this.newTxData.txType } })
+        store.set(this.address, recordArray)
+      }
+    },
+    withdrawAll () {
+      let abiArray = JSON.parse(joinChildAbi)
+      let contractAddress = this.jointAccount
+      let contract = this.ethProvider.eth.Contract(abiArray, contractAddress)
+      let nonce = this.httpProvider.man.getTransactionCount(this.address)
+      nonce = WalletUtil.numToHex(nonce)
+      let data = {
+        to: this.jointAccount,
+        value: 0,
+        gasLimit: 210000,
+        data: '',
+        gasPrice: 18000000000,
+        extra_to: [[0, 0, []]],
+        nonce: nonce
+      }
+      let jsonObj = TradingFuns.getTxData(data)
+      jsonObj.data = contract.methods.withdrawAll().encodeABI()
+      if (this.$store.state.wallet != null) {
+        let tx = WalletUtil.createTx(jsonObj)
+        let privateKey = this.$store.state.wallet.privateKey
+        privateKey = Buffer.from(privateKey.indexOf('0x') > -1 ? privateKey.substring(2, privateKey.length) : privateKey, 'hex')
+        tx.sign(privateKey)
+        let serializedTx = tx.serialize()
+        this.newTxData = SendTransfer.getTxParams(serializedTx)
+        let hash = this.httpProvider.man.sendRawTransaction(this.newTxData)
+        this.hash = hash
+        this.visible = true
+        let recordArray = store.get(this.address)
+        if ((typeof (recordArray) === 'string')) {
+          recordArray = JSON.parse(recordArray)
+        }
+        if (recordArray == null) {
+          recordArray = []
+        }
+        recordArray.push({ hash: this.hash, newTxData: { commitTime: this.newTxData.commitTime, txType: this.newTxData.txType } })
+        store.set(this.address, recordArray)
+      }
+    },
+    init () {
+      this.participantsDetail = this.$route.params.participantsDetail
+      this.participantsDetail.Address = filter.getManAddress(this.participantsDetail.Address)
+      this.jointAccount = this.participantsDetail.jointAccount
+      this.creatAddress = this.participantsDetail.creatAddress
+      console.log(this.participantsDetail.creatAddress + '签名账户')
+      if (parseInt(this.participantsDetail.Current.Amount) > 0) {
+        this.tableData.push(
+          {
+            type: 0,
+            value: this.participantsDetail.Current.Amount,
+            opration: 0,
+            isDeposite: 0,
+            Position: 0
+          }
+        )
+      }
+      if (this.participantsDetail.Current.WithdrawList.length > 0) {
+        this.participantsDetail.Current.WithdrawList.forEach(current => {
+          this.tableData.push(
+            {
+              type: 0,
+              value: current.WithDrawAmount,
+              opration: 1,
+              isDeposite: 1,
+              Position: 0
+            }
+          )
+        })
+      }
+      this.participantsDetail.Positions.forEach(element => {
+        if (element.EndTime === 0) {
+          this.tableData.push(
+            {
+              type: 1,
+              value: element.Amount,
+              opration: element.Position,
+              Position: element.Position,
+              isDeposite: 0
+            }
+          )
+        } else {
+          this.tableData.push(
+            {
+              type: 1,
+              value: element.Amount,
+              opration: element.Position,
+              Position: element.Position,
+              isDeposite: 1
+            }
+          )
+        }
+      })
+    },
+    getReward () {
+      let abiArray = JSON.parse(joinChildAbi)
+      let contractAddress = this.jointAccount
+      let contract = this.ethProvider.eth.Contract(abiArray, contractAddress)
+      let nonce = this.httpProvider.man.getTransactionCount(this.address)
+      nonce = WalletUtil.numToHex(nonce)
+      let data = {
+        to: this.jointAccount,
+        value: 0,
+        gasLimit: 210000,
+        data: '',
+        gasPrice: 18000000000,
+        extra_to: [[0, 0, []]],
+        nonce: nonce
+      }
+      let jsonObj = TradingFuns.getTxData(data)
+      jsonObj.data = contract.methods.getReward().encodeABI()
+      if (this.$store.state.wallet != null) {
+        let tx = WalletUtil.createTx(jsonObj)
+        let privateKey = this.$store.state.wallet.privateKey
+        privateKey = Buffer.from(privateKey.indexOf('0x') > -1 ? privateKey.substring(2, privateKey.length) : privateKey, 'hex')
+        tx.sign(privateKey)
+        let serializedTx = tx.serialize()
+        this.newTxData = SendTransfer.getTxParams(serializedTx)
+        let hash = this.httpProvider.man.sendRawTransaction(this.newTxData)
+        this.hash = hash
+        console.log(hash)
+        this.visible = true
+        let recordArray = store.get(this.address)
+        if ((typeof (recordArray) === 'string')) {
+          recordArray = JSON.parse(recordArray)
+        }
+        if (recordArray == null) {
+          recordArray = []
+        }
+        recordArray.push({ hash: this.hash, newTxData: { commitTime: this.newTxData.commitTime, txType: this.newTxData.txType } })
+        store.set(this.address, recordArray)
       }
     }
   },
-  components: {
+  watch: {
+    $route (to, from) {
+      if (to.path.indexOf('participantsDetail') > -1) {
+        if (this.$route.params.participantsDetail) {
+          this.tableData = []
+          this.init()
+        }
+      }
+    }
   },
   mounted () {
+    if (this.$store.state.offline != null) {
+      this.address = this.$store.state.offline
+    } else {
+      this.address = this.$store.getters.wallet.address
+    }
+    this.init()
+  },
+  components: {
+    AllDialog,
+    OfflineDialog,
+    sendSign,
+    transferSuccess
   }
 }
 </script>

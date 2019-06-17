@@ -34,7 +34,6 @@ export default {
   },
   methods: {
     save () {
-      debugger
       if (this.address !== '') {
         if (this.content !== '') {
           let greetings = store.get('greetings')

@@ -53,7 +53,6 @@ import SendTransferData from '@/pages/SendOffline/SendTransferData'
 import DigAccount from '@/components/DigAccount/DigAccount'
 import CurrentMortgage from '@/components/CurrentMortgage/CurrentMortgage'
 import RegularDetail from '@/components/RegularDetail/RegularDetail'
-import RefundDetail from '@/components/RefundDetail/RefundDetail'
 import RegularMortgage from '@/components/RegularMortgage/RegularMortgage'
 import RegularWithdrawals from '@/components/RegularWithdrawals/RegularWithdrawals'
 import CurrentWithdrawals from '@/components/CurrentWithdrawals/CurrentWithdrawals'
@@ -65,6 +64,7 @@ import JointDetail from '@/components/JointDetail/JointDetail'
 import ParticipantsDetail from '@/components/ParticipantsDetail/ParticipantsDetail'
 import JoinRegular from '@/components/JoinRegular/JoinRegular'
 import JoinCurrent from '@/components/JoinCurrent/JoinCurrent'
+import JointAdd from '@/components/JointAdd/JointAdd'
 
 Vue.use(Router)
 
@@ -157,10 +157,6 @@ let router = new Router({
         path: 'regularDetail',
         name: 'RegularDetail',
         component: RegularDetail
-      }, {
-        path: 'refundDetail',
-        name: 'RefundDetail',
-        component: RefundDetail
       }, {
         path: 'regularMortgage',
         name: 'RegularMortgage',
@@ -339,8 +335,11 @@ let router = new Router({
         path: 'joinRegular',
         name: 'JoinRegular',
         component: JoinRegular
+      }, {
+        path: 'jointAdd',
+        name: 'JointAdd',
+        component: JointAdd
       }
-
       ]
     }]
   }]

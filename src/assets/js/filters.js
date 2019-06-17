@@ -3,6 +3,8 @@ import Man from 'aiman'
 import BigNumber from 'bignumber.js'
 import ManUtils from '@/assets/js/ManUtils'
 
+const bs58 = require('bs58')
+const polycrc = require('polycrc')
 const manUtil = new Man()
 
 const numberToWei = function (value) {
@@ -11,6 +13,20 @@ const numberToWei = function (value) {
   } catch (e) {
     return e
   }
+}
+
+const getManAddress = function (address) {
+  let crc8 = polycrc.crc(8, 0x07, 0x00, 0x00, false)
+  if (address.substring(0, 2) === '0x') {
+    address = address.substring(2, address.length)
+  }
+  const bytes = Buffer.from(address, 'hex')
+  const manAddress = bs58.encode(bytes)
+  let arr = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P',
+    'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i',
+    'j', 'k', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
+  ]
+  return ('MAN.' + manAddress) + arr[crc8('MAN.' + manAddress) % 58]
 }
 
 const weiToNumber = function (value) {
@@ -107,5 +123,6 @@ export default {
   incomeFilter,
   isNodeFilter,
   pageFilter,
-  txTypeFilter
+  txTypeFilter,
+  getManAddress
 }

@@ -9,31 +9,98 @@
         </span>
       </div>
       <h5 class="h5-dis">定期抵押金额</h5>
-      <el-input v-model="value"></el-input>
-      <h5 class="h5-dis">到期时间</h5>
-      <el-input v-model="time"></el-input>
-      <button class="common-button h5-dis">解除抵押</button>
+      <el-input readonly=""
+                v-model="data.value"
+                type="number"></el-input>
+      <button class="common-button h5-dis"
+              @click="withdraw">解除抵押</button>
     </el-card>
+    <all-dialog :visible="visible"
+                @changeVisible="changeVisible"
+                :width="'800px'"
+                :msg="msg"
+                :hash="hash"></all-dialog>
   </div>
 </template>
-
 <script>
+import { joinChildAbi } from '@/assets/js/config.js'
+import store from 'store'
+import WalletUtil from '@/assets/js/WalletUtil'
+import TradingFuns from '@/assets/js/TradingFuns'
+import SendTransfer from '@/assets/js/SendTransfer'
+import filter from '@/assets/js/filters'
+import BigNumber from 'bignumber.js'
+import AllDialog from '@/components/TransferDialog/AllDialog'
 export default {
   name: 'jointRegular',
   data () {
     return {
-      value: '2000',
-      time: '2019/06/10 12:30：00 '
+      address: '',
+      data: { value: 0 },
+      msg: '',
+      hash: '',
+      visible: false
     }
   },
   methods: {
     backPage () {
       this.$router.back()
+    },
+    changeVisible (state) {
+      this.visible = state
+    },
+    withdraw () {
+      let abiArray = JSON.parse(joinChildAbi)
+      let contractAddress = this.data.jointAccount
+      let contract = this.ethProvider.eth.Contract(abiArray, contractAddress)
+      let nonce = this.httpProvider.man.getTransactionCount(this.address)
+      nonce = WalletUtil.numToHex(nonce)
+      let data = {
+        to: this.data.jointAccount,
+        value: 0,
+        gasLimit: 210000,
+        data: '',
+        gasPrice: 18000000000,
+        extra_to: [[0, 0, []]],
+        nonce: nonce
+      }
+      let jsonObj = TradingFuns.getTxData(data)
+      jsonObj.data = contract.methods.withdraw(this.httpProvider.toWei(new BigNumber(this.data.value).toString(10)), parseInt(this.data.opration)).encodeABI()
+      if (this.$store.state.wallet != null) {
+        let tx = WalletUtil.createTx(jsonObj)
+        let privateKey = this.$store.state.wallet.privateKey
+        privateKey = Buffer.from(privateKey.indexOf('0x') > -1 ? privateKey.substring(2, privateKey.length) : privateKey, 'hex')
+        tx.sign(privateKey)
+        let serializedTx = tx.serialize()
+        this.newTxData = SendTransfer.getTxParams(serializedTx)
+        let hash = this.httpProvider.man.sendRawTransaction(this.newTxData)
+        this.hash = hash
+        console.log(hash)
+        this.visible = true
+        let recordArray = store.get(this.address)
+        if ((typeof (recordArray) === 'string')) {
+          recordArray = JSON.parse(recordArray)
+        }
+        if (recordArray == null) {
+          recordArray = []
+        }
+        recordArray.push({ hash: this.hash, newTxData: { commitTime: this.newTxData.commitTime, txType: this.newTxData.txType } })
+        store.set(this.address, recordArray)
+      }
     }
   },
   components: {
+    AllDialog
   },
   mounted () {
+    this.data = this.$route.params.data
+    this.data.value = filter.weiToNumber(this.data.value)
+    console.log('活期' + this.data.jointAccount)
+    if (this.$store.state.offline != null) {
+      this.address = this.$store.state.offline
+    } else {
+      this.address = this.$store.getters.wallet.address
+    }
   }
 }
 </script>

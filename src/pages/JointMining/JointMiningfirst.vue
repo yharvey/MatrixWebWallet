@@ -8,68 +8,19 @@
       </div>
     </el-card>
     <el-card class="box-card2">
-      <div class="dis-flex between left-distance distance-top">
-        <div>
-          <div><span class="font-weight-style">联合账户：</span> MAN.4Pn182LSJ3JNr9by4T5kDKsf127Jb</div>
-          <div class="dis-flex between distance-top">
-            <div><span class="font-weight-style">活跃账户：</span>318</div>
-            <div><span class="font-weight-style">总抵押：</span>1000MAN</div>
+      <div v-for="(item,index) in validatorList"
+           :key="index">
+        <div class="dis-flex between left-distance distance-top">
+          <div>
+            <div><span class="font-weight-style">联合账户：</span> {{item.jointAccount}}</div>
+            <div class="dis-flex between distance-top">
+              <div><span class="font-weight-style">活跃账户：</span>{{item.activeCount}}</div>
+              <div><span class="font-weight-style">总抵押：</span>{{item.allAmount }}MAN</div>
+            </div>
           </div>
-        </div>
-        <div class="distance-top">
-          <a @click="setSignAccount()">修改签名地址</a>
-        </div>
-      </div>
-      <hr>
-      <div class="dis-flex between left-distance distance-top">
-        <div>
-          <div><span class="font-weight-style">联合账户：</span> MAN.4Pn182LSJ3JNr9by4T5kDKsf127Jb</div>
-          <div class="dis-flex between distance-top">
-            <div><span class="font-weight-style">活跃账户：</span>318</div>
-            <div><span class="font-weight-style">总抵押：</span>1000MAN</div>
+          <div class="distance-top">
+            <a @click="jointDetail(item)">详情</a>
           </div>
-        </div>
-        <div class="distance-top">
-          <a @click="goPage('jointDetail')">详情</a>
-        </div>
-      </div>
-      <hr>
-      <div class="dis-flex between left-distance distance-top">
-        <div>
-          <div><span class="font-weight-style">联合账户：</span> MAN.4Pn182LSJ3JNr9by4T5kDKsf127Jb</div>
-          <div class="dis-flex between distance-top">
-            <div><span class="font-weight-style">活跃账户：</span>318</div>
-            <div><span class="font-weight-style">总抵押：</span>1000MAN</div>
-          </div>
-        </div>
-        <div class="distance-top">
-          <a>详情</a>
-        </div>
-      </div>
-      <hr>
-      <div class="dis-flex between left-distance distance-top">
-        <div>
-          <div><span class="font-weight-style">联合账户：</span> MAN.4Pn182LSJ3JNr9by4T5kDKsf127Jb</div>
-          <div class="dis-flex between distance-top">
-            <div><span class="font-weight-style">活跃账户：</span>318</div>
-            <div><span class="font-weight-style">总抵押：</span>1000MAN</div>
-          </div>
-        </div>
-        <div class="distance-top">
-          <a>详情</a>
-        </div>
-      </div>
-      <hr>
-      <div class="dis-flex between left-distance distance-top">
-        <div>
-          <div><span class="font-weight-style">联合账户：</span> MAN.4Pn182LSJ3JNr9by4T5kDKsf127Jb</div>
-          <div class="dis-flex between distance-top">
-            <div><span class="font-weight-style">活跃账户：</span>318</div>
-            <div><span class="font-weight-style">总抵押：</span>1000MAN</div>
-          </div>
-        </div>
-        <div class="distance-top">
-          <a>详情</a>
         </div>
       </div>
       <hr>
@@ -83,6 +34,8 @@ import store from 'store'
 import WalletUtil from '@/assets/js/WalletUtil'
 import TradingFuns from '@/assets/js/TradingFuns'
 import SendTransfer from '@/assets/js/SendTransfer'
+import filter from '@/assets/js/filters'
+import BigNumber from 'bignumber.js'
 export default {
   name: 'jointMining',
   data () {
@@ -93,6 +46,9 @@ export default {
   methods: {
     goPage (url) {
       this.$router.push({ path: '/jointMining/' + url })
+    },
+    jointDetail (detailObj) {
+      this.$router.push({ name: 'JointDetail', params: { detailObj: detailObj } })
     },
     setSignAccount () {
       let abiArray = JSON.parse(joinChildAbi)
@@ -133,45 +89,6 @@ export default {
         store.set(this.address, recordArray)
       }
     },
-    withdrawAll () {
-      let abiArray = JSON.parse(joinChildAbi)
-      let contractAddress = joinContract
-      let contract = this.ethProvider.eth.Contract(abiArray, contractAddress)
-      let nonce = this.httpProvider.man.getTransactionCount(this.address)
-      nonce = WalletUtil.numToHex(nonce)
-      let data = {
-        to: contractAddress,
-        value: 0,
-        gasLimit: 210000,
-        data: '',
-        gasPrice: 18000000000,
-        extra_to: [[0, 0, []]],
-        nonce: nonce
-      }
-      let jsonObj = TradingFuns.getTxData(data)
-      jsonObj.data = contract.methods.withdrawAll().encodeABI()
-      if (this.$store.state.wallet != null) {
-        let tx = WalletUtil.createTx(jsonObj)
-        let privateKey = this.$store.state.wallet.privateKey
-        privateKey = Buffer.from(privateKey.indexOf('0x') > -1 ? privateKey.substring(2, privateKey.length) : privateKey, 'hex')
-        tx.sign(privateKey)
-        let serializedTx = tx.serialize()
-        this.newTxData = SendTransfer.getTxParams(serializedTx)
-        let hash = this.httpProvider.man.sendRawTransaction(this.newTxData)
-        this.hash = hash
-        console.log(hash)
-        this.visible = true
-        let recordArray = store.get(this.address)
-        if ((typeof (recordArray) === 'string')) {
-          recordArray = JSON.parse(recordArray)
-        }
-        if (recordArray == null) {
-          recordArray = []
-        }
-        recordArray.push({ hash: this.hash, newTxData: { commitTime: this.newTxData.commitTime, txType: this.newTxData.txType } })
-        store.set(this.address, recordArray)
-      }
-    },
     addDeposit () {
       let abiArray = JSON.parse(joinChildAbi)
       let contractAddress = joinContract
@@ -179,8 +96,8 @@ export default {
       let nonce = this.httpProvider.man.getTransactionCount(this.address)
       nonce = WalletUtil.numToHex(nonce)
       let data = {
-        to: contractAddress,
-        value: 100,
+        to: 'MAN.4N33zUiDrgL182kTkCgYEKJXwwyBV',
+        value: 1000,
         gasLimit: 210000,
         data: '',
         gasPrice: 18000000000,
@@ -189,123 +106,6 @@ export default {
       }
       let jsonObj = TradingFuns.getTxData(data)
       jsonObj.data = contract.methods.addDeposit(0).encodeABI()
-      if (this.$store.state.wallet != null) {
-        let tx = WalletUtil.createTx(jsonObj)
-        let privateKey = this.$store.state.wallet.privateKey
-        privateKey = Buffer.from(privateKey.indexOf('0x') > -1 ? privateKey.substring(2, privateKey.length) : privateKey, 'hex')
-        tx.sign(privateKey)
-        let serializedTx = tx.serialize()
-        this.newTxData = SendTransfer.getTxParams(serializedTx)
-        let hash = this.httpProvider.man.sendRawTransaction(this.newTxData)
-        this.hash = hash
-        console.log(hash)
-        this.visible = true
-        let recordArray = store.get(this.address)
-        if ((typeof (recordArray) === 'string')) {
-          recordArray = JSON.parse(recordArray)
-        }
-        if (recordArray == null) {
-          recordArray = []
-        }
-        recordArray.push({ hash: this.hash, newTxData: { commitTime: this.newTxData.commitTime, txType: this.newTxData.txType } })
-        store.set(this.address, recordArray)
-      }
-    },
-    withdraw () {
-      let abiArray = JSON.parse(joinChildAbi)
-      let contractAddress = joinContract
-      let contract = this.ethProvider.eth.Contract(abiArray, contractAddress)
-      let nonce = this.httpProvider.man.getTransactionCount(this.address)
-      nonce = WalletUtil.numToHex(nonce)
-      let data = {
-        to: contractAddress,
-        value: 100,
-        gasLimit: 210000,
-        data: '',
-        gasPrice: 18000000000,
-        extra_to: [[0, 0, []]],
-        nonce: nonce
-      }
-      let jsonObj = TradingFuns.getTxData(data)
-      jsonObj.data = contract.methods.withdraw(0, this.httpProvider.toWei(100)).encodeABI()
-      if (this.$store.state.wallet != null) {
-        let tx = WalletUtil.createTx(jsonObj)
-        let privateKey = this.$store.state.wallet.privateKey
-        privateKey = Buffer.from(privateKey.indexOf('0x') > -1 ? privateKey.substring(2, privateKey.length) : privateKey, 'hex')
-        tx.sign(privateKey)
-        let serializedTx = tx.serialize()
-        this.newTxData = SendTransfer.getTxParams(serializedTx)
-        let hash = this.httpProvider.man.sendRawTransaction(this.newTxData)
-        this.hash = hash
-        console.log(hash)
-        this.visible = true
-        let recordArray = store.get(this.address)
-        if ((typeof (recordArray) === 'string')) {
-          recordArray = JSON.parse(recordArray)
-        }
-        if (recordArray == null) {
-          recordArray = []
-        }
-        recordArray.push({ hash: this.hash, newTxData: { commitTime: this.newTxData.commitTime, txType: this.newTxData.txType } })
-        store.set(this.address, recordArray)
-      }
-    },
-    refund () {
-      let abiArray = JSON.parse(joinChildAbi)
-      let contractAddress = joinContract
-      let contract = this.ethProvider.eth.Contract(abiArray, contractAddress)
-      let nonce = this.httpProvider.man.getTransactionCount(this.address)
-      nonce = WalletUtil.numToHex(nonce)
-      let data = {
-        to: contractAddress,
-        value: 0,
-        gasLimit: 210000,
-        data: '',
-        gasPrice: 18000000000,
-        extra_to: [[0, 0, []]],
-        nonce: nonce
-      }
-      let jsonObj = TradingFuns.getTxData(data)
-      jsonObj.data = contract.methods.refund(0).encodeABI()
-      if (this.$store.state.wallet != null) {
-        let tx = WalletUtil.createTx(jsonObj)
-        let privateKey = this.$store.state.wallet.privateKey
-        privateKey = Buffer.from(privateKey.indexOf('0x') > -1 ? privateKey.substring(2, privateKey.length) : privateKey, 'hex')
-        tx.sign(privateKey)
-        let serializedTx = tx.serialize()
-        this.newTxData = SendTransfer.getTxParams(serializedTx)
-        let hash = this.httpProvider.man.sendRawTransaction(this.newTxData)
-        this.hash = hash
-        console.log(hash)
-        this.visible = true
-        let recordArray = store.get(this.address)
-        if ((typeof (recordArray) === 'string')) {
-          recordArray = JSON.parse(recordArray)
-        }
-        if (recordArray == null) {
-          recordArray = []
-        }
-        recordArray.push({ hash: this.hash, newTxData: { commitTime: this.newTxData.commitTime, txType: this.newTxData.txType } })
-        store.set(this.address, recordArray)
-      }
-    },
-    getReward () {
-      let abiArray = JSON.parse(joinChildAbi)
-      let contractAddress = joinContract
-      let contract = this.ethProvider.eth.Contract(abiArray, contractAddress)
-      let nonce = this.httpProvider.man.getTransactionCount(this.address)
-      nonce = WalletUtil.numToHex(nonce)
-      let data = {
-        to: contractAddress,
-        value: 0,
-        gasLimit: 210000,
-        data: '',
-        gasPrice: 18000000000,
-        extra_to: [[0, 0, []]],
-        nonce: nonce
-      }
-      let jsonObj = TradingFuns.getTxData(data)
-      jsonObj.data = contract.methods.getReward().encodeABI()
       if (this.$store.state.wallet != null) {
         let tx = WalletUtil.createTx(jsonObj)
         let privateKey = this.$store.state.wallet.privateKey
@@ -339,13 +139,23 @@ export default {
     } else {
       this.address = this.$store.getters.wallet.address
     }
-    // let data = this.httpProvider.man.getValidatorGroupInfo()
-    // // data.forEach(item => {
-    // //   this.validatorList.push({
-    // //     joinAddress: item
-    // //     activeNumber: 0
-    // //   })
-    // // });
+    let self = this
+    Object.keys(data).forEach(function (key) {
+      let item = data[key]
+      let allAmount = new BigNumber(0)
+      item.ValidatorMap.forEach(validator => {
+        allAmount = allAmount.plus(filter.weiToNumber(validator.AllAmount))
+      })
+      self.validatorList.push({
+        jointAccount: WalletUtil.getManAddress(key),
+        activeCount: item.ValidatorMap.length,
+        allAmount: allAmount.toString(10),
+        signAddress: WalletUtil.getManAddress(item.OwnerInfo.SignAddress),
+        validatorMap: item.ValidatorMap,
+        createAddress: WalletUtil.getManAddress(item.OwnerInfo.Owner)
+      })
+    })
+    console.log(this.validatorList)
   }
 }
 </script>

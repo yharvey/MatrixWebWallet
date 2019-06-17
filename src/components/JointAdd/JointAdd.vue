@@ -1,19 +1,17 @@
 <template>
-  <div class="createJoin">
+  <div class="jointAdd">
     <el-card>
       <div class="addForm">
-        <h1>创建联合挖矿</h1>
+        <h1>参与联合挖矿</h1>
         <span class="back-tittle"
               @click="backPage">
           <i class="el-icon-arrow-left"></i>
           {{$t('openWallet.back')}}
         </span>
         <!-- <h5>{{$t('associate.associateAddress')}}</h5> -->
-        <el-input placeholder="抵押金额 大于10万MAN"
+        <el-input placeholder="抵押金额"
                   v-model="value"
                   type="number"></el-input>
-        <el-input placeholder="签名地址后期可修改"
-                  v-model="signAddress"></el-input>
         <div>
           <el-select v-model="mortgageWay"
                      :placeholder="$t('CampaignNode.selectMortgageWay')">
@@ -34,34 +32,8 @@
             </el-option>
           </el-select>
         </div>
-        <el-input placeholder="创建者加权系数"
-                  v-model="ownerRate"></el-input>
-        <div class="show-flex-between">
-          <div>
-            <el-input class="small-input"
-                      v-model="lvlRate1"
-                      placeholder="参与者加权系数1"></el-input>
-          </div>
-          <div>小于 1万 MAN</div>
-        </div>
-        <div class="show-flex-between">
-          <div>
-            <el-input class="small-input"
-                      v-model="lvlRate2"
-                      placeholder="参与者加权系数2"></el-input>
-          </div>
-          <div>1万 -- 10万 MAN</div>
-        </div>
-        <div class="show-flex-between">
-          <div>
-            <el-input class="small-input"
-                      v-model="lvlRate3"
-                      placeholder="参与者加权系数3"></el-input>
-          </div>
-          <div>大于 10万 MAN</div>
-        </div>
         <button class="common-button"
-                @click="confirm">新建联合</button>
+                @click="addDeposit">参与联合</button>
       </div>
     </el-card>
     <all-dialog :visible="visible"
@@ -83,7 +55,7 @@
 
 <script>
 import SendTransfer from '@/assets/js/SendTransfer'
-import { joinAbi, joinContract } from '@/assets/js/config.js'
+import { joinChildAbi } from '@/assets/js/config.js'
 import store from 'store'
 import WalletUtil from '@/assets/js/WalletUtil'
 import TradingFuns from '@/assets/js/TradingFuns'
@@ -92,7 +64,7 @@ import sendSign from '@/components/TransferDialog/sendSignTransfer'
 import transferSuccess from '@/components/TransferDialog/transferSuccess'
 import AllDialog from '@/components/TransferDialog/AllDialog'
 export default {
-  name: 'createJoin',
+  name: 'jointAdd',
   data () {
     return {
       value: '',
@@ -101,17 +73,14 @@ export default {
       timeLimitList: [{ name: this.$t('CampaignNode.oneMonth'), key: '1' }, { name: this.$t('CampaignNode.threeMonth'), key: '3' }, { name: this.$t('CampaignNode.sixMonth'), key: '6' }, { name: this.$t('CampaignNode.oneYear'), key: '12' }],
       timeLimit: '',
       mortgageWay: '',
-      ownerRate: '',
-      lvlRate1: '',
-      lvlRate2: '',
-      lvlRate3: '',
       msg: '',
       hash: '',
       confirmOffline: false,
       jsonObj: '',
       sendSignVisible: false,
       information: '',
-      visible: false
+      visible: false,
+      jointAccount: ''
     }
   },
   methods: {
@@ -140,96 +109,15 @@ export default {
     backPage () {
       this.$router.back()
     },
-    confirm () {
-      try {
-        let abiArray = JSON.parse(joinAbi)
-        let contractAddress = joinContract
-        let contract = this.ethProvider.eth.Contract(abiArray, contractAddress)
-        let nonce = this.httpProvider.man.getTransactionCount(this.address)
-        nonce = WalletUtil.numToHex(nonce)
-        this.signAddress = this.signAddress.trim()
-        if (!WalletUtil.validateManAddress(this.signAddress)) {
-          this.$message.error(this.$t('transfer.addressTip'))
-          return
-        }
-        if (parseInt(this.value) < 100000) {
-          this.$message.error('请填写大于100000金额')
-          return
-        }
-        let data = {
-          to: contractAddress,
-          value: this.value,
-          gasLimit: 210000,
-          data: '',
-          gasPrice: 18000000000,
-          extra_to: [[0, 0, []]],
-          nonce: nonce
-        }
-        let jsonObj = TradingFuns.getTxData(data)
-        let dType = 0
-        if (this.mortgageWay === '') {
-          this.$message.error(this.$t('CampaignNode.selectMortgageWay'))
-          return
-        } else if (this.mortgageWay === 'regular') {
-          if (this.timeLimit === '') {
-            this.$message.error(this.$t('CampaignNode.selectTimeLimit'))
-            return
-          }
-          dType = parseInt(this.timeLimit)
-        }
-        if (this.ownerRate === '') {
-          this.$message.error(this.$t('创建者加权系数'))
-          return
-        }
-        if (this.lvlRate1 === '') {
-          this.$message.error(this.$t('参与者加权系数1'))
-          return
-        }
-        if (this.lvlRate2 === '') {
-          this.$message.error(this.$t('参与者加权系数2'))
-          return
-        }
-        if (this.lvlRate3 === '') {
-          this.$message.error(this.$t('参与者加权系数3'))
-          return
-        }
-        jsonObj.data = contract.methods.createValidatorGroup(WalletUtil.getEthAddress(this.signAddress), dType, parseInt(this.ownerRate), [parseInt(this.lvlRate1), parseInt(this.lvlRate2), parseInt(this.lvlRate3)]).encodeABI()
-        if (this.$store.state.wallet != null) {
-          let tx = WalletUtil.createTx(jsonObj)
-          let privateKey = this.$store.state.wallet.privateKey
-          privateKey = Buffer.from(privateKey.indexOf('0x') > -1 ? privateKey.substring(2, privateKey.length) : privateKey, 'hex')
-          tx.sign(privateKey)
-          let serializedTx = tx.serialize()
-          this.newTxData = SendTransfer.getTxParams(serializedTx)
-          let hash = this.httpProvider.man.sendRawTransaction(this.newTxData)
-          this.hash = hash
-          this.visible = true
-          let recordArray = store.get(this.address)
-          if ((typeof (recordArray) === 'string')) {
-            recordArray = JSON.parse(recordArray)
-          }
-          if (recordArray == null) {
-            recordArray = []
-          }
-          recordArray.push({ hash: this.hash, newTxData: { commitTime: this.newTxData.commitTime, txType: this.newTxData.txType } })
-          store.set(this.address, recordArray)
-        } else {
-          this.confirmOffline = true
-          this.jsonObj = JSON.stringify(jsonObj)
-        }
-      } catch (e) {
-        this.$message.error(e.message)
-      }
-    },
-    confirm1 () {
-      let abiArray = JSON.parse(joinAbi)
-      let contractAddress = joinContract
+    addDeposit () {
+      let abiArray = JSON.parse(joinChildAbi)
+      let contractAddress = this.jointAccount
       let contract = this.ethProvider.eth.Contract(abiArray, contractAddress)
       let nonce = this.httpProvider.man.getTransactionCount(this.address)
       nonce = WalletUtil.numToHex(nonce)
       let data = {
-        to: contractAddress,
-        value: 100000,
+        to: this.jointAccount,
+        value: parseInt(this.value),
         gasLimit: 210000,
         data: '',
         gasPrice: 18000000000,
@@ -237,7 +125,11 @@ export default {
         nonce: nonce
       }
       let jsonObj = TradingFuns.getTxData(data)
-      jsonObj.data = contract.methods.createValidatorGroup(WalletUtil.getEthAddress(this.address), 0, 1, [1, 10, 1]).encodeABI()
+      if (this.mortgageWay === 'regular') {
+        jsonObj.data = contract.methods.addDeposit(parseInt(this.timeLimit)).encodeABI()
+      } else {
+        jsonObj.data = contract.methods.addDeposit(0).encodeABI()
+      }
       if (this.$store.state.wallet != null) {
         let tx = WalletUtil.createTx(jsonObj)
         let privateKey = this.$store.state.wallet.privateKey
@@ -247,6 +139,7 @@ export default {
         this.newTxData = SendTransfer.getTxParams(serializedTx)
         let hash = this.httpProvider.man.sendRawTransaction(this.newTxData)
         this.hash = hash
+        console.log(hash)
         this.visible = true
         let recordArray = store.get(this.address)
         if ((typeof (recordArray) === 'string')) {
@@ -266,6 +159,8 @@ export default {
     } else {
       this.address = this.$store.getters.wallet.address
     }
+    this.jointAccount = this.$route.params.jointAccount
+    console.log(this.jointAccount)
   },
   components: {
     AllDialog,
@@ -276,7 +171,7 @@ export default {
 }
 </script>
 <style scoped lang="less">
-.createJoin {
+.jointAdd {
   width: 1040px;
   .addForm {
     /deep/.el-input {

@@ -3,66 +3,31 @@
     <el-card class="box-card1">
       <div class="header">
         <div class="text-left">
-          <div class="distance-top"><span class="font-weight-style">联合账户：</span>MAN.4Pn182LSJ3JNr9by4T5kDKsf127Jb</div>
-          <div class="distance-top"><span class="font-weight-style">创建者账户：</span>MAN.4Pn182LSJ3JNr9by4T5kDKsf127Jb</div>
+          <div class="distance-top"><span class="font-weight-style">联合账户：</span>{{detailObj.jointAccount}}</div>
+          <div class="distance-top"><span class="font-weight-style">创建者账户：</span>{{detailObj.signAddress}}</div>
           <div class="dis-flex between distance-top">
-            <div><span class="font-weight-style">参与人数：</span>100</div>
-            <div><span class="font-weight-style">抵押总额：</span>300000.992929929</div>
+            <div><span class="font-weight-style">参与人数：</span>{{detailObj.activeCount}}</div>
+            <div><span class="font-weight-style">抵押总额：</span>{{detailObj.allAmount}}</div>
           </div>
         </div>
-        <div><a> 参与联合</a></div>
+        <div><a @click="jointAdd()"> 参与联合</a></div>
       </div>
     </el-card>
     <el-card class="box-card2">
-      <div class="dis-flex between left-distance distance-top text-left">
-        <div class="list-width">
-          <div class="dis-flex between distance-top ">
-            <div><span class="font-weight-style">账户：</span> MAN.4Pn182LSJ3JNr9by4T5kDKsf127Jb</div>
-            <div><span class="font-weight-style">累计奖励：1000MAN</span></div>
+      <div v-for="(item,index) in detailObj.validatorMap"
+           :key="index">
+        <div class="dis-flex between left-distance distance-top text-left">
+          <div class="list-width">
+            <div class="dis-flex between distance-top ">
+              <div><span class="font-weight-style">账户：</span> {{item.Address | getManAddress}}</div>
+              <div><span class="font-weight-style">累计奖励：{{item.Reward | weiToNumber}}MAN</span></div>
+            </div>
+            <div class="distance-top"><span class="font-weight-style">抵押总金额：{{item.AllAmount | weiToNumber}} </span></div>
           </div>
-          <div class="distance-top"><span class="font-weight-style">抵押总金额：100 </span></div>
-        </div>
-        <div class="distance-top">
-          <a @click="goPage('participantsDetail')">详情</a>
-        </div>
-      </div>
-      <hr>
-       <div class="dis-flex between left-distance distance-top text-left">
-        <div class="list-width">
-          <div class="dis-flex between distance-top ">
-            <div><span class="font-weight-style">账户：</span> MAN.4Pn182LSJ3JNr9by4T5kDKsf127Jb</div>
-            <div><span class="font-weight-style">累计奖励：1000MAN</span></div>
+          <div class="distance-top"
+               v-if="ethAddress===item.Address">
+            <a @click="participantsDetail(item)">详情</a>
           </div>
-          <div class="distance-top"><span class="font-weight-style">抵押总金额：100 </span></div>
-        </div>
-        <div class="distance-top">
-          <a @click="goPage('ParticipantsDetail')">详情</a>
-        </div>
-      </div>
-      <hr>
-       <div class="dis-flex between left-distance distance-top text-left">
-        <div class="list-width">
-          <div class="dis-flex between distance-top ">
-            <div><span class="font-weight-style">账户：</span> MAN.4Pn182LSJ3JNr9by4T5kDKsf127Jb</div>
-            <div><span class="font-weight-style">累计奖励：1000MAN</span></div>
-          </div>
-          <div class="distance-top"><span class="font-weight-style">抵押总金额：100 </span></div>
-        </div>
-        <div class="distance-top">
-          <a @click="goPage('ParticipantsDetail')">详情</a>
-        </div>
-      </div>
-      <hr>
-       <div class="dis-flex between left-distance distance-top text-left">
-        <div class="list-width">
-          <div class="dis-flex between distance-top ">
-            <div><span class="font-weight-style">账户：</span> MAN.4Pn182LSJ3JNr9by4T5kDKsf127Jb</div>
-            <div><span class="font-weight-style">累计奖励：1000MAN</span></div>
-          </div>
-          <div class="distance-top"><span class="font-weight-style">抵押总金额：100 </span></div>
-        </div>
-        <div class="distance-top">
-          <a @click="goPage('ParticipantsDetail')">详情</a>
         </div>
       </div>
       <hr>
@@ -71,20 +36,52 @@
 </template>
 
 <script>
+import WalletUtil from '@/assets/js/WalletUtil'
 export default {
   name: 'jointDetail',
   data () {
     return {
+      detailObj: [],
+      address: ''
     }
   },
   methods: {
     goPage (url) {
       this.$router.push({ path: '/jointMining/' + url })
+    },
+    participantsDetail (item) {
+      item.jointAccount = this.detailObj.jointAccount
+      item.creatAddress = this.detailObj.createAddress
+      let obj = JSON.parse(JSON.stringify(item))
+      this.$router.push({ name: 'ParticipantsDetail', params: { participantsDetail: obj } })
+    },
+    jointAdd () {
+      console.log(this.detailObj.jointAccount)
+      this.$router.push({ name: 'JointAdd', params: { jointAccount: this.detailObj.jointAccount } })
     }
   },
   components: {
   },
+  watch: {
+    $route (to, from) {
+      if (to.path.indexOf('jointDetail') > -1) {
+        console.log(this.detailObj)
+        if (this.$route.params.detailObj) {
+          console.log(this.detailObj.jointAccount + 'qqqqqqqqqqqqqq')
+          this.detailObj = this.$route.params.detailObj
+        }
+      }
+    }
+  },
   mounted () {
+    this.detailObj = this.$route.params.detailObj
+    console.log(this.detailObj.jointAccount + 'qqqqqqqqqqqqqq1')
+    if (this.$store.state.offline != null) {
+      this.address = this.$store.state.offline
+    } else {
+      this.address = this.$store.getters.wallet.address
+    }
+    this.ethAddress = WalletUtil.getEthAddress(this.address)
   }
 }
 </script>
@@ -135,8 +132,8 @@ export default {
     margin-left: 1.5rem;
     cursor: pointer;
   }
-  .list-width{
-    width: 75%
+  .list-width {
+    width: 75%;
   }
 }
 </style>

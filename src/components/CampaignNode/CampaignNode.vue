@@ -30,6 +30,7 @@
             </el-select>
           </div>
           <el-input v-model="value"
+                    type="number"
                     :placeholder="$t('CampaignNode.mortgage_man')"></el-input>
           <div v-show="mortgageWay==='regular'">
             <el-select v-model="timeLimit"
@@ -263,10 +264,10 @@ export default {
           this.$message.error(this.$t('CampaignNode.mortgageTypeError'))
           return
         }
-        // if (this.value.trim() === '') {
-        //   this.$message.error(this.$t('CampaignNode.valueError'))
-        //   return
-        // }
+        if (this.value.trim() === '') {
+          this.$message.error(this.$t('CampaignNode.valueError'))
+          return
+        }
         if (this.mortgageWay === '') {
           this.$message.error(this.$t('CampaignNode.selectMortgageWay'))
           return
@@ -441,11 +442,11 @@ export default {
             this.mortgageTypeAgo = 'minerDeposit'
             this.mortgageType = 'minerDeposit'
             this.depositTotal = depositTotal
-            if (depositTotal.comparedTo(new BigNumber(100000)) === 1) {
+            if (depositTotal.comparedTo(new BigNumber(100000)) > -1) {
               this.checkShow = true
             }
           } else {
-            if (depositTotal.comparedTo(new BigNumber(10000)) === 1) {
+            if (depositTotal.comparedTo(new BigNumber(10000)) > -1) {
               this.checkShow = true
             }
             this.mortgageTypeAgo = 'valiDeposit'
@@ -493,15 +494,14 @@ export default {
       }
       this.depositTotal = depositTotal
       if (depositList.Role === '0x10') {
-        // if (depositList.Role === 16) {
         this.mortgageTypeAgo = 'minerDeposit'
         this.mortgageType = 'minerDeposit'
         this.depositTotal = depositTotal
-        if (depositTotal.comparedTo(new BigNumber(100000)) === 1) {
+        if (depositTotal.comparedTo(new BigNumber(100000)) > -1) {
           this.checkShow = true
         }
       } else {
-        if (depositTotal.comparedTo(new BigNumber(10000)) === 1) {
+        if (depositTotal.comparedTo(new BigNumber(10000)) > -1) {
           this.checkShow = true
         }
         this.mortgageTypeAgo = 'valiDeposit'
