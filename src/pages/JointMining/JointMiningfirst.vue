@@ -18,12 +18,16 @@
               <div><span class="font-weight-style">总抵押：</span>{{item.allAmount }}MAN</div>
             </div>
           </div>
-          <div class="distance-top">
+          <div>
+            <div class="font-style"
+                 v-if="item.alreadyWithdraw"><span>抵押已解除</span></div>
+            <div class="font-style"
+                 v-else><span>抵押中</span></div>
             <a @click="jointDetail(item)">详情</a>
           </div>
         </div>
+        <hr>
       </div>
-      <hr>
     </el-card>
   </div>
 </template>
@@ -143,19 +147,25 @@ export default {
     Object.keys(data).forEach(function (key) {
       let item = data[key]
       let allAmount = new BigNumber(0)
-      item.ValidatorMap.forEach(validator => {
-        allAmount = allAmount.plus(filter.weiToNumber(validator.AllAmount))
-      })
-      self.validatorList.push({
-        jointAccount: WalletUtil.getManAddress(key),
-        activeCount: item.ValidatorMap.length,
-        allAmount: allAmount.toString(10),
-        signAddress: WalletUtil.getManAddress(item.OwnerInfo.SignAddress),
-        validatorMap: item.ValidatorMap,
-        createAddress: WalletUtil.getManAddress(item.OwnerInfo.Owner)
-      })
+      if (item.ValidatorMap != null) {
+        item.ValidatorMap.forEach(validator => {
+          allAmount = allAmount.plus(filter.weiToNumber(validator.AllAmount))
+        })
+        let alreadyWithdraw = false
+        if (item.WithdrawAllTime !== 0) {
+          alreadyWithdraw = true
+        }
+        self.validatorList.push({
+          jointAccount: WalletUtil.getManAddress(key),
+          activeCount: item.ValidatorMap.length,
+          allAmount: allAmount.toString(10),
+          signAddress: WalletUtil.getManAddress(item.OwnerInfo.SignAddress),
+          validatorMap: item.ValidatorMap,
+          createAddress: WalletUtil.getManAddress(item.OwnerInfo.Owner),
+          alreadyWithdraw: alreadyWithdraw
+        })
+      }
     })
-    console.log(this.validatorList)
   }
 }
 </script>
@@ -181,6 +191,12 @@ export default {
     color: #2c365c;
     letter-spacing: 0.13px;
     font-weight: bold;
+  }
+  .font-style {
+    font-size: 0.875rem;
+    color: #2c365c;
+    letter-spacing: 0.13px;
+    margin-bottom: 1.4rem;
   }
   .box-card2 {
     .dis-flex {

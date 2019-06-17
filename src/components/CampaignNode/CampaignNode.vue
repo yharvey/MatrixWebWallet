@@ -13,7 +13,7 @@
           <div class="title">
             {{$t('CampaignNode.mortgage')}}
           </div>
-          <div v-if="checkShow">
+          <div >
             <el-checkbox v-model="isEdit"
                          @change="changeType"></el-checkbox><span class="check-font">{{$t('CampaignNode.onlyChange')}}</span>
           </div>
@@ -134,7 +134,6 @@ export default {
       sendSignVisible: false,
       information: '',
       successVisible: false,
-      checkShow: false,
       isDeposit: false,
       number: 0,
       depositTotal: new BigNumber(0)
@@ -419,7 +418,6 @@ export default {
     $route (to, from) {
       if (to.path.indexOf('campaignNode') > -1) {
         this.isDeposit = false
-        this.checkShow = false
         let depositList = this.httpProvider.man.getDepositbyaddr(this.address)
         console.log(depositList)
         if (depositList != null) {
@@ -443,11 +441,11 @@ export default {
             this.mortgageType = 'minerDeposit'
             this.depositTotal = depositTotal
             if (depositTotal.comparedTo(new BigNumber(100000)) > -1) {
-              this.checkShow = true
+              // this.checkShow = true
             }
           } else {
             if (depositTotal.comparedTo(new BigNumber(10000)) > -1) {
-              this.checkShow = true
+              // this.checkShow = true
             }
             this.mortgageTypeAgo = 'valiDeposit'
             this.mortgageType = 'valiDeposit'
@@ -498,11 +496,11 @@ export default {
         this.mortgageType = 'minerDeposit'
         this.depositTotal = depositTotal
         if (depositTotal.comparedTo(new BigNumber(100000)) > -1) {
-          this.checkShow = true
+          // this.checkShow = true
         }
       } else {
         if (depositTotal.comparedTo(new BigNumber(10000)) > -1) {
-          this.checkShow = true
+          // this.checkShow = true
         }
         this.mortgageTypeAgo = 'valiDeposit'
         this.mortgageType = 'valiDeposit'

@@ -1,16 +1,24 @@
 <template>
   <div class="jointDetail">
     <el-card class="box-card1">
+      <div>
+          <span class="back-tittle"
+              @click="backPage">
+          <i class="el-icon-arrow-left"></i>
+          {{$t('openWallet.back')}}
+        </span>
+      </div>
       <div class="header">
         <div class="text-left">
           <div class="distance-top"><span class="font-weight-style">联合账户：</span>{{detailObj.jointAccount}}</div>
-          <div class="distance-top"><span class="font-weight-style">创建者账户：</span>{{detailObj.signAddress}}</div>
+          <div class="distance-top"><span class="font-weight-style">创建者账户：</span>{{ethAddress}}</div>
+          <div class="distance-top"><span class="font-weight-style">签名账户：</span>{{detailObj.signAddress}}</div>
           <div class="dis-flex between distance-top">
             <div><span class="font-weight-style">参与人数：</span>{{detailObj.activeCount}}</div>
             <div><span class="font-weight-style">抵押总额：</span>{{detailObj.allAmount}}</div>
           </div>
         </div>
-        <div><a @click="jointAdd()"> 参与联合</a></div>
+        <div><a @click="jointAdd()" v-if="!detailObj.alreadyWithdraw"> 参与联合</a></div>
       </div>
     </el-card>
     <el-card class="box-card2">
@@ -42,7 +50,8 @@ export default {
   data () {
     return {
       detailObj: [],
-      address: ''
+      address: '',
+      ethAddress: ''
     }
   },
   methods: {
@@ -52,12 +61,16 @@ export default {
     participantsDetail (item) {
       item.jointAccount = this.detailObj.jointAccount
       item.creatAddress = this.detailObj.createAddress
+      item.alreadyWithdraw = this.detailObj.alreadyWithdraw
       let obj = JSON.parse(JSON.stringify(item))
       this.$router.push({ name: 'ParticipantsDetail', params: { participantsDetail: obj } })
     },
     jointAdd () {
       console.log(this.detailObj.jointAccount)
       this.$router.push({ name: 'JointAdd', params: { jointAccount: this.detailObj.jointAccount } })
+    },
+    backPage () {
+      this.$router.back()
     }
   },
   components: {
@@ -75,7 +88,7 @@ export default {
   },
   mounted () {
     this.detailObj = this.$route.params.detailObj
-    console.log(this.detailObj.jointAccount + 'qqqqqqqqqqqqqq1')
+    console.log(this.detailObj)
     if (this.$store.state.offline != null) {
       this.address = this.$store.state.offline
     } else {
@@ -134,6 +147,14 @@ export default {
   }
   .list-width {
     width: 75%;
+  }
+  .back-tittle {
+    position: relative;
+    left: 374px;
+    cursor: pointer;
+    color: #1c51dd;
+    font-size: 0.88rem;
+    letter-spacing: 0.13px;
   }
 }
 </style>

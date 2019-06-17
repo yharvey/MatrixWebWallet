@@ -6,7 +6,7 @@
           <div class="line-center">
             <div><span class="font-weight-style">账户：</span>{{participantsDetail.Address}}</div>
             <div style="margin-left: 7rem;"
-                 v-if="address === creatAddress"><a @click="withdrawAll()">退出所有抵押</a> </div>
+                 v-if="address === creatAddress&&!participantsDetail.alreadyWithdraw"><a @click="withdrawAll()">退出所有抵押</a> </div>
           </div>
           <div style=" text-align:right"><a @click="backPage()">返回</a> </div>
         </div>
@@ -231,7 +231,7 @@ export default {
       this.participantsDetail.Address = filter.getManAddress(this.participantsDetail.Address)
       this.jointAccount = this.participantsDetail.jointAccount
       this.creatAddress = this.participantsDetail.creatAddress
-      console.log(this.participantsDetail.creatAddress + '签名账户')
+      console.log(this.participantsDetail)
       if (parseInt(this.participantsDetail.Current.Amount) > 0) {
         this.tableData.push(
           {
