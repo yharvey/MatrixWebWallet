@@ -11,7 +11,7 @@
       <div class="header">
         <div class="text-left">
           <div class="distance-top"><span class="font-weight-style">联合账户：</span>{{detailObj.jointAccount}}</div>
-          <div class="distance-top"><span class="font-weight-style">创建者账户：</span>{{ethAddress}}</div>
+          <div class="distance-top"><span class="font-weight-style">创建者账户：</span>{{detailObj.createAddress}}</div>
           <div class="distance-top"><span class="font-weight-style">签名账户：</span>{{detailObj.signAddress}}</div>
           <div class="dis-flex between distance-top">
             <div><span class="font-weight-style">参与人数：</span>{{detailObj.activeCount}}</div>

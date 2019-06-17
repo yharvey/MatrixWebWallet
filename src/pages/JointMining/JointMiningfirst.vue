@@ -152,7 +152,7 @@ export default {
           allAmount = allAmount.plus(filter.weiToNumber(validator.AllAmount))
         })
         let alreadyWithdraw = false
-        if (item.WithdrawAllTime !== 0) {
+        if (item.OwnerInfo.WithdrawAllTime !== 0) {
           alreadyWithdraw = true
         }
         self.validatorList.push({
