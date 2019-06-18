@@ -78,7 +78,7 @@ export default {
         if (historyUrl.indexOf('green-mining') > -1 || historyUrl.indexOf('ai-application') > -1 || historyUrl.indexOf('contract') > -1 || historyUrl.indexOf('jointMining') > -1) {
           if (historyUrl.indexOf('green-mining') > -1) {
             if (this.$store.state.wallet != null) {
-              this.$router.push({ path: '/green-mining/campaignNode' })
+              this.$router.push({ path: '/green-mining/digAccount' })
             }
           } else {
             this.$router.push({ path: historyUrl })

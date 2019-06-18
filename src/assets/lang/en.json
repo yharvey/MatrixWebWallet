@@ -556,17 +556,26 @@
     "block": " block"
   },
   "digAccount":{
+    "role":"Stake Type",
+    "miner":"Miner",
+    "validator":"Validator",
+    "signaddress":"Address",
     "deposit_account":"Stake Account",
     "current":"Fixed",
     "regular":"Flexible",
+    "withdraw_detail":"Details",
     "withdraw_deposit":"Unstake",
+    "deposit":"stake",
     "refund_account":"Refund Account",
-    "withdrawals":"Withdrawals",
+    "withdrawals_detail":"Details",
+    "withdrawals":"Refund",
     "change_regular":"Transfer to fixed stake",
     "tips1":"1、At least 2000 MAN must be added each time for the fixed stake",
     "tips2":"2、At least 100 MAN must be added each time for the flexible stake",
     "tips3":"3、At least 100,000 MAN (combined fixed stake + flexible stake) are required to stake a Verification Masternode",
-    "tips4":"4、At least 100,00 MAN (combined fixed stake + flexible stake) are required to stake a Miner Masternode"
+    "tips4":"4、When the amount of  \"fixed + flexible\" stake is more than 10 million MAN, rewards are only calculated at 10 million.",
+    "tips5":"5、At least 100,00 MAN (combined fixed stake + flexible stake) are required to stake a Miner Masternode"
+  
   },
   "regularDetail":{
     "regular_account":"Fixed Stake Account:",
@@ -582,14 +591,14 @@
   },
   "currentWithdraw":{
     "current_account":"Flexible Stake Account:",
-    "current_refund":"Flexible Refund",
-    "refund_value":"The amount of flexible refund",
-    "success":"Flexible refund success",
+    "current_refund":"Flexible Unstake",
+    "refund_value":"The amount of flexible unstake",
+    "success":"Flexible unstake success",
     "confirmWithdrawMsg":"After unstaking successfully, you can withdrawal your staked assets to your available assets after 7 days"
   },
   "regularMortgage":{
     "change_regular":"Transfer to fixed stake",
-    "current_value":"The amount of flexible stake",
+    "current_value":"The amount of fixed stake",
     "success":"Transfer to fixed stake successfully"
   },
   "regularWithdrawals":{

@@ -2,23 +2,22 @@
   <div class="CampaignNode">
     <div class="addForm">
       <div>
-        <!-- <h5>交易数量</h5>
-        <el-input v-model="number"
-                  placeholder="要发送的交易数量"></el-input>
-        <div>
-          <button class="common-button"
-                  @click="getMinnerTxData">{{$t('CampaignNode.mortgage-button')}}</button>
-        </div> -->
+        <div class="first-left">
+        </div>
+        <span class="back-tittle"
+            @click="backPage">
+        <i class="el-icon-arrow-left"></i>
+        {{$t('openWallet.back')}}
+      </span>
+        <h1>{{$t('CampaignNode.mortgage')}}</h1>
         <div class="flex-style">
-          <div class="title">
-            {{$t('CampaignNode.mortgage')}}
-          </div>
           <div>
             <el-checkbox v-model="isEdit"
-                         @change="changeType"></el-checkbox><span class="check-font">{{$t('CampaignNode.onlyChange')}}</span>
+                ></el-checkbox><span class="check-font">{{$t('CampaignNode.onlyChange')}}</span>
           </div>
         </div>
         <div v-if="!isEdit">
+          <h5>{{$t('CampaignNode.mortgage')}}</h5>
           <div>
             <el-select v-model="mortgageWay"
                        :placeholder="$t('CampaignNode.selectMortgageWay')">
@@ -55,13 +54,14 @@
       </el-select>
       <h5>{{$t('CampaignNode.dig_address')}}</h5>
       <el-input v-model="mortgageAddrress"></el-input>
-      <div style="display: flex; justify-content: center;">
+      <div v-if="!isEdit" style="display: flex; justify-content: center;">
         <div style="text-align:left">
           <p>{{$t('CampaignNode.mortgage_hint2')}}</p>
           <p>{{$t('digAccount.tips1')}}</p>
           <p>{{$t('digAccount.tips2')}}</p>
           <p>{{$t('digAccount.tips3')}}</p>
           <p>{{$t('digAccount.tips4')}}</p>
+          <p>{{$t('digAccount.tips5')}}</p>
           <!--<h4 class="h4-botDis"
             v-html="$t('CampaignNode.mortgage_hint2')"></h4>
         <h4 class="h4-botDis"
@@ -416,6 +416,9 @@ export default {
       } catch (e) {
         this.$message.error(e.message)
       }
+    },
+    backPage () {
+      this.$router.back()
     }
   },
   watch: {
@@ -522,6 +525,14 @@ export default {
 </script>
 <style scoped lang="less">
 .CampaignNode {
+   .first-left {
+    text-align: left;
+  }
+  text-align: center;
+  padding: 1.5rem 0 2.5rem;
+  /deep/.el-input {
+    width: 26.5rem;
+  }
   .hint-error {
     font-size: 0.875rem;
     color: #ed3c1c;
@@ -584,6 +595,15 @@ export default {
     .check-font {
       font-size: 0.875rem;
     }
+  }
+  .back-tittle {
+    position: relative;
+    left: 446px;
+    top: -21px;
+    cursor: pointer;
+    color: #1c51dd;
+    font-size: 0.88rem;
+    letter-spacing: 0.13px;
   }
 }
 </style>

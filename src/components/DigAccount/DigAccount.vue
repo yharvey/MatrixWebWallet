@@ -1,8 +1,18 @@
 <template>
   <div class="digAccount">
     <div>
-      <div class="mortgage-font">
-        {{$t('digAccount.deposit_account')}}： {{totalValue}} MAN
+      <label class="mortgage-font">{{$t('digAccount.deposit_account')}}： {{totalValue}} MAN</label>
+      <label class="transfer_font"
+                @click="goPage('CampaignNode')">{{$t('digAccount.deposit')}}</label>
+      <div class="role_font">
+          <label >
+            {{$t('digAccount.role')}}
+            : {{role === '0x10'?$t('digAccount.miner'):(role === '0x80'?$t('digAccount.validator'):'')}}
+          </label>
+          <label >
+            {{$t('digAccount.signaddress')}}
+            : {{signAddress}}
+          </label>
       </div>
       <table class="tab_info">
         <tbody>
@@ -15,7 +25,7 @@
                 <label>{{regularDepositValue}} MAN</label>
               </div>
               <div>
-                <a @click="goPage('RegularDetail',{regularDepositList: regularDepositList,regularDepositValue:regularDepositValue})">{{$t('digAccount.withdraw_deposit')}}</a>
+                <a @click="goPage('RegularDetail',{regularDepositList: regularDepositList,regularDepositValue:regularDepositValue})">{{$t('digAccount.withdraw_detail')}}</a>
               </div>
             </td>
           </tr>
@@ -51,7 +61,7 @@
               <label>{{regularWithdrawalsValue}} MAN</label>
             </div>
             <div>
-              <a @click="goPage('RegularWithdrawals',{regularWithdrawalsList:regularWithdrawalsList})">{{$t('digAccount.withdrawals')}}</a>
+              <a @click="goPage('RegularWithdrawals',{regularWithdrawalsList:regularWithdrawalsList})">{{$t('digAccount.withdrawals_detail')}}</a>
             </div>
           </td>
         </tr>
@@ -65,7 +75,7 @@
             </div>
             <div>
               <a @click="goPage('CurrentRefund',{currentWithdrawalsList:currentWithdrawalsList})"
-                 class="dis-right">{{$t('digAccount.withdrawals')}}</a>
+                 class="dis-right">{{$t('digAccount.withdrawals_detail')}}</a>
             </div>
           </td>
         </tr>
@@ -88,6 +98,8 @@ export default {
   name: 'digAccount',
   data () {
     return {
+      role: '',
+      signAddress: '',
       regularDepositValue: 0,
       currentDepositValue: 0,
       regularDepositList: [],
@@ -119,6 +131,8 @@ export default {
         this.regularDepositList = []
         this.regularWithdrawalsList = []
         this.currentWithdrawalsList = []
+        this.role = depositList.Role
+        this.signAddress = depositList.AddressA1
         depositList.Dpstmsg.forEach(item => {
           if (item.Position !== 0) {
             if (item.WithDrawInfolist.length > 0) {
@@ -199,6 +213,16 @@ export default {
     color: #2c365c;
     letter-spacing: 0.11px;
   }
+  .role_font {
+      font-size: 0.75rem;
+      color: #2c365c;
+      letter-spacing: 0.11px;
+      margin: 1rem 0;
+      text-align: left;
+      label:not(:first-child) {
+        margin-left: 2.63rem;
+      }
+    }
   .tip-font {
     font-size: 0.875rem;
     color: #2c365c;

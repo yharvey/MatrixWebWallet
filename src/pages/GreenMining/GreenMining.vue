@@ -6,8 +6,8 @@
                @click="changeType('miningTransaction')">{{$t('greenMining.mining_revenue')}}&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</label> -->
         <label :class="{'active' : type === 'refund'}"
                @click="changeType('refund')">{{$t('header.refund')}}&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</label>
-        <label :class="{'active' : type === 'campaignNode'}"
-               @click="changeType('campaignNode')">{{$t('greenMining.campaign_node')}}&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</label>
+        <!-- <label :class="{'active' : type === 'campaignNode'}"
+               @click="changeType('campaignNode')">{{$t('greenMining.campaign_node')}}&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</label> -->
         <label :class="{'active' : type === 'secondaryKey'}"
                @click="changeType('secondaryKey')">{{$t('greenMining.secondKey')}}</label>
         <span class="back"
@@ -75,8 +75,8 @@ export default {
       this.type = 'refund'
     }
     if (route.path.indexOf('startNode') > -1 || route.path.indexOf('campaignNode') > -1) {
-      this.type = 'campaignNode'
-      this.showCampaignTip = true
+      this.type = 'refund'
+      // this.showCampaignTip = true
     }
   },
   methods: {

@@ -556,17 +556,25 @@
     "block": "块"
   },
   "digAccount":{
+    "role":"挖矿类型",
+    "miner":"矿工",
+    "validator":"验证者",
+    "signaddress":"挖矿地址",
     "deposit_account":"抵押账户",
     "current":"定期",
     "regular":"活期",
+    "withdraw_detail":"详情",
     "withdraw_deposit":"解除抵押",
+    "deposit":"抵押",
     "refund_account":"退款账户",
+    "withdrawals_detail":"详情",
     "withdrawals":"取款",
     "change_regular":"转入定期抵押",
     "tips1":"1、“定期抵押”每次抵押最少2,000个MAN",
     "tips2":"2、“活期抵押”每次抵押最少100个MAN",
     "tips3":"3、抵押验证者，“定期+活期”需大于10万个MAN",
-    "tips4":"4、抵押矿工，“定期+活期”需大于1万个MAN"
+    "tips4":"4、抵押“定期+活期”大于1000万，奖励按1000万计算",
+    "tips5":"5、抵押矿工，“定期+活期”需大于1万个MAN"
   },
   "regularDetail":{
     "regular_account":"定期抵押账户:",
@@ -582,14 +590,14 @@
   },
   "currentWithdraw":{
     "current_account":"活期抵押账户:",
-    "current_refund":"活期退款",
-    "refund_value":"活期退款数量",
-    "success":"活期退款成功",
+    "current_refund":"活期解除抵押",
+    "refund_value":"活期解除抵押数量",
+    "success":"活期解除抵押成功",
     "confirmWithdrawMsg":"解除抵押成功起，7日后可提款到余额账户"
   },
   "regularMortgage":{
     "change_regular":"转入定期抵押",
-    "current_value":"活期抵押数量",
+    "current_value":"定期抵押数量",
     "success":"转入定期抵押成功"
   },
   "regularWithdrawals":{

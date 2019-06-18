@@ -158,8 +158,8 @@ export default {
         if (status !== this.type) {
           this.type = status
           if (status === 'green-mining') {
-            store.commit('UPDATE_BEFOREURL', '/green-mining/campaignNode')
-            this.$router.push({ path: '/green-mining/campaignNode' })
+            store.commit('UPDATE_BEFOREURL', '/green-mining/digAccount')
+            this.$router.push({ path: '/green-mining/digAccount' })
           } else if (status === 'my-wallet') {
             store.commit('UPDATE_HISTORYURL', '/my-wallet/openWallet/myAssets')
             this.$router.push({ path: '/my-wallet/myWalletFirst' })
