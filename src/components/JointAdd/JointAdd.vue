@@ -121,6 +121,7 @@ export default {
         let contract = this.ethProvider.eth.Contract(abiArray, contractAddress)
         let nonce = this.httpProvider.man.getTransactionCount(this.address)
         nonce = WalletUtil.numToHex(nonce)
+        let value = new BigNumber(this.value)
         if (new BigNumber(this.value).plus(new BigNumber(this.stakeValue)).comparedTo(new BigNumber(10000000)) === 1) {
           this.$message.error('金额过大')
           return
@@ -136,8 +137,20 @@ export default {
         }
         let jsonObj = TradingFuns.getTxData(data)
         if (this.mortgageWay === 'regular') {
+          if (value.comparedTo(new BigNumber(2000)) === -1) {
+            this.$message.error(this.$t('CampaignNode.valueLessError1'))
+            return
+          }
+          if (this.timeLimit === '') {
+            this.$message.error(this.$t('CampaignNode.selectTimeLimit'))
+            return
+          }
           jsonObj.data = contract.methods.addDeposit(parseInt(this.timeLimit)).encodeABI()
         } else {
+          if (value.comparedTo(new BigNumber(100)) === -1) {
+            this.$message.error(this.$t('CampaignNode.currentError'))
+            return
+          }
           jsonObj.data = contract.methods.addDeposit(0).encodeABI()
         }
         if (this.$store.state.wallet != null) {

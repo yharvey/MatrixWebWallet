@@ -155,7 +155,7 @@ export default {
           } else {
             for (let i = 0; i < item.ValidatorMap.length; i++) {
               const validator = item.ValidatorMap[i]
-              if (validator.address === self.address) {
+              if (validator.Address === self.address) {
                 self.myJoinListAll.push({
                   jointAccount: key,
                   activeCount: item.ValidatorMap.length,
