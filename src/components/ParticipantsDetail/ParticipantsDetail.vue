@@ -244,7 +244,6 @@ export default {
       this.participantsDetail.Address = this.participantsDetail.Address
       this.jointAccount = this.participantsDetail.jointAccount
       this.creatAddress = this.participantsDetail.creatAddress
-      console.log(this.participantsDetail)
       if (parseInt(this.participantsDetail.Current.Amount) > 0) {
         this.tableData.push(
           {
@@ -266,7 +265,7 @@ export default {
               opration: 1,
               isDeposite: 1,
               Position: 0,
-              withdrawTime: current.withdrawTime
+              withdrawTime: current.WithDrawTime
             }
           )
         })
@@ -291,7 +290,7 @@ export default {
               opration: element.Position,
               Position: element.Position,
               isDeposite: 1,
-              withdrawTime: element.withdrawTime
+              withdrawTime: element.WithDrawTime
             }
           )
         }
