@@ -583,7 +583,7 @@
     "deposit_time":"Time of Stake",
     "month":"Month",
     "deposit_value":"The amount of stake",
-    "interest":"Interest",
+    "interest":"Stake rewards",
     "operation":"Operation",
     "success":"Unstake successfully",
     "regularDetailMsg":"After unstaking successfully, you can withdrawal your staked assets to your available assets 2 hours after the regular maturity.",

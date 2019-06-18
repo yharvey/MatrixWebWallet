@@ -582,7 +582,7 @@
     "deposit_time":"抵押时间",
     "month":"月",
     "deposit_value":"抵押金额",
-    "interest":"利息收入",
+    "interest":"抵押参与奖励",
     "operation":"操作",
     "success":"解除抵押成功",
     "regularDetailMsg":"解除抵押成功起，定期到期2小时后可提款到余额账户",
