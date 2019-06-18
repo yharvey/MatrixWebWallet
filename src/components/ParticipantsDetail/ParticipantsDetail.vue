@@ -6,7 +6,8 @@
           <div class="line-center">
             <div><span class="font-weight-style">账户：</span>{{participantsDetail.Address}}</div>
             <div style="margin-left: 7rem;"
-                 v-if="address === creatAddress&&!participantsDetail.alreadyWithdraw"><a @click="withdrawAll()">退出所有抵押</a> </div>
+                 v-if="address === creatAddress&&!participantsDetail.alreadyWithdraw"><a @click="withdrawAll()">关闭挖矿</a> </div>
+            <div v-if="address === creatAddress"><a @click="setSignAccount()">修改签名地址</a> </div>
           </div>
           <div style=" text-align:right"><a @click="backPage()">返回</a> </div>
         </div>
@@ -146,6 +147,9 @@ export default {
     },
     backPage () {
       this.$router.back()
+    },
+    setSignAccount () {
+      this.$router.push({ name: 'SetSignAccount', params: { jointAccount: this.jointAccount } })
     },
     goPage (url) {
       this.$router.push({ path: '/jointMining/' + url })

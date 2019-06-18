@@ -32,8 +32,12 @@
         <el-input placeholder="抵押金额"
                   v-model="value"
                   type="number"></el-input>
+        <div class="tips">
+          <p>{{$t('digAccount.tips1')}}</p>
+          <p>{{$t('digAccount.tips2')}}</p>
+        </div>
         <button class="common-button"
-                @click="addDeposit">参与联合</button>
+                @click="addDeposit">加入挖矿</button>
       </div>
     </el-card>
     <all-dialog :visible="visible"
@@ -61,7 +65,6 @@ import WalletUtil from '@/assets/js/WalletUtil'
 import TradingFuns from '@/assets/js/TradingFuns'
 import OfflineDialog from '@/components/TransferDialog/TipOfflineDialog'
 import sendSign from '@/components/TransferDialog/sendSignTransfer'
-import transferSuccess from '@/components/TransferDialog/transferSuccess'
 import AllDialog from '@/components/TransferDialog/AllDialog'
 import BigNumber from 'bignumber.js'
 export default {
@@ -74,15 +77,15 @@ export default {
       timeLimitList: [{ name: this.$t('CampaignNode.oneMonth'), key: '1' }, { name: this.$t('CampaignNode.threeMonth'), key: '3' }, { name: this.$t('CampaignNode.sixMonth'), key: '6' }, { name: this.$t('CampaignNode.oneYear'), key: '12' }],
       timeLimit: '',
       mortgageWay: '',
+      jointAccount: '',
+      stakeValue: '',
       msg: '',
       hash: '',
       confirmOffline: false,
       jsonObj: '',
       sendSignVisible: false,
       information: '',
-      visible: false,
-      jointAccount: '',
-      stakeValue: ''
+      visible: false
     }
   },
   methods: {
@@ -112,51 +115,57 @@ export default {
       this.$router.back()
     },
     addDeposit () {
-      let abiArray = JSON.parse(joinChildAbi)
-      let contractAddress = this.jointAccount
-      let contract = this.ethProvider.eth.Contract(abiArray, contractAddress)
-      let nonce = this.httpProvider.man.getTransactionCount(this.address)
-      nonce = WalletUtil.numToHex(nonce)
-      debugger
-      if (new BigNumber(this.value).plus(new BigNumber(this.stakeValue)).comparedTo(new BigNumber(10000000)) === 1) {
-        this.$message.error('金额过大')
-        return
-      }
-      let data = {
-        to: this.jointAccount,
-        value: parseInt(this.value),
-        gasLimit: 210000,
-        data: '',
-        gasPrice: 18000000000,
-        extra_to: [[0, 0, []]],
-        nonce: nonce
-      }
-      let jsonObj = TradingFuns.getTxData(data)
-      if (this.mortgageWay === 'regular') {
-        jsonObj.data = contract.methods.addDeposit(parseInt(this.timeLimit)).encodeABI()
-      } else {
-        jsonObj.data = contract.methods.addDeposit(0).encodeABI()
-      }
-      if (this.$store.state.wallet != null) {
-        let tx = WalletUtil.createTx(jsonObj)
-        let privateKey = this.$store.state.wallet.privateKey
-        privateKey = Buffer.from(privateKey.indexOf('0x') > -1 ? privateKey.substring(2, privateKey.length) : privateKey, 'hex')
-        tx.sign(privateKey)
-        let serializedTx = tx.serialize()
-        this.newTxData = SendTransfer.getTxParams(serializedTx)
-        let hash = this.httpProvider.man.sendRawTransaction(this.newTxData)
-        this.hash = hash
-        console.log(hash)
-        this.visible = true
-        let recordArray = store.get(this.address)
-        if ((typeof (recordArray) === 'string')) {
-          recordArray = JSON.parse(recordArray)
+      try {
+        let abiArray = JSON.parse(joinChildAbi)
+        let contractAddress = this.jointAccount
+        let contract = this.ethProvider.eth.Contract(abiArray, contractAddress)
+        let nonce = this.httpProvider.man.getTransactionCount(this.address)
+        nonce = WalletUtil.numToHex(nonce)
+        if (new BigNumber(this.value).plus(new BigNumber(this.stakeValue)).comparedTo(new BigNumber(10000000)) === 1) {
+          this.$message.error('金额过大')
+          return
         }
-        if (recordArray == null) {
-          recordArray = []
+        let data = {
+          to: this.jointAccount,
+          value: parseInt(this.value),
+          gasLimit: 210000,
+          data: '',
+          gasPrice: 18000000000,
+          extra_to: [[0, 0, []]],
+          nonce: nonce
         }
-        recordArray.push({ hash: this.hash, newTxData: { commitTime: this.newTxData.commitTime, txType: this.newTxData.txType } })
-        store.set(this.address, recordArray)
+        let jsonObj = TradingFuns.getTxData(data)
+        if (this.mortgageWay === 'regular') {
+          jsonObj.data = contract.methods.addDeposit(parseInt(this.timeLimit)).encodeABI()
+        } else {
+          jsonObj.data = contract.methods.addDeposit(0).encodeABI()
+        }
+        if (this.$store.state.wallet != null) {
+          let tx = WalletUtil.createTx(jsonObj)
+          let privateKey = this.$store.state.wallet.privateKey
+          privateKey = Buffer.from(privateKey.indexOf('0x') > -1 ? privateKey.substring(2, privateKey.length) : privateKey, 'hex')
+          tx.sign(privateKey)
+          let serializedTx = tx.serialize()
+          this.newTxData = SendTransfer.getTxParams(serializedTx)
+          let hash = this.httpProvider.man.sendRawTransaction(this.newTxData)
+          this.hash = hash
+          console.log(hash)
+          this.visible = true
+          let recordArray = store.get(this.address)
+          if ((typeof (recordArray) === 'string')) {
+            recordArray = JSON.parse(recordArray)
+          }
+          if (recordArray == null) {
+            recordArray = []
+          }
+          recordArray.push({ hash: this.hash, newTxData: { commitTime: this.newTxData.commitTime, txType: this.newTxData.txType } })
+          store.set(this.address, recordArray)
+        } else {
+          this.confirmOffline = true
+          this.jsonObj = JSON.stringify(jsonObj)
+        }
+      } catch (e) {
+        this.$message.error(e.message)
       }
     }
   },
@@ -172,8 +181,7 @@ export default {
   components: {
     AllDialog,
     OfflineDialog,
-    sendSign,
-    transferSuccess
+    sendSign
   }
 }
 </script>
@@ -219,6 +227,14 @@ export default {
     }
     .common-button {
       margin-top: 1rem;
+    }
+    .tips {
+      width: 26.5rem;
+      text-align: left;
+      font-size: 0.875rem;
+      color: #9298ae;
+      letter-spacing: 0.13px;
+      font-weight: 400;
     }
   }
 }

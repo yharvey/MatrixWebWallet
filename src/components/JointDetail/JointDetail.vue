@@ -19,7 +19,7 @@
           </div>
         </div>
         <div><a @click="jointAdd()"
-             v-if="!detailObj.alreadyWithdraw"> 参与联合</a></div>
+             v-if="!detailObj.alreadyWithdraw">加入挖矿</a></div>
       </div>
     </el-card>
     <el-card class="box-card2">

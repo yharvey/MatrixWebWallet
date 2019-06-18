@@ -222,44 +222,6 @@ export default {
       } catch (e) {
         this.$message.error(e.message)
       }
-    },
-    confirm1 () {
-      let abiArray = JSON.parse(joinAbi)
-      let contractAddress = joinContract
-      let contract = this.ethProvider.eth.Contract(abiArray, contractAddress)
-      let nonce = this.httpProvider.man.getTransactionCount(this.address)
-      nonce = WalletUtil.numToHex(nonce)
-      let data = {
-        to: contractAddress,
-        value: 100000,
-        gasLimit: 210000,
-        data: '',
-        gasPrice: 18000000000,
-        extra_to: [[0, 0, []]],
-        nonce: nonce
-      }
-      let jsonObj = TradingFuns.getTxData(data)
-      jsonObj.data = contract.methods.createValidatorGroup(WalletUtil.getEthAddress(this.address), 0, 1, [1, 10, 1]).encodeABI()
-      if (this.$store.state.wallet != null) {
-        let tx = WalletUtil.createTx(jsonObj)
-        let privateKey = this.$store.state.wallet.privateKey
-        privateKey = Buffer.from(privateKey.indexOf('0x') > -1 ? privateKey.substring(2, privateKey.length) : privateKey, 'hex')
-        tx.sign(privateKey)
-        let serializedTx = tx.serialize()
-        this.newTxData = SendTransfer.getTxParams(serializedTx)
-        let hash = this.httpProvider.man.sendRawTransaction(this.newTxData)
-        this.hash = hash
-        this.visible = true
-        let recordArray = store.get(this.address)
-        if ((typeof (recordArray) === 'string')) {
-          recordArray = JSON.parse(recordArray)
-        }
-        if (recordArray == null) {
-          recordArray = []
-        }
-        recordArray.push({ hash: this.hash, newTxData: { commitTime: this.newTxData.commitTime, txType: this.newTxData.txType } })
-        store.set(this.address, recordArray)
-      }
     }
   },
   mounted () {

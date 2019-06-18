@@ -1,15 +1,15 @@
 <template>
-  <div class="jointRegular">
+  <div class="setSignAccount">
     <el-card>
       <span class="back-tittle"
             @click="backPage">
         <i class="el-icon-arrow-left"></i>
         {{$t('openWallet.back')}}
       </span>
-      <el-input v-model="value"
-                placeholder="活期解除抵押金额最少100 MAN"></el-input>
+      <el-input v-model="signAddress"
+                placeholder="签名地址"></el-input>
       <button class="common-button top-dis"
-              @click="withdraw">解除抵押</button>
+              @click="setSignAccount">修改签名</button>
     </el-card>
     <all-dialog :visible="visible"
                 @changeVisible="changeVisible"
@@ -27,10 +27,10 @@ import TradingFuns from '@/assets/js/TradingFuns'
 import SendTransfer from '@/assets/js/SendTransfer'
 import AllDialog from '@/components/TransferDialog/AllDialog'
 export default {
-  name: 'jointRegular',
+  name: 'setSignAccount',
   data () {
     return {
-      value: '',
+      signAddress: '',
       address: '',
       data: {},
       visible: false,
@@ -42,14 +42,17 @@ export default {
     changeVisible (state) {
       this.visible = state
     },
-    withdraw () {
+    backPage () {
+      this.$router.back()
+    },
+    setSignAccount (position) {
       let abiArray = JSON.parse(joinChildAbi)
-      let contractAddress = this.data.jointAccount
+      let contractAddress = this.jointAccount
       let contract = this.ethProvider.eth.Contract(abiArray, contractAddress)
       let nonce = this.httpProvider.man.getTransactionCount(this.address)
       nonce = WalletUtil.numToHex(nonce)
       let data = {
-        to: this.data.jointAccount,
+        to: this.jointAccount,
         value: 0,
         gasLimit: 210000,
         data: '',
@@ -58,7 +61,7 @@ export default {
         nonce: nonce
       }
       let jsonObj = TradingFuns.getTxData(data)
-      jsonObj.data = contract.methods.withdraw(this.httpProvider.toWei(parseInt(this.value)), 0).encodeABI()
+      jsonObj.data = contract.methods.setSignAccount(WalletUtil.getEthAddress(this.signAddress)).encodeABI()
       if (this.$store.state.wallet != null) {
         let tx = WalletUtil.createTx(jsonObj)
         let privateKey = this.$store.state.wallet.privateKey
@@ -80,17 +83,13 @@ export default {
         recordArray.push({ hash: this.hash, newTxData: { commitTime: this.newTxData.commitTime, txType: this.newTxData.txType } })
         store.set(this.address, recordArray)
       }
-    },
-    backPage () {
-      this.$router.back()
     }
   },
   components: {
     AllDialog
   },
   mounted () {
-    this.data = this.$route.params.data
-    console.log('活期' + this.data.jointAccount)
+    this.jointAccount = this.$route.params.jointAccount
     if (this.$store.state.offline != null) {
       this.address = this.$store.state.offline
     } else {
@@ -101,7 +100,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-.jointRegular {
+.setSignAccount {
   margin: auto;
   width: 1040px;
   .back-tittle {

@@ -65,6 +65,7 @@ import ParticipantsDetail from '@/components/ParticipantsDetail/ParticipantsDeta
 import JoinRegular from '@/components/JoinRegular/JoinRegular'
 import JoinCurrent from '@/components/JoinCurrent/JoinCurrent'
 import JointAdd from '@/components/JointAdd/JointAdd'
+import SetSignAccount from '@/components/SetSignAccount/SetSignAccount'
 
 Vue.use(Router)
 
@@ -339,6 +340,10 @@ let router = new Router({
         path: 'jointAdd',
         name: 'JointAdd',
         component: JointAdd
+      }, {
+        path: 'setSignAccount',
+        name: 'SetSignAccount',
+        component: SetSignAccount
       }
       ]
     }]
