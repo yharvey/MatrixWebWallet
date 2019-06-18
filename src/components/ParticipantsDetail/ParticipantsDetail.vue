@@ -240,6 +240,7 @@ export default {
       }
     },
     init () {
+      debugger
       this.participantsDetail = this.$route.params.participantsDetail
       this.participantsDetail.Address = this.participantsDetail.Address
       this.jointAccount = this.participantsDetail.jointAccount
@@ -290,7 +291,7 @@ export default {
               opration: element.Position,
               Position: element.Position,
               isDeposite: 1,
-              withdrawTime: element.WithDrawTime
+              withdrawTime: element.EndTime
             }
           )
         }
