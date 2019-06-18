@@ -13,7 +13,7 @@
           <div class="title">
             {{$t('CampaignNode.mortgage')}}
           </div>
-          <div >
+          <div>
             <el-checkbox v-model="isEdit"
                          @change="changeType"></el-checkbox><span class="check-font">{{$t('CampaignNode.onlyChange')}}</span>
           </div>
@@ -267,6 +267,10 @@ export default {
           this.$message.error(this.$t('CampaignNode.valueError'))
           return
         }
+        if (value.comparedTo(new BigNumber(10000000)) === 1) {
+          this.$message.error('金额过大')
+          return
+        }
         if (this.mortgageWay === '') {
           this.$message.error(this.$t('CampaignNode.selectMortgageWay'))
           return
@@ -418,7 +422,7 @@ export default {
     $route (to, from) {
       if (to.path.indexOf('campaignNode') > -1) {
         this.isDeposit = false
-        let depositList = this.httpProvider.man.getDepositbyaddr(this.address)
+        let depositList = this.httpProvider.man.getDepositByAddr(this.address)
         console.log(depositList)
         if (depositList != null) {
           this.isDeposit = true
@@ -474,7 +478,7 @@ export default {
       this.address = this.$store.getters.wallet.address
     }
     this.initContract()
-    let depositList = this.httpProvider.man.getDepositbyaddr(this.address)
+    let depositList = this.httpProvider.man.getDepositByAddr(this.address)
     console.log(depositList)
     if (depositList != null) {
       this.isDeposit = true

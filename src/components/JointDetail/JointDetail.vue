@@ -2,7 +2,7 @@
   <div class="jointDetail">
     <el-card class="box-card1">
       <div>
-          <span class="back-tittle"
+        <span class="back-tittle"
               @click="backPage">
           <i class="el-icon-arrow-left"></i>
           {{$t('openWallet.back')}}
@@ -18,7 +18,8 @@
             <div><span class="font-weight-style">抵押总额：</span>{{detailObj.allAmount}}</div>
           </div>
         </div>
-        <div><a @click="jointAdd()" v-if="!detailObj.alreadyWithdraw"> 参与联合</a></div>
+        <div><a @click="jointAdd()"
+             v-if="!detailObj.alreadyWithdraw"> 参与联合</a></div>
       </div>
     </el-card>
     <el-card class="box-card2">
@@ -27,13 +28,13 @@
         <div class="dis-flex between left-distance distance-top text-left">
           <div class="list-width">
             <div class="dis-flex between distance-top ">
-              <div><span class="font-weight-style">账户：</span> {{item.Address | getManAddress}}</div>
+              <div><span class="font-weight-style">账户：</span> {{item.Address}}</div>
               <div><span class="font-weight-style">累计奖励：{{item.Reward | weiToNumber}}MAN</span></div>
             </div>
             <div class="distance-top"><span class="font-weight-style">抵押总金额：{{item.AllAmount | weiToNumber}} </span></div>
           </div>
           <div class="distance-top"
-               v-if="ethAddress===item.Address">
+               v-if="address===item.Address">
             <a @click="participantsDetail(item)">详情</a>
           </div>
         </div>
@@ -67,7 +68,7 @@ export default {
     },
     jointAdd () {
       console.log(this.detailObj.jointAccount)
-      this.$router.push({ name: 'JointAdd', params: { jointAccount: this.detailObj.jointAccount } })
+      this.$router.push({ name: 'JointAdd', params: { jointAccount: this.detailObj.jointAccount, stakeValue: this.detailObj.allAmount } })
     },
     backPage () {
       this.$router.back()

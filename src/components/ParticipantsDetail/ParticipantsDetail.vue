@@ -36,20 +36,30 @@
           </el-table-column>
           <el-table-column label="状态">
             <template slot-scope="scope">
-              {{scope.row.isDeposite === 0?'抵押中':'已解除抵押'}}
+              <div v-if="scope.row.withdrawTime===0">
+                {{scope.row.isDeposite === 0?'抵押中':'已解除抵押'}}
+              </div>
+              <div v-else>
+                待退款
+              </div>
             </template>
           </el-table-column>
           <el-table-column label="操作"
                            prop="opration">
             <template slot-scope="scope">
-              <el-button @click="opration(scope.row)"
-                         v-if="scope.row.isDeposite===0"
-                         type="text"
-                         size="small">{{'解除抵押'}}</el-button>
-              <el-button @click="refund(scope.row.Position)"
-                         v-if="scope.row.isDeposite===1"
-                         type="text"
-                         size="small">{{'取款'}}</el-button>
+              <div v-if="scope.row.withdrawTime===0 || scope.row.withdrawTime<parseInt(new Date().getTime())">
+                <el-button @click="opration(scope.row)"
+                           v-if="scope.row.isDeposite===0"
+                           type="text"
+                           size="small">{{'解除抵押'}}</el-button>
+                <el-button @click="refund(scope.row.Position)"
+                           v-if="scope.row.isDeposite===1"
+                           type="text"
+                           size="small">{{'取款'}}</el-button>
+              </div>
+              <div v-if="scope.row.withdrawTime>parseInt(new Date().getTime())">
+                未到期
+              </div>
             </template>
           </el-table-column>
         </el-table>
@@ -83,7 +93,6 @@
 </template>
 <script>
 import { joinChildAbi } from '@/assets/js/config.js'
-import filter from '@/assets/js/filters'
 import store from 'store'
 import WalletUtil from '@/assets/js/WalletUtil'
 import TradingFuns from '@/assets/js/TradingFuns'
@@ -228,7 +237,7 @@ export default {
     },
     init () {
       this.participantsDetail = this.$route.params.participantsDetail
-      this.participantsDetail.Address = filter.getManAddress(this.participantsDetail.Address)
+      this.participantsDetail.Address = this.participantsDetail.Address
       this.jointAccount = this.participantsDetail.jointAccount
       this.creatAddress = this.participantsDetail.creatAddress
       console.log(this.participantsDetail)
@@ -239,7 +248,8 @@ export default {
             value: this.participantsDetail.Current.Amount,
             opration: 0,
             isDeposite: 0,
-            Position: 0
+            Position: 0,
+            withdrawTime: 0
           }
         )
       }
@@ -251,7 +261,8 @@ export default {
               value: current.WithDrawAmount,
               opration: 1,
               isDeposite: 1,
-              Position: 0
+              Position: 0,
+              withdrawTime: current.withdrawTime
             }
           )
         })
@@ -264,7 +275,8 @@ export default {
               value: element.Amount,
               opration: element.Position,
               Position: element.Position,
-              isDeposite: 0
+              isDeposite: 0,
+              withdrawTime: 0
             }
           )
         } else {
@@ -274,7 +286,8 @@ export default {
               value: element.Amount,
               opration: element.Position,
               Position: element.Position,
-              isDeposite: 1
+              isDeposite: 1,
+              withdrawTime: element.withdrawTime
             }
           )
         }
@@ -326,6 +339,7 @@ export default {
         if (this.$route.params.participantsDetail) {
           this.tableData = []
           this.init()
+          console.log(this.tableData)
         }
       }
     }
@@ -337,6 +351,7 @@ export default {
       this.address = this.$store.getters.wallet.address
     }
     this.init()
+    console.log(this.tableData)
   },
   components: {
     AllDialog,

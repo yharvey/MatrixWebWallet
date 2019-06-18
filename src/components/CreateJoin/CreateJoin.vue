@@ -89,8 +89,8 @@ import WalletUtil from '@/assets/js/WalletUtil'
 import TradingFuns from '@/assets/js/TradingFuns'
 import OfflineDialog from '@/components/TransferDialog/TipOfflineDialog'
 import sendSign from '@/components/TransferDialog/sendSignTransfer'
-import transferSuccess from '@/components/TransferDialog/transferSuccess'
 import AllDialog from '@/components/TransferDialog/AllDialog'
+import BigNumber from 'bignumber.js'
 export default {
   name: 'createJoin',
   data () {
@@ -123,8 +123,6 @@ export default {
       if (data != null && data !== false) {
         this.hash = data.hash
         this.visible = true
-        this.mortgageAddrress = ''
-        this.value = ''
       }
     },
     changeConfirmOffline (data) {
@@ -154,6 +152,10 @@ export default {
         }
         if (parseInt(this.value) < 100000) {
           this.$message.error('请填写大于100000金额')
+          return
+        }
+        if (new BigNumber(this.value).comparedTo(new BigNumber(10000000)) === 1) {
+          this.$message.error('金额过大')
           return
         }
         let data = {
@@ -270,8 +272,7 @@ export default {
   components: {
     AllDialog,
     OfflineDialog,
-    sendSign,
-    transferSuccess
+    sendSign
   }
 }
 </script>

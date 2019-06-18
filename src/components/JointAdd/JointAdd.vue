@@ -9,9 +9,6 @@
           {{$t('openWallet.back')}}
         </span>
         <!-- <h5>{{$t('associate.associateAddress')}}</h5> -->
-        <el-input placeholder="抵押金额"
-                  v-model="value"
-                  type="number"></el-input>
         <div>
           <el-select v-model="mortgageWay"
                      :placeholder="$t('CampaignNode.selectMortgageWay')">
@@ -32,6 +29,9 @@
             </el-option>
           </el-select>
         </div>
+        <el-input placeholder="抵押金额"
+                  v-model="value"
+                  type="number"></el-input>
         <button class="common-button"
                 @click="addDeposit">参与联合</button>
       </div>
@@ -63,6 +63,7 @@ import OfflineDialog from '@/components/TransferDialog/TipOfflineDialog'
 import sendSign from '@/components/TransferDialog/sendSignTransfer'
 import transferSuccess from '@/components/TransferDialog/transferSuccess'
 import AllDialog from '@/components/TransferDialog/AllDialog'
+import BigNumber from 'bignumber.js'
 export default {
   name: 'jointAdd',
   data () {
@@ -80,7 +81,8 @@ export default {
       sendSignVisible: false,
       information: '',
       visible: false,
-      jointAccount: ''
+      jointAccount: '',
+      stakeValue: ''
     }
   },
   methods: {
@@ -115,6 +117,11 @@ export default {
       let contract = this.ethProvider.eth.Contract(abiArray, contractAddress)
       let nonce = this.httpProvider.man.getTransactionCount(this.address)
       nonce = WalletUtil.numToHex(nonce)
+      debugger
+      if (new BigNumber(this.value).plus(new BigNumber(this.stakeValue)).comparedTo(new BigNumber(10000000)) === 1) {
+        this.$message.error('金额过大')
+        return
+      }
       let data = {
         to: this.jointAccount,
         value: parseInt(this.value),
@@ -160,7 +167,7 @@ export default {
       this.address = this.$store.getters.wallet.address
     }
     this.jointAccount = this.$route.params.jointAccount
-    console.log(this.jointAccount)
+    this.stakeValue = this.$route.params.stakeValue
   },
   components: {
     AllDialog,

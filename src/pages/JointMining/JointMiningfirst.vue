@@ -18,7 +18,7 @@
               <div><span class="font-weight-style">总抵押：</span>{{item.allAmount }}MAN</div>
             </div>
           </div>
-          <div>
+          <div class="text-right">
             <div class="font-style"
                  v-if="item.alreadyWithdraw"><span>抵押已解除</span></div>
             <div class="font-style"
@@ -33,11 +33,6 @@
 </template>
 
 <script>
-import { joinChildAbi, joinContract } from '@/assets/js/config.js'
-import store from 'store'
-import WalletUtil from '@/assets/js/WalletUtil'
-import TradingFuns from '@/assets/js/TradingFuns'
-import SendTransfer from '@/assets/js/SendTransfer'
 import filter from '@/assets/js/filters'
 import BigNumber from 'bignumber.js'
 export default {
@@ -53,84 +48,6 @@ export default {
     },
     jointDetail (detailObj) {
       this.$router.push({ name: 'JointDetail', params: { detailObj: detailObj } })
-    },
-    setSignAccount () {
-      let abiArray = JSON.parse(joinChildAbi)
-      let contractAddress = joinContract
-      let contract = this.ethProvider.eth.Contract(abiArray, contractAddress)
-      let nonce = this.httpProvider.man.getTransactionCount(this.address)
-      nonce = WalletUtil.numToHex(nonce)
-      let data = {
-        to: contractAddress,
-        value: 0,
-        gasLimit: 210000,
-        data: '',
-        gasPrice: 18000000000,
-        extra_to: [[0, 0, []]],
-        nonce: nonce
-      }
-      let jsonObj = TradingFuns.getTxData(data)
-      jsonObj.data = contract.methods.setSignAccount(WalletUtil.getEthAddress('MAN.4QwwVrHiXPPuVqCddhEQFnPfGhri5')).encodeABI()
-      if (this.$store.state.wallet != null) {
-        let tx = WalletUtil.createTx(jsonObj)
-        let privateKey = this.$store.state.wallet.privateKey
-        privateKey = Buffer.from(privateKey.indexOf('0x') > -1 ? privateKey.substring(2, privateKey.length) : privateKey, 'hex')
-        tx.sign(privateKey)
-        let serializedTx = tx.serialize()
-        this.newTxData = SendTransfer.getTxParams(serializedTx)
-        let hash = this.httpProvider.man.sendRawTransaction(this.newTxData)
-        this.hash = hash
-        console.log(hash)
-        this.visible = true
-        let recordArray = store.get(this.address)
-        if ((typeof (recordArray) === 'string')) {
-          recordArray = JSON.parse(recordArray)
-        }
-        if (recordArray == null) {
-          recordArray = []
-        }
-        recordArray.push({ hash: this.hash, newTxData: { commitTime: this.newTxData.commitTime, txType: this.newTxData.txType } })
-        store.set(this.address, recordArray)
-      }
-    },
-    addDeposit () {
-      let abiArray = JSON.parse(joinChildAbi)
-      let contractAddress = joinContract
-      let contract = this.ethProvider.eth.Contract(abiArray, contractAddress)
-      let nonce = this.httpProvider.man.getTransactionCount(this.address)
-      nonce = WalletUtil.numToHex(nonce)
-      let data = {
-        to: 'MAN.4N33zUiDrgL182kTkCgYEKJXwwyBV',
-        value: 1000,
-        gasLimit: 210000,
-        data: '',
-        gasPrice: 18000000000,
-        extra_to: [[0, 0, []]],
-        nonce: nonce
-      }
-      let jsonObj = TradingFuns.getTxData(data)
-      jsonObj.data = contract.methods.addDeposit(0).encodeABI()
-      if (this.$store.state.wallet != null) {
-        let tx = WalletUtil.createTx(jsonObj)
-        let privateKey = this.$store.state.wallet.privateKey
-        privateKey = Buffer.from(privateKey.indexOf('0x') > -1 ? privateKey.substring(2, privateKey.length) : privateKey, 'hex')
-        tx.sign(privateKey)
-        let serializedTx = tx.serialize()
-        this.newTxData = SendTransfer.getTxParams(serializedTx)
-        let hash = this.httpProvider.man.sendRawTransaction(this.newTxData)
-        this.hash = hash
-        console.log(hash)
-        this.visible = true
-        let recordArray = store.get(this.address)
-        if ((typeof (recordArray) === 'string')) {
-          recordArray = JSON.parse(recordArray)
-        }
-        if (recordArray == null) {
-          recordArray = []
-        }
-        recordArray.push({ hash: this.hash, newTxData: { commitTime: this.newTxData.commitTime, txType: this.newTxData.txType } })
-        store.set(this.address, recordArray)
-      }
     }
   },
   components: {
@@ -156,12 +73,12 @@ export default {
           alreadyWithdraw = true
         }
         self.validatorList.push({
-          jointAccount: WalletUtil.getManAddress(key),
+          jointAccount: key,
           activeCount: item.ValidatorMap.length,
           allAmount: allAmount.toString(10),
-          signAddress: WalletUtil.getManAddress(item.OwnerInfo.SignAddress),
+          signAddress: item.OwnerInfo.SignAddress,
           validatorMap: item.ValidatorMap,
-          createAddress: WalletUtil.getManAddress(item.OwnerInfo.Owner),
+          createAddress: item.OwnerInfo.Owner,
           alreadyWithdraw: alreadyWithdraw
         })
       }
@@ -216,8 +133,10 @@ export default {
   a {
     font-size: 0.875rem;
     color: #1c51dd;
-    margin-left: 1.5rem;
     cursor: pointer;
+  }
+  .text-right {
+    text-align: right;
   }
 }
 </style>

@@ -109,7 +109,7 @@ export default {
       }
     },
     getDepositInfo () {
-      let depositList = this.httpProvider.man.getDepositbyaddr(this.address)
+      let depositList = this.httpProvider.man.getDepositByAddr(this.address)
       console.log(depositList)
       if (depositList != null) {
         let regularWithdrawalsValue = new BigNumber(0)
