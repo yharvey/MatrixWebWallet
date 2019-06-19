@@ -48,7 +48,7 @@
         </el-pagination>
       </div>
       <div v-if="selectQuery==='my'">
-        <div v-for="(item,index) in validatorList"
+        <div v-for="(item,index) in myJoinList"
              :key="index">
           <div class="dis-flex between left-distance distance-top">
             <div>
