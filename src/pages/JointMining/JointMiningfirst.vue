@@ -24,16 +24,16 @@
             <div>
               <div class="text-left"><span class="font-weight-style">{{$t('jointFirst.jointAccount')}}</span> {{item.jointAccount}}</div>
               <div class="dis-flex distance-top">
-                <div class="join-number"><span class="font-weight-style">{{$t('jointFirst.joinNumber')}}</span>{{item.activeCount}}</div>
+                <div class="join-number"><span class="font-weight-style">{{$t('jointFirst.jointNumber')}}</span>{{item.activeCount}}</div>
                 <div><span class="font-weight-style">{{$t('jointFirst.jointTotal')}}</span>{{item.allAmount }}MAN</div>
               </div>
             </div>
             <div class="text-right">
               <div class="font-style"
-                   v-if="item.alreadyWithdraw"><span>挖矿关闭</span></div>
+                   v-if="item.alreadyWithdraw"><span>{{$t('jointFirst.closeMining')}}</span></div>
               <div class="font-style"
-                   v-else><span>挖矿中</span></div>
-              <a @click="jointDetail(item)">详情</a>
+                   v-else><span>{{$t('jointFirst.closeMining')}}</span></div>
+              <a @click="jointDetail(item)">{{$t('digAccount.withdraw_detail')}}</a>
             </div>
           </div>
           <hr>
@@ -48,22 +48,22 @@
         </el-pagination>
       </div>
       <div v-if="selectQuery==='my'">
-        <div v-for="(item,index) in myJoinList"
+        <div v-for="(item,index) in validatorList"
              :key="index">
           <div class="dis-flex between left-distance distance-top">
             <div>
-              <div class="text-left"><span class="font-weight-style">联合账户：</span> {{item.jointAccount}}</div>
+              <div class="text-left"><span class="font-weight-style">{{$t('jointFirst.jointAccount')}}</span> {{item.jointAccount}}</div>
               <div class="dis-flex distance-top">
-                <div class="join-number"><span class="font-weight-style">参与人数：</span>{{item.activeCount}}</div>
-                <div><span class="font-weight-style">总抵押：</span>{{item.allAmount }}MAN</div>
+                <div class="join-number"><span class="font-weight-style">{{$t('jointFirst.jointNumber')}}</span>{{item.activeCount}}</div>
+                <div><span class="font-weight-style">{{$t('jointFirst.jointTotal')}}</span>{{item.allAmount }}MAN</div>
               </div>
             </div>
             <div class="text-right">
               <div class="font-style"
-                   v-if="item.alreadyWithdraw"><span>挖矿关闭</span></div>
+                   v-if="item.alreadyWithdraw"><span>{{$t('jointFirst.closeMining')}}</span></div>
               <div class="font-style"
-                   v-else><span>挖矿中</span></div>
-              <a @click="jointDetail(item)">详情</a>
+                   v-else><span>{{$t('jointFirst.closeMining')}}</span></div>
+              <a @click="jointDetail(item)">{{$t('digAccount.withdraw_detail')}}</a>
             </div>
           </div>
           <hr>
@@ -71,10 +71,10 @@
         <el-pagination background
                        class="top_spacing"
                        layout="prev, pager, next"
-                       :page-size="myPageSize"
-                       :current-page="myPageNumber"
-                       @current-change="changeMy"
-                       :total="myTotal">
+                       :page-size="pageSize"
+                       :current-page="pageNumber"
+                       @current-change="changeAll"
+                       :total="total">
         </el-pagination>
       </div>
     </el-card>

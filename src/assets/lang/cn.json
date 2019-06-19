@@ -619,6 +619,9 @@
     "all":"所有",
     "my":"我参与的",
     "jointAccount":"联合账户：",
-    "joinNumber":"参与人数："
+    "jointNumber":"参与人数：",
+    "jointTotal":"总抵押：",
+    "closeMining":"挖矿关闭",
+    "mining":"挖矿中"
   }
 }

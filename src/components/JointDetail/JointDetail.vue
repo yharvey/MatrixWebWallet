@@ -10,8 +10,8 @@
       </div>
       <div class="header">
         <div class="text-left">
-          <div class="distance-top"><span class="font-weight-style">联合账户：</span>{{detailObj.jointAccount}}</div>
-          <div class="distance-top"><span class="font-weight-style">创建者账户：</span>{{detailObj.createAddress}}</div>
+          <div class="distance-top"><span class="font-weight-style">{{$t('jointFirst.jointMining')}}</span>{{detailObj.jointAccount}}</div>
+          <div class="distance-top"><span class="font-weight-style">{{$t('jointFirst.createJoint')}}</span>{{detailObj.createAddress}}</div>
           <div class="distance-top"><span class="font-weight-style">签名账户：</span>{{detailObj.signAddress}}</div>
           <div class="distance-top"><span class="font-weight-style ">参与人数：</span>{{detailObj.activeCount}}</div>
           <div class="distance-top"><span class="font-weight-style">抵押总额：</span>{{detailObj.allAmount}}</div>
