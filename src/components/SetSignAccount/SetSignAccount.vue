@@ -46,42 +46,49 @@ export default {
       this.$router.back()
     },
     setSignAccount (position) {
-      let abiArray = JSON.parse(joinChildAbi)
-      let contractAddress = this.jointAccount
-      let contract = this.ethProvider.eth.Contract(abiArray, contractAddress)
-      let nonce = this.httpProvider.man.getTransactionCount(this.address)
-      nonce = WalletUtil.numToHex(nonce)
-      let data = {
-        to: this.jointAccount,
-        value: 0,
-        gasLimit: 210000,
-        data: '',
-        gasPrice: 18000000000,
-        extra_to: [[0, 0, []]],
-        nonce: nonce
-      }
-      let jsonObj = TradingFuns.getTxData(data)
-      jsonObj.data = contract.methods.setSignAccount(WalletUtil.getEthAddress(this.signAddress)).encodeABI()
-      if (this.$store.state.wallet != null) {
-        let tx = WalletUtil.createTx(jsonObj)
-        let privateKey = this.$store.state.wallet.privateKey
-        privateKey = Buffer.from(privateKey.indexOf('0x') > -1 ? privateKey.substring(2, privateKey.length) : privateKey, 'hex')
-        tx.sign(privateKey)
-        let serializedTx = tx.serialize()
-        this.newTxData = SendTransfer.getTxParams(serializedTx)
-        let hash = this.httpProvider.man.sendRawTransaction(this.newTxData)
-        this.hash = hash
-        console.log(hash)
-        this.visible = true
-        let recordArray = store.get(this.address)
-        if ((typeof (recordArray) === 'string')) {
-          recordArray = JSON.parse(recordArray)
+      try {
+        let abiArray = JSON.parse(joinChildAbi)
+        let contractAddress = this.jointAccount
+        let contract = this.ethProvider.eth.Contract(abiArray, contractAddress)
+        let nonce = this.httpProvider.man.getTransactionCount(this.address)
+        nonce = WalletUtil.numToHex(nonce)
+        let data = {
+          to: this.jointAccount,
+          value: 0,
+          gasLimit: 210000,
+          data: '',
+          gasPrice: 18000000000,
+          extra_to: [[0, 0, []]],
+          nonce: nonce
         }
-        if (recordArray == null) {
-          recordArray = []
+        let jsonObj = TradingFuns.getTxData(data)
+        jsonObj.data = contract.methods.setSignAccount(WalletUtil.getEthAddress(this.signAddress)).encodeABI()
+        if (this.$store.state.wallet != null) {
+          let tx = WalletUtil.createTx(jsonObj)
+          let privateKey = this.$store.state.wallet.privateKey
+          privateKey = Buffer.from(privateKey.indexOf('0x') > -1 ? privateKey.substring(2, privateKey.length) : privateKey, 'hex')
+          tx.sign(privateKey)
+          let serializedTx = tx.serialize()
+          this.newTxData = SendTransfer.getTxParams(serializedTx)
+          let hash = this.httpProvider.man.sendRawTransaction(this.newTxData)
+          this.hash = hash
+          console.log(hash)
+          this.visible = true
+          let recordArray = store.get(this.address)
+          if ((typeof (recordArray) === 'string')) {
+            recordArray = JSON.parse(recordArray)
+          }
+          if (recordArray == null) {
+            recordArray = []
+          }
+          recordArray.push({ hash: this.hash, newTxData: { commitTime: this.newTxData.commitTime, txType: this.newTxData.txType } })
+          store.set(this.address, recordArray)
+        } else {
+          this.jsonObj = JSON.stringify(jsonObj)
+          this.confirmOffline = true
         }
-        recordArray.push({ hash: this.hash, newTxData: { commitTime: this.newTxData.commitTime, txType: this.newTxData.txType } })
-        store.set(this.address, recordArray)
+      } catch (e) {
+        this.$message.error(e.message)
       }
     }
   },

@@ -5,9 +5,6 @@
         <div class="line-center between">
           <div class="line-center">
             <div><span class="font-weight-style">账户：</span>{{participantsDetail.Address}}</div>
-            <div style="margin-left: 7rem;"
-                 v-if="address === creatAddress&&!participantsDetail.alreadyWithdraw"><a @click="withdrawAll()">关闭挖矿</a> </div>
-            <div v-if="address === creatAddress"><a @click="setSignAccount()">修改签名地址</a> </div>
           </div>
           <div style=" text-align:right"><a @click="backPage()">返回</a> </div>
         </div>
@@ -16,7 +13,8 @@
             <div><span class="font-weight-style">抵押总额:</span>{{participantsDetail.AllAmount |weiToNumber}}MAN</div>
             <div style="margin-left: 17rem;"><span class="font-weight-style">累计奖励: {{participantsDetail.Reward |weiToNumber}}MAN</span> </div>
           </div>
-          <div style="text-align:right"><a @click="getReward()">奖励提款</a> </div>
+          <div style="text-align:right"
+               v-if="!(participantsDetail.Reward===0)"><a @click="getReward()">奖励提款</a> </div>
         </div>
       </div>
     </el-card>
@@ -48,7 +46,7 @@
           <el-table-column label="操作"
                            prop="opration">
             <template slot-scope="scope">
-              <div v-if="scope.row.withdrawTime===0 || scope.row.withdrawTime<parseInt(new Date().getTime())">
+              <div v-if="scope.row.withdrawTime===0 || scope.row.withdrawTime<parseInt(new Date().getTime()/1000)">
                 <el-button @click="opration(scope.row)"
                            v-if="scope.row.isDeposite===0"
                            type="text"
@@ -58,7 +56,7 @@
                            type="text"
                            size="small">{{'取款'}}</el-button>
               </div>
-              <div v-if="scope.row.withdrawTime>parseInt(new Date().getTime())">
+              <div v-if="scope.row.withdrawTime>parseInt(new Date().getTime()/1000)">
                 未到期
               </div>
             </template>
@@ -100,7 +98,6 @@ import TradingFuns from '@/assets/js/TradingFuns'
 import SendTransfer from '@/assets/js/SendTransfer'
 import OfflineDialog from '@/components/TransferDialog/TipOfflineDialog'
 import sendSign from '@/components/TransferDialog/sendSignTransfer'
-import transferSuccess from '@/components/TransferDialog/transferSuccess'
 import AllDialog from '@/components/TransferDialog/AllDialog'
 export default {
   name: 'participantsDetail',
@@ -131,8 +128,6 @@ export default {
       if (data != null && data !== false) {
         this.hash = data.hash
         this.visible = true
-        this.mortgageAddrress = ''
-        this.value = ''
       }
     },
     changeConfirmOffline (data) {
@@ -163,84 +158,97 @@ export default {
       }
     },
     refund (position) {
-      let abiArray = JSON.parse(joinChildAbi)
-      let contractAddress = this.jointAccount
-      let contract = this.ethProvider.eth.Contract(abiArray, contractAddress)
-      let nonce = this.httpProvider.man.getTransactionCount(this.address)
-      nonce = WalletUtil.numToHex(nonce)
-      let data = {
-        to: this.jointAccount,
-        value: 0,
-        gasLimit: 210000,
-        data: '',
-        gasPrice: 18000000000,
-        extra_to: [[0, 0, []]],
-        nonce: nonce
-      }
-      let jsonObj = TradingFuns.getTxData(data)
-      jsonObj.data = contract.methods.refund(position).encodeABI()
-      if (this.$store.state.wallet != null) {
-        let tx = WalletUtil.createTx(jsonObj)
-        let privateKey = this.$store.state.wallet.privateKey
-        privateKey = Buffer.from(privateKey.indexOf('0x') > -1 ? privateKey.substring(2, privateKey.length) : privateKey, 'hex')
-        tx.sign(privateKey)
-        let serializedTx = tx.serialize()
-        this.newTxData = SendTransfer.getTxParams(serializedTx)
-        let hash = this.httpProvider.man.sendRawTransaction(this.newTxData)
-        this.hash = hash
-        console.log(hash)
-        this.visible = true
-        let recordArray = store.get(this.address)
-        if ((typeof (recordArray) === 'string')) {
-          recordArray = JSON.parse(recordArray)
+      try {
+        let abiArray = JSON.parse(joinChildAbi)
+        let contractAddress = this.jointAccount
+        let contract = this.ethProvider.eth.Contract(abiArray, contractAddress)
+        let nonce = this.httpProvider.man.getTransactionCount(this.address)
+        nonce = WalletUtil.numToHex(nonce)
+        let data = {
+          to: this.jointAccount,
+          value: 0,
+          gasLimit: 210000,
+          data: '',
+          gasPrice: 18000000000,
+          extra_to: [[0, 0, []]],
+          nonce: nonce
         }
-        if (recordArray == null) {
-          recordArray = []
+        let jsonObj = TradingFuns.getTxData(data)
+        jsonObj.data = contract.methods.refund(position).encodeABI()
+        if (this.$store.state.wallet != null) {
+          let tx = WalletUtil.createTx(jsonObj)
+          let privateKey = this.$store.state.wallet.privateKey
+          privateKey = Buffer.from(privateKey.indexOf('0x') > -1 ? privateKey.substring(2, privateKey.length) : privateKey, 'hex')
+          tx.sign(privateKey)
+          let serializedTx = tx.serialize()
+          this.newTxData = SendTransfer.getTxParams(serializedTx)
+          let hash = this.httpProvider.man.sendRawTransaction(this.newTxData)
+          this.hash = hash
+          console.log(hash)
+          this.visible = true
+          let recordArray = store.get(this.address)
+          if ((typeof (recordArray) === 'string')) {
+            recordArray = JSON.parse(recordArray)
+          }
+          if (recordArray == null) {
+            recordArray = []
+          }
+          recordArray.push({ hash: this.hash, newTxData: { commitTime: this.newTxData.commitTime, txType: this.newTxData.txType } })
+          store.set(this.address, recordArray)
+        } else {
+          this.confirmOffline = true
+          this.jsonObj = JSON.stringify(jsonObj)
         }
-        recordArray.push({ hash: this.hash, newTxData: { commitTime: this.newTxData.commitTime, txType: this.newTxData.txType } })
-        store.set(this.address, recordArray)
+      } catch (e) {
+        this.$message.error(e.message)
       }
     },
     withdrawAll () {
-      let abiArray = JSON.parse(joinChildAbi)
-      let contractAddress = this.jointAccount
-      let contract = this.ethProvider.eth.Contract(abiArray, contractAddress)
-      let nonce = this.httpProvider.man.getTransactionCount(this.address)
-      nonce = WalletUtil.numToHex(nonce)
-      let data = {
-        to: this.jointAccount,
-        value: 0,
-        gasLimit: 210000,
-        data: '',
-        gasPrice: 18000000000,
-        extra_to: [[0, 0, []]],
-        nonce: nonce
-      }
-      let jsonObj = TradingFuns.getTxData(data)
-      jsonObj.data = contract.methods.withdrawAll().encodeABI()
-      if (this.$store.state.wallet != null) {
-        let tx = WalletUtil.createTx(jsonObj)
-        let privateKey = this.$store.state.wallet.privateKey
-        privateKey = Buffer.from(privateKey.indexOf('0x') > -1 ? privateKey.substring(2, privateKey.length) : privateKey, 'hex')
-        tx.sign(privateKey)
-        let serializedTx = tx.serialize()
-        this.newTxData = SendTransfer.getTxParams(serializedTx)
-        let hash = this.httpProvider.man.sendRawTransaction(this.newTxData)
-        this.hash = hash
-        this.visible = true
-        let recordArray = store.get(this.address)
-        if ((typeof (recordArray) === 'string')) {
-          recordArray = JSON.parse(recordArray)
+      try {
+        let abiArray = JSON.parse(joinChildAbi)
+        let contractAddress = this.jointAccount
+        let contract = this.ethProvider.eth.Contract(abiArray, contractAddress)
+        let nonce = this.httpProvider.man.getTransactionCount(this.address)
+        nonce = WalletUtil.numToHex(nonce)
+        let data = {
+          to: this.jointAccount,
+          value: 0,
+          gasLimit: 210000,
+          data: '',
+          gasPrice: 18000000000,
+          extra_to: [[0, 0, []]],
+          nonce: nonce
         }
-        if (recordArray == null) {
-          recordArray = []
+        let jsonObj = TradingFuns.getTxData(data)
+        jsonObj.data = contract.methods.withdrawAll().encodeABI()
+        if (this.$store.state.wallet != null) {
+          let tx = WalletUtil.createTx(jsonObj)
+          let privateKey = this.$store.state.wallet.privateKey
+          privateKey = Buffer.from(privateKey.indexOf('0x') > -1 ? privateKey.substring(2, privateKey.length) : privateKey, 'hex')
+          tx.sign(privateKey)
+          let serializedTx = tx.serialize()
+          this.newTxData = SendTransfer.getTxParams(serializedTx)
+          let hash = this.httpProvider.man.sendRawTransaction(this.newTxData)
+          this.hash = hash
+          this.visible = true
+          let recordArray = store.get(this.address)
+          if ((typeof (recordArray) === 'string')) {
+            recordArray = JSON.parse(recordArray)
+          }
+          if (recordArray == null) {
+            recordArray = []
+          }
+          recordArray.push({ hash: this.hash, newTxData: { commitTime: this.newTxData.commitTime, txType: this.newTxData.txType } })
+          store.set(this.address, recordArray)
+        } else {
+          this.confirmOffline = true
+          this.jsonObj = JSON.stringify(jsonObj)
         }
-        recordArray.push({ hash: this.hash, newTxData: { commitTime: this.newTxData.commitTime, txType: this.newTxData.txType } })
-        store.set(this.address, recordArray)
+      } catch (e) {
+        this.$message.error(e.message)
       }
     },
     init () {
-      debugger
       this.participantsDetail = this.$route.params.participantsDetail
       this.participantsDetail.Address = this.participantsDetail.Address
       this.jointAccount = this.participantsDetail.jointAccount
@@ -291,49 +299,58 @@ export default {
               opration: element.Position,
               Position: element.Position,
               isDeposite: 1,
-              withdrawTime: element.EndTime
+              // withdrawTime: element.EndTime + element.DType * 2592000
+              withdrawTime: element.EndTime + element.DType * 100
             }
           )
         }
       })
+      console.log(this.tableData)
     },
     getReward () {
-      let abiArray = JSON.parse(joinChildAbi)
-      let contractAddress = this.jointAccount
-      let contract = this.ethProvider.eth.Contract(abiArray, contractAddress)
-      let nonce = this.httpProvider.man.getTransactionCount(this.address)
-      nonce = WalletUtil.numToHex(nonce)
-      let data = {
-        to: this.jointAccount,
-        value: 0,
-        gasLimit: 210000,
-        data: '',
-        gasPrice: 18000000000,
-        extra_to: [[0, 0, []]],
-        nonce: nonce
-      }
-      let jsonObj = TradingFuns.getTxData(data)
-      jsonObj.data = contract.methods.getReward().encodeABI()
-      if (this.$store.state.wallet != null) {
-        let tx = WalletUtil.createTx(jsonObj)
-        let privateKey = this.$store.state.wallet.privateKey
-        privateKey = Buffer.from(privateKey.indexOf('0x') > -1 ? privateKey.substring(2, privateKey.length) : privateKey, 'hex')
-        tx.sign(privateKey)
-        let serializedTx = tx.serialize()
-        this.newTxData = SendTransfer.getTxParams(serializedTx)
-        let hash = this.httpProvider.man.sendRawTransaction(this.newTxData)
-        this.hash = hash
-        console.log(hash)
-        this.visible = true
-        let recordArray = store.get(this.address)
-        if ((typeof (recordArray) === 'string')) {
-          recordArray = JSON.parse(recordArray)
+      try {
+        let abiArray = JSON.parse(joinChildAbi)
+        let contractAddress = this.jointAccount
+        let contract = this.ethProvider.eth.Contract(abiArray, contractAddress)
+        let nonce = this.httpProvider.man.getTransactionCount(this.address)
+        nonce = WalletUtil.numToHex(nonce)
+        let data = {
+          to: this.jointAccount,
+          value: 0,
+          gasLimit: 210000,
+          data: '',
+          gasPrice: 18000000000,
+          extra_to: [[0, 0, []]],
+          nonce: nonce
         }
-        if (recordArray == null) {
-          recordArray = []
+        let jsonObj = TradingFuns.getTxData(data)
+        jsonObj.data = contract.methods.getReward().encodeABI()
+        if (this.$store.state.wallet != null) {
+          let tx = WalletUtil.createTx(jsonObj)
+          let privateKey = this.$store.state.wallet.privateKey
+          privateKey = Buffer.from(privateKey.indexOf('0x') > -1 ? privateKey.substring(2, privateKey.length) : privateKey, 'hex')
+          tx.sign(privateKey)
+          let serializedTx = tx.serialize()
+          this.newTxData = SendTransfer.getTxParams(serializedTx)
+          let hash = this.httpProvider.man.sendRawTransaction(this.newTxData)
+          this.hash = hash
+          console.log(hash)
+          this.visible = true
+          let recordArray = store.get(this.address)
+          if ((typeof (recordArray) === 'string')) {
+            recordArray = JSON.parse(recordArray)
+          }
+          if (recordArray == null) {
+            recordArray = []
+          }
+          recordArray.push({ hash: this.hash, newTxData: { commitTime: this.newTxData.commitTime, txType: this.newTxData.txType } })
+          store.set(this.address, recordArray)
+        } else {
+          this.confirmOffline = true
+          this.jsonObj = JSON.stringify(jsonObj)
         }
-        recordArray.push({ hash: this.hash, newTxData: { commitTime: this.newTxData.commitTime, txType: this.newTxData.txType } })
-        store.set(this.address, recordArray)
+      } catch (e) {
+        this.$message.error(e.message)
       }
     }
   },
@@ -360,8 +377,7 @@ export default {
   components: {
     AllDialog,
     OfflineDialog,
-    sendSign,
-    transferSuccess
+    sendSign
   }
 }
 </script>

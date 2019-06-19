@@ -34,31 +34,44 @@
             </el-option>
           </el-select>
         </div>
-        <el-input placeholder="创建者加权系数"
+        <el-input placeholder="创建者收益分配权重"
                   v-model="ownerRate"></el-input>
         <div class="show-flex-between">
           <div>
             <el-input class="small-input"
                       v-model="lvlRate1"
-                      placeholder="参与者加权系数1"></el-input>
+                      placeholder="参与者收益分配权重"></el-input>
           </div>
-          <div>小于 1万 MAN</div>
+          <div>参与者抵押小于1万MAN</div>
         </div>
         <div class="show-flex-between">
           <div>
             <el-input class="small-input"
                       v-model="lvlRate2"
-                      placeholder="参与者加权系数2"></el-input>
+                      placeholder="参与者收益分配权重"></el-input>
           </div>
-          <div>1万 -- 10万 MAN</div>
+          <div>参与者抵押小于10万MAN</div>
         </div>
         <div class="show-flex-between">
           <div>
             <el-input class="small-input"
                       v-model="lvlRate3"
-                      placeholder="参与者加权系数3"></el-input>
+                      placeholder="参与者收益分配权重"></el-input>
           </div>
-          <div>大于 10万 MAN</div>
+          <div>参与者抵押大于等于10万MAN</div>
+        </div>
+        <div class="tips-font">
+          <div>提示：</div>
+          <div>收益分配权重：为1-100的正整数。</div>
+          <div>收益计算方法：</div>
+          <div>创建者抵押金额为A0,权重R0</div>
+          <div>小于1万的总抵押金额为DA1，权重为DR1</div>
+          <div>大于等于1万小于10万的总抵押金额为DA2，权重为DR2</div>
+          <div>大于等于10万的总抵押金额为DA3，权重为DR3</div>
+          <div>总奖励为W0</div>
+          <div>总权重：weight= A0*R0+DA1*DR1+DA2*DR2+DA3*DR3</div>
+          <div>抵押为A ，权重为R，收益为W</div>
+          <div>W=W0*A*R/weight；</div>
         </div>
         <button class="common-button"
                 @click="confirm">新建联合</button>
@@ -279,6 +292,15 @@ export default {
       margin-top: 1rem;
     }
     .common-button {
+      margin-top: 1rem;
+    }
+    .tips-font {
+      text-align: left;
+      font-size: 0.875rem;
+      color: #9298ae;
+      letter-spacing: 0.13px;
+      font-weight: 400;
+      margin-left: 18rem;
       margin-top: 1rem;
     }
   }

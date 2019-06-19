@@ -13,7 +13,7 @@
     "cancel": "Cancel",
     "refund": "Mining Account",
     "offlineSend": "Send Offline",
-    "jointMining":"联合挖矿"
+    "jointMining": "联合挖矿"
   },
   "myWallet": {
     "queryWallet": "Open Wallet Using",
@@ -113,7 +113,7 @@
     "contractsSuccess": "Contract Deployed Successfully"
   },
   "errorMsgs": {
-    "jsonError":"Signature struct error",
+    "jsonError": "Signature struct error",
     "keyStoreMsg": "Please correct wallet file",
     "passwordError": "The password you entered is incorrect",
     "invalidTokenName": "invalid token name",
@@ -207,26 +207,26 @@
     "mortgageTypeError": "Please choose your stake type",
     "valueError": "Please enter your stake amount",
     "cancelDepositError": "No stake allowed before refund is finished",
-    "regular":"Fixed stake",
-    "current":"Flexible stake",
-    "mortgage_number":"The amount of stake",
-    "oneMonth":"One month",
-    "threeMonth":"Three months",
-    "sixMonth":"Six months",
-    "oneYear":"Twelve months",
-    "selectTimeLimit":"Please select the time limit",
-    "selectMortgageWay":"Please select the way of stake",
-    "valueLessError1":"Fixed stake should be greater than 2000 MAN",
-    "valueLessError2":"The first fixed stake of miner should be greater than 10000 MAN",
-    "valueLessError3":"The first fixed stake of validator should be greater than 100000 MAN",
-    "currentError":"Flexible stake should be greater than 100 MAN",
-    "withdrawalsBigger":"Incorrect amount",
-    "withdrawalsNeed":"The value should be greater 100 MAN",
-    "onlyChange":"Change stake",
+    "regular": "Fixed stake",
+    "current": "Flexible stake",
+    "mortgage_number": "The amount of stake",
+    "oneMonth": "One month",
+    "threeMonth": "Three months",
+    "sixMonth": "Six months",
+    "oneYear": "Twelve months",
+    "selectTimeLimit": "Please select the time limit",
+    "selectMortgageWay": "Please select the way of stake",
+    "valueLessError1": "Fixed stake should be greater than 2000 MAN",
+    "valueLessError2": "The first fixed stake of miner should be greater than 10000 MAN",
+    "valueLessError3": "The first fixed stake of validator should be greater than 100000 MAN",
+    "currentError": "Flexible stake should be greater than 100 MAN",
+    "withdrawalsBigger": "Incorrect amount",
+    "withdrawalsNeed": "The value should be greater 100 MAN",
+    "onlyChange": "Change stake",
     "minnerTotalError": "新抵押的金额和之前抵押总和需要大于10000才可抵押矿工",
     "valTotalError": "新抵押的金额和之前抵押总和需要大于100000才可抵押验证者",
-    "leastError":"At least",
-    "man":"MAN"
+    "leastError": "At least",
+    "man": "MAN"
   },
   "startNode": {
     "name": "Startup Node",
@@ -527,8 +527,8 @@
     "sendSign": "Send signed transaction",
     "sendSignInformation": "Send signed information",
     "sign": "Sign",
-    "sendSignature":"Send signature",
-    "unlockTips":"Opening the wallet should in the status of connected network. It should be noted that in the offline mode, you only need to disconnect your network when carrying out signed transaction."
+    "sendSignature": "Send signature",
+    "unlockTips": "Opening the wallet should in the status of connected network. It should be noted that in the offline mode, you only need to disconnect your network when carrying out signed transaction."
   },
   "undo": {
     "title": "Cancel Transaction",
@@ -541,9 +541,9 @@
     "offlineTip": "*Please ensure your device is offline when you sign the transaction",
     "sendSignTip": "*Please ensure your device is networked when you send the signed transaction",
     "sign": "Sign",
-    "noSignTransfer":"unsigned transaction",
-    "signing":"Sign Transaction",
-    "selectSign":"Sign the transaction via one of  the following methods"
+    "noSignTransfer": "unsigned transaction",
+    "signing": "Sign Transaction",
+    "selectSign": "Sign the transaction via one of  the following methods"
   },
   "refund": {
     "deposit_amount": "Stake amount",
@@ -555,63 +555,70 @@
     "withdraw_block": "withdraw at block ",
     "block": " block"
   },
-  "digAccount":{
-    "role":"Stake Type",
-    "miner":"Miner",
-    "validator":"Validator",
-    "signaddress":"Address",
-    "deposit_account":"Stake Account",
-    "current":"Fixed",
-    "regular":"Flexible",
-    "withdraw_detail":"Details",
-    "withdraw_deposit":"Unstake",
-    "deposit":"stake",
-    "refund_account":"Refund Account",
-    "withdrawals_detail":"Details",
-    "withdrawals":"Refund",
-    "change_regular":"Transfer to fixed stake",
-    "tips1":"1、At least 2000 MAN must be added each time for the fixed stake",
-    "tips2":"2、At least 100 MAN must be added each time for the flexible stake",
-    "tips3":"3、At least 100,000 MAN (combined fixed stake + flexible stake) are required to stake a Verification Masternode",
-    "tips4":"4、When the amount of  \"fixed + flexible\" stake is more than 10 million MAN, rewards are only calculated at 10 million.",
-    "tips5":"5、At least 100,00 MAN (combined fixed stake + flexible stake) are required to stake a Miner Masternode"
-  
+  "digAccount": {
+    "role": "Stake Type",
+    "miner": "Miner",
+    "validator": "Validator",
+    "signaddress": "Address",
+    "deposit_account": "Stake Account",
+    "current": "Fixed",
+    "regular": "Flexible",
+    "withdraw_detail": "Details",
+    "withdraw_deposit": "Unstake",
+    "deposit": "stake",
+    "refund_account": "Refund Account",
+    "withdrawals_detail": "Details",
+    "withdrawals": "Refund",
+    "change_regular": "Transfer to fixed stake",
+    "tips1": "1、At least 2000 MAN must be added each time for the fixed stake",
+    "tips2": "2、At least 100 MAN must be added each time for the flexible stake",
+    "tips3": "3、At least 100,000 MAN (combined fixed stake + flexible stake) are required to stake a Verification Masternode",
+    "tips4": "4、When the amount of  \"fixed + flexible\" stake is more than 10 million MAN, rewards are only calculated at 10 million.",
+    "tips5": "5、At least 100,00 MAN (combined fixed stake + flexible stake) are required to stake a Miner Masternode"
   },
-  "regularDetail":{
-    "regular_account":"Fixed Stake Account:",
-    "begin_time":"Start time of stake",
-    "deposit_time":"Time of Stake",
-    "month":"Month",
-    "deposit_value":"The amount of stake",
-    "interest":"Stake rewards",
-    "operation":"Operation",
-    "success":"Unstake successfully",
-    "regularDetailMsg":"After unstaking successfully, you can withdrawal your staked assets to your available assets 2 hours after the regular maturity.",
+  "regularDetail": {
+    "regular_account": "Fixed Stake Account:",
+    "begin_time": "Start time of stake",
+    "deposit_time": "Time of Stake",
+    "month": "Month",
+    "deposit_value": "The amount of stake",
+    "interest": "Stake rewards",
+    "operation": "Operation",
+    "success": "Unstake successfully",
+    "regularDetailMsg": "After unstaking successfully, you can withdrawal your staked assets to your available assets 2 hours after the regular maturity.",
     "expected": "Expected at"
   },
-  "currentWithdraw":{
-    "current_account":"Flexible Stake Account:",
-    "current_refund":"Flexible Unstake",
-    "refund_value":"The amount of flexible unstake",
-    "success":"Flexible unstake success",
-    "confirmWithdrawMsg":"After unstaking successfully, you can withdrawal your staked assets to your available assets after 7 days"
+  "currentWithdraw": {
+    "current_account": "Flexible Stake Account:",
+    "current_refund": "Flexible Unstake",
+    "refund_value": "The amount of flexible unstake",
+    "success": "Flexible unstake success",
+    "confirmWithdrawMsg": "After unstaking successfully, you can withdrawal your staked assets to your available assets after 7 days"
   },
-  "regularMortgage":{
-    "change_regular":"Transfer to fixed stake",
-    "current_value":"The amount of fixed stake",
-    "success":"Transfer to fixed stake successfully"
+  "regularMortgage": {
+    "change_regular": "Transfer to fixed stake",
+    "current_value": "The amount of fixed stake",
+    "success": "Transfer to fixed stake successfully"
   },
-  "regularWithdrawals":{
-    "regularWithdrawals":"Fixed Withdrawals",
-    "withdraw_time":"The time of withdrawals",
-    "value":"Amount",
-    "state":"State",
-    "can_withdrawals":"Available for withdrawals",
-    "withdrawing":"Unstaking",
-    "current_withdrawals":"Flexible Withdrawals",
-    "success":"Withdrawals success"
+  "regularWithdrawals": {
+    "regularWithdrawals": "Fixed Withdrawals",
+    "withdraw_time": "The time of withdrawals",
+    "value": "Amount",
+    "state": "State",
+    "can_withdrawals": "Available for withdrawals",
+    "withdrawing": "Unstaking",
+    "current_withdrawals": "Flexible Withdrawals",
+    "success": "Withdrawals success"
   },
-  "currentRefund":{
-    "tips":"All withdrawalable flexible stake will be refunded to the account balance after withdrawal confirmation"
+  "currentRefund": {
+    "tips": "All withdrawalable flexible stake will be refunded to the account balance after withdrawal confirmation"
+  },
+  "jointFirst": {
+    "jointMining": "联合挖矿",
+    "createJoint": "创建联合",
+    "all": "所有",
+    "my": "我参与的",
+    "jointAccount": "联合账户：",
+    "joinNumber": "参与人数："
   }
 }

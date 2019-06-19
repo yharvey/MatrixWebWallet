@@ -2,19 +2,19 @@
   <div class="jointMining">
     <el-card class="box-card1">
       <div class="header">
-        <h1>联合挖矿</h1>
+        <h1>{{$t('jointFirst.jointMining')}}</h1>
         <button class="common-button"
-                @click="goPage('createJoin')">创建联合</button>
+                @click="goPage('createJoin')">{{$t('jointFirst.createJoint')}}</button>
       </div>
     </el-card>
     <el-card class="box-card2">
       <div class="tag-header">
         <div class="font-right-distance"
              @click="changeQuery('all')"
-             :class="{'active' : selectQuery === 'all'}">所有</div>|
+             :class="{'active' : selectQuery === 'all'}">{{$t('jointFirst.all')}}</div>|
         <div class="font-left-distance"
              @click="changeQuery('my')"
-             :class="{'active' : selectQuery === 'my'}">我参与的联合</div>
+             :class="{'active' : selectQuery === 'my'}">{{$t('jointFirst.my')}}</div>
       </div>
       <hr>
       <div v-if="selectQuery==='all'">
@@ -22,10 +22,10 @@
              :key="index">
           <div class="dis-flex between left-distance distance-top">
             <div>
-              <div><span class="font-weight-style">联合账户：</span> {{item.jointAccount}}</div>
-              <div class="dis-flex between distance-top">
-                <div><span class="font-weight-style">活跃账户：</span>{{item.activeCount}}</div>
-                <div><span class="font-weight-style">总抵押：</span>{{item.allAmount }}MAN</div>
+              <div class="text-left"><span class="font-weight-style">{{$t('jointFirst.jointAccount')}}</span> {{item.jointAccount}}</div>
+              <div class="dis-flex distance-top">
+                <div class="join-number"><span class="font-weight-style">{{$t('jointFirst.joinNumber')}}</span>{{item.activeCount}}</div>
+                <div><span class="font-weight-style">{{$t('jointFirst.jointTotal')}}</span>{{item.allAmount }}MAN</div>
               </div>
             </div>
             <div class="text-right">
@@ -52,9 +52,9 @@
              :key="index">
           <div class="dis-flex between left-distance distance-top">
             <div>
-              <div><span class="font-weight-style">联合账户：</span> {{item.jointAccount}}</div>
-              <div class="dis-flex between distance-top">
-                <div><span class="font-weight-style">活跃账户：</span>{{item.activeCount}}</div>
+              <div class="text-left"><span class="font-weight-style">联合账户：</span> {{item.jointAccount}}</div>
+              <div class="dis-flex distance-top">
+                <div class="join-number"><span class="font-weight-style">参与人数：</span>{{item.activeCount}}</div>
                 <div><span class="font-weight-style">总抵押：</span>{{item.allAmount }}MAN</div>
               </div>
             </div>
@@ -129,6 +129,9 @@ export default {
     },
     init () {
       let data = this.httpProvider.man.getValidatorGroupInfo()
+      this.pageNumber = 1
+      this.selectQuery = 'all'
+      this.myPageNumber = 1
       console.log(data)
       let self = this
       Object.keys(data).forEach(function (key) {
@@ -150,7 +153,8 @@ export default {
               signAddress: item.OwnerInfo.SignAddress,
               validatorMap: item.ValidatorMap,
               createAddress: item.OwnerInfo.Owner,
-              alreadyWithdraw: alreadyWithdraw
+              alreadyWithdraw: alreadyWithdraw,
+              levelRate: [item.Reward.LevelRate[0].Rate.Rate, item.Reward.LevelRate[1].Rate.Rate, item.Reward.LevelRate[2].Rate.Rate]
             })
           } else {
             for (let i = 0; i < item.ValidatorMap.length; i++) {
@@ -163,7 +167,8 @@ export default {
                   signAddress: item.OwnerInfo.SignAddress,
                   validatorMap: item.ValidatorMap,
                   createAddress: item.OwnerInfo.Owner,
-                  alreadyWithdraw: alreadyWithdraw
+                  alreadyWithdraw: alreadyWithdraw,
+                  levelRate: [item.Reward.LevelRate[0].Rate.Rate, item.Reward.LevelRate[1].Rate.Rate, item.Reward.LevelRate[2].Rate.Rate]
                 })
               }
             }
@@ -175,7 +180,8 @@ export default {
             signAddress: item.OwnerInfo.SignAddress,
             validatorMap: item.ValidatorMap,
             createAddress: item.OwnerInfo.Owner,
-            alreadyWithdraw: alreadyWithdraw
+            alreadyWithdraw: alreadyWithdraw,
+            levelRate: [item.Reward.LevelRate[0].Rate.Rate, item.Reward.LevelRate[1].Rate.Rate, item.Reward.LevelRate[2].Rate.Rate]
           })
         }
       })
@@ -243,6 +249,10 @@ export default {
     letter-spacing: 0.13px;
     margin-bottom: 1.4rem;
   }
+  .join-number {
+    text-align: left;
+    width: 200px;
+  }
   .box-card2 {
     .dis-flex {
       display: flex;
@@ -252,7 +262,7 @@ export default {
     }
     .left-distance {
       padding-left: 2rem;
-      padding-right: 10rem;
+      padding-right: 3rem;
     }
     .distance-top {
       margin-top: 1.5rem;
@@ -283,6 +293,9 @@ export default {
   }
   .text-right {
     text-align: right;
+  }
+  .text-left {
+    text-align: left;
   }
 }
 </style>
