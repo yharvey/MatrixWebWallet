@@ -32,7 +32,7 @@
               <div class="font-style"
                    v-if="item.alreadyWithdraw"><span>{{$t('jointFirst.closeMining')}}</span></div>
               <div class="font-style"
-                   v-else><span>{{$t('jointFirst.closeMining')}}</span></div>
+                   v-else><span>{{$t('jointFirst.mining')}}</span></div>
               <a @click="jointDetail(item)">{{$t('digAccount.withdraw_detail')}}</a>
             </div>
           </div>
@@ -62,7 +62,7 @@
               <div class="font-style"
                    v-if="item.alreadyWithdraw"><span>{{$t('jointFirst.closeMining')}}</span></div>
               <div class="font-style"
-                   v-else><span>{{$t('jointFirst.closeMining')}}</span></div>
+                   v-else><span>{{$t('jointFirst.mining')}}</span></div>
               <a @click="jointDetail(item)">{{$t('digAccount.withdraw_detail')}}</a>
             </div>
           </div>

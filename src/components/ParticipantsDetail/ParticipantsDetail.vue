@@ -14,7 +14,7 @@
             <div style="margin-left: 17rem;"><span class="font-weight-style">累计奖励: {{participantsDetail.Reward |weiToNumber}}MAN</span> </div>
           </div>
           <div style="text-align:right"
-               v-if="!(participantsDetail.Reward===0)"><a @click="getReward()">奖励提款</a> </div>
+               v-if="!(participantsDetail.Reward==='0')"><a @click="getReward()">奖励提款</a> </div>
         </div>
       </div>
     </el-card>

@@ -15,8 +15,10 @@
           <div class="distance-top"><span class="font-weight-style">签名账户：</span>{{detailObj.signAddress}}</div>
           <div class="distance-top"><span class="font-weight-style ">参与人数：</span>{{detailObj.activeCount}}</div>
           <div class="distance-top"><span class="font-weight-style">抵押总额：</span>{{detailObj.allAmount}}</div>
+          <div class="distance-top"><span class="font-weight-style">奖励总额：</span>{{detailObj.reward}}</div>
           <div class="distance-top"><span class="font-weight-style">收益权重分配：</span>
-              <span v-for="(item,key) in detailObj.levelRate" :key="key">R{{key+1}} ：{{item}} &nbsp;</span>
+            <span v-for="(item,key) in detailObj.levelRate"
+                  :key="key">R{{key+1}} ：{{item}} &nbsp;</span>
           </div>
         </div>
         <div><button class="common-button"
@@ -91,11 +93,12 @@ import OfflineDialog from '@/components/TransferDialog/TipOfflineDialog'
 import sendSign from '@/components/TransferDialog/sendSignTransfer'
 import AllDialog from '@/components/TransferDialog/AllDialog'
 import CommonDialogCancel from '@/components/CommonDialog/CommonDialogCancel'
+import BigNumber from 'bignumber.js'
 export default {
   name: 'jointDetail',
   data () {
     return {
-      detailObj: [],
+      detailObj: { reward: '0' },
       address: '',
       msg: '',
       hash: '',
@@ -206,17 +209,26 @@ export default {
   watch: {
     $route (to, from) {
       if (to.path.indexOf('jointDetail') > -1) {
-        console.log(this.detailObj)
         if (this.$route.params.detailObj) {
-          console.log(this.detailObj.jointAccount + 'qqqqqqqqqqqqqq')
           this.detailObj = this.$route.params.detailObj
         }
+        this.detailObj.reward = new BigNumber(0)
+        for (let index = 0; index < this.detailObj.validatorMap.length; index++) {
+          const element = this.detailObj.validatorMap[index]
+          this.detailObj.reward.plus(new BigNumber(element.Reward))
+        }
+        this.detailObj.reward = this.detailObj.reward.toString(10)
       }
     }
   },
   mounted () {
     this.detailObj = this.$route.params.detailObj
-    console.log(this.detailObj)
+    this.detailObj.reward = new BigNumber(0)
+    this.detailObj.validatorMap.forEach(element => {
+      this.detailObj.reward.plus(new BigNumber(element.Reward))
+    })
+    this.detailObj.reward = this.detailObj.reward.toString(10)
+    console.log(this.detailObj.reward)
     if (this.$store.state.offline != null) {
       this.address = this.$store.state.offline
     } else {

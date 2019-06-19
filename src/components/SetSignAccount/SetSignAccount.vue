@@ -16,6 +16,15 @@
                 :width="'800px'"
                 :msg="msg"
                 :hash="hash"></all-dialog>
+    <offline-dialog :width="'800px'"
+                    :transferJson="jsonObj"
+                    :confirmOffline="confirmOffline"
+                    @changeConfirmOffline="changeConfirmOffline"
+                    @openSendSign="openSendSign"></offline-dialog>
+    <send-sign :visible="sendSignVisible"
+               :width="'800px'"
+               :information="information"
+               @changeSendSign="changeSendSign"></send-sign>
   </div>
 </template>
 
@@ -26,6 +35,8 @@ import WalletUtil from '@/assets/js/WalletUtil'
 import TradingFuns from '@/assets/js/TradingFuns'
 import SendTransfer from '@/assets/js/SendTransfer'
 import AllDialog from '@/components/TransferDialog/AllDialog'
+import OfflineDialog from '@/components/TransferDialog/TipOfflineDialog'
+import sendSign from '@/components/TransferDialog/sendSignTransfer'
 export default {
   name: 'setSignAccount',
   data () {
@@ -33,12 +44,33 @@ export default {
       signAddress: '',
       address: '',
       data: {},
-      visible: false,
       msg: '',
-      hash: ''
+      hash: '',
+      confirmOffline: false,
+      jsonObj: '',
+      sendSignVisible: false,
+      information: '',
+      visible: false
     }
   },
   methods: {
+    openSendSign () {
+      this.sendSignVisible = true
+    },
+    changeSendSign (data) {
+      this.sendSignVisible = false
+      if (data != null && data !== false) {
+        this.hash = data.hash
+        this.visible = true
+      }
+    },
+    changeConfirmOffline (data) {
+      this.confirmOffline = false
+      if (data !== false) {
+        this.sendSignVisible = true
+        this.information = data
+      }
+    },
     changeVisible (state) {
       this.visible = state
     },
@@ -93,7 +125,9 @@ export default {
     }
   },
   components: {
-    AllDialog
+    AllDialog,
+    OfflineDialog,
+    sendSign
   },
   mounted () {
     this.jointAccount = this.$route.params.jointAccount
