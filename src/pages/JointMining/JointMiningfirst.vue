@@ -154,7 +154,7 @@ export default {
               validatorMap: item.ValidatorMap,
               createAddress: item.OwnerInfo.Owner,
               alreadyWithdraw: alreadyWithdraw,
-              levelRate: [item.Reward.LevelRate[0].Rate.Rate, item.Reward.LevelRate[1].Rate.Rate, item.Reward.LevelRate[2].Rate.Rate]
+              levelRate: [item.Reward.OwnerRate.Rate, item.Reward.LevelRate[0].Rate.Rate, item.Reward.LevelRate[1].Rate.Rate, item.Reward.LevelRate[2].Rate.Rate]
             })
           } else {
             for (let i = 0; i < item.ValidatorMap.length; i++) {
@@ -168,7 +168,7 @@ export default {
                   validatorMap: item.ValidatorMap,
                   createAddress: item.OwnerInfo.Owner,
                   alreadyWithdraw: alreadyWithdraw,
-                  levelRate: [item.Reward.LevelRate[0].Rate.Rate, item.Reward.LevelRate[1].Rate.Rate, item.Reward.LevelRate[2].Rate.Rate]
+                  levelRate: [item.Reward.OwnerRate.Rate, item.Reward.LevelRate[0].Rate.Rate, item.Reward.LevelRate[1].Rate.Rate, item.Reward.LevelRate[2].Rate.Rate]
                 })
               }
             }
@@ -181,7 +181,7 @@ export default {
             validatorMap: item.ValidatorMap,
             createAddress: item.OwnerInfo.Owner,
             alreadyWithdraw: alreadyWithdraw,
-            levelRate: [item.Reward.LevelRate[0].Rate.Rate, item.Reward.LevelRate[1].Rate.Rate, item.Reward.LevelRate[2].Rate.Rate]
+            levelRate: [item.Reward.OwnerRate.Rate, item.Reward.LevelRate[0].Rate.Rate, item.Reward.LevelRate[1].Rate.Rate, item.Reward.LevelRate[2].Rate.Rate]
           })
         }
       })

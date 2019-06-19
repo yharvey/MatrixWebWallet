@@ -18,7 +18,7 @@
           <div class="distance-top"><span class="font-weight-style">奖励总额：</span>{{detailObj.reward}}</div>
           <div class="distance-top"><span class="font-weight-style">收益权重分配：</span>
             <span v-for="(item,key) in detailObj.levelRate"
-                  :key="key">R{{key+1}} ：{{item}} &nbsp;</span>
+                  :key="key">R{{key}} ：{{item}} &nbsp;</span>
           </div>
         </div>
         <div><button class="common-button"
