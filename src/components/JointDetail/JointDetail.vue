@@ -10,16 +10,19 @@
       </div>
       <div class="header">
         <div class="text-left">
-          <div class="distance-top"><span class="font-weight-style">{{$t('jointFirst.jointMining')}}</span>{{detailObj.jointAccount}}</div>
-          <div class="distance-top"><span class="font-weight-style">{{$t('jointFirst.createJoint')}}</span>{{detailObj.createAddress}}</div>
+          <div class="distance-top"><span class="font-weight-style">{{$t('jointFirst.jointAccount')}}</span>{{detailObj.jointAccount}}</div>
+          <div class="distance-top"><span class="font-weight-style">{{$t('jointFirst.createAddress')}}</span>{{detailObj.createAddress}}</div>
           <div class="distance-top"><span class="font-weight-style">签名账户：</span>{{detailObj.signAddress}}</div>
-          <div class="distance-top"><span class="font-weight-style ">参与人数：</span>{{detailObj.activeCount}}</div>
-          <div class="distance-top"><span class="font-weight-style">抵押总额：</span>{{detailObj.allAmount}}</div>
-          <div class="distance-top"><span class="font-weight-style">奖励总额：</span>{{detailObj.reward}}</div>
-          <div class="distance-top"><span class="font-weight-style">收益权重分配：</span>
+          <div class="distance-top">
+            <span class="font-weight-style">抵押总额：</span>{{detailObj.allAmount}}
+            <span class="font-weight-style ">参与人数：</span>{{detailObj.activeCount}}
+            <span class="font-weight-style">奖励总额：</span>{{detailObj.reward}}
+          </div>
+          <div class="distance-top"><span class="font-weight-style">收益分配权重：</span>
             <span v-for="(item,key) in detailObj.levelRate"
                   :key="key">R{{key}} ：{{item}} &nbsp;</span>
           </div>
+          <label >{{$t('jointFirst.ratehit')}}</label>
         </div>
         <div><button class="common-button"
                   @click="jointAdd()"
@@ -39,6 +42,7 @@
       </div>
     </el-card>
     <el-card class="box-card2">
+      <hr>
       <div v-for="(item,index) in detailObj.validatorMap"
            :key="index">
         <div class="dis-flex between left-distance distance-top text-left">
@@ -54,8 +58,8 @@
             <a @click="participantsDetail(item)">详情</a>
           </div>
         </div>
+        <hr>
       </div>
-      <hr>
     </el-card>
     <all-dialog :visible="visible"
                 @changeVisible="changeVisible"

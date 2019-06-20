@@ -10,11 +10,11 @@
     <el-card class="box-card2">
       <div class="tag-header">
         <div class="font-right-distance"
-             @click="changeQuery('all')"
-             :class="{'active' : selectQuery === 'all'}">{{$t('jointFirst.all')}}</div>|
-        <div class="font-left-distance"
              @click="changeQuery('my')"
-             :class="{'active' : selectQuery === 'my'}">{{$t('jointFirst.my')}}</div>
+             :class="{'active' : selectQuery === 'my'}">{{$t('jointFirst.my')}}</div>|
+        <div class="font-left-distance"
+             @click="changeQuery('all')"
+             :class="{'active' : selectQuery === 'all'}">{{$t('jointFirst.all')}}</div>
       </div>
       <hr>
       <div v-if="selectQuery==='all'">
@@ -48,34 +48,47 @@
         </el-pagination>
       </div>
       <div v-if="selectQuery==='my'">
-        <div v-for="(item,index) in myJoinList"
-             :key="index">
-          <div class="dis-flex between left-distance distance-top">
-            <div>
-              <div class="text-left"><span class="font-weight-style">{{$t('jointFirst.jointAccount')}}</span> {{item.jointAccount}}</div>
-              <div class="dis-flex distance-top">
-                <div class="join-number"><span class="font-weight-style">{{$t('jointFirst.jointNumber')}}</span>{{item.activeCount}}</div>
-                <div><span class="font-weight-style">{{$t('jointFirst.jointTotal')}}</span>{{item.allAmount }}MAN</div>
+        <div v-show="myJoinList.length !== 0">
+          <div v-for="(item,index) in myJoinList"
+              :key="index">
+            <div class="dis-flex between left-distance distance-top">
+              <div>
+                <div class="text-left"><span class="font-weight-style">{{$t('jointFirst.jointAccount')}}</span> {{item.jointAccount}}</div>
+                <div class="dis-flex distance-top">
+                  <div class="join-number"><span class="font-weight-style">{{$t('jointFirst.jointNumber')}}</span>{{item.activeCount}}</div>
+                  <div><span class="font-weight-style">{{$t('jointFirst.jointTotal')}}</span>{{item.allAmount }}MAN</div>
+                </div>
+              </div>
+              <div class="text-right">
+                <div class="font-style"
+                    v-if="item.alreadyWithdraw"><span>{{$t('jointFirst.closeMining')}}</span></div>
+                <div class="font-style"
+                    v-else><span>{{$t('jointFirst.mining')}}</span></div>
+                <a @click="jointDetail(item)">{{$t('digAccount.withdraw_detail')}}</a>
               </div>
             </div>
-            <div class="text-right">
-              <div class="font-style"
-                   v-if="item.alreadyWithdraw"><span>{{$t('jointFirst.closeMining')}}</span></div>
-              <div class="font-style"
-                   v-else><span>{{$t('jointFirst.mining')}}</span></div>
-              <a @click="jointDetail(item)">{{$t('digAccount.withdraw_detail')}}</a>
-            </div>
+            <hr>
+          </div>
+          <el-pagination background
+                        class="top_spacing"
+                        layout="prev, pager, next"
+                        :page-size="pageSize"
+                        :current-page="pageNumber"
+                        @current-change="changeAll"
+                        :total="total">
+          </el-pagination>
+        </div>
+        <div v-show="myJoinList.length === 0">
+          <div class="space">
+          </div>
+          <label >{{$t('jointFirst.nojoin')}}</label>
+          <label class="join_font"
+              @click="changeQuery('all')">{{$t('jointFirst.join')}}</label>
+          <div class="space">
           </div>
           <hr>
         </div>
-        <el-pagination background
-                       class="top_spacing"
-                       layout="prev, pager, next"
-                       :page-size="pageSize"
-                       :current-page="pageNumber"
-                       @current-change="changeAll"
-                       :total="total">
-        </el-pagination>
+
       </div>
     </el-card>
   </div>
@@ -130,7 +143,7 @@ export default {
     init () {
       let data = this.httpProvider.man.getValidatorGroupInfo()
       this.pageNumber = 1
-      this.selectQuery = 'all'
+      this.selectQuery = 'my'
       this.myPageNumber = 1
       console.log(data)
       let self = this
@@ -242,6 +255,16 @@ export default {
     color: #2c365c;
     letter-spacing: 0.13px;
     font-weight: bold;
+  }
+  .join_font {
+    font-size: 0.875rem;
+    color: #1c51dd;
+    margin-left: 1.5rem;
+    cursor: pointer;
+  }
+  .space {
+    margin-top: 3.5rem;
+    margin-bottom: 3.5rem;
   }
   .font-style {
     font-size: 0.875rem;

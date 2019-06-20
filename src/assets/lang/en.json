@@ -614,11 +614,17 @@
     "tips": "All withdrawalable flexible stake will be refunded to the account balance after withdrawal confirmation"
   },
   "jointFirst": {
-    "jointMining": "联合挖矿",
-    "createJoint": "创建联合",
-    "all": "所有",
-    "my": "我参与的",
-    "jointAccount": "联合账户：",
-    "joinNumber": "参与人数："
+    "jointMining":"联合挖矿",
+    "createJoint":"创建联合",
+    "all":"所有联合",
+    "my":"我的联合",
+    "jointAccount":"联合账户：",
+    "createAddress":"创建者账户：",
+    "jointNumber":"参与人数：",
+    "jointTotal":"总抵押：",
+    "closeMining":"挖矿关闭",
+    "mining":"挖矿中",
+    "join":"参与联合",
+    "nojoin":"没有创建或者参与联合"
   }
 }
