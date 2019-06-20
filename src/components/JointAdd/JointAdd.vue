@@ -2,7 +2,7 @@
   <div class="jointAdd">
     <el-card>
       <div class="addForm">
-        <h1>参与联合挖矿</h1>
+        <h1>{{$t('jointAdd.jointAdd')}}</h1>
         <span class="back-tittle"
               @click="backPage">
           <i class="el-icon-arrow-left"></i>
@@ -29,7 +29,7 @@
             </el-option>
           </el-select>
         </div>
-        <el-input placeholder="抵押金额"
+        <el-input :placeholder="$t('regularDetail.deposit_value')"
                   v-model="value"
                   type="number"></el-input>
         <div class="tips">
@@ -37,7 +37,7 @@
           <p>{{$t('digAccount.tips2')}}</p>
         </div>
         <button class="common-button"
-                @click="addDeposit">加入挖矿</button>
+                @click="addDeposit">{{$t('jointDetail.addMining')}}</button>
       </div>
     </el-card>
     <all-dialog :visible="visible"
@@ -123,7 +123,7 @@ export default {
         nonce = WalletUtil.numToHex(nonce)
         let value = new BigNumber(this.value)
         if (new BigNumber(this.value).plus(new BigNumber(this.stakeValue)).comparedTo(new BigNumber(10000000)) === 1) {
-          this.$message.error('金额过大')
+          this.$message.error(this.$t('jointAdd.valueToMore'))
           return
         }
         let data = {

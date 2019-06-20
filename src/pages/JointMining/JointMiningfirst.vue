@@ -22,9 +22,9 @@
              :key="index">
           <div class="dis-flex between left-distance distance-top">
             <div>
-              <div class="text-left"><span class="font-weight-style">{{$t('jointFirst.jointAccount')}}</span> {{item.jointAccount}}</div>
+              <div class="text-left"><span class="font-weight-style">{{$t('jointFirst.jointAccount')}}:</span> {{item.jointAccount}}</div>
               <div class="dis-flex distance-top">
-                <div class="join-number"><span class="font-weight-style">{{$t('jointFirst.jointNumber')}}</span>{{item.activeCount}}</div>
+                <div class="join-number"><span class="font-weight-style">{{$t('jointFirst.jointNumber')}}:</span>{{item.activeCount}}</div>
                 <div><span class="font-weight-style">{{$t('jointFirst.jointTotal')}}</span>{{item.allAmount }}MAN</div>
               </div>
             </div>
@@ -53,9 +53,9 @@
               :key="index">
             <div class="dis-flex between left-distance distance-top">
               <div>
-                <div class="text-left"><span class="font-weight-style">{{$t('jointFirst.jointAccount')}}</span> {{item.jointAccount}}</div>
+                <div class="text-left"><span class="font-weight-style">{{$t('jointFirst.jointAccount')}}:</span> {{item.jointAccount}}</div>
                 <div class="dis-flex distance-top">
-                  <div class="join-number"><span class="font-weight-style">{{$t('jointFirst.jointNumber')}}</span>{{item.activeCount}}</div>
+                  <div class="join-number"><span class="font-weight-style">{{$t('jointFirst.jointNumber')}}:</span>{{item.activeCount}}</div>
                   <div><span class="font-weight-style">{{$t('jointFirst.jointTotal')}}</span>{{item.allAmount }}MAN</div>
                 </div>
               </div>

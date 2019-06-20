@@ -43,7 +43,7 @@ export default {
   name: 'GreenMining',
   data () {
     return {
-      type: 'miningTransaction',
+      type: 'refund',
       lang: this.$i18n.locale,
       showBack: false,
       showCampaignTip: false

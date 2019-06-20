@@ -10,33 +10,32 @@
       </div>
       <div class="header">
         <div class="text-left">
-          <div class="distance-top"><span class="font-weight-style">{{$t('jointFirst.jointAccount')}}</span>{{detailObj.jointAccount}}</div>
-          <div class="distance-top"><span class="font-weight-style">{{$t('jointFirst.createAddress')}}</span>{{detailObj.createAddress}}</div>
-          <div class="distance-top"><span class="font-weight-style">签名账户：</span>{{detailObj.signAddress}}</div>
+          <div class="distance-top dis-flex"> <div class="distance-right"><span class="font-weight-style">{{$t('jointFirst.jointAccount')}}：</span>{{detailObj.jointAccount}} </div> <div><span class="font-weight-style ">{{$t('jointFirst.jointNumber')}}：</span>{{detailObj.activeCount}}</div></div>
+          <div class="distance-top"><span class="font-weight-style">{{$t('jointFirst.createAddress')}}：</span>{{detailObj.createAddress}}</div>
+          <div class="distance-top"><span class="font-weight-style">{{$t('jointDetail.signAddress')}}：</span>{{detailObj.signAddress}}</div>
           <div class="distance-top">
-            <span class="font-weight-style">抵押总额：</span>{{detailObj.allAmount}}
-            <span class="font-weight-style ">参与人数：</span>{{detailObj.activeCount}}
-            <span class="font-weight-style">奖励总额：</span>{{detailObj.reward}}
+            <span class="font-weight-style">{{$t('jointDetail.stakeTotal')}}:</span>{{detailObj.allAmount}}
+            <span class="font-weight-style">{{$t('jointDetail.rewardTotal')}}：</span>{{detailObj.reward}}
           </div>
-          <div class="distance-top"><span class="font-weight-style">收益分配权重：</span>
+          <div class="distance-top"><span class="font-weight-style">{{$t('jointDetail.income_distribution')}}：</span>
             <span v-for="(item,key) in detailObj.levelRate"
                   :key="key">R{{key}} ：{{item}} &nbsp;</span>
           </div>
-          <label >{{$t('jointFirst.ratehit')}}</label>
+          <label>{{$t('jointFirst.ratehit')}}</label>
         </div>
         <div><button class="common-button"
                   @click="jointAdd()"
                   v-if="!detailObj.alreadyWithdraw">
-            加入挖矿</button>
+            {{$t('jointDetail.addMining')}}</button>
           <div class="distance-top"
                v-if="!detailObj.alreadyWithdraw&&address===detailObj.createAddress">
             <button @click="openDialog()"
-                    class="common-button">关闭挖矿</button>
+                    class="common-button">{{$t('jointDetail.closeMining')}}</button>
           </div>
           <div class="distance-top"
                v-if="!detailObj.alreadyWithdraw&&address===detailObj.createAddress">
             <button @click="setSignAccount()"
-                    class="common-button">修改签名地址</button>
+                    class="common-button">{{$t('jointDetail.updateSign')}}</button>
           </div>
         </div>
       </div>
@@ -48,14 +47,14 @@
         <div class="dis-flex between left-distance distance-top text-left">
           <div class="list-width">
             <div class="dis-flex distance-top ">
-              <div class="account-width"><span class="font-weight-style">账户：</span> {{item.Address}}</div>
-              <div><span class="font-weight-style">累计奖励：{{item.Reward | weiToNumber}}MAN</span></div>
+              <div class="account-width"><span class="font-weight-style">{{$t('jointDetail.account')}}：</span> {{item.Address}}</div>
+              <div><span class="font-weight-style">{{$t('jointDetail.awardTotal')}}：{{item.Reward | weiToNumber}}MAN</span></div>
             </div>
-            <div class="distance-top"><span class="font-weight-style">抵押总金额：{{item.AllAmount | weiToNumber}} </span></div>
+            <div class="distance-top"><span class="font-weight-style">{{$t('jointDetail.stakeTotal')}}：{{item.AllAmount | weiToNumber}} </span></div>
           </div>
           <div class="distance-top"
                v-if="address===item.Address">
-            <a @click="participantsDetail(item)">详情</a>
+            <a @click="participantsDetail(item)">{{$t('digAccount.withdraw_detail')}}</a>
           </div>
         </div>
         <hr>
@@ -77,8 +76,8 @@
                @changeSendSign="changeSendSign"></send-sign>
     <common-dialog-cancel :commonDialogExitVisible="commonDialogExitVisible"
                           :address="address"
-                          :title="'关闭挖矿'"
-                          :msg="'你将解散这个联合'"
+                          :title="$t('jointDetail.closeMining')"
+                          :msg="$t('jointDetail.dissolveJoint')"
                           :time="''"
                           :okText="$t('miningTransactionOverview.determine')"
                           :cancelText="$t('miningTransactionOverview.cancel')"
@@ -98,6 +97,7 @@ import sendSign from '@/components/TransferDialog/sendSignTransfer'
 import AllDialog from '@/components/TransferDialog/AllDialog'
 import CommonDialogCancel from '@/components/CommonDialog/CommonDialogCancel'
 import BigNumber from 'bignumber.js'
+import filter from '@/assets/js/filters'
 export default {
   name: 'jointDetail',
   data () {
@@ -219,7 +219,7 @@ export default {
         this.detailObj.reward = new BigNumber(0)
         for (let index = 0; index < this.detailObj.validatorMap.length; index++) {
           const element = this.detailObj.validatorMap[index]
-          this.detailObj.reward.plus(new BigNumber(element.Reward))
+          this.detailObj.reward = this.detailObj.reward.plus(filter.weiToNumber(element.Reward))
         }
         this.detailObj.reward = this.detailObj.reward.toString(10)
       }
@@ -229,10 +229,9 @@ export default {
     this.detailObj = this.$route.params.detailObj
     this.detailObj.reward = new BigNumber(0)
     this.detailObj.validatorMap.forEach(element => {
-      this.detailObj.reward.plus(new BigNumber(element.Reward))
+      this.detailObj.reward = this.detailObj.reward.plus(filter.weiToNumber(element.Reward))
     })
     this.detailObj.reward = this.detailObj.reward.toString(10)
-    console.log(this.detailObj.reward)
     if (this.$store.state.offline != null) {
       this.address = this.$store.state.offline
     } else {
@@ -298,7 +297,7 @@ export default {
     cursor: pointer;
   }
   .list-width {
-    width: 75%;
+    width: 90%;
   }
   .back-tittle {
     position: relative;
@@ -310,6 +309,9 @@ export default {
   }
   .account-width {
     width: 430px;
+  }
+  .distance-right{
+    margin-right: 3rem;
   }
 }
 </style>

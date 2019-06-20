@@ -2,17 +2,17 @@
   <div class="createJoin">
     <el-card>
       <div class="addForm">
-        <h1>创建联合挖矿</h1>
+        <h1>{{$t('createJoin.createJoin')}}</h1>
         <span class="back-tittle"
               @click="backPage">
           <i class="el-icon-arrow-left"></i>
           {{$t('openWallet.back')}}
         </span>
         <!-- <h5>{{$t('associate.associateAddress')}}</h5> -->
-        <el-input placeholder="抵押金额 大于10万MAN"
+        <el-input :placeholder="$t('createJoin.valueTips')"
                   v-model="value"
                   type="number"></el-input>
-        <el-input placeholder="签名地址后期可修改"
+        <el-input :placeholder="$t('createJoin.signAddressTips')"
                   v-model="signAddress"></el-input>
         <div>
           <el-select v-model="mortgageWay"
@@ -34,47 +34,51 @@
             </el-option>
           </el-select>
         </div>
-        <el-input placeholder="创建者收益分配权重"
+        <el-input :placeholder="$t('createJoin.income_distribution_weight')"
+                  type="number"
                   v-model="ownerRate"></el-input>
         <div class="show-flex-between">
           <div>
             <el-input class="small-input"
                       v-model="lvlRate1"
-                      placeholder="参与者收益分配权重"></el-input>
+                      type="number"
+                      :placeholder="$t('createJoin.join_income')"></el-input>
           </div>
-          <div>参与者抵押小于1万MAN</div>
+          <div>{{$t('createJoin.join_income_tips1')}}</div>
         </div>
         <div class="show-flex-between">
           <div>
             <el-input class="small-input"
                       v-model="lvlRate2"
-                      placeholder="参与者收益分配权重"></el-input>
+                      type="number"
+                      :placeholder="$t('createJoin.join_income')"></el-input>
           </div>
-          <div>参与者抵押小于10万MAN</div>
+          <div>{{$t('createJoin.join_income_tips2')}}</div>
         </div>
         <div class="show-flex-between">
           <div>
             <el-input class="small-input"
                       v-model="lvlRate3"
-                      placeholder="参与者收益分配权重"></el-input>
+                      type="number"
+                      :placeholder="$t('createJoin.join_income')"></el-input>
           </div>
-          <div>参与者抵押大于等于10万MAN</div>
+          <div>{{$t('createJoin.join_income_tips3')}}</div>
         </div>
         <div class="tips-font">
-          <div>提示：</div>
-          <div>收益分配权重：为1-100的正整数。</div>
-          <div>收益计算方法：</div>
-          <div>创建者抵押金额为A0,权重R0</div>
-          <div>小于1万的总抵押金额为DA1，权重为DR1</div>
-          <div>大于等于1万小于10万的总抵押金额为DA2，权重为DR2</div>
-          <div>大于等于10万的总抵押金额为DA3，权重为DR3</div>
-          <div>总奖励为W0</div>
-          <div>总权重：weight= A0*R0+DA1*DR1+DA2*DR2+DA3*DR3</div>
-          <div>抵押为A ，权重为R，收益为W</div>
-          <div>W=W0*A*R/weight；</div>
+          <div>{{$t('createJoin.tips')}}：</div>
+          <div>{{$t('createJoin.bottomTips1')}}</div>
+          <div>{{$t('createJoin.bottomTips2')}}：</div>
+          <div>{{$t('createJoin.bottomTips3')}}</div>
+          <div>{{$t('createJoin.bottomTips4')}}</div>
+          <div>{{$t('createJoin.bottomTips5')}}</div>
+          <div>{{$t('createJoin.bottomTips6')}}</div>
+          <div>{{$t('createJoin.bottomTips7')}}</div>
+          <div>{{$t('createJoin.bottomTips8')}}</div>
+          <div>{{$t('createJoin.bottomTips9')}}</div>
+          <div>{{$t('createJoin.bottomTips10')}}</div>
         </div>
         <button class="common-button"
-                @click="confirm">新建联合</button>
+                @click="confirm">{{$t('createJoin.creatNew')}}</button>
       </div>
     </el-card>
     <all-dialog :visible="visible"
@@ -153,6 +157,7 @@ export default {
     },
     confirm () {
       try {
+        let value = new BigNumber(this.value)
         let abiArray = JSON.parse(joinAbi)
         let contractAddress = joinContract
         let contract = this.ethProvider.eth.Contract(abiArray, contractAddress)
@@ -163,12 +168,12 @@ export default {
           this.$message.error(this.$t('transfer.addressTip'))
           return
         }
-        if (parseInt(this.value) < 100000) {
-          this.$message.error('请填写大于100000金额')
+        if (value.comparedTo(new BigNumber(100000)) === -1) {
+          this.$message.error(this.$t('createJoin.valueError'))
           return
         }
         if (new BigNumber(this.value).comparedTo(new BigNumber(10000000)) === 1) {
-          this.$message.error('金额过大')
+          this.$message.error(this.$t('createJoin.valueToMore'))
           return
         }
         let data = {
@@ -193,19 +198,19 @@ export default {
           dType = parseInt(this.timeLimit)
         }
         if (this.ownerRate === '') {
-          this.$message.error(this.$t('创建者加权系数'))
+          this.$message.error(this.$t('createJoin.createIncomeError'))
           return
         }
         if (this.lvlRate1 === '') {
-          this.$message.error(this.$t('参与者加权系数1'))
+          this.$message.error(this.$t('createJoin.join_income_error'))
           return
         }
         if (this.lvlRate2 === '') {
-          this.$message.error(this.$t('参与者加权系数2'))
+          this.$message.error(this.$t('createJoin.join_income_error'))
           return
         }
         if (this.lvlRate3 === '') {
-          this.$message.error(this.$t('参与者加权系数3'))
+          this.$message.error(this.$t('createJoin.join_income_error'))
           return
         }
         jsonObj.data = contract.methods.createValidatorGroup(WalletUtil.getEthAddress(this.signAddress), dType, parseInt(this.ownerRate), [parseInt(this.lvlRate1), parseInt(this.lvlRate2), parseInt(this.lvlRate3)]).encodeABI()

@@ -7,9 +7,9 @@
         {{$t('openWallet.back')}}
       </span>
       <el-input v-model="value"
-                placeholder="活期解除抵押金额最少100 MAN"></el-input>
+                :placeholder="$t('joinCurrent.currentLeast')"></el-input>
       <button class="common-button top-dis"
-              @click="withdraw">解除抵押</button>
+              @click="withdraw">{{$t('digAccount.withdraw_deposit')}}</button>
     </el-card>
     <all-dialog :visible="visible"
                 @changeVisible="changeVisible"
@@ -37,6 +37,7 @@ import SendTransfer from '@/assets/js/SendTransfer'
 import AllDialog from '@/components/TransferDialog/AllDialog'
 import OfflineDialog from '@/components/TransferDialog/TipOfflineDialog'
 import sendSign from '@/components/TransferDialog/sendSignTransfer'
+import BigNumber from 'bignumber.js'
 export default {
   name: 'jointRegular',
   data () {
@@ -76,6 +77,11 @@ export default {
     },
     withdraw () {
       try {
+        let value = new BigNumber(this.value)
+        if (value.comparedTo(new BigNumber(100)) === -1) {
+          this.$message.error(this.$t('joinCurrent.currentLeast'))
+          return
+        }
         let abiArray = JSON.parse(joinChildAbi)
         let contractAddress = this.data.jointAccount
         let contract = this.ethProvider.eth.Contract(abiArray, contractAddress)
@@ -131,7 +137,6 @@ export default {
   },
   mounted () {
     this.data = this.$route.params.data
-    console.log('活期' + this.data.jointAccount)
     if (this.$store.state.offline != null) {
       this.address = this.$store.state.offline
     } else {

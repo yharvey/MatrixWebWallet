@@ -4,17 +4,17 @@
       <div class="header">
         <div class="line-center between">
           <div class="line-center">
-            <div><span class="font-weight-style">账户：</span>{{participantsDetail.Address}}</div>
+            <div><span class="font-weight-style">{{$t('jointDetail.account')}}：</span>{{participantsDetail.Address}}</div>
           </div>
-          <div style=" text-align:right"><a @click="backPage()">返回</a> </div>
+          <div style=" text-align:right"><a @click="backPage()">{{$t('openWallet.back')}}</a> </div>
         </div>
         <div class="line-center distance-top between">
           <div class="line-center">
-            <div><span class="font-weight-style">抵押总额:</span>{{participantsDetail.AllAmount |weiToNumber}}MAN</div>
-            <div style="margin-left: 17rem;"><span class="font-weight-style">累计奖励: {{participantsDetail.Reward |weiToNumber}}MAN</span> </div>
+            <div><span class="font-weight-style">{{$t('jointDetail.stakeTotal')}}:</span>{{participantsDetail.AllAmount |weiToNumber}}MAN</div>
+            <div style="margin-left: 17rem;"><span class="font-weight-style">{{$t('jointDetail.awardTotal')}}: {{participantsDetail.Reward |weiToNumber}}MAN</span> </div>
           </div>
           <div style="text-align:right"
-               v-if="!(participantsDetail.Reward==='0')"><a @click="getReward()">奖励提款</a> </div>
+               v-if="!(participantsDetail.Reward==='0')"><a @click="getReward()">{{$t('participantsDetail.getAward')}}</a> </div>
         </div>
       </div>
     </el-card>
@@ -22,42 +22,42 @@
       <div class="commonTable">
         <el-table :data="tableData"
                   style="width: 100%">
-          <el-table-column label="类型">
+          <el-table-column :label="$t('participantsDetail.type')">
             <template slot-scope="scope">
-              {{scope.row.type===0?'活期':'定期'}}
+              {{scope.row.type===0?$t('digAccount.current'):$t('digAccount.regular')}}
             </template>
           </el-table-column>
-          <el-table-column label="金额"
+          <el-table-column :label="$t('transfer.amount')"
                            prop="value">
             <template slot-scope="scope">
               {{scope.row.value | weiToNumber}}
             </template>
           </el-table-column>
-          <el-table-column label="状态">
+          <el-table-column :label="$t('mortgageHistory.state')">
             <template slot-scope="scope">
               <div v-if="scope.row.withdrawTime===0">
-                {{scope.row.isDeposite === 0?'抵押中':'已解除抵押'}}
+                {{scope.row.isDeposite === 0?$t('participantsDetail.staking'):$t('participantsDetail.alreadyWithraw')}}
               </div>
               <div v-else>
-                待退款
+                {{$t('participantsDetail.waitWithrawal')}}
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="操作"
+          <el-table-column :label="$t('regularDetail.operation')"
                            prop="opration">
             <template slot-scope="scope">
               <div v-if="scope.row.withdrawTime===0 || scope.row.withdrawTime<parseInt(new Date().getTime()/1000)">
                 <el-button @click="opration(scope.row)"
                            v-if="scope.row.isDeposite===0"
                            type="text"
-                           size="small">{{'解除抵押'}}</el-button>
+                           size="small">{{$t('digAccount.withdraw_deposit')}}</el-button>
                 <el-button @click="refund(scope.row.Position)"
                            v-if="scope.row.isDeposite===1"
                            type="text"
-                           size="small">{{'取款'}}</el-button>
+                           size="small">{{$t('digAccount.withdrawals')}}</el-button>
               </div>
               <div v-if="scope.row.withdrawTime>parseInt(new Date().getTime()/1000)">
-                未到期
+                {{$t('participantsDetail.notYetDue')}}
               </div>
             </template>
           </el-table-column>

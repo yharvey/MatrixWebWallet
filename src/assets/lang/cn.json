@@ -618,14 +618,69 @@
     "createJoint":"创建联合",
     "all":"所有联合",
     "my":"我的联合",
-    "jointAccount":"联合账户：",
-    "createAddress":"创建者账户：",
-    "jointNumber":"参与人数：",
+    "jointAccount":"联合账户",
+    "createAddress":"创建者账户",
+    "jointNumber":"参与人数",
     "jointTotal":"总抵押：",
     "closeMining":"挖矿关闭",
     "mining":"挖矿中",
     "join":"参与联合",
     "nojoin":"没有创建或者参与联合",
     "ratehit":"R0为创建者，R1为小于1万，R2为1万到10万，R3为大于10万的参与者奖励分配权重。"
+  },
+  "jointDetail":{
+    "signAddress":"签名账户",
+    "stakeTotal":"抵押总额",
+    "rewardTotal":"奖励总额",
+    "income_distribution":"收益分配权重",
+    "addMining":"加入挖矿",
+    "closeMining":"关闭挖矿",
+    "updateSign":"修改签名地址",
+    "account":"账户",
+    "awardTotal":"累计奖励",
+    "dissolveJoint":"你将解散这个联合",
+    "success":"交易发送成功"
+  },
+  "participantsDetail":{
+    "getAward":"奖励提款",
+    "type":"类型",
+    "staking":"抵押中",
+    "alreadyWithraw":"已解除抵押",
+    "waitWithrawal":"待退款",
+    "notYetDue":"未到期"
+  },
+  "joinCurrent":{
+    "currentLeast":"活期解除抵押金额最少100 MAN",
+    "regularValue":"定期抵押金额"
+  },
+  "jointAdd":{
+    "jointAdd":"参与联合挖矿",
+    "valueToMore":"金额过大"
+  },
+  "createJoin":{
+    "createJoin":"创建联合挖矿",
+    "valueTips":"抵押金额大于10万MAN",
+    "signAddressTips":"签名地址后期可修改",
+    "income_distribution_weight":"创建者收益分配权重",
+    "join_income":"参与者收益分配权重",
+    "join_income_tips1":"参与者抵押小于1万MAN",
+    "join_income_tips2":"参与者抵押小于10万MAN",
+    "join_income_tips3":"参与者抵押大于等于10万MAN",
+    "tips":"提示",
+    "bottomTips1":"收益分配权重：为1-10000的正整数。",
+    "bottomTips2":"收益计算方法",
+    "bottomTips3":"创建者抵押金额为A0,权重R0",
+    "bottomTips4":"小于1万的总抵押金额为DA1，权重为DR1",
+    "bottomTips5":"大于等于1万小于10万的总抵押金额为DA2，权重为DR2",
+    "bottomTips6":"大于等于10万的总抵押金额为DA3，权重为DR3",
+    "bottomTips7":"总奖励为W0",
+    "bottomTips8":"总权重：weight= A0*R0+DA1*DR1+DA2*DR2+DA3*DR3",
+    "bottomTips9":"抵押为A ，权重为R，收益为W",
+    "bottomTips10":"W=W0*A*R/weight",
+    "creatNew":"新建联合",
+    "valueError":"请填写大于100000金额",
+    "valueToMore":"金额过大",
+    "join_income_error":"请输入参与者收益分配权重",
+    "createIncomeError":"请输入创建者收益分配权重"
   }
 }

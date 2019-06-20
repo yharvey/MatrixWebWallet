@@ -8,12 +8,12 @@
           {{$t('openWallet.back')}}
         </span>
       </div>
-      <h5 class="h5-dis">定期抵押金额</h5>
+      <h5 class="h5-dis">{{$t('joinCurrent.joinCurrent')}}</h5>
       <el-input readonly=""
                 v-model="data.value"
                 type="number"></el-input>
       <button class="common-button h5-dis"
-              @click="withdraw">解除抵押</button>
+              @click="withdraw">{{$t('digAccount.withdraw_deposit')}}</button>
     </el-card>
     <all-dialog :visible="visible"
                 @changeVisible="changeVisible"
