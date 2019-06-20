@@ -118,7 +118,8 @@
              @click="openWallet">{{$t('myWallet.openWallet')}}</div>
       </div>
       <!--ledger-->
-      <div v-show="unlockType == 'ledger'" class="ledger">
+      <div v-show="unlockType == 'ledger'"
+           class="ledger">
         <h4>请连接您的ledger硬件钱包</h4>
         <div class="hint_error"
              v-show="keyPrivateError">*{{$t('myWallet.ledgerIncorrect')}}</div>
@@ -173,7 +174,11 @@ export default {
   },
   mounted () {
     let historyUrl = store.state.historyUrl
-    if (historyUrl.indexOf('green-mining') > -1 || historyUrl.indexOf('ai-application') > -1 || historyUrl.indexOf('contract') > -1) {
+    if (historyUrl.indexOf('green-mining') > -1 || historyUrl.indexOf('ai-application') > -1 || historyUrl.indexOf('contract') > -1 || historyUrl.indexOf('jointMining') > -1) {
+      if (historyUrl.indexOf('jointMining') > -1) {
+        this.$router.push({ path: '/jointMining/jointMiningfirst' })
+        return
+      }
       this.isEmit = false
     }
   },
@@ -308,6 +313,7 @@ export default {
     },
     loginOffline () {
       try {
+        this.address = this.address.trim()
         if (WalletUtil.validateManAddress(this.address)) {
           this.$store.commit('OFFLINE', this.address)
           this.address = this.$store.getters.offline
@@ -332,9 +338,14 @@ export default {
           this.$message({
             message: msg,
             duration: 3000,
-            type: 'success'
+            type: 'success',
+            showClose: true
           })
-          if (historyUrl.indexOf('green-mining') > -1 || historyUrl.indexOf('ai-application') > -1 || historyUrl.indexOf('contract') > -1) {
+          if (historyUrl.indexOf('green-mining') > -1 || historyUrl.indexOf('ai-application') > -1 || historyUrl.indexOf('contract') > -1 || historyUrl.indexOf('jointMining') > -1) {
+            if (historyUrl.indexOf('jointMining') > -1) {
+              this.$router.push({ path: '/jointMining/jointMiningfirst' })
+              return
+            }
             this.$router.push({ path: historyUrl })
           } else {
             this.$router.push({ path: '/my-wallet/openWallet/myAssets' })

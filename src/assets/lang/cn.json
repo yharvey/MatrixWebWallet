@@ -561,8 +561,8 @@
     "validator": "验证者",
     "signaddress": "挖矿地址",
     "deposit_account": "抵押账户",
-    "current": "定期",
-    "regular": "活期",
+    "current": "活期",
+    "regular": "定期",
     "withdraw_detail": "详情",
     "withdraw_deposit": "解除抵押",
     "deposit": "抵押",
@@ -629,13 +629,13 @@
     "ratehit":"R0为创建者，R1为小于1万，R2为1万到10万，R3为大于10万的参与者奖励分配权重。"
   },
   "jointDetail":{
-    "signAddress":"签名账户",
+    "signAddress":"挖矿账户",
     "stakeTotal":"抵押总额",
     "rewardTotal":"奖励总额",
     "income_distribution":"收益分配权重",
     "addMining":"加入挖矿",
     "closeMining":"关闭挖矿",
-    "updateSign":"修改签名地址",
+    "updateSign":"修改挖矿地址",
     "account":"账户",
     "awardTotal":"累计奖励",
     "dissolveJoint":"你将解散这个联合",
@@ -655,12 +655,13 @@
   },
   "jointAdd":{
     "jointAdd":"参与联合挖矿",
-    "valueToMore":"金额过大"
+    "valueToMore":"金额过大",
+    "updateSign":"修改挖矿"
   },
   "createJoin":{
     "createJoin":"创建联合挖矿",
     "valueTips":"抵押金额大于10万MAN",
-    "signAddressTips":"签名地址后期可修改",
+    "signAddressTips":"挖矿地址后期可修改",
     "income_distribution_weight":"创建者收益分配权重",
     "join_income":"参与者收益分配权重",
     "join_income_tips1":"参与者抵押小于1万MAN",

@@ -7,9 +7,9 @@
         {{$t('openWallet.back')}}
       </span>
       <el-input v-model="signAddress"
-                placeholder="签名地址"></el-input>
+                :placeholder="$t('CampaignNode.dig_address')"></el-input>
       <button class="common-button top-dis"
-              @click="setSignAccount">修改签名</button>
+              @click="setSignAccount">{{$t('jointAdd.updateSign')}}</button>
     </el-card>
     <all-dialog :visible="visible"
                 @changeVisible="changeVisible"
@@ -79,6 +79,11 @@ export default {
     },
     setSignAccount (position) {
       try {
+        this.signAddress = this.signAddress.trim()
+        if (!WalletUtil.validateManAddress(this.signAddress)) {
+          this.$message.error(this.$t('transfer.addressTip'))
+          return
+        }
         let abiArray = JSON.parse(joinChildAbi)
         let contractAddress = this.jointAccount
         let contract = this.ethProvider.eth.Contract(abiArray, contractAddress)

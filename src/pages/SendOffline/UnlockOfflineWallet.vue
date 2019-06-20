@@ -317,7 +317,8 @@ export default {
         this.$message({
           message: msg,
           duration: 3000,
-          type: 'success'
+          type: 'success',
+          showClose: true
         })
         if (historyUrl.indexOf('green-mining') > -1 || historyUrl.indexOf('ai-application') > -1 || historyUrl.indexOf('contract') > -1) {
           this.$router.push({ path: historyUrl })

@@ -8,7 +8,6 @@
           {{$t('openWallet.back')}}
         </span>
       </div>
-      <h5 class="h5-dis">{{$t('joinCurrent.joinCurrent')}}</h5>
       <el-input readonly=""
                 v-model="data.value"
                 type="number"></el-input>
@@ -132,6 +131,14 @@ export default {
     AllDialog,
     OfflineDialog,
     sendSign
+  },
+  watch: {
+    $route (to, from) {
+      if (to.path.indexOf('joinRegular') > -1) {
+        this.data = this.$route.params.data
+        this.data.value = filter.weiToNumber(this.data.value).toString(10)
+      }
+    }
   },
   mounted () {
     this.data = this.$route.params.data

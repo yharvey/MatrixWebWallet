@@ -19,7 +19,7 @@
           <tr class="tr1_info">
             <td>
               <div>
-                <span> {{$t('digAccount.current')}}</span>
+                <span> {{$t('digAccount.regular')}}</span>
               </div>
               <div>
                 <label>{{regularDepositValue}} MAN</label>
@@ -32,7 +32,7 @@
           <tr class="tr2_info">
             <td>
               <div>
-                <span>{{$t('digAccount.regular')}}</span>
+                <span>{{$t('digAccount.current')}}</span>
               </div>
               <div>
                 <label> {{currentDepositValue}} MAN</label>
@@ -55,7 +55,7 @@
         <tr class="tr1_info">
           <td>
             <div>
-              <span> {{$t('digAccount.current')}}</span>
+              <span> {{$t('digAccount.regular')}}</span>
             </div>
             <div>
               <label>{{regularWithdrawalsValue}} MAN</label>
@@ -68,7 +68,7 @@
         <tr class="tr2_info">
           <td>
             <div>
-              <span>{{$t('digAccount.regular')}}</span>
+              <span>{{$t('digAccount.current')}}</span>
             </div>
             <div>
               <label> {{currentWithdrawalsValue}} MAN</label>

@@ -158,12 +158,6 @@ export default {
     confirm () {
       try {
         let value = new BigNumber(this.value)
-        let abiArray = JSON.parse(joinAbi)
-        let contractAddress = joinContract
-        let contract = this.ethProvider.eth.Contract(abiArray, contractAddress)
-        let nonce = this.httpProvider.man.getTransactionCount(this.address)
-        nonce = WalletUtil.numToHex(nonce)
-        this.signAddress = this.signAddress.trim()
         if (!WalletUtil.validateManAddress(this.signAddress)) {
           this.$message.error(this.$t('transfer.addressTip'))
           return
@@ -176,6 +170,12 @@ export default {
           this.$message.error(this.$t('createJoin.valueToMore'))
           return
         }
+        let abiArray = JSON.parse(joinAbi)
+        let contractAddress = joinContract
+        let contract = this.ethProvider.eth.Contract(abiArray, contractAddress)
+        let nonce = this.httpProvider.man.getTransactionCount(this.address)
+        nonce = WalletUtil.numToHex(nonce)
+        this.signAddress = this.signAddress.trim()
         let data = {
           to: contractAddress,
           value: this.value,

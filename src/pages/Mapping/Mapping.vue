@@ -22,7 +22,8 @@ export default {
       this.$message({
         message: msg,
         type: 'success',
-        duration: 3000
+        duration: 3000,
+        showClose: true
       })
       this.$router.push({ path: '/sendEth' })
     }

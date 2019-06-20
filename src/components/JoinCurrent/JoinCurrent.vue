@@ -6,7 +6,7 @@
         <i class="el-icon-arrow-left"></i>
         {{$t('openWallet.back')}}
       </span>
-      <el-input v-model="value"
+      <el-input v-model="value" type="number"
                 :placeholder="$t('joinCurrent.currentLeast')"></el-input>
       <button class="common-button top-dis"
               @click="withdraw">{{$t('digAccount.withdraw_deposit')}}</button>

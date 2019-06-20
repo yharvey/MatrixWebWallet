@@ -11,7 +11,7 @@
         <div class="line-center distance-top between">
           <div class="line-center">
             <div><span class="font-weight-style">{{$t('jointDetail.stakeTotal')}}:</span>{{participantsDetail.AllAmount |weiToNumber}}MAN</div>
-            <div style="margin-left: 17rem;"><span class="font-weight-style">{{$t('jointDetail.awardTotal')}}: {{participantsDetail.Reward |weiToNumber}}MAN</span> </div>
+            <div style="margin-left: 7rem;"><span class="font-weight-style">{{$t('jointDetail.awardTotal')}}: {{participantsDetail.Reward |weiToNumber}}MAN</span> </div>
           </div>
           <div style="text-align:right"
                v-if="!(participantsDetail.Reward==='0')"><a @click="getReward()">{{$t('participantsDetail.getAward')}}</a> </div>
@@ -152,7 +152,10 @@ export default {
     opration (row) {
       row.jointAccount = this.jointAccount
       if (row.type === 1) {
-        this.$router.push({ name: 'JoinRegular', params: { data: row } })
+        let data = JSON.parse(JSON.stringify(row))
+        console.log(data)
+        console.log(row)
+        this.$router.push({ name: 'JoinRegular', params: { data: data } })
       } else {
         this.$router.push({ name: 'JoinCurrent', params: { data: row } })
       }
@@ -299,8 +302,8 @@ export default {
               opration: element.Position,
               Position: element.Position,
               isDeposite: 1,
-              // withdrawTime: element.EndTime + element.DType * 2592000
-              withdrawTime: element.EndTime + element.DType * 100
+              withdrawTime: element.EndTime + 7200
+              // withdrawTime: element.EndTime
             }
           )
         }
