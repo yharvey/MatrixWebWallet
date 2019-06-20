@@ -105,7 +105,7 @@ export default {
     change () {
       this.changeAddress = this.changeAddress.trim()
       this.changeName = this.changeName.trim()
-      if (/^[A-Z]{2,8}\.[0-9a-zA-Z]{17,29}$/.test(this.changeAddress) && this.changeAddress.split('.')[0] === 'MAN') {
+      if (/^[A-Z]{2,8}\.[0-9a-zA-Z]{17,36}$/.test(this.changeAddress) && this.changeAddress.split('.')[0] === 'MAN') {
         if (/^[A-Z]{2,8}$/.test(this.changeName)) {
           this.changeResult = WalletUtil.getCurrencyAddress(this.changeAddress, this.changeName)
         } else {
@@ -122,14 +122,18 @@ export default {
       this.content.hex = this.content.hex.trim()
       this.content.moreCoinAddress = this.content.moreCoinAddress.trim()
       if (type === 'man') {
-        if ((/^[A-Z]{2,8}\.[0-9a-zA-Z]{17,29}$/.test(this.content.manAddress))) {
+        if ((/^[A-Z]{2,8}\.[0-9a-zA-Z]{17,36}$/.test(this.content.manAddress))) {
           this.content.ethAddress = WalletUtil.getEthAddress(this.content.manAddress)
         } else {
           this.$message.error(this.$t('errorMsgs.invalidManAddress'))
         }
       } else if (type === 'eth') {
         if ((/^(0x)?[0-9a-fA-F]{40}$/i.test(this.content.ethAddress))) {
-          this.content.manAddress = WalletUtil.getManAddress(this.content.ethAddress.substring(2, this.content.ethAddress.length))
+          let ethAddress = this.content.ethAddress
+          if (this.content.ethAddress.substring(0, 2) === '0x') {
+            ethAddress = this.content.ethAddress.substring(2, this.content.ethAddress.length)
+          }
+          this.content.manAddress = WalletUtil.getManAddress(ethAddress)
         } else {
           this.$message.error(this.$t('errorMsgs.invalidETH'))
         }
