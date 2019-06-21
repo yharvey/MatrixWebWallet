@@ -61,6 +61,9 @@ export default {
         callback(new Error(window.i18n.t('errorMsgs.invalidTokenName')))
       } else {
         let tokenArray = store.get('token')
+        if (typeof (tokenArray) === 'string') {
+          tokenArray = JSON.parse(tokenArray)
+        }
         if (tokenArray == null) {
           tokenArray = []
         }
@@ -102,6 +105,9 @@ export default {
       this.$refs['token'].validate((valid) => {
         if (valid) {
           let tokenArray = store.get('token')
+          if (typeof (tokenArray) === 'string') {
+            tokenArray = JSON.parse(tokenArray)
+          }
           if (tokenArray == null) {
             tokenArray = []
           }

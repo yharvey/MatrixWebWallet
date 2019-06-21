@@ -69,8 +69,14 @@ export default {
       this.address = this.$store.state.offline
     }
     let data = store.get(this.address)
+    if ((typeof (data) === 'string')) {
+      data = JSON.parse(data)
+    }
     if (data) {
       this.localData = store.get(this.address)
+      if ((typeof (this.localData) === 'string')) {
+        this.localData = JSON.parse(this.localData)
+      }
       if (this.localData != null) {
         this.total = this.localData.length
         this.getTableData()

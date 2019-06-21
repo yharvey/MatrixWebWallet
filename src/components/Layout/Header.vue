@@ -19,8 +19,8 @@
              @click="changeMenu('offlineSend')">{{$t('header.offlineSend')}}</label>
     </div>
     <div class="info">
-      <label v-html="userName"
-             v-show="isUnlock"></label>
+      <!-- <label v-html="userName"
+             v-show="isUnlock"></label> -->
       <el-dropdown trigger="click">
         <span class="el-dropdown-link">
           <img src="../../assets/images/setting.svg">
@@ -122,9 +122,12 @@ export default {
         if (typeof (greetings) === 'string') {
           greetings = JSON.parse(greetings)
         }
-        // greetings = JSON.parse(greetings)
-        if (greetings.address === wallet.address) {
-          this.userName = greetings.content
+        debugger
+        for (let i = 0, length = greetings.length; i < length; i++) {
+          if (greetings[i].address === wallet.address) {
+            this.userName = greetings.content
+            break
+          }
         }
       }
     } catch (error) {
@@ -234,13 +237,13 @@ export default {
       margin-left: -37px;
     }
     label:nth-child(3):after {
-      margin-left: -30px;
+      margin-left: -34px;
     }
     label:nth-child(4):after {
-      margin-left: -22px;
+      margin-left: -30px;
     }
     label:nth-child(5):after {
-      margin-left: -36px;
+      margin-left: -22px;
     }
     // label:last-child:after {
     //   margin-left: -42px;
@@ -259,16 +262,16 @@ export default {
       margin-left: -41px;
     }
     label:nth-child(2):after {
-      margin-left: -57px;
+      margin-left: -50px;
     }
     label:nth-child(3):after {
       margin-left: -48px;
     }
     label:nth-child(4):after {
-      margin-left: -37px;
+      margin-left: -50px;
     }
     label:nth-child(5):after {
-      margin-left: -49px;
+      margin-left: -36px;
     }
     // label:last-child:after {
     //   margin-left: -36px;

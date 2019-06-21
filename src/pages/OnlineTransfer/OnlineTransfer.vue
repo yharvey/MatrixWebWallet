@@ -417,7 +417,10 @@ export default {
               this.ruleForm.nonce = this.httpProvider.man.getTransactionCount(this.address)
               this.ruleForm.nonce = WalletUtil.numToHex(this.ruleForm.nonce)
             }
-
+            if (new BigNumber(this.ruleForm.gas).comparedTo(this.httpProvider.fromWei(210000 * 18000000000)) === 1) {
+              let gasNumber = new BigNumber(this.httpProvider.toWei(this.ruleForm.gas))
+              this.ruleForm.gasLimit = parseInt(gasNumber.div(new BigNumber(18000000000)).toString(10)) + 1
+            }
             let arr = []
             let extraObj = []
             if (this.ruleForm.value < 0) {

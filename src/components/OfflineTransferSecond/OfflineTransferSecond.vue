@@ -199,6 +199,9 @@ export default {
     },
     getToken () { // 获本地token代币
       let tokenArray = store.get('token')
+      if (typeof (tokenArray) === 'string') {
+        tokenArray = JSON.parse(tokenArray)
+      }
       if (tokenArray != null) {
         // tokenArray = JSON.parse(tokenArray)
         tokenArray.forEach(e => {

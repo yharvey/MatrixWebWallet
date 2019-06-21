@@ -27,6 +27,11 @@
               {{scope.row.type===0?$t('digAccount.current'):$t('digAccount.regular')}}
             </template>
           </el-table-column>
+           <el-table-column :label="$t('CampaignNode.timeLimit')">
+            <template slot-scope="scope">
+              {{scope.row.DType==='——'?'——':scope.row.DType+$t('regularDetail.month')}}
+            </template>
+          </el-table-column>
           <el-table-column :label="$t('transfer.amount')"
                            prop="value">
             <template slot-scope="scope">
@@ -256,6 +261,7 @@ export default {
       this.participantsDetail.Address = this.participantsDetail.Address
       this.jointAccount = this.participantsDetail.jointAccount
       this.creatAddress = this.participantsDetail.creatAddress
+      console.log(this.participantsDetail)
       if (parseInt(this.participantsDetail.Current.Amount) > 0) {
         this.tableData.push(
           {
@@ -264,7 +270,8 @@ export default {
             opration: 0,
             isDeposite: 0,
             Position: 0,
-            withdrawTime: 0
+            withdrawTime: 0,
+            DType: '——'
           }
         )
       }
@@ -277,7 +284,8 @@ export default {
               opration: 1,
               isDeposite: 1,
               Position: 0,
-              withdrawTime: current.WithDrawTime
+              withdrawTime: current.WithDrawTime,
+              DType: '——'
             }
           )
         })
@@ -291,7 +299,8 @@ export default {
               opration: element.Position,
               Position: element.Position,
               isDeposite: 0,
-              withdrawTime: 0
+              withdrawTime: 0,
+              DType: element.DType
             }
           )
         } else {
@@ -302,7 +311,8 @@ export default {
               opration: element.Position,
               Position: element.Position,
               isDeposite: 1,
-              withdrawTime: element.EndTime + 7200
+              withdrawTime: element.EndTime + 7200,
+              DType: element.DType
               // withdrawTime: element.EndTime
             }
           )

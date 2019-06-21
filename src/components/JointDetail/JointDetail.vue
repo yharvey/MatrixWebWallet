@@ -21,7 +21,9 @@
             <span v-for="(item,key) in detailObj.levelRate"
                   :key="key">R{{key}} ：{{item}} &nbsp;</span>
           </div>
-          <label>{{$t('jointFirst.ratehit')}}</label>
+          <div class="distance-top tips-font">
+             <label>{{$t('jointFirst.ratehit')}}</label>
+          </div>
         </div>
         <div><button class="common-button"
                   @click="jointAdd()"
@@ -312,6 +314,12 @@ export default {
   }
   .distance-right{
     margin-right: 3rem;
+  }
+  .tips-font{
+    font-size: 0.875rem;
+    color: #9298ae;
+    letter-spacing: 0.13px;
+    font-weight: 400;
   }
 }
 </style>
