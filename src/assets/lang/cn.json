@@ -144,7 +144,9 @@
     "coinName": "请输入长度为2-8的大写字母",
     "coinName2": "币种名称不能包含MAN",
     "validConfirm": "请勾选确认消耗man",
-    "validEmail": "请输入正确的邮箱"
+    "validEmail": "请输入正确的邮箱",
+    "jointTotalError":"创建者抵押总金额不能小于100000MAN",
+    "currentError":"错误的输入金额"
   },
   "setUp": {
     "associate": "关联钱包",

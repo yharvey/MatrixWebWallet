@@ -27,7 +27,7 @@
               {{scope.row.type===0?$t('digAccount.current'):$t('digAccount.regular')}}
             </template>
           </el-table-column>
-           <el-table-column :label="$t('CampaignNode.timeLimit')">
+          <el-table-column :label="$t('CampaignNode.timeLimit')">
             <template slot-scope="scope">
               {{scope.row.DType==='——'?'——':scope.row.DType+$t('regularDetail.month')}}
             </template>
@@ -104,6 +104,8 @@ import SendTransfer from '@/assets/js/SendTransfer'
 import OfflineDialog from '@/components/TransferDialog/TipOfflineDialog'
 import sendSign from '@/components/TransferDialog/sendSignTransfer'
 import AllDialog from '@/components/TransferDialog/AllDialog'
+import filter from '@/assets/js/filters'
+import BigNumber from 'bignumber.js'
 export default {
   name: 'participantsDetail',
   data () {
@@ -156,13 +158,20 @@ export default {
     },
     opration (row) {
       row.jointAccount = this.jointAccount
+      let data = JSON.parse(JSON.stringify(row))
+      data.allAmount = this.participantsDetail.allAmount
+      data.isOwner = this.participantsDetail.isOwner
       if (row.type === 1) {
-        let data = JSON.parse(JSON.stringify(row))
-        console.log(data)
-        console.log(row)
         this.$router.push({ name: 'JoinRegular', params: { data: data } })
       } else {
-        this.$router.push({ name: 'JoinCurrent', params: { data: row } })
+        let currentTotal = new BigNumber(0)
+        this.tableData.forEach(element => {
+          if (element.type === 0 && element.isDeposite === 0) {
+            currentTotal = currentTotal.plus(new BigNumber(filter.weiToNumber(element.value)))
+          }
+        })
+        data.currentTotal = currentTotal
+        this.$router.push({ name: 'JoinCurrent', params: { data: data } })
       }
     },
     refund (position) {

@@ -76,7 +76,6 @@ export default {
           showClose: true
         })
         if (historyUrl.indexOf('green-mining') > -1 || historyUrl.indexOf('ai-application') > -1 || historyUrl.indexOf('contract') > -1 || historyUrl.indexOf('jointMining') > -1) {
-          debugger
           if (historyUrl.indexOf('jointMining') > -1) {
             this.$router.push({ path: '/jointMining/jointMiningfirst' })
             return

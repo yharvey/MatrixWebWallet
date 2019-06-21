@@ -5,15 +5,14 @@
         <div class="first-left">
         </div>
         <span class="back-tittle"
-            @click="backPage">
-        <i class="el-icon-arrow-left"></i>
-        {{$t('openWallet.back')}}
-      </span>
+              @click="backPage">
+          <i class="el-icon-arrow-left"></i>
+          {{$t('openWallet.back')}}
+        </span>
         <h1>{{$t('CampaignNode.mortgage')}}</h1>
         <div class="flex-style">
           <div>
-            <el-checkbox v-model="isEdit"
-                ></el-checkbox><span class="check-font">{{$t('CampaignNode.onlyChange')}}</span>
+            <el-checkbox v-model="isEdit"></el-checkbox><span class="check-font">{{$t('CampaignNode.onlyChange')}}</span>
           </div>
         </div>
         <div v-if="!isEdit">
@@ -28,9 +27,6 @@
               </el-option>
             </el-select>
           </div>
-          <el-input v-model="value"
-                    type="number"
-                    :placeholder="$t('CampaignNode.mortgage_man')"></el-input>
           <div v-show="mortgageWay==='regular'">
             <el-select v-model="timeLimit"
                        :placeholder="$t('CampaignNode.selectTimeLimit')">
@@ -41,6 +37,9 @@
               </el-option>
             </el-select>
           </div>
+          <el-input v-model="value"
+                    type="number"
+                    :placeholder="$t('CampaignNode.mortgage_man')"></el-input>
         </div>
       </div>
       <h5>{{$t('CampaignNode.Mining_type')}}</h5>
@@ -54,7 +53,8 @@
       </el-select>
       <h5>{{$t('CampaignNode.dig_address')}}</h5>
       <el-input v-model="mortgageAddrress"></el-input>
-      <div v-if="!isEdit" style="display: flex; justify-content: center;">
+      <div v-if="!isEdit"
+           style="display: flex; justify-content: center;">
         <div style="text-align:left">
           <p>{{$t('CampaignNode.mortgage_hint2')}}</p>
           <p>{{$t('digAccount.tips1')}}</p>
@@ -525,7 +525,7 @@ export default {
 </script>
 <style scoped lang="less">
 .CampaignNode {
-   .first-left {
+  .first-left {
     text-align: left;
   }
   text-align: center;

@@ -122,7 +122,6 @@ export default {
         if (typeof (greetings) === 'string') {
           greetings = JSON.parse(greetings)
         }
-        debugger
         for (let i = 0, length = greetings.length; i < length; i++) {
           if (greetings[i].address === wallet.address) {
             this.userName = greetings.content
@@ -221,7 +220,7 @@ export default {
       cursor: pointer;
     }
     label:not(:first-child) {
-      margin-left: 3rem;
+      margin-left: 2rem;
     }
     .active {
       opacity: 1;
@@ -250,7 +249,7 @@ export default {
     // }
   }
   .en {
-    margin-left: 3rem;
+    margin-left: 2rem;
     .active:after {
       content: "";
       display: inline-block;

@@ -144,7 +144,9 @@
     "coinName": "Please enter 2-8 uppercase letters",
     "coinName2": "The currency name cannot contain MAN",
     "validConfirm": "Please check the box to confirm the consumed MAN first",
-    "validEmail": "Please input the correct Email Address"
+    "validEmail": "Please input the correct Email Address",
+    "jointTotalError":"The total stake amount of the founder shall not be less than 100000MAN",
+    "currentError":"Incorrect amount entered"
   },
   "setUp": {
     "associate": "Wallet Association",

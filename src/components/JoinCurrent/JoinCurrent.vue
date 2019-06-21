@@ -6,7 +6,8 @@
         <i class="el-icon-arrow-left"></i>
         {{$t('openWallet.back')}}
       </span>
-      <el-input v-model="value" type="number"
+      <el-input v-model="value"
+                type="number"
                 :placeholder="$t('joinCurrent.currentLeast')"></el-input>
       <button class="common-button top-dis"
               @click="withdraw">{{$t('digAccount.withdraw_deposit')}}</button>
@@ -78,6 +79,17 @@ export default {
     withdraw () {
       try {
         let value = new BigNumber(this.value)
+        if (this.data.isOwner) {
+          let allAmount = new BigNumber(this.data.allAmount)
+          if (allAmount.minus(value).comparedTo(new BigNumber(100000)) === -1) {
+            this.$message.error(this.$t('errorMsgs.jointTotalError'))
+            return
+          }
+        }
+        if (value.comparedTo(new BigNumber(this.data.currentTotal)) === 1) {
+          this.$message.error(this.$t('errorMsgs.currentError'))
+          return
+        }
         if (value.comparedTo(new BigNumber(100)) === -1) {
           this.$message.error(this.$t('joinCurrent.currentLeast'))
           return

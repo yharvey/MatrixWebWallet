@@ -10,7 +10,10 @@
       </div>
       <div class="header">
         <div class="text-left">
-          <div class="distance-top dis-flex"> <div class="distance-right"><span class="font-weight-style">{{$t('jointFirst.jointAccount')}}：</span>{{detailObj.jointAccount}} </div> <div><span class="font-weight-style ">{{$t('jointFirst.jointNumber')}}：</span>{{detailObj.activeCount}}</div></div>
+          <div class="distance-top dis-flex">
+            <div class="distance-right"><span class="font-weight-style">{{$t('jointFirst.jointAccount')}}：</span>{{detailObj.jointAccount}} </div>
+            <div><span class="font-weight-style ">{{$t('jointFirst.jointNumber')}}：</span>{{detailObj.activeCount}}</div>
+          </div>
           <div class="distance-top"><span class="font-weight-style">{{$t('jointFirst.createAddress')}}：</span>{{detailObj.createAddress}}</div>
           <div class="distance-top"><span class="font-weight-style">{{$t('jointDetail.signAddress')}}：</span>{{detailObj.signAddress}}</div>
           <div class="distance-top">
@@ -22,7 +25,7 @@
                   :key="key">R{{key}} ：{{item}} &nbsp;</span>
           </div>
           <div class="distance-top tips-font">
-             <label>{{$t('jointFirst.ratehit')}}</label>
+            <label>{{$t('jointFirst.ratehit')}}</label>
           </div>
         </div>
         <div><button class="common-button"
@@ -144,6 +147,12 @@ export default {
       item.jointAccount = this.detailObj.jointAccount
       item.creatAddress = this.detailObj.createAddress
       item.alreadyWithdraw = this.detailObj.alreadyWithdraw
+      if (this.detailObj.createAddress === item.Address) {
+        item.isOwner = true
+      } else {
+        item.isOwner = false
+      }
+      item.allAmount = this.detailObj.allAmount
       let obj = JSON.parse(JSON.stringify(item))
       this.$router.push({ name: 'ParticipantsDetail', params: { participantsDetail: obj } })
     },
@@ -312,10 +321,10 @@ export default {
   .account-width {
     width: 430px;
   }
-  .distance-right{
+  .distance-right {
     margin-right: 3rem;
   }
-  .tips-font{
+  .tips-font {
     font-size: 0.875rem;
     color: #9298ae;
     letter-spacing: 0.13px;

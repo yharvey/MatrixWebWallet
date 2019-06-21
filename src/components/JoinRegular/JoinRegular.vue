@@ -82,6 +82,16 @@ export default {
     },
     withdraw () {
       try {
+        let value = new BigNumber(this.data.value)
+        debugger
+        if (this.data.isOwner) {
+          let allAmount = new BigNumber(this.data.allAmount)
+          console.log(value)
+          if (allAmount.minus(value).comparedTo(new BigNumber(100000)) === -1) {
+            this.$message.error(this.$t('errorMsgs.jointTotalError'))
+            return
+          }
+        }
         let abiArray = JSON.parse(joinChildAbi)
         let contractAddress = this.data.jointAccount
         let contract = this.ethProvider.eth.Contract(abiArray, contractAddress)
