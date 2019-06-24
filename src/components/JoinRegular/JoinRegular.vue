@@ -83,7 +83,6 @@ export default {
     withdraw () {
       try {
         let value = new BigNumber(this.data.value)
-        debugger
         if (this.data.isOwner) {
           let allAmount = new BigNumber(this.data.allAmount)
           console.log(value)

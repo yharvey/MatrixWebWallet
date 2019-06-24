@@ -75,7 +75,7 @@
                         :page-size="pageSize"
                         :current-page="pageNumber"
                         @current-change="changeAll"
-                        :total="total">
+                        :total="myTotal">
           </el-pagination>
         </div>
         <div v-show="myJoinList.length === 0">
@@ -134,7 +134,7 @@ export default {
     },
     changeAll (status) {
       this.pageNumber = status
-      if (this.validatorListALL >= this.pageNumber * this.pageSize) {
+      if (this.validatorListALL.length >= this.pageNumber * this.pageSize) {
         this.validatorList = this.validatorListALL.slice((this.pageNumber - 1) * 10, this.pageNumber * this.pageSize)
       } else {
         this.validatorList = this.validatorListALL.slice((this.pageNumber - 1) * 10, this.validatorListALL.length)
@@ -167,6 +167,7 @@ export default {
               validatorMap: item.ValidatorMap,
               createAddress: item.OwnerInfo.Owner,
               alreadyWithdraw: alreadyWithdraw,
+              NodeRate: item.Reward.NodeRate,
               levelRate: [item.Reward.OwnerRate.Rate, item.Reward.LevelRate[0].Rate.Rate, item.Reward.LevelRate[1].Rate.Rate, item.Reward.LevelRate[2].Rate.Rate]
             })
           } else {
@@ -181,6 +182,7 @@ export default {
                   validatorMap: item.ValidatorMap,
                   createAddress: item.OwnerInfo.Owner,
                   alreadyWithdraw: alreadyWithdraw,
+                  NodeRate: item.Reward.NodeRate,
                   levelRate: [item.Reward.OwnerRate.Rate, item.Reward.LevelRate[0].Rate.Rate, item.Reward.LevelRate[1].Rate.Rate, item.Reward.LevelRate[2].Rate.Rate]
                 })
               }
@@ -194,6 +196,7 @@ export default {
             validatorMap: item.ValidatorMap,
             createAddress: item.OwnerInfo.Owner,
             alreadyWithdraw: alreadyWithdraw,
+            NodeRate: item.Reward.NodeRate,
             levelRate: [item.Reward.OwnerRate.Rate, item.Reward.LevelRate[0].Rate.Rate, item.Reward.LevelRate[1].Rate.Rate, item.Reward.LevelRate[2].Rate.Rate]
           })
         }

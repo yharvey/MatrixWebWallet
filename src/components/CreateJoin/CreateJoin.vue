@@ -34,7 +34,10 @@
             </el-option>
           </el-select>
         </div>
-        <el-input :placeholder="$t('createJoin.income_distribution_weight')"
+        <el-input placeholder="管理费"
+                  type="number"
+                  v-model="nodeRate"></el-input>
+        <!-- <el-input :placeholder="$t('createJoin.income_distribution_weight')"
                   type="number"
                   v-model="ownerRate"></el-input>
         <div class="show-flex-between">
@@ -76,7 +79,7 @@
           <div>{{$t('createJoin.bottomTips8')}}</div>
           <div>{{$t('createJoin.bottomTips9')}}</div>
           <div>{{$t('createJoin.bottomTips10')}}</div>
-        </div>
+        </div> -->
         <button class="common-button"
                 @click="confirm">{{$t('createJoin.creatNew')}}</button>
       </div>
@@ -118,17 +121,18 @@ export default {
       timeLimitList: [{ name: this.$t('CampaignNode.oneMonth'), key: '1' }, { name: this.$t('CampaignNode.threeMonth'), key: '3' }, { name: this.$t('CampaignNode.sixMonth'), key: '6' }, { name: this.$t('CampaignNode.oneYear'), key: '12' }],
       timeLimit: '',
       mortgageWay: '',
-      ownerRate: '',
-      lvlRate1: '',
-      lvlRate2: '',
-      lvlRate3: '',
+      ownerRate: 1,
+      lvlRate1: 1,
+      lvlRate2: 1,
+      lvlRate3: 1,
       msg: '',
       hash: '',
       confirmOffline: false,
       jsonObj: '',
       sendSignVisible: false,
       information: '',
-      visible: false
+      visible: false,
+      nodeRate: ''
     }
   },
   methods: {
@@ -213,7 +217,7 @@ export default {
           this.$message.error(this.$t('createJoin.join_income_error'))
           return
         }
-        jsonObj.data = contract.methods.createValidatorGroup(WalletUtil.getEthAddress(this.signAddress), dType, parseInt(this.ownerRate), [parseInt(this.lvlRate1), parseInt(this.lvlRate2), parseInt(this.lvlRate3)]).encodeABI()
+        jsonObj.data = contract.methods.createValidatorGroup(WalletUtil.getEthAddress(this.signAddress), dType, this.ownerRate, parseInt(this.nodeRate) * 10000000, [this.lvlRate1, this.lvlRate2, this.lvlRate3]).encodeABI()
         if (this.$store.state.wallet != null) {
           let tx = WalletUtil.createTx(jsonObj)
           let privateKey = this.$store.state.wallet.privateKey

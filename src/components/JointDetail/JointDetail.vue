@@ -24,6 +24,7 @@
             <span v-for="(item,key) in detailObj.levelRate"
                   :key="key">R{{key}} ：{{item}} &nbsp;</span>
           </div>
+          <div class="distance-top"><span class="font-weight-style">管理费：{{detailObj.NodeRate.Rate/detailObj.NodeRate.Decimal}}% </span></div>
           <div class="distance-top tips-font">
             <label>{{$t('jointFirst.ratehit')}}</label>
           </div>
