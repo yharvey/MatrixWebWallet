@@ -557,72 +557,78 @@ export default {
       this.ruleForm.data = JSON.stringify(data)
     },
     estimate (val) { // 预估gas
-      let to = this.ruleForm.to
-      if (val === '0') {
-        this.ruleForm.value = 0
-        this.ruleForm.to = this.address
-      }
-      if (this.ruleForm.value >= 0 && WalletUtil.validateManAddress(this.ruleForm.to)) {
-        let sendObj = TradingFuns.getTxData(this.ruleForm)
-        let arr = []
-        let extraObj = []
-        let gasObj = []
-        if (this.ruleForm.addressList.length > 0) {
-          for (let i = 0; i < this.ruleForm.addressList.length; i++) {
-            let arrTemp = []
-            let item = this.ruleForm.addressList[i]
-            if (this.coinType === 'more' && item.to.split('.')[0] !== this.moreType) {
-              this.$message.error(this.$t('transfer.addressTip'))
-              return false
-            }
-            if (!WalletUtil.validateManAddress(item.to)) {
-              this.$message.error(this.$t('transfer.addressTip'))
-              return false
-            }
-            if (item.to === this.ruleForm.to) {
-              this.$message.error(this.$t('transfer.addressRepetition'))
-              return false
-            }
-            arr.forEach(e => {
-              if (e.indexOf(item.to) > -1) {
-                this.$message.error(this.$t('transfer.addressRepetition'))
-                return false
+      try {
+        this.ruleForm.to = this.ruleForm.to.trim()
+        let to = this.ruleForm.to
+        if (val === '0') {
+          this.ruleForm.value = 0
+          this.ruleForm.to = this.address
+        }
+        if (this.ruleForm.value >= 0 && WalletUtil.validateManAddress(this.ruleForm.to)) {
+          let sendObj = TradingFuns.getTxData(this.ruleForm)
+          let arr = []
+          // let extraObj = []
+          let gasObj = []
+          if (this.ruleForm.addressList.length > 0) {
+            for (let i = 0; i < this.ruleForm.addressList.length; i++) {
+              let arrTemp = []
+              let item = this.ruleForm.addressList[i]
+              item.to = item.to.trim()
+              if (this.coinType === 'more' && item.to.split('.')[0] !== this.moreType) {
+                this.$message.error(this.$t('transfer.addressTip'))
+                return
               }
-            })
-            arrTemp.push(item.to)
-            arrTemp.push(item.value)
-            arrTemp.push(0)
-            arr.push(arrTemp)
-            gasObj.push({
-              to: item.to,
-              value: '0x' + WalletUtil.toWeiHex(item.value),
-              input: (this.ruleForm.data !== '' || this.ruleForm.data !== null) ? ('0x' + WalletUtil.str2hex(this.ruleForm.data)) : '0x'
-            })
+              if (!WalletUtil.validateManAddress(item.to)) {
+                this.$message.error(this.$t('transfer.addressTip'))
+                return
+              }
+              if (item.to === this.ruleForm.to) {
+                this.$message.error(this.$t('transfer.addressRepetition'))
+                return
+              }
+              arr.forEach(e => {
+                if (e.indexOf(item.to) > -1) {
+                  // this.$message.error(this.$t('transfer.addressRepetition'))
+                  throw new Error(this.$t('transfer.addressRepetition'))
+                }
+              })
+              arrTemp.push(item.to)
+              arrTemp.push(item.value)
+              arrTemp.push(0)
+              arr.push(arrTemp)
+              gasObj.push({
+                to: item.to,
+                value: '0x' + WalletUtil.toWeiHex(item.value),
+                input: (this.ruleForm.data !== '' || this.ruleForm.data !== null) ? ('0x' + WalletUtil.str2hex(this.ruleForm.data)) : '0x'
+              })
+            }
+            // extraObj = [[parseInt(this.ruleForm.ExtraTimeTxType), 0, gasObj]]
           }
-          extraObj = [[parseInt(this.ruleForm.ExtraTimeTxType), 0, arr]]
+          // this.ruleForm.extra_to = extraObj
+          // let jsonObj = TradingFuns.getTxData(this.ruleForm)
+          let estObj = {
+            from: this.address,
+            to: sendObj.to,
+            gasLimit: sendObj.gasLimit,
+            gasPrice: sendObj.gasPrice,
+            value: sendObj.value,
+            data: sendObj.data,
+            currency: this.ruleForm.to.split('.')[0],
+            extra_to: gasObj
+          }
+          let result = this.httpProvider.man.estimateGas(estObj)
+          // this.ruleForm.gas = this.httpProvider.fromWei(Number(result), 'gwei')
+          let getGas = new BigNumber(result) * new BigNumber(this.ruleForm.gasPrice)
+          this.ruleForm.gasLimit = result
+          this.ruleForm.gas = this.httpProvider.fromWei(getGas)
+        } else {
+          this.$message.warning(this.$t('transfer.warningGas'))
         }
-        // this.ruleForm.extra_to = extraObj
-        // let jsonObj = TradingFuns.getTxData(this.ruleForm)
-        let estObj = {
-          from: this.address,
-          to: sendObj.to,
-          gasLimit: sendObj.gasLimit,
-          gasPrice: sendObj.gasPrice,
-          value: sendObj.value,
-          data: sendObj.data,
-          currency: this.ruleForm.to.split('.')[0],
-          extra_to: extraObj
+        if (val === '0') {
+          this.ruleForm.to = to
         }
-        let result = this.httpProvider.man.estimateGas(estObj)
-        // this.ruleForm.gas = this.httpProvider.fromWei(Number(result), 'gwei')
-        let getGas = new BigNumber(result) * new BigNumber(this.ruleForm.gasPrice)
-        this.ruleForm.gasLimit = result
-        this.ruleForm.gas = this.httpProvider.fromWei(getGas)
-      } else {
-        this.$message.warning(this.$t('transfer.warningGas'))
-      }
-      if (val === '0') {
-        this.ruleForm.to = to
+      } catch (error) {
+        this.$message.error(error.message)
       }
     },
     sendAll () { // 发送余额
