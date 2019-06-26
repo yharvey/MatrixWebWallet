@@ -122,7 +122,6 @@ export default {
           this.$message.error(this.$t('CampaignNode.withdrawalsBigger'))
           return
         }
-        console.log(new BigNumber(this.value).comparedTo(new BigNumber(100)))
         if (new BigNumber(this.value).comparedTo(new BigNumber(100)) === -1) {
           this.$message.error(this.$t('CampaignNode.withdrawalsNeed'))
           return

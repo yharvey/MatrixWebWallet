@@ -200,7 +200,6 @@ export default {
         let contractAddress = mortgage.address
         let contract = this.ethProvider.eth.Contract(abiArray, contractAddress)
         let inputData = ''
-        console.log(WalletUtil.getEthAddress(this.mortgageAddrress))
         if (this.mortgageTypeAgo === 'valiDeposit') {
           inputData = contract.methods.minerDeposit(WalletUtil.getEthAddress(this.mortgageAddrress), 0).encodeABI()
         } else {
@@ -426,7 +425,6 @@ export default {
       if (to.path.indexOf('campaignNode') > -1) {
         this.isDeposit = false
         let depositList = this.httpProvider.man.getDepositByAddr(this.address)
-        console.log(depositList)
         if (depositList != null) {
           this.isDeposit = true
           this.mortgageAddrress = depositList.AddressA1
@@ -482,7 +480,6 @@ export default {
     }
     this.initContract()
     let depositList = this.httpProvider.man.getDepositByAddr(this.address)
-    console.log(depositList)
     if (depositList != null) {
       this.isDeposit = true
       this.mortgageAddrress = depositList.AddressA1

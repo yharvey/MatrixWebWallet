@@ -2,7 +2,7 @@
   <div class="jointMining">
     <el-card class="box-card1">
       <div class="header">
-        <h1>{{$t('jointFirst.jointMining')}}</h1>
+        <h1>{{$t('jointFirst.jointMining')}}<span class="span-size">(beta)</span></h1>
         <button class="common-button"
                 @click="goPage('createJoin')">{{$t('jointFirst.createJoint')}}</button>
       </div>
@@ -25,7 +25,7 @@
               <div class="text-left"><span class="font-weight-style">{{$t('jointFirst.jointAccount')}}:</span> {{item.jointAccount}}</div>
               <div class="dis-flex distance-top">
                 <div class="join-number"><span class="font-weight-style">{{$t('jointFirst.jointNumber')}}:</span>{{item.activeCount}}</div>
-                <div><span class="font-weight-style">{{$t('jointFirst.jointTotal')}}</span>{{item.allAmount }}MAN</div>
+                <div><span class="font-weight-style">{{$t('jointFirst.jointTotal')}}：</span>{{item.allAmount }}MAN</div>
               </div>
             </div>
             <div class="text-right">
@@ -56,7 +56,7 @@
                 <div class="text-left"><span class="font-weight-style">{{$t('jointFirst.jointAccount')}}:</span> {{item.jointAccount}}</div>
                 <div class="dis-flex distance-top">
                   <div class="join-number"><span class="font-weight-style">{{$t('jointFirst.jointNumber')}}:</span>{{item.activeCount}}</div>
-                  <div><span class="font-weight-style">{{$t('jointFirst.jointTotal')}}</span>{{item.allAmount }}MAN</div>
+                  <div><span class="font-weight-style">{{$t('jointFirst.jointTotal')}}：</span>{{item.allAmount }}MAN</div>
                 </div>
               </div>
               <div class="text-right">
@@ -145,8 +145,8 @@ export default {
       this.pageNumber = 1
       this.selectQuery = 'my'
       this.myPageNumber = 1
-      console.log(data)
       let self = this
+      console.log(data)
       Object.keys(data).forEach(function (key) {
         let item = data[key]
         let allAmount = new BigNumber(0)
@@ -322,6 +322,9 @@ export default {
   }
   .text-left {
     text-align: left;
+  }
+  .span-size{
+    font-size: 1rem;
   }
 }
 </style>

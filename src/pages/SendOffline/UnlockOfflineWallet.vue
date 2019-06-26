@@ -41,7 +41,7 @@
             <div class="font-blue">{{$t('myWallet.mnemonicMan')}}</div>
           </div>
         </div>
-        <div class="card_way div_dis"
+        <!-- <div class="card_way div_dis"
              @click="selectUnlock('ledger')">
           <div class="pic_dis">
             <img src="../../assets/images/ledger.svg">
@@ -52,7 +52,7 @@
                    value="ledger">
             <label>ledger</label>
           </div>
-        </div>
+        </div> -->
       </div>
       <div v-show="unlockType == 'keystore'">
         <div class="pass_input"

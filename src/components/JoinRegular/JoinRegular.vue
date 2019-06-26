@@ -85,7 +85,6 @@ export default {
         let value = new BigNumber(this.data.value)
         if (this.data.isOwner) {
           let allAmount = new BigNumber(this.data.allAmount)
-          console.log(value)
           if (allAmount.minus(value).comparedTo(new BigNumber(100000)) === -1) {
             this.$message.error(this.$t('errorMsgs.jointTotalError'))
             return
@@ -116,7 +115,6 @@ export default {
           this.newTxData = SendTransfer.getTxParams(serializedTx)
           let hash = this.httpProvider.man.sendRawTransaction(this.newTxData)
           this.hash = hash
-          console.log(hash)
           this.visible = true
           let recordArray = store.get(this.address)
           if ((typeof (recordArray) === 'string')) {

@@ -20,11 +20,11 @@
             <span class="font-weight-style">{{$t('jointDetail.stakeTotal')}}:</span>{{detailObj.allAmount}}
             <span class="font-weight-style">{{$t('jointDetail.rewardTotal')}}：</span>{{detailObj.reward}}
           </div>
+           <div class="distance-top"><span class="font-weight-style">{{$t('createJoin.management_fees')}}：{{detailObj.NodeRate.Rate/detailObj.NodeRate.Decimal}}% </span></div>
           <div class="distance-top"><span class="font-weight-style">{{$t('jointDetail.income_distribution')}}：</span>
             <span v-for="(item,key) in detailObj.levelRate"
                   :key="key">R{{key}} ：{{item}} &nbsp;</span>
           </div>
-          <div class="distance-top"><span class="font-weight-style">管理费：{{detailObj.NodeRate.Rate/detailObj.NodeRate.Decimal}}% </span></div>
           <div class="distance-top tips-font">
             <label>{{$t('jointFirst.ratehit')}}</label>
           </div>
@@ -158,7 +158,6 @@ export default {
       this.$router.push({ name: 'ParticipantsDetail', params: { participantsDetail: obj } })
     },
     jointAdd () {
-      console.log(this.detailObj.jointAccount)
       this.$router.push({ name: 'JointAdd', params: { jointAccount: this.detailObj.jointAccount, stakeValue: this.detailObj.allAmount } })
     },
     backPage () {

@@ -172,7 +172,6 @@ export default {
     }
   },
   mounted () {
-    // console.log(this.$store.state.mnemonic)
     let privateKey = WalletUtil.mnemonicToPrivateKey(this.mnemonic).toString('hex')
     this.wallet = WalletUtil.privateKeyToWallet(privateKey)
   },

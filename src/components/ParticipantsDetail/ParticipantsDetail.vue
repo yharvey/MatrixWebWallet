@@ -201,7 +201,6 @@ export default {
           this.newTxData = SendTransfer.getTxParams(serializedTx)
           let hash = this.httpProvider.man.sendRawTransaction(this.newTxData)
           this.hash = hash
-          console.log(hash)
           this.visible = true
           let recordArray = store.get(this.address)
           if ((typeof (recordArray) === 'string')) {
@@ -270,7 +269,6 @@ export default {
       this.participantsDetail.Address = this.participantsDetail.Address
       this.jointAccount = this.participantsDetail.jointAccount
       this.creatAddress = this.participantsDetail.creatAddress
-      console.log(this.participantsDetail)
       if (parseInt(this.participantsDetail.Current.Amount) > 0) {
         this.tableData.push(
           {
@@ -327,7 +325,6 @@ export default {
           )
         }
       })
-      console.log(this.tableData)
     },
     getReward () {
       try {
@@ -356,7 +353,6 @@ export default {
           this.newTxData = SendTransfer.getTxParams(serializedTx)
           let hash = this.httpProvider.man.sendRawTransaction(this.newTxData)
           this.hash = hash
-          console.log(hash)
           this.visible = true
           let recordArray = store.get(this.address)
           if ((typeof (recordArray) === 'string')) {
@@ -382,7 +378,6 @@ export default {
         if (this.$route.params.participantsDetail) {
           this.tableData = []
           this.init()
-          console.log(this.tableData)
         }
       }
     }
@@ -394,7 +389,6 @@ export default {
       this.address = this.$store.getters.wallet.address
     }
     this.init()
-    console.log(this.tableData)
   },
   components: {
     AllDialog,

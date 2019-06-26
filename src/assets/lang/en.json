@@ -564,8 +564,8 @@
     "validator": "Validator",
     "signaddress": "Stake Address",
     "deposit_account": "Stake Account",
-    "current": "Fixed",
-    "regular": "Flexible",
+    "current": "Flexible",
+    "regular": "Fixed",
     "withdraw_detail": "Details",
     "withdraw_deposit": "Unstake",
     "deposit": "stake",
@@ -685,6 +685,10 @@
     "valueError":"Please fill in the amount greater than 100,000",
     "valueToMore":"Excessive amount",
     "join_income_error":"Please enter the participant's rewards distribution weight",
-    "createIncomeError":"Please enter the creator's rewards distribution weight"
+    "createIncomeError":"Please enter the creator's rewards distribution weight",
+    "nodeRate_error":"Please enter your management fees",
+    "nodeRate_input_error":"Management fee can only be input between 1 and 100",
+    "management_fees":"Management fees",
+    "management_fees_placeholder":"Management fee (unit %, input only 0-100)"
   }
 }

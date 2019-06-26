@@ -624,7 +624,7 @@
     "jointAccount":"联合账户",
     "createAddress":"创建者账户",
     "jointNumber":"参与人数",
-    "jointTotal":"总抵押：",
+    "jointTotal":"总抵押",
     "closeMining":"挖矿关闭",
     "mining":"挖矿中",
     "join":"参与联合",
@@ -685,6 +685,10 @@
     "valueError":"请填写大于100000金额",
     "valueToMore":"金额过大",
     "join_income_error":"请输入参与者收益分配权重",
-    "createIncomeError":"请输入创建者收益分配权重"
+    "createIncomeError":"请输入创建者收益分配权重",
+    "nodeRate_error":"请输入管理费",
+    "nodeRate_input_error":"管理费只能输入0-100",
+    "management_fees":"管理费",
+    "management_fees_placeholder":"管理费(单位%，只能输入0-100)"
   }
 }

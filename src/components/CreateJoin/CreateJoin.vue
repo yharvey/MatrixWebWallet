@@ -34,7 +34,7 @@
             </el-option>
           </el-select>
         </div>
-        <el-input placeholder="管理费"
+        <el-input :placeholder="$t('createJoin.management_fees_placeholder')"
                   type="number"
                   v-model="nodeRate"></el-input>
         <!-- <el-input :placeholder="$t('createJoin.income_distribution_weight')"
@@ -215,6 +215,14 @@ export default {
         }
         if (this.lvlRate3 === '') {
           this.$message.error(this.$t('createJoin.join_income_error'))
+          return
+        }
+        if (this.nodeRate === '') {
+          this.$message.error(this.$t('createJoin.nodeRate_error'))
+          return
+        }
+        if (new BigNumber(this.nodeRate).comparedTo(new BigNumber(100)) === 1 || new BigNumber(0).comparedTo(new BigNumber(this.nodeRate)) === 1) {
+          this.$message.error(this.$t('createJoin.nodeRate_input_error'))
           return
         }
         jsonObj.data = contract.methods.createValidatorGroup(WalletUtil.getEthAddress(this.signAddress), dType, this.ownerRate, parseInt(this.nodeRate) * 10000000, [this.lvlRate1, this.lvlRate2, this.lvlRate3]).encodeABI()

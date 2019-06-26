@@ -119,7 +119,6 @@ export default {
           this.newTxData = SendTransfer.getTxParams(serializedTx)
           let hash = this.httpProvider.man.sendRawTransaction(this.newTxData)
           this.hash = hash
-          console.log(hash)
           this.visible = true
           let recordArray = store.get(this.address)
           if ((typeof (recordArray) === 'string')) {
