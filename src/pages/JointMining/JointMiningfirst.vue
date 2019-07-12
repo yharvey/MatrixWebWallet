@@ -50,7 +50,7 @@
       <div v-if="selectQuery==='my'">
         <div v-show="myJoinList.length !== 0">
           <div v-for="(item,index) in myJoinList"
-              :key="index">
+               :key="index">
             <div class="dis-flex between left-distance distance-top">
               <div>
                 <div class="text-left"><span class="font-weight-style">{{$t('jointFirst.jointAccount')}}:</span> {{item.jointAccount}}</div>
@@ -61,29 +61,29 @@
               </div>
               <div class="text-right">
                 <div class="font-style"
-                    v-if="item.alreadyWithdraw"><span>{{$t('jointFirst.closeMining')}}</span></div>
+                     v-if="item.alreadyWithdraw"><span>{{$t('jointFirst.closeMining')}}</span></div>
                 <div class="font-style"
-                    v-else><span>{{$t('jointFirst.mining')}}</span></div>
+                     v-else><span>{{$t('jointFirst.mining')}}</span></div>
                 <a @click="jointDetail(item)">{{$t('digAccount.withdraw_detail')}}</a>
               </div>
             </div>
             <hr>
           </div>
           <el-pagination background
-                        class="top_spacing"
-                        layout="prev, pager, next"
-                        :page-size="pageSize"
-                        :current-page="pageNumber"
-                        @current-change="changeAll"
-                        :total="myTotal">
+                         class="top_spacing"
+                         layout="prev, pager, next"
+                         :page-size="pageSize"
+                         :current-page="pageNumber"
+                         @current-change="changeMy"
+                         :total="myTotal">
           </el-pagination>
         </div>
         <div v-show="myJoinList.length === 0">
           <div class="space">
           </div>
-          <label >{{$t('jointFirst.nojoin')}}</label>
+          <label>{{$t('jointFirst.nojoin')}}</label>
           <label class="join_font"
-              @click="changeQuery('all')">{{$t('jointFirst.join')}}</label>
+                 @click="changeQuery('all')">{{$t('jointFirst.join')}}</label>
           <div class="space">
           </div>
           <hr>
@@ -323,7 +323,7 @@ export default {
   .text-left {
     text-align: left;
   }
-  .span-size{
+  .span-size {
     font-size: 1rem;
   }
 }

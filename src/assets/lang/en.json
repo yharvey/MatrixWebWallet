@@ -593,7 +593,7 @@
   },
   "currentWithdraw": {
     "current_account": "Flexible Stake Account:",
-    "current_refund": "Flexible Unstake",
+    "current_refund": "Unstake",
     "refund_value": "The amount of flexible unstake",
     "success": "Flexible unstake success",
     "confirmWithdrawMsg": "After unstaking successfully, you can withdrawal your staked assets to your available assets after 7 days"

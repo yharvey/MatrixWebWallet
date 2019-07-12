@@ -22,7 +22,6 @@ ManUtils.fromWei = (number) => {
 
 ManUtils.fileReaderStream = function (file, opts) {
   opts = opts || {}
-
   var offset = opts.offset || 0
   var chunkSize = opts.chunkSize || 1024 * 1024 // default 1MB chunk has tolerable perf on large files
   var fileReader = new FileReader(file)

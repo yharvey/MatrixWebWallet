@@ -20,7 +20,7 @@
             <span class="font-weight-style">{{$t('jointDetail.stakeTotal')}}:</span>{{detailObj.allAmount}}
             <span class="font-weight-style">{{$t('jointDetail.rewardTotal')}}：</span>{{detailObj.reward}}
           </div>
-           <div class="distance-top"><span class="font-weight-style">{{$t('createJoin.management_fees')}}：{{detailObj.NodeRate.Rate/detailObj.NodeRate.Decimal}}% </span></div>
+          <div class="distance-top"><span class="font-weight-style">{{$t('createJoin.management_fees')}}：{{detailObj.NodeRate.Rate/detailObj.NodeRate.Decimal*100}}% </span></div>
           <div class="distance-top"><span class="font-weight-style">{{$t('jointDetail.income_distribution')}}：</span>
             <span v-for="(item,key) in detailObj.levelRate"
                   :key="key">R{{key}} ：{{item}} &nbsp;</span>
@@ -48,7 +48,7 @@
     </el-card>
     <el-card class="box-card2">
       <hr>
-      <div v-for="(item,index) in detailObj.validatorMap"
+      <div v-for="(item,index) in detailList"
            :key="index">
         <div class="dis-flex between left-distance distance-top text-left">
           <div class="list-width">
@@ -65,6 +65,14 @@
         </div>
         <hr>
       </div>
+      <el-pagination background
+                     class="top_spacing"
+                     layout="prev, pager, next"
+                     :page-size="pageSize"
+                     :current-page="pageNumber"
+                     @current-change="changeAll"
+                     :total="total">
+      </el-pagination>
     </el-card>
     <all-dialog :visible="visible"
                 @changeVisible="changeVisible"
@@ -108,7 +116,8 @@ export default {
   name: 'jointDetail',
   data () {
     return {
-      detailObj: { reward: '0' },
+      detailObj: { reward: '0', NodeRate: { Rate: 0, Decimal: 1000000000 } },
+      detailList: [],
       address: '',
       msg: '',
       hash: '',
@@ -117,7 +126,10 @@ export default {
       sendSignVisible: false,
       information: '',
       visible: false,
-      commonDialogExitVisible: false
+      commonDialogExitVisible: false,
+      pageSize: 10,
+      pageNumber: 1,
+      total: 0
     }
   },
   methods: {
@@ -219,6 +231,14 @@ export default {
     },
     openDialog () {
       this.commonDialogExitVisible = true
+    },
+    changeAll (status) {
+      this.pageNumber = status
+      if (this.detailObj.validatorMap.length >= this.pageNumber * this.pageSize) {
+        this.detailList = this.detailObj.validatorMap.slice((this.pageNumber - 1) * 10, this.pageNumber * this.pageSize)
+      } else {
+        this.detailList = this.detailObj.validatorMap.slice((this.pageNumber - 1) * 10, this.detailObj.validatorMap.length)
+      }
     }
   },
   watch: {
@@ -232,6 +252,12 @@ export default {
           const element = this.detailObj.validatorMap[index]
           this.detailObj.reward = this.detailObj.reward.plus(filter.weiToNumber(element.Reward))
         }
+        if (this.detailObj.validatorMap.length > 10) {
+          this.detailList = this.detailObj.validatorMap.slice(0, 9)
+        } else {
+          this.detailList = this.detailObj.validatorMap
+        }
+        this.total = this.detailObj.validatorMap.length
         this.detailObj.reward = this.detailObj.reward.toString(10)
       }
     }
@@ -242,6 +268,12 @@ export default {
     this.detailObj.validatorMap.forEach(element => {
       this.detailObj.reward = this.detailObj.reward.plus(filter.weiToNumber(element.Reward))
     })
+    if (this.detailObj.validatorMap.length > 10) {
+      this.detailList = this.detailObj.validatorMap.slice(0, 9)
+    } else {
+      this.detailList = this.detailObj.validatorMap
+    }
+    this.total = this.detailObj.validatorMap.length
     this.detailObj.reward = this.detailObj.reward.toString(10)
     if (this.$store.state.offline != null) {
       this.address = this.$store.state.offline

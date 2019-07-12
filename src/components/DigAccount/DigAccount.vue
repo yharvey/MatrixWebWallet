@@ -156,7 +156,7 @@ export default {
         })
         this.regularDepositValue = regularDepositValue.toString(10)
         this.currentDepositValue = currentDepositValue.toString(10)
-        this.totalValue = regularDepositValue.plus(currentDepositValue)
+        this.totalValue = regularDepositValue.plus(currentDepositValue).plus(regularWithdrawalsValue)
         this.currentWithdrawalsValue = currentWithdrawalsValue.toString(10)
         this.regularWithdrawalsValue = regularWithdrawalsValue.toString(10)
         this.totalWithdrawalsValue = currentWithdrawalsValue.plus(regularWithdrawalsValue)
