@@ -11,10 +11,9 @@
     "e2e": "node test/e2e/runner.js",
     "test": "npm run unit && npm run e2e",
     "lint": "eslint --ext .js,.vue src test/unit test/e2e/specs",
-    "build": "node build/build.js"
+    "build": "node --max_old_space_size=4096 build/build.js"
   },
   "dependencies": {
-    "@ledgerhq/hw-transport-node-hid": "^4.68.2",
     "@ledgerhq/hw-transport-webusb": "^4.68.2",
     "@ledgerhq/logs": "^4.68.2",
     "aiman": "0.0.12",
