@@ -489,13 +489,18 @@ export default {
               jsonObj.value = '0x0'
             }
             if (this.$store.state.wallet != null) {
-              let tx = WalletUtil.createTx(jsonObj)
-              let privateKey = this.$store.state.wallet.privateKey
-              privateKey = Buffer.from(privateKey.indexOf('0x') > -1 ? privateKey.substring(2, privateKey.length) : privateKey, 'hex')
-              tx.sign(privateKey)
-              let serializedTx = tx.serialize()
-              this.newTxData = SendTransfer.getTxParams(serializedTx)
-              this.confirmTransfer = true
+              if (this.$store.state.wallet.privateKey) {
+                let tx = WalletUtil.createTx(jsonObj)
+                let privateKey = this.$store.state.wallet.privateKey
+                privateKey = Buffer.from(privateKey.indexOf('0x') > -1 ? privateKey.substring(2, privateKey.length) : privateKey, 'hex')
+                tx.sign(privateKey)
+                let serializedTx = tx.serialize()
+                this.newTxData = SendTransfer.getTxParams(serializedTx)
+                this.confirmTransfer = true
+              } else {
+                this.confirmOffline = true
+                this.jsonObj = JSON.stringify(jsonObj)
+              }
             } else {
               this.confirmOffline = true
               this.jsonObj = JSON.stringify(jsonObj)

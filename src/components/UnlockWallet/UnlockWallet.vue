@@ -51,7 +51,7 @@
           </div>
         </div>
         <!--ledger硬件钱包 Card-->
-        <!-- <div class="card_way div_dis"
+        <div class="card_way div_dis"
              @click="selectUnlock('ledger')">
           <div class="pic_dis">
             <img src="../../assets/images/ledger.svg">
@@ -62,7 +62,7 @@
                    value="ledger">
             <label>ledger</label>
           </div>
-        </div> -->
+        </div>
       </div>
       <!--keystore 输入密码-->
       <div v-show="unlockType == 'keystore'">

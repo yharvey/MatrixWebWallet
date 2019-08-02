@@ -14,7 +14,9 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "@ledgerhq/hw-transport-webusb": "^4.61.0",
+    "@ledgerhq/hw-transport-node-hid": "^4.68.2",
+    "@ledgerhq/hw-transport-webusb": "^4.68.2",
+    "@ledgerhq/logs": "^4.68.2",
     "aiman": "0.0.12",
     "axios": "^0.18.0",
     "babel-plugin-component": "^1.1.1",
@@ -31,7 +33,7 @@
     "file-saver": "^2.0.1",
     "ipfs-api": "^26.1.2",
     "keythereum": "^1.0.4",
-    "ledger-matrix": "0.0.5",
+    "ledger-matrix": "^1.1.3",
     "less": "^3.9.0",
     "less-loader": "^4.1.0",
     "lodash": "^4.17.11",

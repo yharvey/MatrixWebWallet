@@ -41,7 +41,8 @@
             <div class="font-blue">{{$t('myWallet.mnemonicMan')}}</div>
           </div>
         </div>
-        <!-- <div class="card_way div_dis"
+        <!--ledger硬件钱包解锁-->
+        <div class="card_way div_dis"
              @click="selectUnlock('ledger')">
           <div class="pic_dis">
             <img src="../../assets/images/ledger.svg">
@@ -52,7 +53,7 @@
                    value="ledger">
             <label>ledger</label>
           </div>
-        </div> -->
+        </div>
       </div>
       <div v-show="unlockType == 'keystore'">
         <div class="pass_input"
@@ -123,7 +124,6 @@ import store from '@/store'
 import Bus from '@/assets/js/Bus'
 import filter from '@/assets/js/filters'
 import * as storeLocal from 'store'
-import LedgerUtil from '@/assets/js/LedgerUtil'
 
 export default {
   name: 'UnlockWallet',
@@ -263,29 +263,12 @@ export default {
           }
         }
       } else if (this.unlockType === 'ledger') {
-        let loading = this.$loading({
-          lock: true,
-          text: 'Loading',
-          spinner: 'el-icon-loading',
-          background: 'rgba(0, 0, 0, 0.7)'
-        })
-        LedgerUtil.getAddress(0, 0, 0).then((result) => {
-          loading.close()
-          let wallet = {
-            address: '',
-            pubKey: ''
-          }
-          wallet.address = result.address
-          wallet.pubKey = result.pubKey
-          store.commit('UPDATE_WALLET', wallet)
-          this.$emit('openWallet')
-          if (this.isEmit) {
-            Bus.$emit('openWallet')
-          }
-        }).catch(err => {
-          loading.close()
-          this.$message.error(err.message)
-        })
+        this.mnemonic = ''
+        this.keyPrivateError = false
+        this.$emit('openWallet', this.wallet)
+        if (this.isEmit) {
+          Bus.$emit('openWallet', this.wallet)
+        }
       }
     },
     loginOffline () {
