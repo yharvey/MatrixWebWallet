@@ -78,9 +78,14 @@ export default {
     signTransfer () {
       try {
         if (this.$store.state.wallet != null) {
-          this.hash = this.httpProvider.man.sendRawTransaction(this.newTxData)
-          this.msg = this.$t('createCoin.success')
-          this.visible = true
+          if (this.$store.state.wallet.privateKey) {
+            this.hash = this.httpProvider.man.sendRawTransaction(this.newTxData)
+            this.msg = this.$t('createCoin.success')
+            this.visible = true
+          } else {
+            this.jsonObj = this.newTxData
+            this.confirmOffline = true
+          }
         } else {
           this.jsonObj = this.newTxData
           this.confirmOffline = true
