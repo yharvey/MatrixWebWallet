@@ -106,7 +106,8 @@ export default {
       confirmOffline: false,
       jsonObj: '',
       sendSignVisible: false,
-      information: ''
+      information: '',
+      interval: {}
     }
   },
   methods: {
@@ -140,15 +141,18 @@ export default {
         })
       }
       let self = this
-      this.ipfsProvider.add(fileUpload, {
-        wrapWithDirectory: true,
-        progress: (prog) => {
-          setTimeout(function () {
-            self.uploadProgress = ((prog / file[0].size).toFixed(2)) * 100
-          }, 50)
+      this.uploadProgress = 0
+      this.interval = setInterval(function () {
+        if (self.uploadProgress !== 99) {
+          self.uploadProgress += 1
         }
+      }, 1000)
+      this.ipfsProvider.add(fileUpload, {
+        wrapWithDirectory: true
       }
       ).then((response) => {
+        self.uploadProgress = 100
+        clearInterval(this.interval)
         var imgContent = document.getElementById('imgContent')
         imgContent.innerHTML = ''
         let ele

@@ -252,6 +252,15 @@ export default {
           const element = this.detailObj.validatorMap[index]
           this.detailObj.reward = this.detailObj.reward.plus(filter.weiToNumber(element.Reward))
         }
+        for (let i = 0; i < this.detailObj.validatorMap.length; i++) {
+          let item = this.detailObj.validatorMap[i]
+          if (item.Address === this.address) {
+            let middleItem = this.detailObj.validatorMap[0]
+            this.detailObj.validatorMap[0] = item
+            this.detailObj.validatorMap[i] = middleItem
+            break
+          }
+        }
         if (this.detailObj.validatorMap.length > 10) {
           this.detailList = this.detailObj.validatorMap.slice(0, 9)
         } else {
@@ -263,11 +272,25 @@ export default {
     }
   },
   mounted () {
+    if (this.$store.state.offline != null) {
+      this.address = this.$store.state.offline
+    } else {
+      this.address = this.$store.getters.wallet.address
+    }
     this.detailObj = this.$route.params.detailObj
     this.detailObj.reward = new BigNumber(0)
     this.detailObj.validatorMap.forEach(element => {
       this.detailObj.reward = this.detailObj.reward.plus(filter.weiToNumber(element.Reward))
     })
+    for (let i = 0; i < this.detailObj.validatorMap.length; i++) {
+      let item = this.detailObj.validatorMap[i]
+      if (item.Address === this.address) {
+        let middleItem = this.detailObj.validatorMap[0]
+        this.detailObj.validatorMap[0] = item
+        this.detailObj.validatorMap[i] = middleItem
+        break
+      }
+    }
     if (this.detailObj.validatorMap.length > 10) {
       this.detailList = this.detailObj.validatorMap.slice(0, 9)
     } else {
@@ -275,11 +298,6 @@ export default {
     }
     this.total = this.detailObj.validatorMap.length
     this.detailObj.reward = this.detailObj.reward.toString(10)
-    if (this.$store.state.offline != null) {
-      this.address = this.$store.state.offline
-    } else {
-      this.address = this.$store.getters.wallet.address
-    }
   },
   components: {
     AllDialog,

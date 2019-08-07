@@ -286,7 +286,8 @@
     "destruction": "销毁地址",
     "addressError": "接收新币种的钱包地址填写错误",
     "valueError": "转账金额必须大于0",
-    "nameError": "转账地址必须与创建币种一致"
+    "nameError": "转账地址必须与创建币种一致",
+    "success":"交易发送成功"
   },
   "cancelEntrust": {
     "index": "序号",

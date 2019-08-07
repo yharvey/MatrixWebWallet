@@ -258,6 +258,11 @@ export default {
     this.balance = this.$route.params.balance
     this.manBalance = this.balance
     this.ruleForm.token = this.$route.params.currency
+    if (this.ruleForm.token !== 'MAN') {
+      this.coinType = 'more'
+      this.moreType = this.ruleForm.token
+      this.sendCoin = this.ruleForm.token
+    }
     if (this.$store.state.wallet != null) {
       this.address = this.$store.getters.wallet.address
     } else {
@@ -282,6 +287,10 @@ export default {
         data: '',
         nonce: ''
       }
+      this.ruleForm.token = 'MAN'
+      this.coinType = ''
+      this.moreType = ''
+      this.sendCoin = 'MAN'
     },
     openSendSign () {
       this.sendSignVisible = true
@@ -319,6 +328,9 @@ export default {
     },
     getToken () { // 获本地token代币
       let tokenArray = store.get('token')
+      if (typeof (tokenArray) === 'string') {
+        tokenArray = JSON.parse(tokenArray)
+      }
       if (tokenArray != null) {
         // tokenArray = JSON.parse(tokenArray)
         tokenArray.forEach(e => {
@@ -400,6 +412,10 @@ export default {
         data: '',
         nonce: ''
       }
+      this.ruleForm.token = 'MAN'
+      this.coinType = ''
+      this.moreType = ''
+      this.sendCoin = 'MAN'
     },
     queryRecordOrBalance (type) {
       this.balanceShow = type
@@ -550,7 +566,7 @@ export default {
       }
     },
     validAddress (rule, address, callback) {
-      if (!WalletUtil.validateManAddress(address.trim())) {
+      if (!WalletUtil.validateAddress(address.trim())) {
         callback(new Error(window.i18n.t('transfer.addressTip')))
       } else if (this.coinType === 'more' && address.split('.')[0] !== this.moreType) {
         callback(new Error(window.i18n.t('transfer.addressTip')))

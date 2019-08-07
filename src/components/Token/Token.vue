@@ -112,7 +112,7 @@ export default {
             tokenArray = []
           }
           tokenArray.push(this.token)
-          store.set('token', JSON.stringify(tokenArray))
+          store.set('token', tokenArray)
           this.$message.success(this.$t('token.tokenSuccess'))
         } else {
           this.$message.success(this.$t('token.tokenFail'))

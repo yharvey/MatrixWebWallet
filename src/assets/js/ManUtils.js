@@ -25,7 +25,6 @@ ManUtils.fileReaderStream = function (file, opts) {
   var offset = opts.offset || 0
   var chunkSize = opts.chunkSize || 1024 * 1024 // default 1MB chunk has tolerable perf on large files
   var fileReader = new FileReader(file)
-
   function source (end, cb) {
     if (end) return cb(end)
     // If finished reading then stop

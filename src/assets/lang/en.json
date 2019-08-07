@@ -286,7 +286,8 @@
     "destruction": "Burn address",
     "addressError": "Error with the address to receive new currency",
     "valueError": "The transfer amount must be over 0",
-    "nameError": "The address must match the created currency"
+    "nameError": "The address must match the created currency",
+    "success":"Transaction sent successfully"
   },
   "cancelEntrust": {
     "index": "Number",

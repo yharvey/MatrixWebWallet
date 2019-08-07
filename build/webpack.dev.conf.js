@@ -32,7 +32,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         to: path.posix.join(config.dev.assetsPublicPath, 'index.html')
       }, ],
     },
-    https: true,
+    https: false,
     hot: true,
     contentBase: false, // since we use CopyWebpackPlugin.
     compress: true,
