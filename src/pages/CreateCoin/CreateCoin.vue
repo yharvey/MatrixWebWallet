@@ -99,13 +99,18 @@ export default {
           AddrAmount: tempData
         })))
         if (this.$store.state.wallet != null) {
-          let tx = WalletUtil.createTx(jsonObj)
-          let privateKey = this.$store.state.wallet.privateKey
-          privateKey = Buffer.from(privateKey.indexOf('0x') > -1 ? privateKey.substring(2, privateKey.length) : privateKey, 'hex')
-          tx.sign(privateKey)
-          let serializedTx = tx.serialize()
-          this.newTxData = SendTransfer.getTxParams(serializedTx)
-          this.$router.push({ name: 'CreateCoinSecond', params: { newTxData: this.newTxData } })
+          if (this.$store.state.wallet.privateKey) {
+            let tx = WalletUtil.createTx(jsonObj)
+            let privateKey = this.$store.state.wallet.privateKey
+            privateKey = Buffer.from(privateKey.indexOf('0x') > -1 ? privateKey.substring(2, privateKey.length) : privateKey, 'hex')
+            tx.sign(privateKey)
+            let serializedTx = tx.serialize()
+            this.newTxData = SendTransfer.getTxParams(serializedTx)
+            this.$router.push({ name: 'CreateCoinSecond', params: { newTxData: this.newTxData } })
+          } else {
+            this.jsonObj = JSON.stringify(jsonObj)
+            this.$router.push({ name: 'CreateCoinSecond', params: { newTxData: this.jsonObj } })
+          }
         } else {
           this.jsonObj = JSON.stringify(jsonObj)
           this.$router.push({ name: 'CreateCoinSecond', params: { newTxData: this.jsonObj } })

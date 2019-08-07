@@ -63,7 +63,8 @@ LedgerUtil.sign = (tx) => {
         }
       })
     } catch (e) {
-      reject(e)
+      debugger
+      reject(new Error('error'))
     }
   })
 }
