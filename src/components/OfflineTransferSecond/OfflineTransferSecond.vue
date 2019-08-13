@@ -277,7 +277,7 @@ export default {
           let jsonObj = TradingFuns.getTxData(this.ruleForm)
           // 发送token代币
           if (this.coinType === 'token') {
-            jsonObj.data = this.tokenObj.getData(WalletUtil.getEthAddress(jsonObj.to), this.ruleForm.value).data
+            jsonObj.data = this.tokenObj.getData(WalletUtil.getAddress(jsonObj.to), this.ruleForm.value).data
             jsonObj.to = this.sendTokenObj.tokenContract
             jsonObj.value = '0x0'
           }

@@ -197,7 +197,7 @@ export default {
       let contractAddress = mortgage.address
       let contract = this.httpProvider.man.contract(abiArray)
       let myContractInstance = contract.at(contractAddress)
-      let deposit = myContractInstance.getDepositInfo(WalletUtil.getEthAddress(store.state.wallet.address), { currency: 'MAN' })
+      let deposit = myContractInstance.getDepositInfo(WalletUtil.getAddress(store.state.wallet.address), { currency: 'MAN' })
       this.deposit = deposit
       if (deposit[1] !== '0x') {
         if (deposit[3].toNumber() === 128) {

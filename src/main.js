@@ -10,7 +10,7 @@ import VueI18n from 'vue-i18n'
 import ElementUI from 'element-ui'
 import filters from './assets/js/filters'
 import http from './assets/js/http'
-import { chainUrl, ipfsUrl, ipfsPort, protocol, ethUrl } from './assets/js/config' // 配置
+import { chainUrl, ipfsUrl, ipfsPort, protocol } from './assets/js/config' // 配置
 import VueClipboards from 'vue-clipboards'
 import 'element-ui/lib/theme-chalk/index.css'
 import { getCookie } from './assets/js/cookie'
@@ -26,8 +26,6 @@ import 'quill/dist/quill.bubble.css'
 
 // aiman API
 import HttpProvider from '@/assets/js/HttpProvider'
-// web3 API
-import EthProvider from '@/assets/js/EthProvider'
 // ipfs API
 import IpfsProvider from '@/assets/js/IpfsProvider'
 
@@ -38,8 +36,6 @@ import elementZhLocale from 'element-ui/lib/locale/lang/zh-CN'// element-ui lang
 
 // aiman API
 Vue.prototype.httpProvider = new HttpProvider(chainUrl)
-// aiman API
-Vue.prototype.ethProvider = new EthProvider(ethUrl)
 
 // ipfs API
 Vue.prototype.ipfsProvider = new IpfsProvider(ipfsUrl, ipfsPort, protocol)

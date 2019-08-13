@@ -1,5 +1,5 @@
 var BigNumber = require('bignumber.js')
-var sha3 = require('ethereumjs-util').sha3
+var sha3 = require('matrixjs-util').sha3
 var utf8 = require('utf8')
 
 var unitMap = {

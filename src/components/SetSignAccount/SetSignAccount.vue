@@ -99,7 +99,7 @@ export default {
           nonce: nonce
         }
         let jsonObj = TradingFuns.getTxData(data)
-        jsonObj.data = contract.setSignAccount.getData(WalletUtil.getEthAddress(this.signAddress))
+        jsonObj.data = contract.setSignAccount.getData(WalletUtil.getAddress(this.signAddress))
         if (this.$store.state.wallet != null) {
           let tx = WalletUtil.createTx(jsonObj)
           let privateKey = this.$store.state.wallet.privateKey

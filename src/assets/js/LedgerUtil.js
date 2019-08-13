@@ -13,7 +13,7 @@ LedgerUtil.getAddress = (account, change, addressIndex) => {
               let app = new MatrixApp(transport)
               app.getAddress(account, change, addressIndex).then(result => {
                 if (result) {
-                  result.address = WalletUtil.getManAddress(WalletUtil.getEthAddress(result.address))
+                  result.address = WalletUtil.getManAddress(WalletUtil.getAddress(result.address))
                   resolve(result)
                 } else {
                   reject(new Error('get address failed'))

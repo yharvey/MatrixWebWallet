@@ -1,7 +1,7 @@
 {
-  "name": "wallet",
+  "name": "WebWallet",
   "version": "1.0.0",
-  "description": "maritx网页钱包",
+  "description": "Maritx WebWallet",
   "author": "lijie <lijie13419722045@126.com>",
   "private": true,
   "scripts": {
@@ -26,9 +26,9 @@
     "echarts": "^4.2.1",
     "element-ui": "^2.6.0",
     "es6-proxy-polyfill": "^1.2.1",
-    "ethereumjs-wallet": "^0.6.3",
     "ethers": "^4.0.26",
     "file-saver": "^2.0.1",
+    "hdkey": "^1.1.1",
     "ipfs-api": "^26.1.2",
     "keythereum": "^1.0.4",
     "ledger-matrix": "^1.1.4",
@@ -45,8 +45,7 @@
     "vue-i18n": "^8.8.2",
     "vue-quill-editor": "^3.0.6",
     "vue-router": "^3.0.1",
-    "vuex": "^3.1.0",
-    "web3": "^1.0.0-beta.50"
+    "vuex": "^3.1.0"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

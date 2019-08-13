@@ -93,7 +93,7 @@ export default {
       let contractAddress = mortgage.address
       let contract = this.httpProvider.man.contract(abiArray)
       let myContractInstance = contract.at(contractAddress)
-      let deposit = myContractInstance.getDepositInfo(WalletUtil.getEthAddress(this.address), { currency: 'MAN' })
+      let deposit = myContractInstance.getDepositInfo(WalletUtil.getAddress(this.address), { currency: 'MAN' })
       if (Number(deposit[3]) === 0) {
         this.state = this.$t('refund.no_deposit')
         return

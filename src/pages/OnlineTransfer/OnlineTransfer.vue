@@ -357,7 +357,7 @@ export default {
       try {
         if (item.type === 'token') {
           let currency = item.tokenContract.split('.')[0]
-          let tokenObj = new Token(WalletUtil.getEthAddress(item.tokenContract), WalletUtil.getEthAddress(this.address), item.tokenName, item.digits, currency)
+          let tokenObj = new Token(WalletUtil.getAddress(item.tokenContract), WalletUtil.getAddress(this.address), item.tokenName, item.digits, currency)
           this.tokenObj = tokenObj
           let sendTokenBalance = tokenObj.setBalance()
           sendTokenBalance.currency = currency
@@ -500,7 +500,7 @@ export default {
             }
             // 发送token代币
             if (this.coinType === 'token') {
-              jsonObj.data = this.tokenObj.getData(WalletUtil.getEthAddress(jsonObj.to), this.ruleForm.value).data
+              jsonObj.data = this.tokenObj.getData(WalletUtil.getAddress(jsonObj.to), this.ruleForm.value).data
               jsonObj.to = this.sendTokenObj.tokenContract
               jsonObj.value = '0x0'
             }

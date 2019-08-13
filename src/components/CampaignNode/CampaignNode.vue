@@ -201,9 +201,9 @@ export default {
         let contract = this.httpProvider.man.contract(abiArray).at(contractAddress)
         let inputData = ''
         if (this.mortgageTypeAgo === 'valiDeposit') {
-          inputData = contract.minerDeposit.getData(WalletUtil.getEthAddress(this.mortgageAddrress), 0)
+          inputData = contract.minerDeposit.getData(WalletUtil.getAddress(this.mortgageAddrress), 0)
         } else {
-          inputData = contract.valiDeposit.getData(WalletUtil.getEthAddress(this.mortgageAddrress), 0)
+          inputData = contract.valiDeposit.getData(WalletUtil.getAddress(this.mortgageAddrress), 0)
         }
         let nonce = this.httpProvider.man.getTransactionCount(this.address)
         nonce = WalletUtil.numToHex(nonce)

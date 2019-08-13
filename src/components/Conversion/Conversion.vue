@@ -123,7 +123,7 @@ export default {
       this.content.moreCoinAddress = this.content.moreCoinAddress.trim()
       if (type === 'man') {
         if ((/^[A-Z]{2,8}\.[0-9a-zA-Z]{17,36}$/.test(this.content.manAddress))) {
-          this.content.ethAddress = WalletUtil.getEthAddress(this.content.manAddress)
+          this.content.ethAddress = WalletUtil.getAddress(this.content.manAddress)
         } else {
           this.$message.error(this.$t('errorMsgs.invalidManAddress'))
         }

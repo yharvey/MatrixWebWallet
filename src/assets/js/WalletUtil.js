@@ -9,7 +9,7 @@ const polycrc = require('polycrc')
 const bs58 = require('bs58')
 const bip39 = require('bip39')
 const util = require('matrixjs-util')
-const hdkey = require('ethereumjs-wallet/hdkey')
+const hdkey = require('hdkey')
 const manUtil = new Man()
 
 // const _ = require('lodash')
@@ -29,15 +29,15 @@ WalletUtil.mnemonicToPrivateKey = function (mnemonic) {
   let seed = bip39.mnemonicToSeed(mnemonic)
 
   let hdWallet = hdkey.fromMasterSeed(seed)
-  let key = hdWallet.derivePath("m/44'/60'/0'/0/0")
-  return key._hdkey._privateKey
+  let key = hdWallet.derive("m/44'/60'/0'/0/0")
+  return key._privateKey
 }
 
 // 组记词获取私钥
 WalletUtil.mnemonicToKeyStore = function (mnemonic, password) {
   let seed = bip39.mnemonicToSeed(mnemonic)
   let hdWallet = hdkey.fromMasterSeed(seed)
-  let key = hdWallet.derivePath("m/44'/60'/0'/0/0")
+  let key = hdWallet.derive("m/44'/60'/0'/0/0")
   let params = {
     keyBytes: 32,
     ivBytes: 16
@@ -53,8 +53,8 @@ WalletUtil.mnemonicToKeyStore = function (mnemonic, password) {
       dklen: 32
     }
   }
-  let keyObject = keythereum.dump(password, key._hdkey._privateKey, dk.salt, dk.iv, options)
-  let address = util.pubToAddress(key._hdkey._publicKey, true)
+  let keyObject = keythereum.dump(password, key._privateKey, dk.salt, dk.iv, options)
+  let address = util.pubToAddress(key._publicKey, true)
   address = util.toChecksumAddress(address.toString('hex'))
   address = this.getManAddress(address)
   keyObject.address = address
@@ -119,7 +119,7 @@ WalletUtil.keyStoreToWallet = function (keyStore, password) {
 }
 
 // 根据MAN地址获取eth地址
-WalletUtil.getEthAddress = function (address) {
+WalletUtil.getAddress = function (address) {
   let addrTemp = address.split('.')[1]
   return '0x' + (bs58.decode(addrTemp.substring(0, addrTemp.length - 1))).toString('hex')
 }
@@ -243,7 +243,7 @@ WalletUtil.hexToDecimal = function (hex) {
 
 // 获得多币种地址
 WalletUtil.getCurrencyAddress = function (address, currency) {
-  address = this.getEthAddress(address)
+  address = this.getAddress(address)
   let crc8 = polycrc.crc(8, 0x07, 0x00, 0x00, false)
   const bytes = Buffer.from(address.substring(2, address.length), 'hex')
   const manAddress = bs58.encode(bytes)

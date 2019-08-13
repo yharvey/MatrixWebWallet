@@ -225,7 +225,7 @@ export default {
           this.$message.error(this.$t('createJoin.nodeRate_input_error'))
           return
         }
-        jsonObj.data = contract.createValidatorGroup.getData(WalletUtil.getEthAddress(this.signAddress), dType, this.ownerRate, parseInt(this.nodeRate) * 10000000, [this.lvlRate1, this.lvlRate2, this.lvlRate3])
+        jsonObj.data = contract.createValidatorGroup.getData(WalletUtil.getAddress(this.signAddress), dType, this.ownerRate, parseInt(this.nodeRate) * 10000000, [this.lvlRate1, this.lvlRate2, this.lvlRate3])
         if (this.$store.state.wallet != null) {
           let tx = WalletUtil.createTx(jsonObj)
           let privateKey = this.$store.state.wallet.privateKey
