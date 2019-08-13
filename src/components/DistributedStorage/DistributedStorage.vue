@@ -41,6 +41,9 @@ export default {
     changeFile () {
       let file = this.$refs.file.files
       const fileUpload = []
+      if (file.length <= 0) {
+        return
+      }
       for (let i = 0, length = file.length; i < length; i++) {
         var uploadContent = ManUtils.fileReaderStream(file[i], {
           chunkSize: 32 * 1024 * 1024
@@ -52,12 +55,7 @@ export default {
       }
       let self = this
       this.ipfsProvider.add(fileUpload, {
-        wrapWithDirectory: true,
-        progress: (prog) => {
-          setTimeout(function () {
-            self.uploadProgress = ((prog / file[0].size).toFixed(2)) * 100
-          }, 50)
-        }
+        wrapWithDirectory: true
       }).then((response) => {
         var imgContent = document.getElementById('imgContent')
         imgContent.innerHTML = ''
