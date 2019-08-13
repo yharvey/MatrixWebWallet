@@ -92,7 +92,7 @@ export default {
         }
         let abiArray = JSON.parse(joinChildAbi)
         let contractAddress = this.data.jointAccount
-        let contract = this.ethProvider.eth.Contract(abiArray, contractAddress)
+        let contract = this.httpProvider.man.contract(abiArray).at(contractAddress)
         let nonce = this.httpProvider.man.getTransactionCount(this.address)
         nonce = WalletUtil.numToHex(nonce)
         let data = {
@@ -104,8 +104,9 @@ export default {
           extra_to: [[0, 0, []]],
           nonce: nonce
         }
+        debugger
         let jsonObj = TradingFuns.getTxData(data)
-        jsonObj.data = contract.methods.withdraw(this.httpProvider.toWei(new BigNumber(this.data.value).toString(10)), parseInt(this.data.opration)).encodeABI()
+        jsonObj.data = contract.withdraw.getData(this.httpProvider.toWei(new BigNumber(this.data.value).toString(10)), parseInt(this.data.opration))
         if (this.$store.state.wallet != null) {
           let tx = WalletUtil.createTx(jsonObj)
           let privateKey = this.$store.state.wallet.privateKey

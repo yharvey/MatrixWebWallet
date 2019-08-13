@@ -131,6 +131,9 @@ export default {
     changeFile () {
       let file = this.$refs.file.files
       const fileUpload = []
+      if (file.length <= 0) {
+        return
+      }
       for (let i = 0, length = file.length; i < length; i++) {
         var uploadContent = ManUtils.fileReaderStream(file[i], {
           chunkSize: 32 * 1024 * 1024

@@ -120,7 +120,6 @@ export default {
         let contractAddress = this.jointAccount
         let contract = this.httpProvider.man.contract(abiArray).at(contractAddress)
         console.log(contract)
-        // let contract = this.ethProvider.eth.Contract(abiArray, contractAddress)
         let nonce = this.httpProvider.man.getTransactionCount(this.address)
         nonce = WalletUtil.numToHex(nonce)
         let value = new BigNumber(this.value)
@@ -128,7 +127,6 @@ export default {
           this.$message.error(this.$t('jointAdd.valueToMore'))
           return
         }
-        debugger
         let data = {
           to: this.jointAccount,
           value: parseInt(this.value),
@@ -148,13 +146,12 @@ export default {
             this.$message.error(this.$t('CampaignNode.selectTimeLimit'))
             return
           }
-          jsonObj.data = contract.addDeposit(parseInt(this.timeLimit)).encodeABI()
+          jsonObj.data = contract.addDeposit.getData(parseInt(this.timeLimit))
         } else {
           if (value.comparedTo(new BigNumber(100)) === -1) {
             this.$message.error(this.$t('CampaignNode.currentError'))
             return
           }
-          debugger
           jsonObj.data = contract.addDeposit.getData(0)
         }
         if (this.$store.state.wallet != null) {

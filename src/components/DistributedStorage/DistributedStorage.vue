@@ -73,7 +73,7 @@ export default {
           ele.setAttribute('controls', true)
         } else if (file[0].type.indexOf('.zip') > -1) {
           ele = document.createElement('img')
-          ele.data_src = self.ipfsProvider.address + response[0].path
+          ele.src = self.ipfsProvider.address + response[0].path
         } else {
           // 添加 img
           ele = document.createElement('img')

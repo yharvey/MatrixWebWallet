@@ -198,12 +198,12 @@ export default {
         }
         let abiArray = JSON.parse(mortgage.abi)
         let contractAddress = mortgage.address
-        let contract = this.ethProvider.eth.Contract(abiArray, contractAddress)
+        let contract = this.httpProvider.man.contract(abiArray).at(contractAddress)
         let inputData = ''
         if (this.mortgageTypeAgo === 'valiDeposit') {
-          inputData = contract.methods.minerDeposit(WalletUtil.getEthAddress(this.mortgageAddrress), 0).encodeABI()
+          inputData = contract.minerDeposit.getData(WalletUtil.getEthAddress(this.mortgageAddrress), 0)
         } else {
-          inputData = contract.methods.valiDeposit(WalletUtil.getEthAddress(this.mortgageAddrress), 0).encodeABI()
+          inputData = contract.valiDeposit.getData(WalletUtil.getEthAddress(this.mortgageAddrress), 0)
         }
         let nonce = this.httpProvider.man.getTransactionCount(this.address)
         nonce = WalletUtil.numToHex(nonce)
