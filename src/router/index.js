@@ -38,7 +38,6 @@ import SecondKey from '@/components/SecondKey/SecondKey'
 import CancelSecondKey from '@/components/SecondKey/CancelSecondKey'
 import EntrustRecord from '@/components/EntrustRecord/EntrustRecord'
 import Mapping from '@/pages/Mapping/Mapping'
-import SendEth from '@/components/SendEth/SendEth'
 import CancelEntrust from '@/components/CancelEntrust/CancelEntrust'
 import AIRecord from '@/pages/AIApplication/AIRecord'
 import CreateCoin from '@/pages/CreateCoin/CreateCoin'
@@ -284,10 +283,6 @@ let router = new Router({
       path: '/mapping',
       name: 'Mapping',
       component: Mapping
-    }, {
-      path: 'sendEth',
-      name: 'SendEth',
-      component: SendEth
     }, {
       path: '/sendOffline',
       name: 'SendOffline',
