@@ -10,6 +10,7 @@
     "outHint": "此操作将退出钱包解锁",
     "hint": "提示",
     "sure": "确认",
+    "confirm":"确定",
     "cancel": "取消",
     "refund": "挖矿账户",
     "offlineSend": "离线交易",
@@ -250,19 +251,6 @@
     "startTime": "开始日期时间",
     "endTime": "结束日期时间",
     "secondKeySuccess": "授权成功"
-  },
-  "sendEth": {
-    "fillUpTwo": "第二步：填写映射信息",
-    "sendEthHint": "为了保障您的隐私，我们仅展示钱包中MAN和ETH的数量",
-    "MAN_count": "MAN 数量",
-    "ETH_count": "ETH 数量",
-    "mappingManAddress": "映射MAN的数量",
-    "getManAddress": "销毁地址",
-    "minnerGas": "矿工费用",
-    "sure": "确定",
-    "mappingCount": "请输入映射数量",
-    "inputGasPrice": "请输入gasPrice",
-    "inputGasLimit": "请输入gasgasLimit"
   },
   "cancel": {
     "hint": "取消关联成功",

@@ -14,7 +14,7 @@ Validate.walletRequirePass = function (json) {
     return true
   } else if (jsonArr.hash != null && !jsonArr.locked) {
     return false
-  } else if (jsonArr.publisher === 'MyEtherWallet' && !jsonArr.encrypted) {
+  } else if (!jsonArr.encrypted) {
     return false
   } else {
     throw window.i18n.t('errorMsgs.keyStoreMsg')

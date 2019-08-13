@@ -118,13 +118,13 @@ WalletUtil.keyStoreToWallet = function (keyStore, password) {
   return promise
 }
 
-// 根据MAN地址获取eth地址
+// 根据MAN地址获取0x地址
 WalletUtil.getAddress = function (address) {
   let addrTemp = address.split('.')[1]
   return '0x' + (bs58.decode(addrTemp.substring(0, addrTemp.length - 1))).toString('hex')
 }
 
-// 根据eth地址获取MAN地址
+// 根据0x地址获取MAN地址
 WalletUtil.getManAddress = function (address) {
   let crc8 = polycrc.crc(8, 0x07, 0x00, 0x00, false)
   if (address.substring(0, 2) === '0x') {

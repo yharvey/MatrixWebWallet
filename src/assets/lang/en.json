@@ -10,6 +10,7 @@
     "outHint": "Are you sure you want to close this wallet?",
     "hint": "Tips",
     "sure": "Yes, close",
+    "confirm":"Confirm",
     "cancel": "Cancel",
     "refund": "Mining Account",
     "offlineSend": "Send Offline",
@@ -250,19 +251,6 @@
     "startTime": "Start time",
     "endTime": "End time",
     "secondKeySuccess": "Authorized successfully"
-  },
-  "sendEth": {
-    "fillUpTwo": "Fill in the swap information",
-    "sendEthHint": "To protect your privacy, we only show the number of MAN and ETH in the wallet",
-    "MAN_count": "MAN amount",
-    "ETH_count": "ETH amount",
-    "mappingManAddress": "Swap MAN amount",
-    "getManAddress": "Receive Eth address",
-    "minnerGas": "Gas fee",
-    "sure": "Confirm",
-    "mappingCount": "Please input the number of tokens to swap",
-    "inputGasPrice": "Please input the gasPrice",
-    "inputGasLimit": "Please input the gasLimit"
   },
   "cancel": {
     "hint": "Successfully cancelled",

@@ -66,8 +66,6 @@ module.exports = {
           resolve('node_modules/ipld-dag-cbor/src'),
           resolve('node_modules/libp2p-crypto/src'),
           resolve('node_modules/libp2p-crypto-secp256k1'),
-          resolve('node_modules/web3-eth'),
-          resolve('node_modules/web3-utils'),
           resolve('node_modules/peer-info'),
           resolve('node_modules/multihashing-async'),
           resolve('node_modules/iso-url'),

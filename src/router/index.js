@@ -37,7 +37,6 @@ import StartNode from '@/components/StartNode/StartNode'
 import SecondKey from '@/components/SecondKey/SecondKey'
 import CancelSecondKey from '@/components/SecondKey/CancelSecondKey'
 import EntrustRecord from '@/components/EntrustRecord/EntrustRecord'
-import Mapping from '@/pages/Mapping/Mapping'
 import CancelEntrust from '@/components/CancelEntrust/CancelEntrust'
 import AIRecord from '@/pages/AIApplication/AIRecord'
 import CreateCoin from '@/pages/CreateCoin/CreateCoin'
@@ -280,10 +279,6 @@ let router = new Router({
         component: BlackList
       }]
     }, {
-      path: '/mapping',
-      name: 'Mapping',
-      component: Mapping
-    }, {
       path: '/sendOffline',
       name: 'SendOffline',
       component: SendOffline,
@@ -348,7 +343,7 @@ let router = new Router({
 // 判断是否解锁钱包
 router.beforeEach((to, from, next) => {
   store.commit('UPDATE_HISTORYURL', to.path)
-  if ((store.state.offline === null && store.state.wallet === null && to.path.indexOf('my-wallet') < 0) && to.path.indexOf('offline-transfer') < 0 && to.path.indexOf('mapping') < 0 && to.path.indexOf('conversion') < 0 && to.path.indexOf('sendEth') < 0 && to.path.indexOf('sendOffline') < 0) {
+  if ((store.state.offline === null && store.state.wallet === null && to.path.indexOf('my-wallet') < 0) && to.path.indexOf('offline-transfer') < 0 && to.path.indexOf('conversion') < 0 && to.path.indexOf('sendOffline') < 0) {
     // location.href = location.href.split('#')[0]
     // console.log(this.$router)
     next({

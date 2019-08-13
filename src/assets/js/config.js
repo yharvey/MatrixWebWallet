@@ -1,6 +1,4 @@
 export const chainUrl = 'https://testnet.matrix.io'
-export const ethUrl = 'https://mainnet.infura.io/v3/473f108e531843db9529fd549e61ad6e'
-export const ethChainId = 1
 export const chainId = 3
 export const ipfsUrl = 'ipfsup.gantenwater.net'
 export const ipfsPort = '443'
@@ -20,5 +18,3 @@ export const contract = 'MAN.1111111111111111111B8'
 export const joinContract = 'MAN.1111111111111111111Mj'
 export const browserUrl = 'https://jerry.matrix.io'
 export const aiServerUrl = 'https://aiserver.matrix.io/jerry/?hash='
-export const ethContractAddress = '0xe25bCec5D3801cE3a794079BF94adF1B8cCD802D'
-export const destroyAddress = '0xA27d3632A283c138C2F78ba21d1e473a500e4AF3'

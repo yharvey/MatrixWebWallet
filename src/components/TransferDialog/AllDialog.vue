@@ -10,7 +10,7 @@
       <div class="msg">{{msg}}</div>
       <div class="hash">hash:{{hash}}</div>
       <button class="button-color"
-              @click="confirmSend">{{$t('sendEth.sure')}}</button>
+              @click="confirmSend">{{$t('header.confirm')}}</button>
     </div>
   </el-dialog>
 </template>
