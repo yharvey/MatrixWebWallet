@@ -38,6 +38,7 @@
     "copyFile": "Copied failed",
     "myAssets": "My Assets",
     "assets": "Assets",
+    "NFTManage": "NFT Manage",
     "transactionRecord": "Transaction Record",
     "transfer": "Transfer",
     "availableAssets": "Available Assets",
@@ -50,6 +51,7 @@
     "accountName": "Account Name",
     "browserLink": "Browser Link",
     "addToken": "Add Token",
+    "addNFToken": "Add NFT",
     "choose": "Choose a method to open your wallet",
     "mnemonicMan": "(MAN Wallet Only)"
   },
@@ -426,6 +428,16 @@
     "hint": "After adding a Token，you can view it on this computer. If you use another computer, you will need to add the Token again",
     "tokenContract": "TokenContract address",
     "symbol": "Token Symbol",
+    "save": "Save",
+    "tokenSuccess": "Added successfully",
+    "tokenFail": "Add failed",
+    "decimal": "Decimal"
+  },
+  "nftoken": {
+    "tittle": "Add NFT",
+    "hint": "After adding a NFT，you can view it on this computer. If you use another computer, you will need to add the Token again",
+    "tokenContract": "NFT Contract address",
+    "symbol": "NFT Symbol",
     "save": "Save",
     "tokenSuccess": "Added successfully",
     "tokenFail": "Add failed",
