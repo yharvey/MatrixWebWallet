@@ -2,6 +2,7 @@
   "header": {
     "myWallet": "My Wallet",
     "greenMining": "Green Mining",
+    "bridge": "Bridge",
     "offlineTransfer": "Offline Transfer",
     "aiApplication": "AI Application",
     "contracts": "Contracts",
@@ -468,6 +469,16 @@
     "signTransaction": "Sign transaction"
   },
   "greenMining": {
+    "mining_revenue": "Returns & Stakes",
+    "campaign_node": "Stake",
+    "secondKey": "Secondary key",
+    "beNodeget": "What returns are nodes eligible for",
+    "howBeNode": "How to become a member node?",
+    "other_question": "If you have further questions, please read our ",
+    "FAQ": "FAQ",
+    "greenTips": "Coming soon...... Green mining will start on April 13th, 2019!"
+  },
+  "bridge": {
     "mining_revenue": "Returns & Stakes",
     "campaign_node": "Stake",
     "secondKey": "Secondary key",

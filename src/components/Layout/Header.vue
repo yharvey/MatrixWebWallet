@@ -17,6 +17,8 @@
              @click="changeMenu('contract')">{{$t('header.contracts')}}</label>
       <label :class="{'active' : type === 'offlineSend'}"
              @click="changeMenu('offlineSend')">{{$t('header.offlineSend')}}</label>
+      <label :class="{'active' : type === 'bridge'}"
+             @click="changeMenu('bridge')">{{$t('header.bridge')}}</label>
     </div>
     <div class="info">
       <!-- <label v-html="userName"
