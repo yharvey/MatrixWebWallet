@@ -507,11 +507,13 @@ export default {
             if (this.$store.state.wallet != null) {
               if (this.$store.state.wallet.privateKey) {
                 let tx = WalletUtil.createTx(jsonObj)
+                console.log(tx)
                 let privateKey = this.$store.state.wallet.privateKey
                 privateKey = Buffer.from(privateKey.indexOf('0x') > -1 ? privateKey.substring(2, privateKey.length) : privateKey, 'hex')
                 tx.sign(privateKey)
                 let serializedTx = tx.serialize()
                 this.newTxData = SendTransfer.getTxParams(serializedTx)
+                console.log(this.newTxData)
                 this.confirmTransfer = true
               } else {
                 this.confirmOffline = true

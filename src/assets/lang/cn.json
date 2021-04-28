@@ -2,7 +2,7 @@
   "header": {
     "myWallet": "我的钱包",
     "greenMining": "绿色挖矿",
-    "bridge": "跨链桥",
+    "crossChain": "虫洞",
     "offlineTransfer": "离线转账",
     "aiApplication": "AI应用",
     "contracts": "合约",
@@ -478,15 +478,19 @@
     "FAQ": "挖矿FAQ",
     "greenTips": "绿色挖矿将在2019年4月13日启动敬请期待....."
   },
-  "bridge": {
-    "mining_revenue": "挖矿收益",
-    "campaign_node": "抵押",
-    "secondKey": "二次密钥",
-    "beNodeget": "成为节点将获得什么收益？",
-    "howBeNode": "如何成为节点？",
-    "other_question": "如果还有其他疑问，请点击查看",
-    "FAQ": "挖矿FAQ",
-    "greenTips": "绿色挖矿将在2019年4月13日启动敬请期待....."
+  "crossChain": {
+    "start":"确认",
+    "CrossChain": "虫洞",
+    "Amount": "数量（*最小数量不得少于11MAN）",
+    "From": "从",
+    "To": "到",
+    "availableBalance":"可用资产：",
+    "receiveAddress": "目标地址",
+    "receiveTips": "你将得到",
+    "declare":"说明：",
+    "declare1": "*您可以使用MATRIX主网上的钱包地址的私钥/Keystore来打开您在目标区块链上的收款钱包；",
+    "declare2": "*每次迁移将收取迁移MAN数量的1%作为迁移的Gas费用，当迁移MAN的数量少于1000时，将按照10个MAN进行收取；",
+    "declare3": "*整个迁移过程将花费约5分钟，如遇到目标区块链上交易阻塞，则有可能花费更长的时间，如您在15分钟内没有收到您的迁移资产，请发送邮件到wormhole@matrix.io，并注明您的发送钱包地址， MAN的数量与接收钱包地址，技术人员将在24小时内处理您的问题。"
   },
   "openWallet": {
     "back": "返回"

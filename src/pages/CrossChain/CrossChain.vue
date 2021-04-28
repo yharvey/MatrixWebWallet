@@ -1,15 +1,12 @@
 <template>
-  <div class="green-mining align-center ">
+  <div class="cross-chain align-center ">
     <el-card class="box-card">
       <div class="header">
-        <!-- <label :class="{'active' : type === 'miningTransaction'}"
-               @click="changeType('miningTransaction')">{{$t('greenMining.mining_revenue')}}&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</label> -->
-        <label :class="{'active' : type === 'refund'}"
-               @click="changeType('refund')">{{$t('header.refund')}}&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</label>
-        <!-- <label :class="{'active' : type === 'campaignNode'}"
-               @click="changeType('campaignNode')">{{$t('greenMining.campaign_node')}}&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</label> -->
-        <label :class="{'active' : type === 'secondaryKey'}"
-               @click="changeType('secondaryKey')">{{$t('greenMining.secondKey')}}</label>
+         <h1>{{$t('crossChain.CrossChain')}}</h1>
+        <!-- <label :class="{'active' : type === 'bridge'}"
+               @click="changeType('bridge')">{{$t('Cross Chain')}}</label> -->
+        <!-- <label :class="{'active' : type === 'secondaryKey'}"
+               @click="changeType('secondaryKey')">{{$t('greenMining.secondKey')}}</label> -->
         <span class="back"
               @click="back"
               v-if="showBack">
@@ -21,29 +18,16 @@
         <router-view />
       </keep-alive>
     </el-card>
-    <el-card class="box-card campaign-tip"
-             v-if="showCampaignTip">
-      <div class="title">{{$t('greenMining.beNodeget')}}</div>
-      <img :src="lang === 'CN' ? require('../../assets/images/miningDistributionMethod_cn.png') : require('../../assets/images/miningDistributionMethod_en.png')" />
-      <hr>
-      <div class="title">{{$t('greenMining.howBeNode')}}</div>
-      <img :src="lang === 'CN' ? require('../../assets/images/campaignNode_CN.png') : require('../../assets/images/campaignNode_EN.png')"
-           class="img-tip" />
-      <!-- <div class="msg-tip">
-        {{$t('greenMining.other_question')}}
-        <span>{{$t('greenMining.FAQ')}}</span>
-      </div> -->
-    </el-card>
   </div>
 </template>
 
 <script>
 import Bus from '@/assets/js/Bus'
 export default {
-  name: 'GreenMining',
+  name: 'CrossChain',
   data () {
     return {
-      type: 'refund',
+      type: 'bridge',
       lang: this.$i18n.locale,
       showBack: false,
       showCampaignTip: false
@@ -71,11 +55,11 @@ export default {
     if (route.name === 'MortgageHistory') {
       this.showBack = true
     }
-    if (route.name === 'Refund') {
-      this.type = 'refund'
+    if (route.name === 'Bridge') {
+      this.type = 'bridge'
     }
     if (route.path.indexOf('startNode') > -1 || route.path.indexOf('campaignNode') > -1) {
-      this.type = 'refund'
+      this.type = 'bridge'
       // this.showCampaignTip = true
     }
   },
@@ -84,14 +68,8 @@ export default {
       if (status !== this.type) {
         this.type = status
       }
-      if (status === 'campaignNode') {
-        this.$router.push({ path: '/green-mining/campaignNode' })
-      } else if (status === 'miningTransaction') {
-        this.$router.push({ path: '/green-mining/mining-transaction-overview' })
-      } else if (status === 'secondaryKey') {
-        this.$router.push({ path: '/green-mining/secondKey' })
-      } else if (status === 'refund') {
-        this.$router.push({ path: '/green-mining/digAccount' })
+      if (status === 'bridge') {
+        this.$router.push({ path: '/crossChain/bridge' })
       }
     },
     back () {
@@ -104,7 +82,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-.green-mining {
+.cross-chain {
   margin: auto;
   width: 1040px;
   .box-card {

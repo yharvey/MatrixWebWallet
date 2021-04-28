@@ -4,7 +4,8 @@ import Layout from '@/pages/Layout/Layout'
 import AIApplication from '@/pages/AIApplication/AIApplication'
 import Contract from '@/pages/Contract/Contract'
 import GreenMining from '@/pages/GreenMining/GreenMining'
-import Bridge from '@/pages/Bridge/Bridge'
+import CrossChain from '@/pages/CrossChain/CrossChain'
+import Bridge from '@/components/Bridge/Bridge'
 
 import MiningTransactionOverview from '@/components/MiningTransactionOverview/MiningTransactionOverview'
 import HistoricalIncome from '@/components/HistoricalIncome/HistoricalIncome'
@@ -220,73 +221,13 @@ let router = new Router({
         component: HistoricalIncome
       }]
     }, {
-      path: '/bridge',
-      name: 'Bridge',
-      component: Bridge,
+      path: '/crossChain',
+      name: 'CrossChain',
+      component: CrossChain,
       children: [{
-        path: 'mining-transaction-overview',
-        name: 'MiningTransactionOverview',
-        component: MiningTransactionOverview
-      }, {
-        path: 'refund',
-        name: 'Refund',
-        component: Refund
-      }, {
-        path: 'digAccount',
-        name: 'DigAccount',
-        component: DigAccount
-      }, {
-        path: 'currentMortgage',
-        name: 'CurrentMortgage',
-        component: CurrentMortgage
-      }, {
-        path: 'regularDetail',
-        name: 'RegularDetail',
-        component: RegularDetail
-      }, {
-        path: 'regularMortgage',
-        name: 'RegularMortgage',
-        component: RegularMortgage
-      }, {
-        path: 'regularWithdrawals',
-        name: 'RegularWithdrawals',
-        component: RegularWithdrawals
-      }, {
-        path: 'currentWithdrawals',
-        name: 'CurrentWithdrawals',
-        component: CurrentWithdrawals
-      }, {
-        path: 'currentRefund',
-        name: 'CurrentRefund',
-        component: CurrentRefund
-      }, {
-        path: 'mortgage-history',
-        name: 'MortgageHistory',
-        component: MortgageHistory
-      }, {
-        path: 'campaignNode',
-        name: 'CampaignNode',
-        component: CampaignNode
-      }, {
-        path: 'startNode',
-        name: 'StartNode',
-        component: StartNode
-      }, {
-        path: 'secondKey',
-        name: 'SecondKey',
-        component: SecondKey
-      }, {
-        path: 'cancelSecondKey',
-        name: 'CancelSecondKey',
-        component: CancelSecondKey
-      }, {
-        path: 'entrustRecord',
-        name: 'EntrustRecord',
-        component: EntrustRecord
-      }, {
-        path: 'historical-income',
-        name: 'HistoricalIncome',
-        component: HistoricalIncome
+        path: 'bridge',
+        name: 'Bridge',
+        component: Bridge
       }]
     }, {
       path: '/offline-transfer',

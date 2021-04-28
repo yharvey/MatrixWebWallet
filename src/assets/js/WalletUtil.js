@@ -326,4 +326,10 @@ WalletUtil.decimalToHex = function (dec) {
   return new BigNumber(dec).toString(16)
 }
 
+// 根据MAN地址获取eth地址
+WalletUtil.getEthAddress = function (address) {
+  let addrTemp = address.split('.')[1]
+  return '0x' + (bs58.decode(addrTemp.substring(0, addrTemp.length - 1))).toString('hex')
+}
+
 export default WalletUtil
