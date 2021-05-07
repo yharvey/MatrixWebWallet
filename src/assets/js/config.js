@@ -24,8 +24,13 @@ export const joinContract = 'MAN.1111111111111111111Mj'
 export const browserUrl = 'https://tom.matrix.io'
 export const aiServerUrl = 'https://aiserver.matrix.io/?hash='
 
+//
+export const bridgeManCoinAddress = 'MAN.2AUzH8MPhc17PAjdW5DyCDRm1tnfk'
+
+// bsc测试链
 // export const ethUrl = 'https://rinkeby.infura.io/v3/473f108e531843db9529fd549e61ad6e'
 export const ethUrl = 'https://data-seed-prebsc-1-s1.binance.org:8545'
+
 // 桥合约地址
 export const bridgeContractAddr = '0x9d3EA6A591104b678504cD93Be401d81d4e47437'
 // token 地址

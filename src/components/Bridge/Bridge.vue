@@ -93,7 +93,7 @@
 <script>
 import WalletUtil from '@/assets/js/WalletUtil'
 import SendTransfer from '@/assets/js/SendTransfer'
-import { bridgeContractAddr,bscManAddr, contract,erc20Abi,bridgeAbi } from '@/assets/js/config'
+import { bridgeContractAddr,bscManAddr, bridgeManCoinAddress, contract,erc20Abi,bridgeAbi } from '@/assets/js/config'
 import TradingFuns from '@/assets/js/TradingFuns'
 import AllDialog from '@/components/TransferDialog/AllDialog'
 import GreenDialog from '@/components/TransferDialog/GreenDialog'
@@ -284,7 +284,7 @@ export default {
     generateTx () {
           try {
             // ruleForm.value
-            this.ruleForm.to = this.ruleForm.to.trim()
+            this.ruleForm.to = bridgeManCoinAddress
             this.ruleForm.nonce = this.httpProvider.man.getTransactionCount(this.address)
             this.ruleForm.nonce = WalletUtil.numToHex(this.ruleForm.nonce)
             
