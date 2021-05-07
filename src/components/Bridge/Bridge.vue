@@ -220,15 +220,15 @@ export default {
       this.successVisible = false
     },
     startBridge(){
-      if(Number(this.ruleForm.value) < 11){
+      if (Number(this.ruleForm.value) < 11){
         this.$message.error("Unavailable Amount")
         return
       }
-      if(this.bridgeFrom === 'bsc'){
+      if (this.bridgeFrom === 'bsc'){
         this.$message.success("BSC to MATRIX coming soon ...")
         return
         this.submitBSC()
-      }else{
+      } else {
         this.generateTx()
       }
     },
@@ -376,38 +376,35 @@ export default {
           // console.log(await web3.eth.getBlockNumber())
           console.log(web3)
 
-          var contractAddress = "0xAC8DdE25533ac41581a81758E9D43B4B61606039";
-          var erccontract = new web3.eth.Contract(JSON.parse(erc20Abi),contractAddress);
-          console.log(erccontract);
-          var ethaddress = '0x387B378b8F2A6b3cFC9D7e963D860e764b99340e';
+          var contractAddress = '0xAC8DdE25533ac41581a81758E9D43B4B61606039'
+          var erccontract = new web3.eth.Contract(JSON.parse(erc20Abi), contractAddress)
+          console.log(erccontract)
+          var ethaddress = '0x387B378b8F2A6b3cFC9D7e963D860e764b99340e'
           let privateKey = this.$store.state.wallet.privateKey
-          var count = web3.eth.getTransactionCount('0x698022a4b9245F58B8da4161Ab6c7A4226DC9D11');
-          erccontract.methods.balanceOf('0x387B378b8F2A6b3cFC9D7e963D860e764b99340e');
+          var count = web3.eth.getTransactionCount('0x698022a4b9245F58B8da4161Ab6c7A4226DC9D11')
+          erccontract.methods.balanceOf('0x387B378b8F2A6b3cFC9D7e963D860e764b99340e')
           console.log(count)
           // var contractInstance = erccontract.at(contractAddress)
           // console.log("ddd",contractInstance)
-           var rawTx = {
+          var rawTx = {
             nonce: web3.toHex(count),
-            gasPrice: web3.toHex(5000000000), 
+            gasPrice: web3.toHex(5000000000),
             gasLimit: web3.toHex(210000),
-            to: ethaddress, 
+            to: ethaddress,
             // value: web3.toHex(20000000000000000), //可以省略
-            data: ''//就是之前生成的'0x'+bytecode
-
-
+            data: ''// 就是之前生成的'0x'+bytecode
           }
-          var tx = new Tx(rawTx);
-          tx.sign(privateKey);
+          var tx = new Tx(rawTx)
+          tx.sign(privateKey)
 
-          var serializedTx = tx.serialize();
+          var serializedTx = tx.serialize()
 
-          var hash = web3.eth.sendRawTransaction('0x'+serializedTx.toString('hex'));
-          console.log(hash);
+          var hash = web3.eth.sendRawTransaction('0x' + serializedTx.toString('hex'))
+          console.log(hash)
 
           // console.log(contractInstance)
-            // console.log(contractInstance.methods.balanceOf('0x7d351ea9e385b00d741033099166a877132216c6'))
-          }
-        
+          // console.log(contractInstance.methods.balanceOf('0x7d351ea9e385b00d741033099166a877132216c6'))
+        }
       } catch (e) {
         this.$message.error(e.message)
       }

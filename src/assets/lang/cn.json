@@ -92,6 +92,7 @@
     "createWalletTip2": "我们不会存储您的任何信息及密码，",
     "createWalletTip3": "所以创建成功后请妥善保管您的keystore或私钥，",
     "createWalletTip4": "若丢失无法找回！",
+    "createWalletTip5": "",
     "createWalletButton": "一键创建钱包",
     "enterPassword": "请输入密码(不少于9位)",
     "passwordTip": "为了保障您的钱包安全  密码至少为9",
