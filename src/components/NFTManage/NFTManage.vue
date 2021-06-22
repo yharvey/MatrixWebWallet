@@ -5,7 +5,7 @@
         <div class="token_btn" style="width: 48%"
             @click="goPage('nftoken')">+ {{$t('myWallet.addNFToken')}}</div>
         <div class="token_btn" style="width: 48%"
-            @click="goPage('NFTTransfer')">> {{$t('发送NFT')}}</div>
+            @click="goPage('NFTTransfer')">> {{$t('myWallet.sendNFToken')}}</div>
       </div>
        <hr class="bottom_hr">
       <label class="title_font">MY NFT</label>

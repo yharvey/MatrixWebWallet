@@ -53,6 +53,7 @@
     "browserLink": "Browser Link",
     "addToken": "Add Token",
     "addNFToken": "Add NFT",
+    "sendNFToken": "Send NFT",
     "choose": "Choose a method to open your wallet",
     "mnemonicMan": "(MAN Wallet Only)"
   },

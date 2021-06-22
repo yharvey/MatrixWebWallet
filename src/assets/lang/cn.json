@@ -53,6 +53,7 @@
     "browserLink": "浏览器链接",
     "addToken": "添加Token",
     "addNFToken": "添加NFT",
+    "sendNFToken": "发送 NFT",
     "choose": "选择下面其中一种方式打开钱包",
     "mnemonicMan": "(只支持man钱包)"
   },
