@@ -8,6 +8,9 @@
         <span class="query_assets"
               :class="{'active' : type === 'NFTManage'}"
               @click="changeType('NFTManage')">{{$t('myWallet.NFTManage')}}</span>|
+        <!-- <span class="query_assets"
+              :class="{'active' : type === 'NftTest'}"
+              @click="changeType('NftTest')">{{$t('OperateNFT')}}</span>| -->
         <span class="transaction_records"
               @click="changeType('record')"
               :class="{'active' : type === 'record'}">{{$t('myWallet.transactionRecord')}}</span>

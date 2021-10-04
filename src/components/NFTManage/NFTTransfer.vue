@@ -105,6 +105,7 @@
 </template>
 <script>
 import RichText from '@/components/RichText/RichText'
+import { nftAbi } from '@/assets/js/config.js'
 import DistributedStorage from '@/components/DistributedStorage/DistributedStorage'
 import TradingFuns from '@/assets/js/TradingFuns'
 import WalletUtil from '@/assets/js/WalletUtil'
@@ -170,7 +171,7 @@ export default {
     this.manBalance = this.balance
     this.ruleForm.token = this.$route.params.currency
     if (this.ruleForm.token !== 'MAN') {
-      this.coinType = 'more'
+      this.coinType = 'nfttoken'
       this.moreType = this.ruleForm.token
       this.sendCoin = this.ruleForm.token
     }
@@ -303,14 +304,14 @@ export default {
         if (valid) {
           try {
             this.ruleForm.to = this.ruleForm.to.trim()
-            if (this.coinType === 'more') {
-              let address = WalletUtil.getCurrencyAddress(this.address, this.moreType)
-              this.ruleForm.nonce = this.httpProvider.man.getTransactionCount(address)
-              this.ruleForm.nonce = WalletUtil.numToHex(this.ruleForm.nonce)
-            } else {
-              this.ruleForm.nonce = this.httpProvider.man.getTransactionCount(this.address)
-              this.ruleForm.nonce = WalletUtil.numToHex(this.ruleForm.nonce)
-            }
+            // if (this.coinType === 'more') {
+            //   let address = WalletUtil.getCurrencyAddress(this.address, this.moreType)
+            //   this.ruleForm.nonce = this.httpProvider.man.getTransactionCount(address)
+            //   this.ruleForm.nonce = WalletUtil.numToHex(this.ruleForm.nonce)
+            // } else {
+            this.ruleForm.nonce = this.httpProvider.man.getTransactionCount(this.address)
+            this.ruleForm.nonce = WalletUtil.numToHex(this.ruleForm.nonce)
+            // }
             if (new BigNumber(this.ruleForm.gas).comparedTo(this.httpProvider.fromWei(210000 * 18000000000)) === 1) {
               let gasNumber = new BigNumber(this.httpProvider.toWei(this.ruleForm.gas))
               this.ruleForm.gasLimit = parseInt(gasNumber.div(new BigNumber(18000000000)).toString(10)) + 1
@@ -320,36 +321,6 @@ export default {
             if (this.ruleForm.value < 0) {
               this.$message.error(this.$t('errorMsgs.valueError'))
               return
-            }
-            if (this.ruleForm.addressList.length > 0) {
-              for (let i = 0; i < this.ruleForm.addressList.length; i++) {
-                let arrTemp = []
-                let item = this.ruleForm.addressList[i]
-                if (this.coinType === 'more' && item.to.split('.')[0] !== this.moreType) {
-                  this.$message.error(this.$t('transfer.addressTip'))
-                  return false
-                }
-                item.to = item.to.trim()
-                if (!WalletUtil.validateManAddress(item.to)) {
-                  this.$message.error(this.$t('transfer.addressTip'))
-                  return false
-                }
-                if (item.to === this.ruleForm.to) {
-                  this.$message.error(this.$t('transfer.addressRepetition'))
-                  return false
-                }
-                arr.forEach(e => {
-                  if (e.indexOf(item.to) > -1) {
-                    this.$message.error(this.$t('transfer.addressRepetition'))
-                    return false
-                  }
-                })
-                arrTemp.push(item.to)
-                arrTemp.push(item.value)
-                arrTemp.push(0)
-                arr.push(arrTemp)
-              }
-              extraObj = [[parseInt(this.ruleForm.ExtraTimeTxType), 0, arr]]
             }
             if (arr.length > 0) {
               this.ruleForm.extra_to = extraObj
@@ -376,12 +347,24 @@ export default {
               let data = '0x6d61747269780000' + dataStr + crcHex
               this.ruleForm.data = data
             }
+            console.log(this)
             // 发送token代币
-            if (this.coinType === 'token') {
-              jsonObj.data = this.tokenObj.getData(WalletUtil.getAddress(jsonObj.to), this.ruleForm.value).data
+            if (this.coinType === 'nftoken') {
+              let abiArray = JSON.parse(nftAbi)
+              let contractAddress = this.sendTokenObj.tokenContract
+              let contract = this.httpProvider.man
+                .contract(abiArray)
+                .at(contractAddress)
+              jsonObj.data = contract.safeTransferFrom.getData(
+                WalletUtil.getAddress(this.address),
+                WalletUtil.getAddress(jsonObj.to),
+                this.ruleForm.value
+              )
+              // jsonObj.data = this.tokenObj.getData(WalletUtil.getAddress(jsonObj.to), this.ruleForm.value).data
               jsonObj.to = this.sendTokenObj.tokenContract
               jsonObj.value = '0x0'
             }
+            console.log(jsonObj)
             if (this.$store.state.wallet != null) {
               if (this.$store.state.wallet.privateKey) {
                 let tx = WalletUtil.createTx(jsonObj)
@@ -445,9 +428,9 @@ export default {
     },
     validAddress (rule, address, callback) {
       if (!WalletUtil.validateAddress(address.trim())) {
-        callback(new Error(window.i18n.t('transfer.addressTip')))
+        callback(new Error(window.i18n.t('transfer.addressTip' + '1')))
       } else if (this.coinType === 'more' && address.split('.')[0] !== this.moreType) {
-        callback(new Error(window.i18n.t('transfer.addressTip')))
+        callback(new Error(window.i18n.t('transfer.addressTip' + '2')))
       } else {
         callback()
       }

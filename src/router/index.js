@@ -35,6 +35,7 @@ import SetUp from '@/pages/SetUp/SetUp'
 import Associate from '@/components/Associate/Associate'
 import AddAssociate from '@/components/Associate/AddAssociate'
 import Conversion from '@/components/Conversion/Conversion'
+import Networks from '@/components/Setting/Networks/Networks'
 import PrivateKey from '@/components/PrivateKey/PrivateKey'
 import CopyKeyStore from '@/components/CopyKeyStore/CopyKeyStore'
 import Medical from '@/components/Medical/Medical'
@@ -71,6 +72,7 @@ import JoinRegular from '@/components/JoinRegular/JoinRegular'
 import JoinCurrent from '@/components/JoinCurrent/JoinCurrent'
 import JointAdd from '@/components/JointAdd/JointAdd'
 import SetSignAccount from '@/components/SetSignAccount/SetSignAccount'
+import NftTest from '@/components/demo/Nft'
 
 Vue.use(Router)
 
@@ -129,6 +131,10 @@ let router = new Router({
           path: 'undo',
           name: 'Undo',
           component: Undo
+        }, {
+          path: 'NftTest',
+          name: 'NftTest',
+          component: NftTest
         }]
       }, {
         path: 'myWalletFirst',
@@ -294,6 +300,10 @@ let router = new Router({
         name: 'Conversion',
         component: Conversion
       }, {
+        path: 'networks',
+        name: 'Networks',
+        component: Networks
+      }, {
         path: 'privateKey',
         name: 'PrivateKey',
         component: PrivateKey
@@ -371,7 +381,7 @@ let router = new Router({
 // 判断是否解锁钱包
 router.beforeEach((to, from, next) => {
   store.commit('UPDATE_HISTORYURL', to.path)
-  if ((store.state.offline === null && store.state.wallet === null && to.path.indexOf('my-wallet') < 0) && to.path.indexOf('offline-transfer') < 0 && to.path.indexOf('conversion') < 0 && to.path.indexOf('sendOffline') < 0) {
+  if ((store.state.offline === null && store.state.wallet === null && to.path.indexOf('my-wallet') < 0) && to.path.indexOf('offline-transfer') < 0 && to.path.indexOf('conversion') < 0 && to.path.indexOf('networks') < 0 && to.path.indexOf('sendOffline') < 0) {
     // location.href = location.href.split('#')[0]
     // console.log(this.$router)
     next({

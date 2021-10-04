@@ -1,6 +1,14 @@
 <template>
   <div class="conversion">
     <el-card class="card-width">
+       <div style="text-align: center;">
+        <h1 style="">Address Conversion</h1>
+        <span class="back-tittle"
+              @click="backPage">
+          <i class="el-icon-arrow-left"></i>
+          {{$t('openWallet.back')}}
+        </span>
+      </div>
       <div class="conversion-table">
         <div class="lable-width">
           <label>{{$t('conversion.moreCoinChange')}}:</label>
@@ -156,6 +164,9 @@ export default {
           this.$message.error(this.$t('errorMsgs.invalidHex'))
         }
       }
+    },
+    backPage () {
+      this.$router.back()
     }
   }
 }
@@ -199,6 +210,15 @@ export default {
   }
   .conversion-table-dis {
     margin-top: 1rem;
+  }
+  .back-tittle {
+    position: relative;
+    left: 446px;
+    top: -30px;
+    cursor: pointer;
+    color: #1c51dd;
+    font-size: 0.88rem;
+    letter-spacing: 0.13px;
   }
 }
 </style>

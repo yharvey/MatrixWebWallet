@@ -31,6 +31,7 @@
           <el-dropdown-item v-show="isUnlock || $store.state.offline!=null"
                             @click.native="goPage('associate')">{{$t('setUp.associate')}}</el-dropdown-item>
           <el-dropdown-item @click.native="goPage('conversion')">{{$t('setUp.conversion')}}</el-dropdown-item>
+          <el-dropdown-item @click.native="goPage('networks')">{{$t('setUp.networks')}}</el-dropdown-item>
           <el-dropdown-item v-show="isUnlock"
                             @click.native="goPage('privateKey')">{{$t('setUp.privateBackups')}}</el-dropdown-item>
           <el-dropdown-item v-show="isUnlock"
@@ -187,6 +188,7 @@ export default {
       }
     },
     goPage (url) {
+      console.log('url', url)
       this.$router.push({ path: '/setUp/' + url })
     },
     goGreeting () {

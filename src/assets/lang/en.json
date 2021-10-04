@@ -157,6 +157,7 @@
   "setUp": {
     "associate": "Wallet Association",
     "conversion": "Address Conversion",
+    "networks":"Networks",
     "privateBackups": "PrivateKey Backup",
     "keyStoreBackups": "KeyStore Backup",
     "accountSet": "AccountName Setting",

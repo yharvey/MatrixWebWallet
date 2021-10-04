@@ -157,6 +157,7 @@
   "setUp": {
     "associate": "关联钱包",
     "conversion": "地址转换",
+    "networks":"网络",
     "privateBackups": "私钥备份",
     "keyStoreBackups": "keyStore备份",
     "accountSet": "账户名设置",
