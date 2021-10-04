@@ -161,25 +161,27 @@ export default {
         // console.log(this.nftList)
         //
         // let mynftlist = []
-        let abiArray = JSON.parse(nftAbi)
-        for (let i = 0; i < nft.length; i++) {
-          let contractAddress = nft[i].nftContract
-          // console.log(this.httpProvider.man)
-          let contract = this.httpProvider.man
-            .contract(abiArray)
-            .at(contractAddress)
-          // console.log('contract', contract)
-          const result = contract.getAllNft({ currency: 'MAN' })
-          console.log('result', result.toString())
-          for (let j = 1; j <= result; j++) {
-            if (this.ownerOf(contractAddress, j) === this.ethaddress) {
-              let uri = this.tokenURI(contractAddress, j)
-              // eslint-disable-next-line standard/object-curly-even-spacing
-              let nfta = {'nftName': nft[i].nftName, 'nftContract': contractAddress, 'TokenID': j, 'Detail': uri}
-              this.nftList.push(nfta)
+        if (nft !== undefined) {
+          let abiArray = JSON.parse(nftAbi)
+          for (let i = 0; i < nft.length; i++) {
+            let contractAddress = nft[i].nftContract
+            // console.log(this.httpProvider.man)
+            let contract = this.httpProvider.man
+              .contract(abiArray)
+              .at(contractAddress)
+            // console.log('contract', contract)
+            const result = contract.getAllNft({ currency: 'MAN' })
+            console.log('result', result.toString())
+            for (let j = 1; j <= result; j++) {
+              if (this.ownerOf(contractAddress, j) === this.ethaddress) {
+                let uri = this.tokenURI(contractAddress, j)
+                // eslint-disable-next-line standard/object-curly-even-spacing
+                let nfta = {'nftName': nft[i].nftName, 'nftContract': contractAddress, 'TokenID': j, 'Detail': uri}
+                this.nftList.push(nfta)
+              }
             }
+            console.log(this.nftList)
           }
-          console.log(this.nftList)
         }
       } catch (e) {
         this.$message.error(e.message)
