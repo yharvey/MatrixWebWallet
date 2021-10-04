@@ -158,6 +158,11 @@ export default {
         // }
         console.log('address', this.ethaddress)
         let nft = store.get('nftoken')
+        if (nft === undefined || nft === null) {
+          nft = [{nftContract: 'MAN.2gRxHsKucf5EeDNi9Bg87EGG7Zxft', nftName: 'MANIA'}]
+        } else {
+          nft.push({nftContract: 'MAN.2gRxHsKucf5EeDNi9Bg87EGG7Zxft', nftName: 'MANIA'})
+        }
         // console.log(this.nftList)
         //
         // let mynftlist = []

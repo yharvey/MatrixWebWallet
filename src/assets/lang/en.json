@@ -459,6 +459,7 @@
     "medical": "Lung cancer diagnosis",
     "posture": "pose detection",
     "object": "object detection",
+    "mania": "MANIA",
     "aiRecord": "AI  application history",
     "medicalFileType": "Upload format: please upload CT scans as a compressed DCM file",
     "sendTips": "Please input the email address to receive the diagnosis results:",

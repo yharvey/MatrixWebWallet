@@ -7,13 +7,16 @@
         <label :class="{'active' : type === 21}"
                @click="changeType(21)">{{$t('ai.posture')}}&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</label>
         <label :class="{'active' : type === 20}"
-               @click="changeType(20)">{{$t('ai.object')}}&nbsp;&nbsp;&nbsp;</label>
+               @click="changeType(20)">{{$t('ai.object')}}&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</label>
+         <label :class="{'active' : type === 19}"
+               @click="changeType(19)">{{$t('ai.mania')}}&nbsp;&nbsp;&nbsp;</label>
       </div>
       <medical :type="type"
                v-if="type!=23&&isUpload!==true"
                @uploadAi="uploadAi"></medical>
       <ai-record v-if="type==23&&isUpload!==true"></ai-record>
-      <distributed-storage :type="type" v-if="isUpload===true"></distributed-storage>
+      <distributed-storage :type="type" v-if="isUpload===true&&type!==19"></distributed-storage>
+      <distributed-storage3 :type="type" v-if="isUpload===true&&type===19"></distributed-storage3>
     </el-card>
   </div>
 </template>
@@ -21,6 +24,7 @@
 <script>
 import Medical from '@/components/Medical/Medical'
 import DistributedStorage from '@/components/DistributedStorage/DistributedStorage2'
+import DistributedStorage3 from '@/components/DistributedStorage/DistributedStorage3'
 import aiRecord from '@/pages/AIApplication/AIRecord'
 export default {
   name: 'AIApplication',
@@ -47,6 +51,7 @@ export default {
   components: {
     Medical,
     DistributedStorage,
+    DistributedStorage3,
     aiRecord
   },
   mounted () {

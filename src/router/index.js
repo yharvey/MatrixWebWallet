@@ -40,6 +40,7 @@ import PrivateKey from '@/components/PrivateKey/PrivateKey'
 import CopyKeyStore from '@/components/CopyKeyStore/CopyKeyStore'
 import Medical from '@/components/Medical/Medical'
 import DistributedStorage2 from '@/components/DistributedStorage/DistributedStorage2'
+import DistributedStorage3 from '@/components/DistributedStorage/DistributedStorage3'
 import CampaignNode from '@/components/CampaignNode/CampaignNode'
 import StartNode from '@/components/StartNode/StartNode'
 import SecondKey from '@/components/SecondKey/SecondKey'
@@ -268,6 +269,10 @@ let router = new Router({
         path: 'distributedStorage',
         name: 'DistributedStorage',
         component: DistributedStorage2
+      }, {
+        path: 'distributedStorage3',
+        name: 'DistributedStorage3',
+        component: DistributedStorage3
       }, {
         path: 'aiRecord',
         name: 'AIRecord',

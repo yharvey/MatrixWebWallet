@@ -456,9 +456,10 @@
     "queryDetails": "中查看转账进度及详情"
   },
   "ai": {
-    "medical": "医疗诊断————肺癌诊断",
+    "medical": "医疗诊断-肺癌诊断",
     "posture": "姿态识别",
     "object": "物体识别",
+    "mania": "MANIA",
     "aiRecord": "AI交易记录",
     "medicalFileType": "文件格式：包含完整的一套医疗影像的dcm压缩文件",
     "sendTips": "请在此填写您获取诊断结果的邮箱地址（收到结果后也可以在“AI服务记录”中查询） ：",

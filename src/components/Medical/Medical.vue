@@ -16,6 +16,8 @@
              src="../../assets/images/pos.jpg">
         <img v-if="type==20"
              src="../../assets/images/obj.png">
+        <img v-if="type==19"
+             src="../../assets/images/mania.png">
       </div>
       <div class="info">{{$t('medical.example')}}</div>
     </div>
