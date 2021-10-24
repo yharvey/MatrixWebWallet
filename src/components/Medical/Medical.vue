@@ -6,7 +6,9 @@
       <div class="title-1" v-if="type==21">{{$t('medical.pose1')}}</div>
       <div class="title-1" v-if="type==21">{{$t('medical.pose2')}}</div>
       <div class="title-1" v-if="type==20">{{$t('medical.obj')}}</div>
-      <div class="title-2" v-if="type!=22">{{$t('medical.pose3')}}</div>
+      <div class="title-1" v-if="type==19">{{$t('medical.mania')}}</div>
+      <div class="title-2" v-if="type!=22&&type!=19">{{$t('medical.pose3')}}</div>
+      <div class="title-2" v-if="type==19">{{$t('medical.tips')}}</div>
     </div>
     <div class="content">
       <div class="pic">
@@ -19,7 +21,7 @@
         <img v-if="type==19"
              src="../../assets/images/mania.png">
       </div>
-      <div class="info">{{$t('medical.example')}}</div>
+      <div class="info" v-if="type!=19">{{$t('medical.example')}}</div>
     </div>
     <div class="footer">
       <button class="common-button"
@@ -51,6 +53,7 @@ export default {
 <style scoped lang="less">
 .medical {
   .title {
+    width: 60%;
     font-size: 0.88rem;
     color: #2c365c;
     letter-spacing: 0.13px;

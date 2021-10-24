@@ -27,6 +27,8 @@
     <el-form :model="ruleForm2"
              :rules="rules"
              ref="ruleForm2">
+       <div class="ai-font"
+           v-if="type===19">{{$t('ai.maniafile')}}</div>
       <!-- <div class="ai-font">{{$t('Please upload NFT data file!')}}</div> -->
       <el-form-item prop="confirm">
         <el-checkbox v-model="ruleForm2.confirm"></el-checkbox><span class="ai-font">{{$t('Mint NFT will use ')+' '+ getGas + ' man' }}</span>
@@ -126,6 +128,11 @@ export default {
     },
     changeFile () {
       let file = this.$refs.file.files
+      console.log(file[0].type, file[0].type.indexOf('zip'))
+      if (file[0].type.indexOf('zip') <= -1 && file[0].type.indexOf('py') <= -1) {
+        this.$message.error('invalid file!')
+        return
+      }
       const fileUpload = []
       if (file.length <= 0) {
         return
