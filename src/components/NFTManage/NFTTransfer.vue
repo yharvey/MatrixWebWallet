@@ -152,7 +152,7 @@ export default {
       transferDialogVisible: false,
       confirmTransfer: false,
       newTxData: {},
-      coinType: '',
+      coinType: 'nfttoken',
       sendTokenObj: {},
       tokenObj: {},
       manBalance: 0,
@@ -170,11 +170,11 @@ export default {
     this.balance = this.$route.params.balance
     this.manBalance = this.balance
     this.ruleForm.token = this.$route.params.currency
-    if (this.ruleForm.token !== 'MAN') {
-      this.coinType = 'nfttoken'
-      this.moreType = this.ruleForm.token
-      this.sendCoin = this.ruleForm.token
-    }
+    // if (this.ruleForm.token !== 'MAN') {
+    this.coinType = 'nfttoken'
+    this.moreType = this.ruleForm.token
+    this.sendCoin = this.ruleForm.token
+    // }
     if (this.$store.state.wallet != null) {
       this.address = this.$store.getters.wallet.address
     } else {
@@ -223,6 +223,11 @@ export default {
     },
     getToken () { // 获本地token代币
       let tokenArray = store.get('nftoken')
+      if (tokenArray === undefined || tokenArray === null) {
+        tokenArray = [{nftContract: 'MAN.2gRxHsKucf5EeDNi9Bg87EGG7Zxft', nftName: 'MANIA'}]
+      } else {
+        tokenArray.push({nftContract: 'MAN.2gRxHsKucf5EeDNi9Bg87EGG7Zxft', nftName: 'MANIA'})
+      }
       if (typeof (tokenArray) === 'string') {
         tokenArray = JSON.parse(tokenArray)
       }
@@ -237,6 +242,8 @@ export default {
             tokenName: e.nftName
           })
         })
+      } else {
+        this.$message.error('get nft token error!')
       }
       console.log('matrixCoin', this.matrixCoin)
     },
@@ -316,54 +323,38 @@ export default {
               let gasNumber = new BigNumber(this.httpProvider.toWei(this.ruleForm.gas))
               this.ruleForm.gasLimit = parseInt(gasNumber.div(new BigNumber(18000000000)).toString(10)) + 1
             }
-            let arr = []
-            let extraObj = []
             if (this.ruleForm.value < 0) {
               this.$message.error(this.$t('errorMsgs.valueError'))
               return
             }
-            if (arr.length > 0) {
-              this.ruleForm.extra_to = extraObj
-            } else {
-              this.ruleForm.extra_to = [[parseInt(this.ruleForm.ExtraTimeTxType), 0, []]]
-            }
+            this.ruleForm.extra_to = [[parseInt(this.ruleForm.ExtraTimeTxType), 0, []]]
             if (this.coinType === 'more' && this.ruleForm.to.split('.')[0] !== this.moreType) {
               this.$message.error(this.$t('transfer.addressTip'))
               return false
             }
             let jsonObj = TradingFuns.getTxData(this.ruleForm)
-            if (this.ruleForm.ExtraTimeTxType === '3') {
-              if (this.timingTime !== '' && new Date(this.timingTime).getTime() > new Date().getTime()) {
-                jsonObj.CommitTime = parseInt(new Date(this.timingTime).getTime() / 1000)
-              } else {
-                this.$message.error(this.$t('errorMsgs.timingError'))
-                return
-              }
-            }
-            if (this.messageType === 'distributedStorage') {
-              let dataStr = WalletUtil.str2hex(this.ruleForm.data)
-              let crcNum = WalletUtil.crc32(this.ruleForm.data)
-              let crcHex = (crcNum < 0 ? -crcNum : crcNum).toString(16)
-              let data = '0x6d61747269780000' + dataStr + crcHex
-              this.ruleForm.data = data
-            }
-            console.log(this)
+            // if (this.messageType === 'distributedStorage') {
+            //   let dataStr = WalletUtil.str2hex(this.ruleForm.data)
+            //   let crcNum = WalletUtil.crc32(this.ruleForm.data)
+            //   let crcHex = (crcNum < 0 ? -crcNum : crcNum).toString(16)
+            //   let data = '0x6d61747269780000' + dataStr + crcHex
+            //   this.ruleForm.data = data
+            // }
+            // console.log(this)
             // 发送token代币
-            if (this.coinType === 'nftoken') {
-              let abiArray = JSON.parse(nftAbi)
-              let contractAddress = this.sendTokenObj.tokenContract
-              let contract = this.httpProvider.man
-                .contract(abiArray)
-                .at(contractAddress)
-              jsonObj.data = contract.safeTransferFrom.getData(
-                WalletUtil.getAddress(this.address),
-                WalletUtil.getAddress(jsonObj.to),
-                this.ruleForm.value
-              )
-              // jsonObj.data = this.tokenObj.getData(WalletUtil.getAddress(jsonObj.to), this.ruleForm.value).data
-              jsonObj.to = this.sendTokenObj.tokenContract
-              jsonObj.value = '0x0'
-            }
+            let abiArray = JSON.parse(nftAbi)
+            let contractAddress = this.sendTokenObj.tokenContract
+            let contract = this.httpProvider.man
+              .contract(abiArray)
+              .at(contractAddress)
+            jsonObj.data = contract.safeTransferFrom.getData(
+              WalletUtil.getAddress(this.address),
+              WalletUtil.getAddress(jsonObj.to),
+              this.ruleForm.value
+            )
+            // jsonObj.data = this.tokenObj.getData(WalletUtil.getAddress(jsonObj.to), this.ruleForm.value).data
+            jsonObj.to = this.sendTokenObj.tokenContract
+            jsonObj.value = '0x0'
             console.log(jsonObj)
             if (this.$store.state.wallet != null) {
               if (this.$store.state.wallet.privateKey) {
@@ -437,90 +428,6 @@ export default {
     },
     inputData (data) {
       this.ruleForm.data = JSON.stringify(data)
-    },
-    estimate (val) { // 预估gas
-      try {
-        this.ruleForm.to = this.ruleForm.to.trim()
-        let to = this.ruleForm.to
-        if (val === '0') {
-          this.ruleForm.value = 0
-          this.ruleForm.to = this.address
-        }
-        if (this.ruleForm.value >= 0 && WalletUtil.validateManAddress(this.ruleForm.to)) {
-          let sendObj = TradingFuns.getTxData(this.ruleForm)
-          let arr = []
-          // let extraObj = []
-          let gasObj = []
-          if (this.ruleForm.addressList.length > 0) {
-            for (let i = 0; i < this.ruleForm.addressList.length; i++) {
-              let arrTemp = []
-              let item = this.ruleForm.addressList[i]
-              item.to = item.to.trim()
-              if (this.coinType === 'more' && item.to.split('.')[0] !== this.moreType) {
-                this.$message.error(this.$t('transfer.addressTip'))
-                return
-              }
-              if (!WalletUtil.validateManAddress(item.to)) {
-                this.$message.error(this.$t('transfer.addressTip'))
-                return
-              }
-              if (item.to === this.ruleForm.to) {
-                this.$message.error(this.$t('transfer.addressRepetition'))
-                return
-              }
-              arr.forEach(e => {
-                if (e.indexOf(item.to) > -1) {
-                  // this.$message.error(this.$t('transfer.addressRepetition'))
-                  throw new Error(this.$t('transfer.addressRepetition'))
-                }
-              })
-              arrTemp.push(item.to)
-              arrTemp.push(item.value)
-              arrTemp.push(0)
-              arr.push(arrTemp)
-              gasObj.push({
-                to: item.to,
-                value: '0x' + WalletUtil.toWeiHex(item.value),
-                input: (this.ruleForm.data !== '' || this.ruleForm.data !== null) ? ('0x' + WalletUtil.str2hex(this.ruleForm.data)) : '0x'
-              })
-            }
-            // extraObj = [[parseInt(this.ruleForm.ExtraTimeTxType), 0, gasObj]]
-          }
-          // this.ruleForm.extra_to = extraObj
-          // let jsonObj = TradingFuns.getTxData(this.ruleForm)
-          let estObj = {
-            from: this.address,
-            to: sendObj.to,
-            gasLimit: sendObj.gasLimit,
-            gasPrice: sendObj.gasPrice,
-            value: sendObj.value,
-            data: sendObj.data,
-            currency: this.ruleForm.to.split('.')[0],
-            extra_to: gasObj
-          }
-          let result = this.httpProvider.man.estimateGas(estObj)
-          // this.ruleForm.gas = this.httpProvider.fromWei(Number(result), 'gwei')
-          let getGas = new BigNumber(result) * new BigNumber(this.ruleForm.gasPrice)
-          this.ruleForm.gasLimit = result
-          this.ruleForm.gas = this.httpProvider.fromWei(getGas)
-        } else {
-          this.$message.warning(this.$t('transfer.warningGas'))
-        }
-        if (val === '0') {
-          this.ruleForm.to = to
-        }
-      } catch (error) {
-        this.$message.error(error.message)
-      }
-    },
-    sendAll () { // 发送余额
-      if (this.balance === 0) {
-        this.ruleForm.value = '0'
-      } else {
-        this.estimate('0')
-        let balance = new BigNumber(this.httpProvider.fromWei(this.balance))
-        this.ruleForm.value = balance.minus(new BigNumber(this.ruleForm.gas)).toString()
-      }
     }
   },
   components: {

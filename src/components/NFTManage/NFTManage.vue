@@ -149,13 +149,6 @@ export default {
     },
     getNFTCoin () { // 获取NFT内容
       try {
-        // this.matrixCoin = this.httpProvider.man.getMatrixCoin('latest')
-        // if (this.matrixCoin != null && this.matrixCoin.length !== 0) {
-        //   this.currency = this.matrixCoin[0]
-        //   let address = WalletUtil.getCurrencyAddress(this.address, this.matrixCoin[0])
-        //   this.selectedCurrency.address = address
-        //   this.selectedCurrency.balance = this.getBalance(address)
-        // }
         console.log('address', this.ethaddress)
         let nft = store.get('nftoken')
         if (nft === undefined || nft === null) {
@@ -163,9 +156,7 @@ export default {
         } else {
           nft.push({nftContract: 'MAN.2gRxHsKucf5EeDNi9Bg87EGG7Zxft', nftName: 'MANIA'})
         }
-        // console.log(this.nftList)
-        //
-        // let mynftlist = []
+        console.log('nft store :', nft)
         if (nft !== undefined) {
           let abiArray = JSON.parse(nftAbi)
           for (let i = 0; i < nft.length; i++) {
