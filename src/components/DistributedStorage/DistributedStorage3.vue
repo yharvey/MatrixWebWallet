@@ -129,7 +129,7 @@ export default {
     changeFile () {
       let file = this.$refs.file.files
       console.log(file[0], file[0].type.indexOf('zip'))
-      if (file[0].type.indexOf('zip') <= -1 && file[0].type.indexOf('py') <= -1) {
+      if (file[0].type.indexOf('zip') <= -1 && file[0].name.indexOf('.py') <= -1) {
         this.$message.error('invalid file! ' + file[0].name)
         return
       }
