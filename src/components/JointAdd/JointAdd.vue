@@ -10,22 +10,22 @@
         </span>
         <!-- <h5>{{$t('associate.associateAddress')}}</h5> -->
         <div>
-          <el-select v-model="mortgageWay"
+          <el-select v-model="mortgageWay" value-key="key"
                      :placeholder="$t('CampaignNode.selectMortgageWay')">
             <el-option v-for="item in mortgageWayList"
                        :key="item.key"
                        :label="item.name"
-                       :value="item.key">
+                       :value="item">
             </el-option>
           </el-select>
         </div>
-        <div v-show="mortgageWay==='regular'">
-          <el-select v-model="timeLimit"
+        <div v-show="mortgageWay.key==='regular'">
+          <el-select v-model="timeLimit" value-key="key"
                      :placeholder="$t('CampaignNode.selectTimeLimit')">
             <el-option v-for="item in timeLimitList"
                        :key="item.key"
                        :label="item.name"
-                       :value="item.key">
+                       :value="item">
             </el-option>
           </el-select>
         </div>
@@ -37,7 +37,7 @@
           <p>{{$t('digAccount.tips2')}}</p>
         </div>
         <button class="common-button"
-                @click="addDeposit">{{$t('jointDetail.addMining')}}</button>
+                @click="addDepositConfirm">{{$t('jointDetail.addMining')}}</button>
       </div>
     </el-card>
     <all-dialog :visible="visible"
@@ -54,6 +54,23 @@
                :width="'800px'"
                :information="information"
                @changeSendSign="changeSendSign"></send-sign>
+    <confirm-joint-dialog :confirmVisible="confirmTransfer"
+                             :width="'800px'"
+                             :status="$t('transfer.success')"
+                             :msg="$t('transfer.confirmTransfer')"
+                             :mortgageWay="mortgageWay.name"
+                             :mortgageWayKey="mortgageWay.key"
+                             :mortgageWayText="$t('CampaignNode.mortgageWay')"
+                             :timeLimit="timeLimit.name"
+                             :timeLimitText="$t('CampaignNode.timeLimitText')"
+                             :stakeAmountText="$t('CampaignNode.mortgage_amount')"
+                             :amount="value"
+                             :from="address"
+                             :to="ruleForm.to"
+                             @confirmVisible="changeDialogVisible"
+                             :addressList="ruleForm.addressList"
+                             :sendCoin="sendCoin"
+                             @confirmSend="addDeposit"></confirm-joint-dialog>
   </div>
 </template>
 
@@ -64,6 +81,7 @@ import store from 'store'
 import WalletUtil from '@/assets/js/WalletUtil'
 import TradingFuns from '@/assets/js/TradingFuns'
 import OfflineDialog from '@/components/TransferDialog/TipOfflineDialog'
+import confirmJointDialog from '@/components/TransferDialog/confirmJointDialog'
 import sendSign from '@/components/TransferDialog/sendSignTransfer'
 import AllDialog from '@/components/TransferDialog/AllDialog'
 import BigNumber from 'bignumber.js'
@@ -85,10 +103,32 @@ export default {
       jsonObj: '',
       sendSignVisible: false,
       information: '',
-      visible: false
+      visible: false,
+      confirmTransfer: false,
+      address: '',
+      sendCoin: 'MAN',
+      ruleForm: {
+        addressList: [],
+        value: '',
+        to: '',
+        mortgageWay: '',
+        timeLimit: '',
+        IsEntrustTx: '',
+        ExtraTimeTxType: '0',
+        gas: this.httpProvider.fromWei(210000 * 18000000000),
+        token: 'MAN',
+        gasLimit: 210000,
+        gasPrice: 18000000000,
+        extra_to: [[0, 0, []]],
+        data: '',
+        nonce: ''
+      }
     }
   },
   methods: {
+    changeDialogVisible (val) {
+      this.confirmTransfer = val
+    },
     openSendSign () {
       this.sendSignVisible = true
     },
@@ -114,68 +154,91 @@ export default {
     backPage () {
       this.$router.back()
     },
-    addDeposit () {
-      try {
-        let abiArray = JSON.parse(joinChildAbi)
-        let contractAddress = this.jointAccount
-        let contract = this.httpProvider.man.contract(abiArray).at(contractAddress)
-        console.log(contract)
-        let nonce = this.httpProvider.man.getTransactionCount(this.address)
-        nonce = WalletUtil.numToHex(nonce)
-        let value = new BigNumber(this.value)
-        if (new BigNumber(this.value).plus(new BigNumber(this.stakeValue)).comparedTo(new BigNumber(10000000)) === 1) {
-          this.$message.error(this.$t('jointAdd.valueToMore'))
+    addDepositConfirm () {
+      let value = new BigNumber(this.value)
+      if (this.mortgageWay.key === 'regular') {
+        if (value.comparedTo(new BigNumber(2000)) === -1) {
+          this.$message.error(this.$t('CampaignNode.valueLessError1'))
           return
         }
-        let data = {
-          to: this.jointAccount,
-          value: parseInt(this.value),
-          gasLimit: 210000,
-          data: '',
-          gasPrice: 18000000000,
-          extra_to: [[0, 0, []]],
-          nonce: nonce
+        if (this.timeLimit.key === '') {
+          this.$message.error(this.$t('CampaignNode.selectTimeLimit'))
+          return
         }
-        let jsonObj = TradingFuns.getTxData(data)
-        if (this.mortgageWay === 'regular') {
-          if (value.comparedTo(new BigNumber(2000)) === -1) {
-            this.$message.error(this.$t('CampaignNode.valueLessError1'))
-            return
-          }
-          if (this.timeLimit === '') {
-            this.$message.error(this.$t('CampaignNode.selectTimeLimit'))
-            return
-          }
-          jsonObj.data = contract.addDeposit.getData(parseInt(this.timeLimit))
-        } else {
-          if (value.comparedTo(new BigNumber(100)) === -1) {
-            this.$message.error(this.$t('CampaignNode.currentError'))
-            return
-          }
-          jsonObj.data = contract.addDeposit.getData(0)
+      } else {
+        if (value.comparedTo(new BigNumber(100)) === -1) {
+          this.$message.error(this.$t('CampaignNode.currentError'))
+          return
         }
-        if (this.$store.state.wallet != null) {
-          let tx = WalletUtil.createTx(jsonObj)
-          let privateKey = this.$store.state.wallet.privateKey
-          privateKey = Buffer.from(privateKey.indexOf('0x') > -1 ? privateKey.substring(2, privateKey.length) : privateKey, 'hex')
-          tx.sign(privateKey)
-          let serializedTx = tx.serialize()
-          this.newTxData = SendTransfer.getTxParams(serializedTx)
-          let hash = this.httpProvider.man.sendRawTransaction(this.newTxData)
-          this.hash = hash
-          this.visible = true
-          let recordArray = store.get(this.address)
-          if ((typeof (recordArray) === 'string')) {
-            recordArray = JSON.parse(recordArray)
+      }
+      this.confirmTransfer = true
+    },
+    addDeposit (state) {
+      try {
+        if (state === 'ok') {
+          let abiArray = JSON.parse(joinChildAbi)
+          let contractAddress = this.jointAccount
+          let contract = this.httpProvider.man.contract(abiArray).at(contractAddress)
+          console.log(contract)
+          let nonce = this.httpProvider.man.getTransactionCount(this.address)
+          nonce = WalletUtil.numToHex(nonce)
+          let value = new BigNumber(this.value)
+          if (new BigNumber(this.value).plus(new BigNumber(this.stakeValue)).comparedTo(new BigNumber(10000000)) === 1) {
+            this.$message.error(this.$t('jointAdd.valueToMore'))
+            return
           }
-          if (recordArray == null) {
-            recordArray = []
+          let data = {
+            to: this.jointAccount,
+            value: parseInt(this.value),
+            gasLimit: 210000,
+            data: '',
+            gasPrice: 18000000000,
+            extra_to: [[0, 0, []]],
+            nonce: nonce
           }
-          recordArray.push({ hash: this.hash, newTxData: { commitTime: this.newTxData.commitTime, txType: this.newTxData.txType } })
-          store.set(this.address, recordArray)
+          let jsonObj = TradingFuns.getTxData(data)
+          if (this.mortgageWay.key === 'regular') {
+            if (value.comparedTo(new BigNumber(2000)) === -1) {
+              this.$message.error(this.$t('CampaignNode.valueLessError1'))
+              return
+            }
+            if (this.timeLimit.key === '') {
+              this.$message.error(this.$t('CampaignNode.selectTimeLimit'))
+              return
+            }
+            jsonObj.data = contract.addDeposit.getData(parseInt(this.timeLimit.key))
+          } else {
+            if (value.comparedTo(new BigNumber(100)) === -1) {
+              this.$message.error(this.$t('CampaignNode.currentError'))
+              return
+            }
+            jsonObj.data = contract.addDeposit.getData(0)
+          }
+          if (this.$store.state.wallet != null) {
+            let tx = WalletUtil.createTx(jsonObj)
+            let privateKey = this.$store.state.wallet.privateKey
+            privateKey = Buffer.from(privateKey.indexOf('0x') > -1 ? privateKey.substring(2, privateKey.length) : privateKey, 'hex')
+            tx.sign(privateKey)
+            let serializedTx = tx.serialize()
+            this.newTxData = SendTransfer.getTxParams(serializedTx)
+            let hash = this.httpProvider.man.sendRawTransaction(this.newTxData)
+            this.hash = hash
+            this.visible = true
+            let recordArray = store.get(this.address)
+            if ((typeof (recordArray) === 'string')) {
+              recordArray = JSON.parse(recordArray)
+            }
+            if (recordArray == null) {
+              recordArray = []
+            }
+            recordArray.push({ hash: this.hash, newTxData: { commitTime: this.newTxData.commitTime, txType: this.newTxData.txType } })
+            store.set(this.address, recordArray)
+          } else {
+            this.confirmOffline = true
+            this.jsonObj = JSON.stringify(jsonObj)
+          }
         } else {
-          this.confirmOffline = true
-          this.jsonObj = JSON.stringify(jsonObj)
+          this.confirmTransfer = false
         }
       } catch (e) {
         this.$message.error(e.message)
@@ -194,7 +257,8 @@ export default {
   components: {
     AllDialog,
     OfflineDialog,
-    sendSign
+    sendSign,
+    confirmJointDialog
   }
 }
 </script>

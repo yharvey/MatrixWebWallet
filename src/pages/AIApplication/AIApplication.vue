@@ -8,8 +8,10 @@
                @click="changeType(21)">{{$t('ai.posture')}}&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</label>
         <label :class="{'active' : type === 20}"
                @click="changeType(20)">{{$t('ai.object')}}&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</label>
-         <label :class="{'active' : type === 19}"
-               @click="changeType(19)">{{$t('ai.mania')}}&nbsp;&nbsp;&nbsp;</label>
+        <label :class="{'active' : type === 19}"
+               @click="changeType(19)">{{$t('ai.mania')}}&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</label>
+         <!-- <label :class="{'active' : type === 18}"
+               @click="changeType(18)">{{$t('ai.animation')}}&nbsp;&nbsp;&nbsp;</label> -->
       </div>
       <medical :type="type"
                v-if="type!=23&&isUpload!==true"

@@ -149,6 +149,7 @@ export default {
     },
     getNFTCoin () { // 获取NFT内容
       try {
+        this.nftList = []
         console.log('address', this.ethaddress)
         let nft = store.get('nftoken')
         if (nft === undefined || nft === null) {

@@ -7,6 +7,7 @@
       <div class="title-1" v-if="type==21">{{$t('medical.pose2')}}</div>
       <div class="title-1" v-if="type==20">{{$t('medical.obj')}}</div>
       <div class="title-1" v-if="type==19">{{$t('medical.mania')}}</div>
+      <div class="title-1" v-if="type==18">{{$t('medical.animation')}}</div>
       <div class="title-2" v-if="type!=22&&type!=19">{{$t('medical.pose3')}}</div>
       <div class="title-2" v-if="type==19">{{$t('medical.tips')}}</div>
     </div>
@@ -20,6 +21,8 @@
              src="../../assets/images/obj.png">
         <img v-if="type==19"
              src="../../assets/images/mania.png">
+        <img v-if="type==18"
+             src="../../assets/images/animation.jpeg">
       </div>
       <div class="info" v-if="type!=19">{{$t('medical.example')}}</div>
     </div>
