@@ -36,6 +36,9 @@ export default {
     back () {
       this.$router.back()
     }
+  },
+  mounted () {
+    this.$store.commit('UPDATE_NEWWALLETURL', '')
   }
 }
 </script>

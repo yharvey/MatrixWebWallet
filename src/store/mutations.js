@@ -15,6 +15,9 @@ const mutations = {
   [types.UPDATE_BEFOREURL] (state, status) {
     state.beforeUrl = status
   },
+  [types.UPDATE_NEWWALLETURL] (state, status) {
+    state.newWalletUrl = status
+  },
   [types.UNLOCK_WALLET] (state, status) {
     state.unlockWallet = status
   },

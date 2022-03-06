@@ -39,6 +39,11 @@ export default {
       }
     } catch (error) {
     }
+    console.log('sssss', this.$router)
+    console.log(this.$store)
+    if (this.$store.state.newWalletUrl === '/newWallet') {
+      this.$router.push({ path: '/my-wallet/createWallet' })
+    }
   },
   methods: {
     goPage (route) {
