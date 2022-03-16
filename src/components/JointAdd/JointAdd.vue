@@ -176,6 +176,7 @@ export default {
     addDeposit (state) {
       try {
         if (state === 'ok') {
+          this.confirmTransfer = false
           let abiArray = JSON.parse(joinChildAbi)
           let contractAddress = this.jointAccount
           let contract = this.httpProvider.man.contract(abiArray).at(contractAddress)
