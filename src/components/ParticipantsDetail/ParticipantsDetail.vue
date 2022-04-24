@@ -29,7 +29,7 @@
           </el-table-column>
           <el-table-column :label="$t('CampaignNode.timeLimit')">
             <template slot-scope="scope">
-              {{scope.row.DType==='——'?'——':scope.row.DType+$t('regularDetail.month')}}
+              {{scope.row.DType==='——'?'——':scope.row.DType*30+$t('regularDetail.month')}}
             </template>
           </el-table-column>
           <el-table-column :label="$t('transfer.amount')"

@@ -21,7 +21,7 @@
           <el-table-column :label="$t('regularDetail.deposit_time')"
                            prop="depositeTime">
             <template slot-scope="scope">
-              {{scope.row.DepositType }}{{$t('regularDetail.month')}}
+              {{scope.row.DepositType*30 }}{{$t('regularDetail.month')}}
             </template>
           </el-table-column>
           <el-table-column :label="$t('regularDetail.deposit_value')"
