@@ -14,7 +14,7 @@
     "build": "node --max_old_space_size=4096 build/build.js"
   },
   "dependencies": {
-    "@ledgerhq/hw-transport-webusb": "^4.68.2",
+    "@ledgerhq/hw-transport-webusb": "^6.27.8",
     "@ledgerhq/logs": "^4.68.2",
     "aiman": "0.0.12",
     "axios": "^0.18.0",

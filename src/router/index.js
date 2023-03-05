@@ -199,7 +199,7 @@ let router = new Router({
         name: 'CurrentRefund',
         component: CurrentRefund
       }, {
-        path: 'mortgage-history',
+        path: 'stake-history',
         name: 'MortgageHistory',
         component: MortgageHistory
       }, {

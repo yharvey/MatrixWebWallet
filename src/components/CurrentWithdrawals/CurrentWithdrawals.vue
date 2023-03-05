@@ -49,7 +49,7 @@ import sendSign from '@/components/TransferDialog/sendSignTransfer'
 import SendTransfer from '@/assets/js/SendTransfer'
 import WalletUtil from '@/assets/js/WalletUtil'
 import TradingFuns from '@/assets/js/TradingFuns'
-import { mortgage, contract } from '@/assets/js/config'
+import { stake, contract } from '@/assets/js/config'
 import filter from '@/assets/js/filters'
 import store from 'store'
 import BigNumber from 'bignumber.js'
@@ -126,7 +126,7 @@ export default {
           this.$message.error(this.$t('CampaignNode.withdrawalsNeed'))
           return
         }
-        let tAbi = JSON.parse(mortgage.abi)
+        let tAbi = JSON.parse(stake.abi)
         for (let i in tAbi) {
           if (tAbi[i].type === 'function') {
             tAbi[i].inputs.map(function (i) {

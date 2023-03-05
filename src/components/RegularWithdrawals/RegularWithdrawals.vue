@@ -1,7 +1,7 @@
 <template>
   <div class="regularWithdrawals">
     <div>
-      <div class="mortgage-font">
+      <div class="stake-font">
         {{$t('regularWithdrawals.regularWithdrawals')}}
       </div>
       <span class="back-tittle"
@@ -70,7 +70,7 @@
 import SendTransfer from '@/assets/js/SendTransfer'
 import WalletUtil from '@/assets/js/WalletUtil'
 import TradingFuns from '@/assets/js/TradingFuns'
-import { mortgage, contract } from '@/assets/js/config'
+import { stake, contract } from '@/assets/js/config'
 import AllDialog from '@/components/TransferDialog/AllDialog'
 import OfflineDialog from '@/components/TransferDialog/TipOfflineDialog'
 import sendSign from '@/components/TransferDialog/sendSignTransfer'
@@ -128,7 +128,7 @@ export default {
     },
     confirm (obj) {
       try {
-        let tAbi = JSON.parse(mortgage.abi)
+        let tAbi = JSON.parse(stake.abi)
         for (let i in tAbi) {
           if (tAbi[i].type === 'function') {
             tAbi[i].inputs.map(function (i) {
@@ -233,7 +233,7 @@ export default {
 </script>
 <style scoped lang="less">
 .regularWithdrawals {
-  .mortgage-font {
+  .stake-font {
     text-align: left;
     font-size: 1.25rem;
     color: #2c365c;

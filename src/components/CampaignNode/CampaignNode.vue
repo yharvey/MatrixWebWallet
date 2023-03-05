@@ -9,14 +9,14 @@
           <i class="el-icon-arrow-left"></i>
           {{$t('openWallet.back')}}
         </span>
-        <h1>{{$t('CampaignNode.mortgage')}}</h1>
+        <h1>{{$t('CampaignNode.stake')}}</h1>
         <div class="flex-style">
           <div>
             <el-checkbox v-model="isEdit"></el-checkbox><span class="check-font">{{$t('CampaignNode.onlyChange')}}</span>
           </div>
         </div>
         <div v-if="!isEdit">
-          <h5>{{$t('CampaignNode.mortgage')}}</h5>
+          <h5>{{$t('CampaignNode.stake')}}</h5>
           <div>
             <el-select v-model="mortgageWay"
                        :placeholder="$t('CampaignNode.selectMortgageWay')">
@@ -76,7 +76,7 @@
       </div>
       <hr>
       <button class="common-button"
-              @click="getTxData">{{$t('CampaignNode.mortgage-button')}}</button>
+              @click="getTxData">{{$t('CampaignNode.stake-button')}}</button>
     </div>
     <all-dialog :visible="visible"
                 @changeVisible="changeVisible"
@@ -98,7 +98,7 @@
 <script>
 import WalletUtil from '@/assets/js/WalletUtil'
 import SendTransfer from '@/assets/js/SendTransfer'
-import { mortgage, contract } from '@/assets/js/config'
+import { stake, contract } from '@/assets/js/config'
 import TradingFuns from '@/assets/js/TradingFuns'
 import AllDialog from '@/components/TransferDialog/AllDialog'
 import GreenDialog from '@/components/TransferDialog/GreenDialog'
@@ -179,7 +179,7 @@ export default {
     },
     initContract () {
       this.functions = []
-      let tAbi = JSON.parse(mortgage.abi)
+      let tAbi = JSON.parse(stake.abi)
       for (var i in tAbi) {
         if (tAbi[i].type === 'function') {
           tAbi[i].inputs.map(function (i) {
@@ -196,8 +196,8 @@ export default {
           this.$message.error(this.$t('transfer.addressTip'))
           return
         }
-        let abiArray = JSON.parse(mortgage.abi)
-        let contractAddress = mortgage.address
+        let abiArray = JSON.parse(stake.abi)
+        let contractAddress = stake.address
         let contract = this.httpProvider.man.contract(abiArray).at(contractAddress)
         let inputData = ''
         if (this.mortgageTypeAgo === 'valiDeposit') {

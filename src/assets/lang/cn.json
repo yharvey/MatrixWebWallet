@@ -197,7 +197,7 @@
     "backupsSuccess": "备份成功"
   },
   "CampaignNode": {
-    "mortgage": "抵押",
+    "stake": "抵押",
     "query": "查询",
     "Mining_nodes": "挖矿节点",
     "miners": "矿工",
@@ -205,7 +205,7 @@
     "dig_address": "挖矿地址",
     "mortgage_hint1": "*该钱包为挖矿时的签名交易，并不获取任何收益，您正在使用的钱包为获取收益的钱包",
     "mortgage_hint2": "*您只能抵押一个钱包地址，最后抵押的地址会覆盖之前抵押的地址",
-    "mortgage-button": "已启动节点 进行抵押",
+    "stake-button": "已启动节点 进行抵押",
     "Mining_type": "挖矿类型",
     "Mining_mortgage": "矿工抵押",
     "Validator_mortgage": "验证者抵押",
@@ -248,7 +248,7 @@
     "startType": "启动节点方式",
     "yourEmail": "你的邮箱 :",
     "repeatEmail": "重新提交你的邮箱",
-    "mortgage-button": "已启动节点 进行抵押"
+    "stake-button": "已启动节点 进行抵押"
   },
   "SecondKey": {
     "SecondKeyHint": "挖矿打包区块时，可授权其他钱包代替挖矿钱包签名，保障获得收益钱包的安全",
@@ -317,7 +317,7 @@
     "minner_revenue": "矿工收益",
     "gas": "gas费",
     "history_revenue": "历史收益",
-    "mortgage": "抵押"
+    "stake": "抵押"
   },
   "tip": {
     "tittle": "安全提示",
@@ -361,7 +361,7 @@
     "campaign_node": "竞选节点",
     "getRevenue": "想获取挖矿收益，需要先 ",
     "nodeHint": "您已退选节点，从下一周期起不再竞选节点",
-    "mortgage": "抵押"
+    "stake": "抵押"
   },
   "mortgageHistory": {
     "mortgageHistory": "抵押历史",

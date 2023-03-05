@@ -1,7 +1,7 @@
 <template>
   <div class="digAccount">
     <div>
-      <label class="mortgage-font">{{$t('digAccount.deposit_account')}}： {{totalValue}} MAN</label>
+      <label class="stake-font">{{$t('digAccount.deposit_account')}}： {{totalValue}} MAN</label>
       <label class="transfer_font"
                 @click="goPage('CampaignNode')">{{$t('digAccount.deposit')}}</label>
       <div class="role_font">
@@ -47,7 +47,7 @@
         </tbody>
       </table>
     </div>
-    <div class="mortgage-font">
+    <div class="stake-font">
       {{$t('digAccount.refund_account')}}： {{totalWithdrawalsValue}} MAN
     </div>
     <table class="tab_info">
@@ -200,13 +200,13 @@ export default {
   .dis-right2 {
     margin-right: 4rem;
   }
-  .mortgage-font {
+  .stake-font {
     font-size: 1.25rem;
     color: #2c365c;
     letter-spacing: 0.18px;
     font-weight: bold;
   }
-  .mortgage-font1 {
+  .stake-font1 {
     margin: 1.5rem 0 1rem 5rem;
     font-size: 0.875rem;
     color: #2c365c;

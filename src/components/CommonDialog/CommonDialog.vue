@@ -36,7 +36,7 @@
 <script>
 import WalletUtil from '@/assets/js/WalletUtil'
 import SendTransfer from '@/assets/js/SendTransfer'
-import { mortgage, contract } from '@/assets/js/config'
+import { stake, contract } from '@/assets/js/config'
 import TradingFuns from '@/assets/js/TradingFuns'
 import OfflineDialog from '@/components/TransferDialog/TipOfflineDialog'
 import sendSign from '@/components/TransferDialog/sendSignTransfer'
@@ -81,7 +81,7 @@ export default {
     confirm (status) {
       if (status === 'ok') {
         try {
-          let tAbi = JSON.parse(mortgage.abi)
+          let tAbi = JSON.parse(stake.abi)
           for (let i in tAbi) {
             if (tAbi[i].type === 'function') {
               tAbi[i].inputs.map(function (i) {

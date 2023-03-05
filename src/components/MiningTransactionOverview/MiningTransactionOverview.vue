@@ -69,7 +69,7 @@ import CommonDialogCancel from '@/components/CommonDialog/CommonDialogCancel'
 import NodeCampaignRecord from '@/components/NodeCampaignRecord/NodeCampaignRecord'
 import ManUtils from '@/assets/js/ManUtils'
 import store from '@/store'
-import { mortgage } from '@/assets/js/config'
+import { stake } from '@/assets/js/config'
 import WalletUtil from '@/assets/js/WalletUtil'
 import AllDialog from '@/components/TransferDialog/AllDialog'
 import GreenDialog from '@/components/TransferDialog/GreenDialog'
@@ -190,11 +190,11 @@ export default {
       }
     },
     goMortgageHistory () {
-      this.$router.push({ path: '/green-mining/mortgage-history' })
+      this.$router.push({ path: '/green-mining/stake-history' })
     },
     getDepositInfo () {
-      let abiArray = JSON.parse(mortgage.abi)
-      let contractAddress = mortgage.address
+      let abiArray = JSON.parse(stake.abi)
+      let contractAddress = stake.address
       let contract = this.httpProvider.man.contract(abiArray)
       let myContractInstance = contract.at(contractAddress)
       let deposit = myContractInstance.getDepositInfo(WalletUtil.getAddress(store.state.wallet.address), { currency: 'MAN' })

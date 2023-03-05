@@ -1,5 +1,5 @@
 <template>
-  <div class="mortgage-history">
+  <div class="stake-history">
     <div class="title">{{$t('mortgageHistory.mortgageHistory')}}</div>
     <div class="commonTable">
       <el-table :data="tableData"
@@ -92,7 +92,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-.mortgage-history {
+.stake-history {
   border-bottom: 1px solid #d5d7de;
   padding-bottom: 12.06rem;
   .title {

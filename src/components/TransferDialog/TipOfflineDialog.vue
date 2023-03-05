@@ -263,7 +263,7 @@ export default {
           this.signTransfer()
         }
       } else if (this.unlockType === 'mnemonic') {
-        if (this.mnemonic.split(' ').length !== 12) {
+        if (this.mnemonic.split(' ').length !== 24 && this.mnemonic.split(' ').length !== 12) {
           this.keyPrivateError = true
         } else {
           this.keyPrivateError = false

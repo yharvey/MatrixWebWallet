@@ -3,7 +3,7 @@
     <div class="addForm">
       <h1 class="h1-dis">{{$t('startNode.name')}}</h1>
       <button class="common-button button-width"
-              @click="startCampaignNode">{{$t('startNode.mortgage-button')}}</button>
+              @click="startCampaignNode">{{$t('startNode.stake-button')}}</button>
     </div>
   </div>
 </template>

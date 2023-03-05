@@ -8,7 +8,7 @@ export const protocol = 'https'
 export const ipfsHostWebPort = 'ipfsdown.gantenwater.net'
 export const emailUrl = 'service01@matrix.io'
 export const ipfsWebPort = '8181'
-export const mortgage = {
+export const stake = {
   name: 'MATRIX - Mortgage deals',
   address: 'MAN.1111111111111111111B8',
   abi: '[{"constant": true,"inputs": [],"name": "getDepositList","outputs": [{"name": "","type": "address[]"}],"payable": false,"stateMutability": "view","type": "function"},{"constant": false,"inputs": [{"name": "address","type": "address"},{"name": "depositType","type": "uint256"}],"name": "valiDeposit","outputs": [],"payable": true,"stateMutability": "payable","type": "function"},{"constant": false,"inputs": [{"name": "address","type": "address"},{"name": "depositType","type": "uint256"}],"name": "minerDeposit","outputs": [],"payable": true,"stateMutability": "payable","type": "function"},{"constant": false,"inputs": [{"name": "depositPosition","type": "uint256"},{"name": "withdrawAmount","type": "uint256"}],"name": "withdraw","outputs": [],"payable": false,"stateMutability": "nonpayable","type": "function"},{"constant": false,"inputs": [{"name": "depositPosition","type": "uint256"}],"name": "refund","outputs": [],"payable": false,"stateMutability": "nonpayable","type": "function"},{"constant": false,"inputs": [{"name": "depositType","type": "uint256"},{"name": "amount","type": "uint256"}],"name": "modifyDepositType","outputs": [],"payable": true,"stateMutability": "payable","type": "function"},{"constant": true,"inputs": [{"name": "addr","type": "address"}],"name": "getInterest","outputs": [],"payable": false,"stateMutability": "payable","type": "function"}]'
