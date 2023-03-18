@@ -4,16 +4,22 @@
       <div class="query_assets_top">
         <span class="query_assets"
               :class="{'active' : type === 'myAssets'}"
-              @click="changeType('myAssets')">{{$t('myWallet.myAssets')}}</span>|
+              @click="changeType('myAssets')">
+              <img style="width:2rem" src="../../assets/images/wallet.png" alt="">
+              {{$t('myWallet.myAssets')}}</span>
         <span class="query_assets"
               :class="{'active' : type === 'NFTManage'}"
-              @click="changeType('NFTManage')">{{$t('myWallet.NFTManage')}}</span>|
+              @click="changeType('NFTManage')">
+              <img style="width:2rem" src="../../assets/images/nft.png" alt="">
+              {{$t('myWallet.NFTManage')}}</span>
         <!-- <span class="query_assets"
               :class="{'active' : type === 'NftTest'}"
               @click="changeType('NftTest')">{{$t('OperateNFT')}}</span>| -->
+        <img style="width:2rem" src="../../assets/images/nft.png" alt="">
         <span class="transaction_records"
               @click="changeType('record')"
-              :class="{'active' : type === 'record'}">{{$t('myWallet.transactionRecord')}}</span>
+              :class="{'active' : type === 'record'}">
+              {{$t('myWallet.transactionRecord')}}</span>
         <span class="back"
               @click="back"
               v-show="showBack">
@@ -76,7 +82,7 @@ export default {
     text-align: left;
   }
   hr {
-    background-color: #d5d7de;
+    background-color: #0066FF;
     margin-top: 1rem;
     margin-bottom: 1.5rem;
     border: none;

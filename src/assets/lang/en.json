@@ -111,7 +111,8 @@
     "saveMnemonic": "I 've recorded my Mnemonic",
     "savePrivateKey": "I 've recorded my private key",
     "next": "Next",
-    "hint": "Your wallet has been created successfully Please choose one of the backup methods"
+    "hint": "Your wallet has been created successfully",
+    "hint2": "Please choose one of the backup methods"
   },
   "contracts": {
     "contracts": "contracts",
@@ -162,7 +163,7 @@
     "keyStoreBackups": "KeyStore Backup",
     "accountSet": "AccountName Setting",
     "greetingsSet": "Greeting Setting",
-    "logout": "Exit",
+    "logout": "Log out",
     "blackList": "Blacklist"
   },
   "associate": {

@@ -146,7 +146,7 @@ export default {
     width: 12.5rem;
     height: 2.625rem;
     line-height: 2.625rem;
-    background: #415eaa;
+    background: #0066FF;
     border-radius: 2px;
     cursor: pointer;
     font-size: 0.875rem;

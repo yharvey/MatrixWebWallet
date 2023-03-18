@@ -54,7 +54,7 @@
           <div class="card_way div_dis"
                @click="selectUnlock('ledger')">
             <div class="pic_dis">
-              <img src="../../assets/images/ledger.svg">
+              <img src="../../assets/images/ledger.png">
             </div>
             <div class="check_font">
               <input type="radio"
@@ -422,8 +422,8 @@ export default {
         border: 1px solid #f2f4f8;
       }
       .passwordOpen {
-        background: #415eaa;
-        border: 1px solid #415eaa;
+        background: #0066FF;
+        border: 1px solid #0066FF;
       }
     }
   }

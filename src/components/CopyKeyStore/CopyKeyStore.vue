@@ -110,7 +110,7 @@ export default {
         background: #f2f4f8;
       }
       .passwordOpen {
-        background: #415eaa;
+        background: #0066FF;
       }
       .storeInput {
         width: 23.125rem;

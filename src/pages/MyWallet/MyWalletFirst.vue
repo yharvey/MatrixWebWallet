@@ -4,7 +4,11 @@
       <unlock-wallet :title="$t('myWallet.queryWallet')"
                      @openWallet="openWallet('openWallet')"></unlock-wallet>
       <div>
-        <span class="keyStoneHintFont">{{$t('myWallet.msg1')}}&nbsp; <a @click="goPage('createWallet')">{{$t('myWallet.create')}}</a></span>
+        <span class="keyStoneHintFont">{{$t('myWallet.msg1')}}&nbsp;<br/>
+        </span>
+        <div>
+           <el-button round style="border:1px solid #007EFF;color:#007EFF;margin-top:1rem" @click="goPage('createWallet')">{{$t('myWallet.create')}}</el-button>
+        </div>
       </div>
     </el-card>
   </div>

@@ -1,28 +1,32 @@
 <template>
   <div class="layout">
-    <el-container>
-      <el-header>
-        <x-header></x-header>
-      </el-header>
-      <el-main class="main-width">
-        <router-view></router-view>
-        <x-tip></x-tip>
-      </el-main>
-      <el-footer>
-        <x-footer></x-footer>
-      </el-footer>
+    <el-container class="maincontainer">
+      <el-aside width="250px">
+        <x-aside></x-aside>
+      </el-aside>
+      <el-container>
+        <!-- <el-header>
+          <x-header></x-header>
+        </el-header> -->
+        <el-main class="main-width">
+          <router-view></router-view>
+          <!-- <x-tip></x-tip> -->
+        </el-main>
+      </el-container>
     </el-container>
   </div>
 </template>
 
 <script>
 import XHeader from '@/components/Layout/Header'
+import XAside from '@/components/Layout/Aside'
 import XFooter from '@/components/Layout/Footer'
 import XTip from '@/components/Layout/Tip'
 export default {
   name: 'Layout',
   components: {
     XHeader,
+    XAside,
     XFooter,
     XTip
   }
@@ -42,6 +46,14 @@ export default {
       text-align: -webkit-center;
       text-align: -moz-center;
     }
+    .el-aside {
+      background-color: #FFFFFF;
+      width: 250px;
+      line-height: 200px;
+      text-align: center;
+      text-align: -webkit-center;
+      text-align: -moz-center;
+    }
     .el-header {
       height: 3.5rem !important;
       line-height: 3.5rem !important;
@@ -54,11 +66,14 @@ export default {
       line-height: 3rem !important;
     }
   }
-  .el-main {
-    padding: 2rem 0 2.5rem 0;
+   .el-main {
+    padding: 5.5rem 0 2.5rem 0;
     justify-content: center;
     text-align: -webkit-center;
     text-align: -moz-center;
+  }
+  .maincontainer{
+    height: 100vh;
   }
 }
 </style>

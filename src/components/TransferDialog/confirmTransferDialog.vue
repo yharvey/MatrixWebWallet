@@ -205,7 +205,7 @@ export default {
     }
     .button-color {
       margin-left: 1.5rem;
-      background: #415eaa;
+      background: #0066FF;
       color: #ffffff;
     }
     hr {

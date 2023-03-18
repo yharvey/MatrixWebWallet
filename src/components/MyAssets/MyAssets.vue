@@ -1,113 +1,205 @@
 <template>
   <div class="my-assets">
-    <div class=" account-info">
-      <label class="title_font">MAN {{$t('myWallet.assets')}}</label>
-      <label class="transfer_font"
-             @click="goTransfer(balance[0].balance, 'MAN')">{{$t('myWallet.transfer')}}</label>
-      <label class="transfer_font"
-             @click="goPage('undo')">{{$t('record.undo')}}</label>
-      <div class="money_font">
-        <template v-for="(item, index) in balance">
-          <label v-if="item.accountType == 0"
-                 :key='index'>
-            {{$t('myWallet.availableAssets')}}
-            : {{item.balance | weiToNumber}} (MAN)
-          </label>
-          <label v-if="item.accountType == 3"
-                 :key='index'>
-            {{$t('myWallet.revocableAssets')}}
-            : {{item.balance | weiToNumber}} (MAN)
-          </label>
-        </template>
-        <label>
-          {{$t('myWallet.stakedAssets')}}
-          : 0 (MAN)
-        </label>
+    <div class="account">
+      <div class="assetcard">
+        <div style="margin-top:20px;text-align: left;">
+          <label class="title_font">MAN {{$t('myWallet.assets')}}</label>
+          <label class="transfer_font"
+                @click="goTransfer(balance[0].balance, 'MAN')">{{$t('myWallet.transfer')}}</label>
+          <label class="transfer_font"
+                @click="goPage('undo')">{{$t('record.undo')}}</label>
+        </div>
+        <div class="money_font">
+          <template v-for="(item, index) in balance">
+            <label style="font-size: 3rem;
+    color: #FFFF;
+    font-weight: bold;
+    margin-left: 1.5rem;
+    margin-top: 1rem;" v-if="item.accountType == 0"
+                  :key='index'>
+            {{item.balance | weiToNumber}}
+            </label>
+          </template>
+        </div>
+        <div style="margin-left: 1.5rem;text-align: start;font-size: 0.9rem;">
+           <label style="color:#FFFFFF">{{address}}</label>
+           <label style="color:#FFFFFF;margin-left: 3rem;"
+               v-clipboard="address"
+                  @success="copySuccess"
+                  @error="copyError">
+                  <i class="el-icon-copy-document"></i>
+                  {{$t('createWallet.copy')}}</label>
+        </div>
       </div>
-      <table class="tab_info">
-        <tbody>
-          <tr class="tr1_info">
-            <td>MAN{{$t('myWallet.walletAddress')}}<span class="matrix_fontSmall">({{$t('myWallet.addressTip1')}}MAN{{$t('myWallet.addressTip2')}})</span></td>
-            <!-- <td>{{$t('myWallet.accountName')}}</td>
-            <td>{{$t('myWallet.browserLink')}}</td> -->
-          </tr>
-          <tr class="tr2_info">
-            <td>{{address}}<a href="javascript:void(0)"
-                 v-clipboard="address"
-                 @success="copySuccess"
-                 @error="copyError">{{$t('createWallet.copy')}}</a></td>
-            <!-- <td>man.1380013800</td>
-            <td><a>8888.matrix.io</a></td> -->
-          </tr>
-        </tbody>
-      </table>
-      <hr class="bottom_hr">
-      <!-- <div class="two-input"> -->
-        <div class="token_btn"
-            @click="goPage('token')">+ {{$t('myWallet.addToken')}}</div>
-        <!-- <div class="token_btn" style="width: 48%"
-            @click="goPage('nftoken')">+ {{$t('myWallet.addNFToken')}}</div> -->
-      <!-- </div> -->
-      <div class="token_btn"
-           @click="goPage('createCoin')">+ {{$t('createCoin.tittle')}}</div>
+      <div class=" account-info">
+        <table class="tab_info">
+          <tbody>
+            <tr class="tr2_info">
+               <td><span style="color: rgb(37, 39, 38);
+                  font-family: Open Sans;
+                  font-size: 18px;
+                  font-weight: 400;
+                  line-height: 25px;
+                  letter-spacing: 0.7199999690055847px;
+                  text-align: left;
+                  text-transform: uppercase;">{{address}}</span>
+              </td>
+              <td><img v-clipboard="address"
+                  @success="copySuccess"
+                  @error="copyError" style="width:20px" src="../../assets/images/copy.png" alt=""></td>
+              <td><img style="width:20px" @click="goTransfer(balance[0].balance, 'MAN')" src="../../assets/images/send.png" alt=""></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="money_font">
+          <template v-for="(item, index) in balance">
+            <div class="money_div" v-if="item.accountType == 0"
+                  :key='index'>
+              <label>
+              {{$t('myWallet.availableAssets')}}
+            </label>
+            <div class="money_balance">
+                 {{item.balance | weiToNumber}} (MAN)
+            </div>
+            </div>
+            <div class="money_div" v-if="item.accountType == 3"
+                  :key='index'>
+              <label>
+              {{$t('myWallet.revocableAssets')}}
+              <div class="money_balance">
+                {{item.balance | weiToNumber}} (MAN)
+              </div>
+              </label>
+            </div>
+          </template>
+          <div class="money_div">
+            <label>
+            {{$t('myWallet.stakedAssets')}}
+            </label>
+            <div class="money_balance">
+            0 (MAN)
+            </div>
+          </div>
+        </div>
+        <label style="color: rgb(119, 131, 143);
+font-family: Open Sans;
+font-size: 10px;
+font-weight: 400;
+line-height: 14px;
+letter-spacing: 0.7142857313156128px;
+text-align: left;
+text-transform: uppercase;">Quıck shortcut</label>
+        <div style=" display: flex;flex-direction: row;">
+           <div class="token_btn"
+                  v-clipboard="address"
+                  @success="copySuccess"
+                  @error="copyError">Copy MAN Address</div>
+          <div class="token_btn"
+                @click="goPage('token')"> {{$t('myWallet.addToken')}} </div>
+          <div class="token_btn"
+              @click="goPage('createCoin')"> {{$t('createCoin.tittle')}} </div>
+        </div>
+      </div>
     </div>
-    <div class="account-info"
-         v-if="matrixCoin != null">
-      <div class="account-header">
-        <label class="title_font">{{currency}}{{$t('myWallet.assets')}}</label>
-        <label class="transfer_font"
-               @click="goTransfer(selectedCurrency.balance[0].balance, currency)">{{$t('myWallet.transfer')}}</label>
-        <el-select v-model="currency"
-                   :placeholder="$t('CampaignNode.select')"
-                   @change="changeCurrency">
-          <el-option v-for="item in matrixCoin"
-                     :key="item"
-                     :label="item"
-                     :value="item">
-          </el-option>
-          <!-- <el-option class="optionBtn">
-             +添加token
-          </el-option> -->
-        </el-select>
+    <hr class="bottom_hr">
+    <div class="account">
+      <div class="assetcard">
+        <div style="margin-top:20px;text-align: left;">
+          <label class="title_font">{{currency}} {{$t('myWallet.assets')}}</label>
+          <label class="transfer_font"
+                @click="goTransfer(selectedCurrency.balance[0].balance, currency)">{{$t('myWallet.transfer')}}</label>
+          <el-select style="width:66px;margin-left:2rem" v-model="currency"
+                    :placeholder="$t('CampaignNode.select')"
+                    @change="changeCurrency">
+            <el-option v-for="item in matrixCoin"
+                      :key="item"
+                      :label="item"
+                      :value="item">
+            </el-option>
+          </el-select>
+        </div>
+        <div class="money_font">
+          <template v-for="(item, index) in selectedCurrency.balance">
+            <label style="font-size: 3rem;
+                    color: #FFFF;
+                    font-weight: bold;
+                    margin-left: 1.5rem;
+                    margin-top: 1rem;"
+                    v-if="item.accountType == 0"
+                  :key='index'>
+            {{item.balance | weiToNumber}}
+            </label>
+          </template>
+        </div>
+        <div style="margin-left: 1.5rem;text-align: start;font-size: 0.9rem;">
+          <label style="color:#FFFFFF">{{selectedCurrency.address}}</label>
+          <label style="color:#FFFFFF;margin-left: 3rem;"
+              v-clipboard="selectedCurrency.address"
+                  @success="copySuccess"
+                  @error="copyError">
+                  <i class="el-icon-copy-document"></i>
+                  {{$t('createWallet.copy')}}</label>
+        </div>
       </div>
-      <div class="money_font">
-        <template v-for="(item, index) in selectedCurrency.balance">
-          <label v-if="item.accountType == 0"
-                 :key='index'>
-            {{$t('myWallet.availableAssets')}}
-            : {{item.balance | weiToNumber}} ({{currency}})
-          </label>
-          <label v-if="item.accountType == 3"
-                 :key='index'>
-            {{$t('myWallet.revocableAssets')}}
-            : {{item.balance | weiToNumber}} ({{currency}})
-          </label>
-        </template>
-        <label>
-          {{$t('myWallet.stakedAssets')}}
-          : 0 ({{currency}})
-        </label>
-      </div>
-      <table class="tab_info">
-        <tbody>
-          <tr class="tr1_info">
-            <td>{{currency}}{{$t('myWallet.walletAddress')}}<span class="matrix_fontSmall">({{$t('myWallet.addressTip1')}}{{currency}}{{$t('myWallet.addressTip2')}})</span></td>
-            <!-- <td>{{$t('myWallet.accountName')}}</td>
-            <td>{{$t('myWallet.browserLink')}}</td> -->
-          </tr>
-          <tr class="tr2_info">
-            <td>{{selectedCurrency.address}}<a v-clipboard="selectedCurrency.address"
-                 @success="copySuccess"
-                 @error="copyError"
-                 href="javascript:void(0)">{{$t('createWallet.copy')}}</a></td>
-            <!-- <td>man.1380013800</td>
-            <td><a>8888.matrix.io</a></td> -->
-          </tr>
-        </tbody>
-      </table>
-      <hr class="bottom_hr">
-      <div class="token_btn"
-           @click="goPage('token')">+ {{$t('myWallet.addToken')}}
+      <div class="account-info"
+          v-if="matrixCoin != null">
+        <div class="money_font">
+          <template v-for="(item, index) in selectedCurrency.balance">
+            <div class="money_div" v-if="item.accountType == 0"
+                  :key='index'>
+              <label>{{$t('myWallet.availableAssets')}}</label>
+              <div class="money_balance">{{item.balance | weiToNumber}} ({{currency}})</div>
+            </div>
+            <div class="money_div" v-if="item.accountType == 3"
+                  :key='index'>
+              <label>{{$t('myWallet.revocableAssets')}}</label>
+              <div class="money_balance">{{item.balance | weiToNumber}} ({{currency}})</div>
+            </div>
+          </template>
+          <div class="money_div">
+            <label>
+              {{$t('myWallet.stakedAssets')}}
+            </label>
+            <div class="money_balance">
+              0 ({{currency}})
+            </div>
+          </div>
+        </div>
+         <label style="color: rgb(119, 131, 143);
+            font-family: Open Sans;
+            font-size: 10px;
+            font-weight: 400;
+            line-height: 14px;
+            letter-spacing: 0.7142857313156128px;
+            text-align: left;
+            text-transform: uppercase;">Quıck shortcut</label>
+        <div style=" display: flex;flex-direction: row;">
+           <div class="token_btn"
+                  v-clipboard="selectedCurrency.address"
+                  @success="copySuccess"
+                  @error="copyError">Copy {{currency}} Address</div>
+          <div class="token_btn"
+                @click="goPage('token')"> {{$t('myWallet.addToken')}} </div>
+        </div>
+        <table class="tab_info">
+          <tbody>
+            <tr class="tr2_info">
+              <td><span style="color: rgb(37, 39, 38);
+                  font-family: Open Sans;
+                  font-size: 18px;
+                  font-weight: 400;
+                  line-height: 25px;
+                  letter-spacing: 0.7199999690055847px;
+                  text-align: left;
+                  text-transform: uppercase;">{{selectedCurrency.address}}</span>
+              </td>
+              <td><img v-clipboard="selectedCurrency.address"
+                  @success="copySuccess"
+                  @error="copyError" style="width:20px" src="../../assets/images/copy.png" alt=""></td>
+              <td><img style="width:20px" src="../../assets/images/send.png" alt=""></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
@@ -202,36 +294,74 @@ export default {
     border: none;
     height: 1px;
   }
-  .account-info {
-    text-align: left;
+  .account{
+    display: flex;
+    flex-direction: row;
     margin-top: 2rem;
-    .account-header {
-      .el-select {
-        float: right;
-      }
-    }
     .title_font {
       font-size: 1.25rem;
-      color: #2c365c;
+      color: #FFFFFF;
       letter-spacing: 0.18px;
       margin-top: 0.5rem;
+      margin-left: 1.5rem;
       margin-bottom: 0.25rem;
       font-weight: bold;
     }
     .transfer_font {
-      font-size: 0.875rem;
-      color: #1c51dd;
-      margin-left: 1.5rem;
+      text-align: center;
+      background: rgb(0, 102, 255);
+      border: 2px solid rgb(0, 51, 255);
+      border-radius: 23.5px;
+      margin: 1rem 0rem 1rem 2.6rem;
+      font-size: 13px;
+      letter-spacing: 0.13px;
+      height: 2.625rem;
+      line-height: 2.625rem;
+      padding: 0.3rem 1rem;
+      color: #FFFFFF;
       cursor: pointer;
     }
-    .money_font {
+     .money_font {
+      display: flex;
+      flex-direction: row;
       font-size: 0.75rem;
       color: #2c365c;
       letter-spacing: 0.11px;
       margin: 1rem 0;
       text-align: left;
-      label:not(:first-child) {
-        margin-left: 2.63rem;
+      .money_div{
+        margin-right: 2rem;
+        label{
+          color: rgb(119, 131, 143);
+          font-family: Open Sans;
+          font-size: 10px;
+          font-weight: 400;
+          line-height: 14px;
+          letter-spacing: 0.7142857313156128px;
+          text-align: left;
+          text-transform: uppercase;
+        }
+        label:not(:first-child) {
+          margin-left: 2.63rem;
+        }
+        .money_balance{
+          color: rgb(37, 39, 38);
+          font-family: Mulish-SemiBold;
+          font-size: 18px;
+          font-weight: undefined;
+          line-height: 27px;
+          letter-spacing: 0.7199999690055847px;
+          text-align: left;
+          text-transform: uppercase;
+        }
+      }
+    }
+    .account-info {
+      margin-left: 1rem;
+    text-align: left;
+    .account-header {
+      .el-select {
+        float: right;
       }
     }
     .tab_info {
@@ -245,7 +375,7 @@ export default {
         color: #2c365c;
         letter-spacing: 0.15px;
         td:first-of-type {
-          padding-left: 1rem;
+          // padding-left: 1rem;
           width: 64%;
           .matrix_fontSmall {
             font-size: 0.625rem;
@@ -269,7 +399,7 @@ export default {
         font-size: 0.75rem;
         background: rgba(242, 244, 248, 0.3);
         td:first-of-type {
-          padding-left: 1rem;
+          // padding-left: 1rem;
           a {
             margin-left: 1.25rem;
           }
@@ -281,19 +411,33 @@ export default {
       }
     }
   }
+  }
+  .assetcard{
+    background: url('../../assets/images/balance.png') no-repeat;
+    background-size:  100%;
+    width: 403px;
+    height: 240px;
+  }
   .bottom_hr {
     margin: 1rem 0;
+    border: 1px solid rgba(0, 102, 255, 0.28);
   }
   .token_btn {
     text-align: center;
-    background: #f2f4f8;
-    font-size: 14px;
+    background: rgb(0, 102, 255);
+    border: 2px solid rgb(0, 51, 255);
+    border-radius: 23.5px;
+    margin: 1rem 1rem;
+    font-size: 13px;
     letter-spacing: 0.13px;
-    margin-top: 2rem;
     height: 2.625rem;
     line-height: 2.625rem;
-    color: #1c51dd;
+    padding: 0rem 1rem;
+    color: #FFFFFF;
     cursor: pointer;
+    .a{
+       color: #FFFFFF;
+    }
   }
   .active {
     color: #2c365c;
@@ -301,6 +445,12 @@ export default {
   .optionBtn {
     text-align: center;
     color: #1c51dd;
+  }
+  /deep/.el-input--suffix .el-input__inner{
+    background: rgb(0, 102, 255);
+    border: 2px solid rgb(0, 51, 255);
+    border-radius: 23.5px;
+    color: #FFFFFF;
   }
 }
 </style>

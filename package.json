@@ -24,7 +24,7 @@
     "bip39": "^2.5.0",
     "bs58": "^4.0.1",
     "echarts": "^4.2.1",
-    "element-ui": "^2.6.0",
+    "element-ui": "^2.15.13",
     "es6-proxy-polyfill": "^1.2.1",
     "ethereumjs-tx": "^2.1.2",
     "ethers": "^4.0.48",
