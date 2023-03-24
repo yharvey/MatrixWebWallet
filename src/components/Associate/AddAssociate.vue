@@ -374,7 +374,7 @@ export default {
     }
     .back-tittle {
       position: relative;
-      left: 454px;
+      left: 400px;
       top: -33px;
       cursor: pointer;
       color: #1c51dd;

@@ -265,7 +265,7 @@ export default {
 </script>
 <style scoped lang="less">
 .jointAdd {
-  width: 1040px;
+  width: 960px;
   .addForm {
     /deep/.el-input {
       width: 26.5rem;
@@ -285,7 +285,7 @@ export default {
     }
     .back-tittle {
       position: relative;
-      left: 454px;
+      left: 400px;
       top: -33px;
       cursor: pointer;
       color: #1c51dd;

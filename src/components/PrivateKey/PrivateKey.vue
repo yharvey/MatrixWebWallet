@@ -67,7 +67,7 @@ export default {
       height: 2.5rem;
       line-height: 2.5rem;
       border: 1px solid #d5d7de;
-      border-radius: 2px;
+      border-radius: 5px;
       border-left: none;
       font-size: 0.875rem;
       border-left: none;

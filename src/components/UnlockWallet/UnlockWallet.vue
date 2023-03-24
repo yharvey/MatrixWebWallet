@@ -37,9 +37,6 @@
         <div class="card_way div_dis"
              @click="selectUnlock('mnemonic')">
           <div class="check_font" @click="selectWay('privateKey')">
-            <!-- <input type="radio"
-                   v-model="unlockType"
-                   value="mnemonic"> -->
             <img v-if="unlockType === 'mnemonic'" src="../../assets/images/radiof.png" alt="">
             <img v-if="unlockType !== 'mnemonic'" src="../../assets/images/radio.png" alt="">
           </div>
@@ -51,9 +48,6 @@
         <div class="card_way div_dis"
              @click="selectUnlock('ledger')">
           <div class="check_font" @click="selectWay('privateKey')">
-            <!-- <input type="radio"
-                   v-model="unlockType"
-                   value="ledger"> -->
             <img v-if="unlockType === 'ledger'" src="../../assets/images/radiof.png" alt="">
             <img v-if="unlockType !== 'ledger'" src="../../assets/images/radio.png" alt="">
           </div>
@@ -185,7 +179,7 @@ export default {
   },
   mounted () {
     let historyUrl = store.state.historyUrl
-    if (historyUrl.indexOf('green-mining') > -1 || historyUrl.indexOf('ai-application') > -1 || historyUrl.indexOf('contract') > -1 || historyUrl.indexOf('jointMining') > -1) {
+    if (historyUrl.indexOf('green-mining') > -1 || historyUrl.indexOf('aiApplication') > -1 || historyUrl.indexOf('contract') > -1 || historyUrl.indexOf('jointMining') > -1) {
       if (historyUrl.indexOf('jointMining') > -1) {
         this.$router.push({ path: '/jointMining/jointMiningfirst' })
         return
@@ -367,7 +361,7 @@ export default {
             type: 'success',
             showClose: true
           })
-          if (historyUrl.indexOf('green-mining') > -1 || historyUrl.indexOf('ai-application') > -1 || historyUrl.indexOf('contract') > -1 || historyUrl.indexOf('jointMining') > -1) {
+          if (historyUrl.indexOf('green-mining') > -1 || historyUrl.indexOf('aiApplication') > -1 || historyUrl.indexOf('contract') > -1 || historyUrl.indexOf('jointMining') > -1) {
             if (historyUrl.indexOf('jointMining') > -1) {
               this.$router.push({ path: '/jointMining/jointMiningfirst' })
               return
@@ -399,7 +393,7 @@ export default {
 
 <style scoped lang="less">
 .unlock-wallet {
-   .mnemonic_list {
+  .mnemonic_list {
     width: 100%;
     background: #FFFFFF;
     margin: 0 auto;
@@ -408,7 +402,7 @@ export default {
       flex-wrap: wrap;
       li {
         width: 20%;
-        padding: 10px 0;
+        padding: 0 0;
         box-sizing: border-box;
         color: #333333;
         border-radius: 1rem;
@@ -453,7 +447,7 @@ export default {
   }
   .switch_offline {
     position: relative;
-    right: -413px;
+    right: -310px;
     top: 25px;
   }
   img {

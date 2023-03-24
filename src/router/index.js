@@ -1,7 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Layout from '@/pages/Layout/Layout'
+
 import AIApplication from '@/pages/AIApplication/AIApplication'
+import AIHome from '@/pages/AIApplication/AIApplicationHome'
 import Contract from '@/pages/Contract/Contract'
 import GreenMining from '@/pages/GreenMining/GreenMining'
 import CrossChain from '@/pages/CrossChain/CrossChain'
@@ -258,10 +260,14 @@ let router = new Router({
         component: OfflineTransferFourth
       }]
     }, {
-      path: '/ai-application',
+      path: '/aiApplication',
       name: 'AIApplication',
       component: AIApplication,
       children: [{
+        path: 'aiHome',
+        name: 'AIHome',
+        component: AIHome
+      }, {
         path: 'medical',
         name: 'Medical',
         component: Medical

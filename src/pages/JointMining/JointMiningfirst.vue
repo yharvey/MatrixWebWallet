@@ -11,12 +11,23 @@
       <div class="tag-header">
         <div class="font-right-distance"
              @click="changeQuery('my')"
-             :class="{'active' : selectQuery === 'my'}">{{$t('jointFirst.my')}}</div>|
+             :class="{'active' : selectQuery === 'my'}">
+             <img style="width:32px" src="../../assets/images/myjoint.png" alt="">
+             <span style="display: inline-block;
+                        vertical-align: top;
+                        line-height: 31px;">{{$t('jointFirst.my')}}</span>
+             </div>
         <div class="font-left-distance"
              @click="changeQuery('all')"
-             :class="{'active' : selectQuery === 'all'}">{{$t('jointFirst.all')}}</div>
+             :class="{'active' : selectQuery === 'all'}">
+             <img  style="width:32px" src="../../assets/images/alljoint.png" alt="">
+             <span style="display: inline-block;
+                        vertical-align: top;
+                        line-height: 31px;">
+              {{$t('jointFirst.all')}}</span>
+             </div>
       </div>
-      <hr>
+      <!-- <hr> -->
       <div v-if="selectQuery==='all'">
         <div v-for="(item,index) in validatorList"
              :key="index">
@@ -86,7 +97,7 @@
                  @click="changeQuery('all')">{{$t('jointFirst.join')}}</label>
           <div class="space">
           </div>
-          <hr>
+          <!-- <hr> -->
         </div>
 
       </div>
@@ -240,8 +251,11 @@ export default {
 <style scoped lang="less">
 .jointMining {
   margin: auto;
-  width: 1040px;
+  width: 960px;
   .box-card1 {
+    min-height: 50px;
+    border-bottom-left-radius: 0rem;
+    border-bottom-right-radius: 0rem;
     .header {
       display: flex;
       justify-content: space-between;
@@ -252,6 +266,10 @@ export default {
         width: 10.5rem;
       }
     }
+  }
+  .box-card2{
+    border-top-left-radius: 0rem;
+    border-top-right-radius: 0rem;
   }
   .font-weight-style {
     font-size: 0.875rem;

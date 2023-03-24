@@ -4,8 +4,8 @@
   <div class="bridge">
     <div class="addForm">
       <div>
-        <div class="first-left">
-        </div>
+        <!-- <div class="first-left">
+        </div> -->
         <div>
           <h5>{{$t('crossChain.From')}}</h5>
           <div>
@@ -49,7 +49,7 @@
         </div>
       </div>
       <hr>
-      <button class="common-button"
+      <button class="common-button" style="width:11rem"
               @click="startBridge">{{$t('crossChain.start')}}</button>
     </div>
      <transfer-dialog :transferDialogVisible="transferDialogVisible"
@@ -523,7 +523,7 @@ export default {
     letter-spacing: 0.13px;
     font-weight: bold;
     display: flex;
-    margin-left: 260px;
+    margin-left: 217px;
     margin-bottom: 0.5rem;
   }
   h6 {
@@ -531,7 +531,7 @@ export default {
     color: #2c365c;
     letter-spacing: 0.13px;
     display: flex;
-    margin-left: 260px;
+    margin-left: 217px;
     margin-bottom: 0.5rem;
     margin-top: 0.1rem;
   }
@@ -569,7 +569,7 @@ export default {
   }
   .back-tittle {
     position: relative;
-    left: 446px;
+    left: 400px;
     top: -21px;
     cursor: pointer;
     color: #1c51dd;

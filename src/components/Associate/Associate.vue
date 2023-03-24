@@ -8,7 +8,7 @@
         <span class="transaction_records"
               @click="changeType('cannel')"
               :class="{'active' : type === 'cannel'}">{{$t('associate.cancelAssociate')}}</span>
-        <hr>
+        <hr style="height: 1px;background-color: #0066FF;border: none;">
       </div>
       <router-view></router-view>
     </el-card>

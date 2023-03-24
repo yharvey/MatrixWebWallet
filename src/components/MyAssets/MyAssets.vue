@@ -21,7 +21,7 @@
             </label>
           </template>
         </div>
-        <div style="margin-left: 1.5rem;text-align: start;font-size: 0.9rem;">
+        <div style="margin-left: 1.5rem;text-align: start;font-size: 0.8rem;">
            <label style="color:#FFFFFF">{{address}}</label>
            <label style="color:#FFFFFF;margin-left: 3rem;"
                v-clipboard="address"
@@ -42,7 +42,7 @@
                   line-height: 25px;
                   letter-spacing: 0.7199999690055847px;
                   text-align: left;
-                  text-transform: uppercase;">{{address}}</span>
+                  ">{{address}}</span>
               </td>
               <td><img v-clipboard="address"
                   @success="copySuccess"
@@ -131,7 +131,7 @@ text-transform: uppercase;">Quıck shortcut</label>
             </label>
           </template>
         </div>
-        <div style="margin-left: 1.5rem;text-align: start;font-size: 0.9rem;">
+        <div style="margin-left: 1.5rem;text-align: start;font-size: 0.8rem;">
           <label style="color:#FFFFFF">{{selectedCurrency.address}}</label>
           <label style="color:#FFFFFF;margin-left: 3rem;"
               v-clipboard="selectedCurrency.address"
@@ -191,7 +191,7 @@ text-transform: uppercase;">Quıck shortcut</label>
                   line-height: 25px;
                   letter-spacing: 0.7199999690055847px;
                   text-align: left;
-                  text-transform: uppercase;">{{selectedCurrency.address}}</span>
+                  ">{{selectedCurrency.address}}</span>
               </td>
               <td><img v-clipboard="selectedCurrency.address"
                   @success="copySuccess"
@@ -312,7 +312,7 @@ export default {
       background: rgb(0, 102, 255);
       border: 2px solid rgb(0, 51, 255);
       border-radius: 23.5px;
-      margin: 1rem 0rem 1rem 2.6rem;
+      margin: 1rem 0rem 1rem 2rem;
       font-size: 13px;
       letter-spacing: 0.13px;
       height: 2.625rem;

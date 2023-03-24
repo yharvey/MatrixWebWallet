@@ -194,7 +194,7 @@ export default {
     button {
       background: #ffffff;
       border: 1px solid #1c51dd;
-      border-radius: 2px;
+      border-radius: 5px;
       width: 12.5rem;
       height: 2.63rem;
       margin-bottom: 2.5rem;

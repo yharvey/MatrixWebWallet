@@ -92,7 +92,7 @@ export default {
     padding: 2rem 0 3rem 0;
   }
   .greetings_input {
-    border-radius: 2px;
+    border-radius: 5px;
     margin-top: 2rem;
     margin-bottom: 0.5rem;
   }
@@ -109,7 +109,7 @@ export default {
     height: 2.625rem;
     line-height: 2.625rem;
     background: #0066FF;
-    border-radius: 2px;
+    border-radius: 5px;
     cursor: pointer;
     font-size: 0.875rem;
     color: #ffffff;

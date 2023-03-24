@@ -84,7 +84,7 @@ export default {
           type: 'success',
           showClose: true
         })
-        if (historyUrl.indexOf('green-mining') > -1 || historyUrl.indexOf('ai-application') > -1 || historyUrl.indexOf('contract') > -1 || historyUrl.indexOf('jointMining') > -1) {
+        if (historyUrl.indexOf('green-mining') > -1 || historyUrl.indexOf('aiApplication') > -1 || historyUrl.indexOf('contract') > -1 || historyUrl.indexOf('jointMining') > -1) {
           if (historyUrl.indexOf('jointMining') > -1) {
             this.$router.push({ path: '/jointMining/jointMiningfirst' })
             return

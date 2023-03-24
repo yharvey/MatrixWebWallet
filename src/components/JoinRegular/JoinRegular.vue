@@ -163,7 +163,7 @@ export default {
 <style scoped lang="less">
 .jointRegular {
   margin: auto;
-  width: 1040px;
+  width: 960px;
   /deep/.el-input {
     display: block;
     width: 26.5rem;
@@ -182,7 +182,7 @@ export default {
   }
   .back-tittle {
     position: relative;
-    left: 446px;
+    left: 400px;
     cursor: pointer;
     color: #1c51dd;
     font-size: 0.88rem;

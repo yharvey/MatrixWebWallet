@@ -1,7 +1,7 @@
 <template>
   <div class="contract align-center">
     <el-card class="box-card body-card">
-      <div class="title">{{$t('contracts.contracts')}}</div>
+       <h5 style="margin-left:50px;font-size:20px">{{$t('contracts.contracts')}}</h5>
       <div class="form">
         <div class="input-title">{{$t('contract.coinType')}}</div>
         <el-select v-model="currency"
@@ -23,7 +23,7 @@
                   type="number">
         </el-input>
       </div>
-      <button class="common-button"
+      <button class="common-button" style="width:12rem"
               @click="signTransfer">{{$t('contract.signTransaction')}}</button>
     </el-card>
     <all-dialog :visible="visible"

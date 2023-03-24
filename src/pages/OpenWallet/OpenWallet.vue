@@ -2,15 +2,15 @@
   <div class="openWallet">
     <el-card class="box-card">
       <div class="query_assets_top">
+        <img style="width:2rem" src="../../assets/images/wallet.png" alt="">
         <span class="query_assets"
               :class="{'active' : type === 'myAssets'}"
               @click="changeType('myAssets')">
-              <img style="width:2rem" src="../../assets/images/wallet.png" alt="">
               {{$t('myWallet.myAssets')}}</span>
+        <img style="width:2rem" src="../../assets/images/nft.png" alt="">
         <span class="query_assets"
               :class="{'active' : type === 'NFTManage'}"
               @click="changeType('NFTManage')">
-              <img style="width:2rem" src="../../assets/images/nft.png" alt="">
               {{$t('myWallet.NFTManage')}}</span>
         <!-- <span class="query_assets"
               :class="{'active' : type === 'NftTest'}"
@@ -83,7 +83,7 @@ export default {
   }
   hr {
     background-color: #0066FF;
-    margin-top: 1rem;
+    // margin-top: 1rem;
     margin-bottom: 1.5rem;
     border: none;
     height: 1px;
@@ -91,8 +91,10 @@ export default {
   .query_assets {
     font-size: 1rem;
     letter-spacing: 0.15px;
-    margin-bottom: 1rem;
     margin-right: 1rem;
+    display: inline-block;
+    vertical-align: top;
+    line-height: 34px;
     cursor: pointer;
     color: #989a9c;
   }
@@ -100,6 +102,9 @@ export default {
     color: #989a9c;
     margin-left: 1rem;
     cursor: pointer;
+    display: inline-block;
+    vertical-align: top;
+    line-height: 34px;
   }
   .bottom_hr {
     margin: 2rem 0;

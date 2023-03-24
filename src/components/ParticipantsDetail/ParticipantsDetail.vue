@@ -401,7 +401,7 @@ export default {
 <style scoped lang="less">
 .participantsDetail {
   margin: auto;
-  width: 1040px;
+  width: 960px;
   .box-card1 {
     .header {
       text-align: left;

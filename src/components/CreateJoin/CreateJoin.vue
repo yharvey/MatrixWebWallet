@@ -2,13 +2,13 @@
   <div class="createJoin">
     <el-card>
       <div class="addForm">
-        <h1>{{$t('createJoin.createJoin')}}</h1>
+        <h1 style="text-align: left;margin: 0;">{{$t('createJoin.createJoin')}}</h1>
         <span class="back-tittle"
               @click="backPage">
           <i class="el-icon-arrow-left"></i>
           {{$t('openWallet.back')}}
         </span>
-        <!-- <h5>{{$t('associate.associateAddress')}}</h5> -->
+        <hr style="border: 0.5px solid #0066FF;">
         <el-input :placeholder="$t('createJoin.valueTips')"
                   v-model="value"
                   type="number"></el-input>
@@ -80,7 +80,7 @@
           <div>{{$t('createJoin.bottomTips9')}}</div>
           <div>{{$t('createJoin.bottomTips10')}}</div>
         </div> -->
-        <button class="common-button"
+        <button class="common-button" style="width:13rem"
                 @click="confirm">{{$t('createJoin.creatNew')}}</button>
       </div>
     </el-card>
@@ -270,7 +270,7 @@ export default {
 </script>
 <style scoped lang="less">
 .createJoin {
-  width: 1040px;
+  width: 960px;
   .addForm {
     /deep/.el-input {
       width: 26.5rem;
@@ -290,7 +290,7 @@ export default {
     }
     .back-tittle {
       position: relative;
-      left: 454px;
+      left: 400px;
       top: -33px;
       cursor: pointer;
       color: #1c51dd;

@@ -137,7 +137,7 @@ export default {
     button {
       width: 5rem;
       height: 2rem;
-      border-radius: 2px;
+      border-radius: 5px;
       text-align: center;
       letter-spacing: -0.21px;
       font-size: 0.75rem;

@@ -27,10 +27,10 @@
              <span class="sidespan">{{$t('header.jointMining')}}</span></label>
       </div>
       <div class="mlabel">
-        <img v-if="type==='ai-application'" style="width:40px;height:40px" src="../../assets/images/aif.png">
+        <img v-if="type==='aiApplication'" style="width:40px;height:40px" src="../../assets/images/aif.png">
         <img v-else style="width:40px;height:40px" src="../../assets/images/ainormal.png">
-        <label :class="{'active' : type === 'ai-application'}"
-             @click="changeMenu('ai-application')">
+        <label :class="{'active' : type === 'aiApplication'}"
+             @click="changeMenu('aiApplication')">
              <span class="sidespan">{{$t('header.aiApplication')}}</span></label>
       </div>
       <div class="mlabel">
@@ -81,10 +81,11 @@
       </div>
       <div class="mlabel">
         <div v-show="isUnlock || $store.state.offline!= null" @click="logout">
+          <img src="../../assets/images/logout.png"
+          :title="$t('setUp.logout')"
+          >
           <span>
-            <img src="../../assets/images/logout.png"
-            :title="$t('setUp.logout')"
-            >{{$t('setUp.logout')}}
+          {{$t('setUp.logout')}}
           </span>
         </div>
       </div>
@@ -129,7 +130,7 @@ export default {
     $route (to, from) {
       if (to.path.indexOf('my-wallet') > -1) {
         if (store.state.wallet === null) {
-          if (this.beforeUrl === 'ai-application' || this.beforeUrl === 'contract' || this.beforeUrl === 'green-mining') {
+          if (this.beforeUrl === 'aiApplication' || this.beforeUrl === 'contract' || this.beforeUrl === 'green-mining') {
             this.type = this.beforeUrl
           }
         } else {
@@ -139,8 +140,8 @@ export default {
         this.type = 'green-mining'
       } else if (to.path.indexOf('offline-transfer') > -1) {
         this.type = 'offline-transfer'
-      } else if (to.path.indexOf('ai-application') > -1) {
-        this.type = 'ai-application'
+      } else if (to.path.indexOf('aiApplication') > -1) {
+        this.type = 'aiApplication'
       } else if (to.path.indexOf('contract') > -1) {
         this.type = 'contract'
       } else if (to.path.indexOf('mapping') > -1) {
@@ -235,10 +236,10 @@ export default {
           } else if (status === 'my-wallet') {
             store.commit('UPDATE_HISTORYURL', '/my-wallet/openWallet/myAssets')
             this.$router.push({ path: '/my-wallet/myWalletFirst' })
-          } else if (status === 'ai-application') {
-            store.commit('UPDATE_BEFOREURL', '/ai-application/medical')
-            store.commit('UPDATE_HISTORYURL', '/ai-application/medical')
-            this.$router.push({ path: '/ai-application/medical' })
+          } else if (status === 'aiApplication') {
+            store.commit('UPDATE_BEFOREURL', '/aiApplication/aiHome')
+            store.commit('UPDATE_HISTORYURL', '/aiApplication/aiHome')
+            this.$router.push({ path: '/aiApplication/aiHome' })
           } else if (status === 'offlineSend') {
             store.commit('UPDATE_BEFOREURL', '/sendOffline/offlineUnlock')
             store.commit('UPDATE_HISTORYURL', '/sendOffline/offlineUnlock')
@@ -281,7 +282,7 @@ export default {
   align-items: center;
   margin: auto;
   width: 220px;
-  line-height:50px;
+  line-height:5px;
   .logo {
     height: 55px;
     width: 181px;

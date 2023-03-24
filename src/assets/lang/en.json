@@ -337,7 +337,7 @@
     "pose3": "Try it out and stay tuned for more new features in the future!",
     "tips":"This feature is currently being tested and will officially launch with MANIA.",
     "obj": "Object detection can quickly and accurately generate automatic text labeling for objects in a photograph. ",
-    "mania": "MANIA is a tool designed by Matrix for converting algorithmic scientists’ works into NFTs. Scientists can upload their AI algorithms and models to Matrix ’s IPFS network for storage and use them to mint NFTs to trade and exchange.",
+    "mania": "MANIA by Matrix enables scientists to turn their AI algorithms into NFTs stored on IPFS for trading and exchange.",
     "animation": "animation"
   },
   "miningTransactionOverview": {

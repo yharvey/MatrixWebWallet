@@ -311,8 +311,11 @@ export default {
 <style scoped lang="less">
 .jointDetail {
   margin: auto;
-  width: 1040px;
+  width: 960px;
   .box-card1 {
+    min-height: 100px;
+    border-bottom-left-radius: 0rem;
+    border-bottom-right-radius: 0rem;
     .header {
       padding: 0 2rem;
       display: flex;
@@ -325,6 +328,10 @@ export default {
         width: 10.5rem;
       }
     }
+  }
+  .box-card2{
+    border-top-left-radius: 0rem;
+    border-top-right-radius: 0rem;
   }
   .text-left {
     text-align: left;
@@ -362,7 +369,7 @@ export default {
   }
   .back-tittle {
     position: relative;
-    left: 441px;
+    left: 400px;
     cursor: pointer;
     color: #1c51dd;
     font-size: 0.88rem;

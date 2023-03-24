@@ -558,7 +558,7 @@ export default {
     letter-spacing: 0.13px;
     font-weight: bold;
     display: flex;
-    margin-left: 260px;
+    margin-left: 217px;
     margin-bottom: 1rem;
   }
   .h4-delDis {
@@ -595,7 +595,7 @@ export default {
   }
   .back-tittle {
     position: relative;
-    left: 446px;
+    left: 400px;
     top: -21px;
     cursor: pointer;
     color: #1c51dd;

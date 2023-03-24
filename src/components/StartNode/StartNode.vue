@@ -80,7 +80,7 @@ export default {
   .button-email {
     background: #ffffff;
     border: 1px solid #1c51dd;
-    border-radius: 2px;
+    border-radius: 5px;
     color: #1c51dd;
     width: 200px;
     height: 2.63rem;
