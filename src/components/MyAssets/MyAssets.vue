@@ -35,7 +35,7 @@
         <table class="tab_info">
           <tbody>
             <tr class="tr2_info">
-               <td><span style="color: rgb(37, 39, 38);
+               <td style="width:365px"><span style="color: rgb(37, 39, 38);
                   font-family: Open Sans;
                   font-size: 18px;
                   font-weight: 400;
@@ -44,10 +44,10 @@
                   text-align: left;
                   ">{{address}}</span>
               </td>
-              <td><img v-clipboard="address"
+              <td  style="width:50px"><img v-clipboard="address"
                   @success="copySuccess"
-                  @error="copyError" style="width:20px" src="../../assets/images/copy.png" alt=""></td>
-              <td><img style="width:20px" @click="goTransfer(balance[0].balance, 'MAN')" src="../../assets/images/send.png" alt=""></td>
+                  @error="copyError" style="width:32px" src="../../assets/images/copy.png" alt=""></td>
+              <td style="width:50px"><img style="width:32px" @click="goTransfer(balance[0].balance, 'MAN')" src="../../assets/images/send.png" alt=""></td>
             </tr>
           </tbody>
         </table>
@@ -59,7 +59,7 @@
               {{$t('myWallet.availableAssets')}}
             </label>
             <div class="money_balance">
-                 {{item.balance | weiToNumber}} (MAN)
+                 {{item.balance | weiToNumber}} MAN
             </div>
             </div>
             <div class="money_div" v-if="item.accountType == 3"
@@ -67,7 +67,7 @@
               <label>
               {{$t('myWallet.revocableAssets')}}
               <div class="money_balance">
-                {{item.balance | weiToNumber}} (MAN)
+                {{item.balance | weiToNumber}} MAN
               </div>
               </label>
             </div>
@@ -77,7 +77,7 @@
             {{$t('myWallet.stakedAssets')}}
             </label>
             <div class="money_balance">
-            0 (MAN)
+            0 MAN
             </div>
           </div>
         </div>
@@ -103,12 +103,12 @@ text-transform: uppercase;">Quıck shortcut</label>
     </div>
     <hr class="bottom_hr">
     <div class="account">
-      <div class="assetcard">
+      <div class="assetcard2">
         <div style="margin-top:20px;text-align: left;">
           <label class="title_font">{{currency}} {{$t('myWallet.assets')}}</label>
           <label class="transfer_font"
                 @click="goTransfer(selectedCurrency.balance[0].balance, currency)">{{$t('myWallet.transfer')}}</label>
-          <el-select style="width:66px;margin-left:2rem" v-model="currency"
+            <el-select style="width:66px;margin-left:2rem" v-model="currency"
                     :placeholder="$t('CampaignNode.select')"
                     @change="changeCurrency">
             <el-option v-for="item in matrixCoin"
@@ -148,12 +148,12 @@ text-transform: uppercase;">Quıck shortcut</label>
             <div class="money_div" v-if="item.accountType == 0"
                   :key='index'>
               <label>{{$t('myWallet.availableAssets')}}</label>
-              <div class="money_balance">{{item.balance | weiToNumber}} ({{currency}})</div>
+              <div class="money_balance">{{item.balance | weiToNumber}} {{currency}}</div>
             </div>
             <div class="money_div" v-if="item.accountType == 3"
                   :key='index'>
               <label>{{$t('myWallet.revocableAssets')}}</label>
-              <div class="money_balance">{{item.balance | weiToNumber}} ({{currency}})</div>
+              <div class="money_balance">{{item.balance | weiToNumber}} {{currency}}</div>
             </div>
           </template>
           <div class="money_div">
@@ -161,7 +161,7 @@ text-transform: uppercase;">Quıck shortcut</label>
               {{$t('myWallet.stakedAssets')}}
             </label>
             <div class="money_balance">
-              0 ({{currency}})
+              0 {{currency}}
             </div>
           </div>
         </div>
@@ -174,11 +174,11 @@ text-transform: uppercase;">Quıck shortcut</label>
             text-align: left;
             text-transform: uppercase;">Quıck shortcut</label>
         <div style=" display: flex;flex-direction: row;">
-           <div class="token_btn"
+           <div class="token_btn" style="background: rgb(67, 110, 155);"
                   v-clipboard="selectedCurrency.address"
                   @success="copySuccess"
                   @error="copyError">Copy {{currency}} Address</div>
-          <div class="token_btn"
+          <div class="token_btn" style="background: rgb(67, 110, 155);"
                 @click="goPage('token')"> {{$t('myWallet.addToken')}} </div>
         </div>
         <table class="tab_info">
@@ -193,10 +193,10 @@ text-transform: uppercase;">Quıck shortcut</label>
                   text-align: left;
                   ">{{selectedCurrency.address}}</span>
               </td>
-              <td><img v-clipboard="selectedCurrency.address"
+              <td style="width:50px"><img v-clipboard="selectedCurrency.address"
                   @success="copySuccess"
-                  @error="copyError" style="width:20px" src="../../assets/images/copy.png" alt=""></td>
-              <td><img style="width:20px" src="../../assets/images/send.png" alt=""></td>
+                  @error="copyError" style="width:32px" src="../../assets/images/copy2.png" alt=""></td>
+              <td style="width:50px"><img style="width:32px" src="../../assets/images/send2.png" alt=""></td>
             </tr>
           </tbody>
         </table>
@@ -309,8 +309,10 @@ export default {
     }
     .transfer_font {
       text-align: center;
-      background: rgb(0, 102, 255);
-      border: 2px solid rgb(0, 51, 255);
+      background: rgb(13, 60, 254);
+      border: 2px solid rgb(84, 159, 247);
+      // background: rgb(7, 100, 227);
+      // border: 2px solid rgba(7, 100, 227, 0.3);;
       border-radius: 23.5px;
       margin: 1rem 0rem 1rem 2rem;
       font-size: 13px;
@@ -327,10 +329,12 @@ export default {
       font-size: 0.75rem;
       color: #2c365c;
       letter-spacing: 0.11px;
-      margin: 1rem 0;
+      padding: 1rem 0;
       text-align: left;
+      box-shadow: 0px 2px 48px rgba(0, 0, 0, 0.04);
+      border-radius:20px;
       .money_div{
-        margin-right: 2rem;
+        margin-right: 1.5rem;
         label{
           color: rgb(119, 131, 143);
           font-family: Open Sans;
@@ -347,8 +351,9 @@ export default {
         .money_balance{
           color: rgb(37, 39, 38);
           font-family: Mulish-SemiBold;
-          font-size: 18px;
+          font-size: 20px;
           font-weight: undefined;
+          height: 50px;
           line-height: 27px;
           letter-spacing: 0.7199999690055847px;
           text-align: left;
@@ -366,7 +371,7 @@ export default {
     }
     .tab_info {
       width: 100%;
-      margin-top: 1rem;
+      // margin-top: 1rem;
       border-spacing: 0px;
       .tr1_info {
         background: rgba(242, 244, 248, 0.8);
@@ -401,7 +406,7 @@ export default {
         td:first-of-type {
           // padding-left: 1rem;
           a {
-            margin-left: 1.25rem;
+            margin-left: 1rem;
           }
         }
         a {
@@ -418,21 +423,29 @@ export default {
     width: 403px;
     height: 240px;
   }
+   .assetcard2{
+    background: url('../../assets/images/balance2.png') no-repeat;
+    background-size:  100%;
+    width: 403px;
+    height: 240px;
+  }
   .bottom_hr {
     margin: 1rem 0;
-    border: 1px solid rgba(0, 102, 255, 0.28);
+    background:  rgba(0, 102, 255, 0.28);;
+    border: 0px solid rgba(0, 102, 255, 0.28);
   }
   .token_btn {
     text-align: center;
+    width: 130px;
     background: rgb(0, 102, 255);
-    border: 2px solid rgb(0, 51, 255);
+    border: 2px solid rgb(84, 159, 247);
     border-radius: 23.5px;
-    margin: 1rem 1rem;
-    font-size: 13px;
+    margin: 1rem 0.4rem;
+    font-size: 10px;
     letter-spacing: 0.13px;
     height: 2.625rem;
     line-height: 2.625rem;
-    padding: 0rem 1rem;
+    padding: 0rem 0rem;
     color: #FFFFFF;
     cursor: pointer;
     .a{
@@ -447,10 +460,14 @@ export default {
     color: #1c51dd;
   }
   /deep/.el-input--suffix .el-input__inner{
-    background: rgb(0, 102, 255);
-    border: 2px solid rgb(0, 51, 255);
+    background: rgb(13, 60, 254);
+    border: 2px solid rgb(84, 159, 247);
     border-radius: 23.5px;
     color: #FFFFFF;
+    height: 32px;
+  }
+  /deep/.el-input__icon {
+    line-height: 32px;
   }
 }
 </style>

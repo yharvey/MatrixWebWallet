@@ -31,8 +31,8 @@
                 <a class="abutton" @click="goPage('RegularDetail',{regularDepositList: regularDepositList,regularDepositValue:regularDepositValue})">{{$t('digAccount.withdraw_detail')}}</a>
               </div>
             </div>
-            <el-divider direction="vertical" style="height:0rem"></el-divider>
-            <div style="margin-left:15px">
+            <el-divider direction="vertical"></el-divider>
+            <div style="margin-left:15px;min-width:200px">
               <div class="title">
                 <span>{{$t('digAccount.current')}}</span>
               </div>
@@ -45,6 +45,7 @@
                 <a class="alink" @click="goPage('RegularMortgage',{currentDepositValue:currentDepositValue})">{{$t('digAccount.change_regular')}}</a>
               </div>
             </div>
+            <el-divider direction="vertical" style="height:4rem;margin: 16px 8px;"></el-divider>
         </div>
       </div>
     </div>
@@ -64,8 +65,8 @@
                 <a class="abutton" @click="goPage('RegularWithdrawals',{regularWithdrawalsList:regularWithdrawalsList})">{{$t('digAccount.withdrawals_detail')}}</a>
               </div>
             </div>
-             <el-divider direction="vertical" style="height:0rem"></el-divider>
-            <div style="margin-left:15px">
+             <el-divider direction="vertical" ></el-divider>
+            <div style="margin-left:15px;min-width:200px">
               <div class="title">
                 <span>{{$t('digAccount.current')}}</span>
               </div>
@@ -77,6 +78,7 @@
                   >{{$t('digAccount.withdrawals_detail')}}</a>
               </div>
             </div>
+            <el-divider direction="vertical" ></el-divider>
         </div>
       </div>
   </div>
@@ -180,10 +182,14 @@ export default {
   padding: 1.5rem 0 2rem;
   .minningcard{
     background: rgba(242, 244, 248, 0.3);
+    background: rgb(255, 255, 255);
+    box-shadow: 0px 2px 48px rgba(0, 0, 0, 0.04);
+    border-radius:20px;
     display: flex;
     flex-direction: row;
     margin-top: 30px;
     margin-bottom: 50px;
+    padding: 1rem 1rem;
     .title{
       color: rgb(119, 131, 143);
       font-family: Open Sans;
@@ -341,6 +347,10 @@ export default {
   hr {
     margin: 2.5rem 0 2.5rem 0;
     border: 1px solid #d5d7de;
+  }
+  /deep/.el-divider--vertical {
+    height: 4rem;
+    margin: 10px 18px;
   }
 }
 </style>

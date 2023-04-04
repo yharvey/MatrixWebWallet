@@ -256,6 +256,7 @@ export default {
     min-height: 50px;
     border-bottom-left-radius: 0rem;
     border-bottom-right-radius: 0rem;
+    border-bottom: 1px solid rgb(0, 102, 255);
     .header {
       display: flex;
       justify-content: space-between;

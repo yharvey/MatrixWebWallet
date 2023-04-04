@@ -15,7 +15,7 @@
         <!-- <span class="query_assets"
               :class="{'active' : type === 'NftTest'}"
               @click="changeType('NftTest')">{{$t('OperateNFT')}}</span>| -->
-        <img style="width:2rem" src="../../assets/images/nft.png" alt="">
+        <img style="width:2rem" src="../../assets/images/record.png" alt="">
         <span class="transaction_records"
               @click="changeType('record')"
               :class="{'active' : type === 'record'}">
