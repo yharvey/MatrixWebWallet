@@ -9,7 +9,7 @@
     <h1 style="text-align: left;
     margin-left: 6rem;">{{title === $t('myWallet.queryWallet') ? $t('myWallet.openWallet') : ''}}</h1>
     <h4 style="text-align: left;margin-left: 6rem;" v-if="offSwitch">{{$t('myWallet.choose')}}</h4>
-    <div style="display:flex;flex-direction: row;justify-content: left;margin-left: 7rem;" v-if="offSwitch">
+    <div style="display:flex;flex-direction: row;justify-content: left;margin-left: 4rem;" v-if="offSwitch">
       <div class="card_pos">
         <!--keystore Card-->
         <div class="card_way div_dis"
@@ -58,7 +58,7 @@
       </div>
       <!--keystore 输入密码-->
       <div class="cardcontent" v-show="unlockType == 'keystore'">
-        <h3 style="text-align: left">Keystore {{$t('myWallet.file')}}</h3>
+        <h3 style="text-align: left;font-family: Poppins;">Keystore {{$t('myWallet.file')}}</h3>
         <div class="pass_input"
              v-if="keyStore != null">
           <input class="storeInput"
@@ -73,6 +73,8 @@
         </div>
         <div class="hint_error"
              v-show="keystoreError">*{{$t('createWallet.passWordError')}}</div>
+        <div style="height:4rem"></div>
+
         <div class="file_btn"
              @click="selectFile"
              v-if="keyStore == null">{{$t('myWallet.selectWalletFile')}}...</div>
@@ -400,6 +402,7 @@ export default {
     ul {
       display: flex;
       flex-wrap: wrap;
+      margin-left: -3rem;
       li {
         width: 20%;
         padding: 0 0;
@@ -432,7 +435,7 @@ export default {
     }
   }
   .cardcontent{
-    width: 50%;
+    width: 45%;
   }
   .ledger {
     h4 {

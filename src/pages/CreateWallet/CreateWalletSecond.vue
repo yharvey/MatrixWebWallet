@@ -79,13 +79,13 @@
           </div>
         </div>
         <div v-show="!selectMnemonicKey && !selectKeystore && selectPrivateKey && !downShow">
-          <h5>{{$t('conversion.manAddress')}}</h5>
-          <div>
+          <h5 style="text-align: left;margin-left: 6rem;">{{$t('conversion.manAddress')}}</h5>
+          <div style="text-align: left;margin-left: 6rem;">
             <input class="addressInput"
                    v-model="wallet.address"
                    readonly>
           </div>
-          <div class="pass_input">
+          <div class="pass_input" style="text-align: left;margin-left: 6rem;">
             <input class="storeInput"
                    v-model="privateKey"
                    readonly>
@@ -104,7 +104,7 @@
         </div>
         <div v-show="selectMnemonicKey && !selectKeystore && !selectPrivateKey && !downShow">
           <h5 style="text-align: left;margin-left: 6rem;">{{$t('conversion.manAddress')}}</h5>
-          <div>
+          <div style="text-align: left;margin-left: 6rem;">
             <input class="addressInput"
                    v-model="wallet.address"
                    readonly>
@@ -135,13 +135,13 @@
         </div>
         </div>
         <div v-show="!selectMnemonicKey && selectKeystore && !selectPrivateKey && !downShow">
-          <h5>{{$t('conversion.manAddress')}}</h5>
-          <div>
+          <h5 style="text-align: left;margin-left: 6rem;">{{$t('conversion.manAddress')}}</h5>
+          <div style="text-align: left;margin-left: 6rem;">
             <input class="addressInput"
                    v-model="wallet.address"
                    readonly>
           </div>
-          <div class="pass_input">
+          <div class="pass_input" style="text-align: left;margin-left: 6rem;">
             <input :placeholder="$t('myWallet.enterPassword')"
                    :type="isShowPassword ? 'text' : 'password'"
                    v-model="password"
@@ -354,8 +354,8 @@ export default {
   }
   .card_pos {
     text-align: center;
-    align-items: center;
-    margin-left: 0rem;
+    // align-items: center;
+    margin-left: 6rem;
     .item {
       margin-top: 20px;
       // margin-left: 6rem;
@@ -418,11 +418,11 @@ export default {
   .pass_input {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    // justify-content: center;
     margin-top: 1rem;
   }
   .storeInput {
-    width: 23.125rem;
+    width: 32.125rem;
     height: 2.5rem;
     padding: 0;
     border: 1px solid #d5d7de;

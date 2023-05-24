@@ -2,7 +2,7 @@
   <div class="unlock-wallet">
     <h1>{{$t('OfflineUnlock.signing')}}</h1>
     <h4 v-if="!offSwitch">{{$t('OfflineUnlock.selectSign')}}</h4>
-    <div style="display:flex;flex-direction: row;justify-content: left;margin-left: 7rem;" v-if="!offSwitch">
+    <div style="display:flex;flex-direction: row;justify-content: left;margin-left: 4rem;" v-if="!offSwitch">
       <div class="card_pos">
          <!--keystore Card-->
         <div class="card_way div_dis"

@@ -67,7 +67,7 @@ export default {
     }
   }
    .el-main {
-    padding: 5.5rem 0 2.5rem 0;
+    padding: 3.5rem 0 2.5rem 0;
     justify-content: center;
     text-align: -webkit-center;
     text-align: -moz-center;

@@ -25,7 +25,7 @@
     "selectWalletFile": "Select wallet file",
     "openWallet": "Open Wallet",
     "msg1": "Don't have your own wallet yet?",
-    "create": "Create a wallet",
+    "create": "Create Wallet",
     "msg2": "You can also enter an address to",
     "view": "View a wallet",
     "balance": "Balance",
@@ -88,7 +88,7 @@
     "warningGas": "Plese input the transfer address and value"
   },
   "createWallet": {
-    "createWallet": "Create a wallet",
+    "createWallet": "Create Wallet",
     "createWalletTip1": "Matrix Wallet is a decentralized web-based wallet.",
     "createWalletTip2": "We will not store any information and passwords for you.",
     "createWalletTip3": "There is no way to recover them.",
@@ -186,8 +186,8 @@
     "moreCoinAddress": "Currency Address",
     "addressChange": "Conversion Result",
     "moreCoinChange": "Currency Conversion",
-    "manAddress": "MAN address",
-    "ethaddress": "ETH address",
+    "manAddress": "MAN ADDRESS",
+    "ethaddress": "ETH ADDRESS",
     "text": "TEXT",
     "hex": "HEX",
     "currencyName": "Currency Name",

@@ -291,11 +291,14 @@ export default {
     .back-tittle {
       position: relative;
       left: 400px;
-      top: -33px;
+      top: -20px;
       cursor: pointer;
-      color: #1c51dd;
-      font-size: 0.88rem;
+      color: #FFFFFF;
+      font-size: 0.65rem;
       letter-spacing: 0.13px;
+      background: #007EFF;
+      padding: 0.2rem 0.6rem;
+      border-radius: 5px;
     }
     .small-input {
       width: 10rem;
