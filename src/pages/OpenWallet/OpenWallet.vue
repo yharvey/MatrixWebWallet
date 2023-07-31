@@ -2,15 +2,24 @@
   <div class="openWallet">
     <el-card class="box-card">
       <div class="query_assets_top">
+        <img style="width:2rem" src="../../assets/images/wallet.png" alt="">
         <span class="query_assets"
               :class="{'active' : type === 'myAssets'}"
-              @click="changeType('myAssets')">{{$t('myWallet.myAssets')}}</span>|
+              @click="changeType('myAssets')">
+              {{$t('myWallet.myAssets')}}</span>
+        <img style="width:2rem" src="../../assets/images/nft.png" alt="">
         <span class="query_assets"
               :class="{'active' : type === 'NFTManage'}"
-              @click="changeType('NFTManage')">{{$t('myWallet.NFTManage')}}</span>|
+              @click="changeType('NFTManage')">
+              {{$t('myWallet.NFTManage')}}</span>
+        <!-- <span class="query_assets"
+              :class="{'active' : type === 'NftTest'}"
+              @click="changeType('NftTest')">{{$t('OperateNFT')}}</span>| -->
+        <img style="width:2rem" src="../../assets/images/record.png" alt="">
         <span class="transaction_records"
               @click="changeType('record')"
-              :class="{'active' : type === 'record'}">{{$t('myWallet.transactionRecord')}}</span>
+              :class="{'active' : type === 'record'}">
+              {{$t('myWallet.transactionRecord')}}</span>
         <span class="back"
               @click="back"
               v-show="showBack">
@@ -73,8 +82,8 @@ export default {
     text-align: left;
   }
   hr {
-    background-color: #d5d7de;
-    margin-top: 1rem;
+    background-color: #0066FF;
+    // margin-top: 1rem;
     margin-bottom: 1.5rem;
     border: none;
     height: 1px;
@@ -82,15 +91,20 @@ export default {
   .query_assets {
     font-size: 1rem;
     letter-spacing: 0.15px;
-    margin-bottom: 1rem;
     margin-right: 1rem;
+    display: inline-block;
+    vertical-align: top;
+    line-height: 34px;
     cursor: pointer;
     color: #989a9c;
   }
   .transaction_records {
     color: #989a9c;
-    margin-left: 1rem;
+    //margin-left: 1rem;
     cursor: pointer;
+    display: inline-block;
+    vertical-align: top;
+    line-height: 34px;
   }
   .bottom_hr {
     margin: 2rem 0;

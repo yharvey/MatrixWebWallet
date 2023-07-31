@@ -8,7 +8,7 @@
         <span class="query_assets"
               @click="changeType('send')"
               :class="{'active' : type === 'send'}">{{$t('unlock.sendSignature')}}</span>
-        <hr>
+       <hr style="height: 1px;background-color: #0066FF;border: none;">
       </div>
       <router-view></router-view>
     </el-card>
@@ -52,7 +52,7 @@ export default {
   /deep/.el-card__body {
     padding: 1rem 2.5rem 3rem 2.5rem;
   }
-  width: 1040px;
+  width: 960px;
   .query_assets_top {
     text-align: left;
   }

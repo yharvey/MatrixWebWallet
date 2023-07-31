@@ -326,7 +326,7 @@ export default {
   }
   .change-chart {
     border: 1px solid #f2f4f8;
-    border-radius: 2px;
+    border-radius: 5px;
     width: 4.88rem;
     height: 2rem;
     align-items: center;

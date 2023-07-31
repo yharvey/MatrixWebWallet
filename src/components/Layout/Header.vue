@@ -11,8 +11,8 @@
              @click="changeMenu('green-mining')">{{$t('header.greenMining')}}</label>
       <label :class="{'active' : type === 'jointMining'}"
              @click="changeMenu('jointMining')">{{$t('header.jointMining')}}</label>
-      <label :class="{'active' : type === 'ai-application'}"
-             @click="changeMenu('ai-application')">{{$t('header.aiApplication')}}</label>
+      <label :class="{'active' : type === 'aiApplication'}"
+             @click="changeMenu('aiApplication')">{{$t('header.aiApplication')}}</label>
       <label :class="{'active' : type === 'contract'}"
              @click="changeMenu('contract')">{{$t('header.contracts')}}</label>
       <label :class="{'active' : type === 'offlineSend'}"
@@ -31,6 +31,7 @@
           <el-dropdown-item v-show="isUnlock || $store.state.offline!=null"
                             @click.native="goPage('associate')">{{$t('setUp.associate')}}</el-dropdown-item>
           <el-dropdown-item @click.native="goPage('conversion')">{{$t('setUp.conversion')}}</el-dropdown-item>
+          <el-dropdown-item @click.native="goPage('networks')">{{$t('setUp.networks')}}</el-dropdown-item>
           <el-dropdown-item v-show="isUnlock"
                             @click.native="goPage('privateKey')">{{$t('setUp.privateBackups')}}</el-dropdown-item>
           <el-dropdown-item v-show="isUnlock"
@@ -71,7 +72,7 @@ export default {
     $route (to, from) {
       if (to.path.indexOf('my-wallet') > -1) {
         if (store.state.wallet === null) {
-          if (this.beforeUrl === 'ai-application' || this.beforeUrl === 'contract' || this.beforeUrl === 'green-mining') {
+          if (this.beforeUrl === 'aiApplication' || this.beforeUrl === 'contract' || this.beforeUrl === 'green-mining') {
             this.type = this.beforeUrl
           }
         } else {
@@ -81,8 +82,8 @@ export default {
         this.type = 'green-mining'
       } else if (to.path.indexOf('offline-transfer') > -1) {
         this.type = 'offline-transfer'
-      } else if (to.path.indexOf('ai-application') > -1) {
-        this.type = 'ai-application'
+      } else if (to.path.indexOf('aiApplication') > -1) {
+        this.type = 'aiApplication'
       } else if (to.path.indexOf('contract') > -1) {
         this.type = 'contract'
       } else if (to.path.indexOf('mapping') > -1) {
@@ -167,10 +168,10 @@ export default {
           } else if (status === 'my-wallet') {
             store.commit('UPDATE_HISTORYURL', '/my-wallet/openWallet/myAssets')
             this.$router.push({ path: '/my-wallet/myWalletFirst' })
-          } else if (status === 'ai-application') {
-            store.commit('UPDATE_BEFOREURL', '/ai-application/medical')
-            store.commit('UPDATE_HISTORYURL', '/ai-application/medical')
-            this.$router.push({ path: '/ai-application/medical' })
+          } else if (status === 'aiApplication') {
+            store.commit('UPDATE_BEFOREURL', '/aiApplication/medical')
+            store.commit('UPDATE_HISTORYURL', '/aiApplication/medical')
+            this.$router.push({ path: '/aiApplication/medical' })
           } else if (status === 'offlineSend') {
             store.commit('UPDATE_BEFOREURL', '/sendOffline/offlineUnlock')
             store.commit('UPDATE_HISTORYURL', '/sendOffline/offlineUnlock')
@@ -187,6 +188,7 @@ export default {
       }
     },
     goPage (url) {
+      console.log('url', url)
       this.$router.push({ path: '/setUp/' + url })
     },
     goGreeting () {

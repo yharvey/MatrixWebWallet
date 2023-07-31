@@ -1,9 +1,11 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-unused-vars */
 <template>
   <div class="bridge">
     <div class="addForm">
       <div>
-        <div class="first-left">
-        </div>
+        <!-- <div class="first-left">
+        </div> -->
         <div>
           <h5>{{$t('crossChain.From')}}</h5>
           <div>
@@ -47,7 +49,7 @@
         </div>
       </div>
       <hr>
-      <button class="common-button"
+      <button class="common-button" style="width:11rem"
               @click="startBridge">{{$t('crossChain.start')}}</button>
     </div>
      <transfer-dialog :transferDialogVisible="transferDialogVisible"
@@ -93,7 +95,7 @@
 <script>
 import WalletUtil from '@/assets/js/WalletUtil'
 import SendTransfer from '@/assets/js/SendTransfer'
-import { bridgeContractAddr,bscManAddr, bridgeManCoinAddress, contract,erc20Abi,bridgeAbi } from '@/assets/js/config'
+import { bridgeContractAddr, bscManAddr, bridgeManCoinAddress, erc20Abi, bridgeAbi } from '@/assets/js/config'
 import TradingFuns from '@/assets/js/TradingFuns'
 import AllDialog from '@/components/TransferDialog/AllDialog'
 import GreenDialog from '@/components/TransferDialog/GreenDialog'
@@ -104,11 +106,11 @@ import transferSuccess from '@/components/TransferDialog/transferSuccess'
 import TransferDialog from '@/components/TransferDialog/TransferDialog'
 import confirmTransferDialog from '@/components/TransferDialog/confirmTransferDialog'
 import store from 'store'
-import filter from '@/assets/js/filters'
-import Bus from '@/assets/js/Bus'
+// import filter from '@/assets/js/filters'
+// import Bus from '@/assets/js/Bus'
 import Web3 from 'web3'
 import Tx from 'ethereumjs-tx'
-import ethers from 'ethers'
+// import ethers from 'ethers'
 
 export default {
   name: 'bridge',
@@ -124,7 +126,7 @@ export default {
       bridgeTo: 'bsc',
       transferDialogVisible: false,
       confirmTransfer: false,
-      balance:'',
+      balance: '',
       hash: '',
       msg: '',
       sendCoin: 'MAN',
@@ -141,8 +143,8 @@ export default {
       wallet: this.$store.state.wallet,
       contract: null,
       newTxData: {},
-      bridgeContract:'',
-      tokenContract:'',
+      bridgeContract: '',
+      tokenContract: '',
       ruleForm: {
         addressList: [],
         value: '11',
@@ -157,13 +159,13 @@ export default {
         data: '',
         nonce: ''
       },
-       ruleFormBSC: {
+      ruleFormBSC: {
         amount: '',
         address: '',
         gasPrice: '',
         gasLimit: '150000'
       },
-      manBalance:'',
+      manBalance: ''
     }
   },
   methods: {
@@ -178,23 +180,23 @@ export default {
       }
     },
     getBridgeFrom (item) {
-      if(item.key==='bsc'){
+      if (item.key === 'bsc') {
         this.bridgeAddrress = WalletUtil.getEthAddress(this.wallet.address)
-        this.bridgeTo='matrix'
-      }else{
-         this.bridgeAddrress = this.wallet.address
-         this.bridgeTo='bsc'
+        this.bridgeTo = 'matrix'
+      } else {
+        this.bridgeAddrress = this.wallet.address
+        this.bridgeTo = 'bsc'
       }
-     },
+    },
     getBridgeTo (item) {
-      if(item.key==='bsc'){
+      if (item.key === 'bsc') {
         this.bridgeAddrress = WalletUtil.getEthAddress(this.wallet.address)
-        this.bridgeFrom='matrix'
-      }else{
-         this.bridgeAddrress = this.wallet.address
-         this.bridgeFrom='bsc'
+        this.bridgeFrom = 'matrix'
+      } else {
+        this.bridgeAddrress = this.wallet.address
+        this.bridgeFrom = 'bsc'
       }
-     },
+    },
     changeTransferDialogVisible (val) {
       this.transferDialogVisible = val
       this.ruleForm = {
@@ -219,15 +221,13 @@ export default {
     changeSuccess () {
       this.successVisible = false
     },
-    startBridge(){
-      if (Number(this.ruleForm.value) < 11){
-        this.$message.error("Unavailable Amount")
+    startBridge () {
+      if (Number(this.ruleForm.value) < 11) {
+        this.$message.error('Unavailable Amount')
         return
       }
-      if (this.bridgeFrom === 'bsc'){
-        this.$message.success("BSC to MATRIX coming soon ...")
-        return
-        this.submitBSC()
+      if (this.bridgeFrom === 'bsc') {
+        this.$message.success('BSC to MATRIX coming soon ...')
       } else {
         this.generateTx()
       }
@@ -282,90 +282,91 @@ export default {
       console.log('init...')
     },
     generateTx () {
-          try {
-            // ruleForm.value
-            this.ruleForm.to = bridgeManCoinAddress
-            this.ruleForm.nonce = this.httpProvider.man.getTransactionCount(this.address)
-            this.ruleForm.nonce = WalletUtil.numToHex(this.ruleForm.nonce)
-            
-            if (new BigNumber(this.ruleForm.gas).comparedTo(this.httpProvider.fromWei(210000 * 18000000000)) === 1) {
-              let gasNumber = new BigNumber(this.httpProvider.toWei(this.ruleForm.gas))
-              this.ruleForm.gasLimit = parseInt(gasNumber.div(new BigNumber(18000000000)).toString(10)) + 1
-            }
-            if (this.ruleForm.value < 0) {
-              this.$message.error(this.$t('errorMsgs.valueError'))
-              return
-            }
-            console.log("eee")
-            this.ruleForm.extra_to = [[parseInt(this.ruleForm.ExtraTimeTxType), 0, []]]
-            
-            let jsonObj = TradingFuns.getTxData(this.ruleForm)
-            
-            if (this.$store.state.wallet != null) {
-              if (this.$store.state.wallet.privateKey) {
-                let tx = WalletUtil.createTx(jsonObj)
-                let privateKey = this.$store.state.wallet.privateKey
-                privateKey = Buffer.from(privateKey.indexOf('0x') > -1 ? privateKey.substring(2, privateKey.length) : privateKey, 'hex')
-                tx.sign(privateKey)
-                let serializedTx = tx.serialize()
-                this.newTxData = SendTransfer.getTxParams(serializedTx)
-                console.log(this.newTxData)
-                this.confirmTransfer = true
-              } else {
-                this.confirmOffline = true
-                this.jsonObj = JSON.stringify(jsonObj)
-              }
-            } else {
-              this.confirmOffline = true
-              this.jsonObj = JSON.stringify(jsonObj)
-            }
-          } catch (e) {
-            this.$message.error(e.message)
+      try {
+        // ruleForm.value
+        this.ruleForm.to = bridgeManCoinAddress
+        this.ruleForm.nonce = this.httpProvider.man.getTransactionCount(this.address)
+        this.ruleForm.nonce = WalletUtil.numToHex(this.ruleForm.nonce)
+
+        if (new BigNumber(this.ruleForm.gas).comparedTo(this.httpProvider.fromWei(210000 * 18000000000)) === 1) {
+          let gasNumber = new BigNumber(this.httpProvider.toWei(this.ruleForm.gas))
+          this.ruleForm.gasLimit = parseInt(gasNumber.div(new BigNumber(18000000000)).toString(10)) + 1
+        }
+        if (this.ruleForm.value < 0) {
+          this.$message.error(this.$t('errorMsgs.valueError'))
+          return
+        }
+        console.log('eee')
+        this.ruleForm.extra_to = [[parseInt(this.ruleForm.ExtraTimeTxType), 0, []]]
+
+        let jsonObj = TradingFuns.getTxData(this.ruleForm)
+
+        if (this.$store.state.wallet != null) {
+          if (this.$store.state.wallet.privateKey) {
+            let tx = WalletUtil.createTx(jsonObj)
+            let privateKey = this.$store.state.wallet.privateKey
+            privateKey = Buffer.from(privateKey.indexOf('0x') > -1 ? privateKey.substring(2, privateKey.length) : privateKey, 'hex')
+            tx.sign(privateKey)
+            let serializedTx = tx.serialize()
+            this.newTxData = SendTransfer.getTxParams(serializedTx)
+            console.log(this.newTxData)
+            this.confirmTransfer = true
+          } else {
+            this.confirmOffline = true
+            this.jsonObj = JSON.stringify(jsonObj)
           }
-        
+        } else {
+          this.confirmOffline = true
+          this.jsonObj = JSON.stringify(jsonObj)
+        }
+      } catch (e) {
+        this.$message.error(e.message)
+      }
     },
     submitBSC () {
-          let loading = this.$loading({
-            lock: true,
-            text: 'Loading',
-            spinner: 'el-icon-loading',
-            background: 'rgba(0, 0, 0, 0.7)'
-          })
-          let rawTx = {
-            nonce: this.ethProvider.utils.toHex(this.nonce),
-            gasPrice: this.ethProvider.utils.toHex(this.ruleFormBSC.gasPrice),
-            gasLimit: this.ethProvider.utils.toHex(this.ruleFormBSC.gasLimit),
-            to: bridgeContract,
-            // to: '0xe25bCec5D3801cE3a794079BF94adF1B8cCD802D',
-            value: '0x0',
-            data: this.contract.methods.move(bscManToken, ('0x' + WalletUtil.toWeiHex(new BigNumber(this.ruleForm.amount)))).encodeABI(),
-            chainId: ethChainId
+      let loading = this.$loading({
+        lock: true,
+        text: 'Loading',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      })
+      let rawTx = {
+        nonce: this.ethProvider.utils.toHex(this.nonce),
+        gasPrice: this.ethProvider.utils.toHex(this.ruleFormBSC.gasPrice),
+        gasLimit: this.ethProvider.utils.toHex(this.ruleFormBSC.gasLimit),
+        // eslint-disable-next-line no-undef
+        to: bridgeContract,
+        // to: '0xe25bCec5D3801cE3a794079BF94adF1B8cCD802D',
+        value: '0x0',
+        // eslint-disable-next-line no-undef
+        data: this.contract.methods.move(bscManToken, ('0x' + WalletUtil.toWeiHex(new BigNumber(this.ruleForm.amount)))).encodeABI(),
+        // eslint-disable-next-line no-undef
+        chainId: ethChainId
+      }
+      let tx = new Tx(rawTx)
+      let privateKey = this.wallet.privateKey
+      privateKey = Buffer.from(privateKey.indexOf('0x') > -1 ? privateKey.substring(2, privateKey.length) : privateKey, 'hex')
+      tx.sign(privateKey)
+      let serializedTx = tx.serialize()
+      this.ethProvider.eth.sendSignedTransaction('0x' + serializedTx.toString('hex'), (err, hash) => {
+        if (!err) {
+          loading.close()
+          this.getNonce()
+          this.$message.success(hash)
+          this.ruleForm = {
+            amount: '',
+            gasLimit: '150000'
           }
-          let tx = new Tx(rawTx)
-          let privateKey = this.wallet.privateKey
-          privateKey = Buffer.from(privateKey.indexOf('0x') > -1 ? privateKey.substring(2, privateKey.length) : privateKey, 'hex')
-          tx.sign(privateKey)
-          let serializedTx = tx.serialize()
-          this.ethProvider.eth.sendSignedTransaction('0x' + serializedTx.toString('hex'), (err, hash) => {
-            if (!err) {
-              loading.close()
-              this.getNonce()
-              this.$message.success(hash)
-              this.ruleForm = {
-                amount: '',
-                gasLimit: '150000'
-              }
-            } else {
-              loading.close()
-              this.$message.error(JSON.parse(err.message.split('Node error:')[1]).message)
-            }
-          })
-
+        } else {
+          loading.close()
+          this.$message.error(JSON.parse(err.message.split('Node error:')[1]).message)
+        }
+      })
     },
     getTxData () {
       try {
         console.log(this.bridgeFrom)
-       
+
         this.bridgeAddrress = this.bridgeAddrress.trim()
         if (this.bridgeFrom === 'bsc') {
           // var utils = ethers.utils
@@ -522,7 +523,7 @@ export default {
     letter-spacing: 0.13px;
     font-weight: bold;
     display: flex;
-    margin-left: 260px;
+    margin-left: 217px;
     margin-bottom: 0.5rem;
   }
   h6 {
@@ -530,7 +531,7 @@ export default {
     color: #2c365c;
     letter-spacing: 0.13px;
     display: flex;
-    margin-left: 260px;
+    margin-left: 217px;
     margin-bottom: 0.5rem;
     margin-top: 0.1rem;
   }
@@ -568,7 +569,7 @@ export default {
   }
   .back-tittle {
     position: relative;
-    left: 446px;
+    left: 400px;
     top: -21px;
     cursor: pointer;
     color: #1c51dd;

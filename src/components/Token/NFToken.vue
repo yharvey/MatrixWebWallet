@@ -133,7 +133,7 @@ export default {
     width: 26.5rem;
   }
   .greetings_input {
-    border-radius: 2px;
+    border-radius: 5px;
     margin-top: 2rem;
     margin-bottom: 0.5rem;
   }
@@ -149,8 +149,8 @@ export default {
     width: 12.5rem;
     height: 2.625rem;
     line-height: 2.625rem;
-    background: #415eaa;
-    border-radius: 2px;
+    background: #0066FF;
+    border-radius: 5px;
     cursor: pointer;
     font-size: 0.875rem;
     color: #ffffff;

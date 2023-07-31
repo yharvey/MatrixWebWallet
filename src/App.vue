@@ -20,12 +20,12 @@ body {
   margin:auto;
 }
 #app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  font-family: Open Sans;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #fff;
   background: #f2f4f8;
-  min-width: 1040px;
+  min-width: 960px;
 }
 </style>

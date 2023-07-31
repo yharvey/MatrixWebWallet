@@ -142,7 +142,7 @@ export default {
     button {
       background: #ffffff;
       border: 1px solid #1c51dd;
-      border-radius: 2px;
+      border-radius: 5px;
       width: 12.5rem;
       height: 2.63rem;
       margin-bottom: 2.5rem;
@@ -153,7 +153,7 @@ export default {
     }
     .button-color {
       margin-left: 1.5rem;
-      background: #415eaa;
+      background: #0066FF;
       color: #ffffff;
     }
     hr {

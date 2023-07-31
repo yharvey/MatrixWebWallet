@@ -84,7 +84,7 @@ export default {
 <style scoped lang="less">
 .cross-chain {
   margin: auto;
-  width: 1040px;
+  width: 960px;
   .box-card {
     /deep/.el-card__body {
       padding: 0px;
@@ -97,7 +97,7 @@ export default {
       font-size: 1rem;
       color: #9aa0b6;
       letter-spacing: 0.15px;
-      border-bottom: 1px #d5d7de solid;
+      border-bottom: 1px #0066FF solid;
       label {
         cursor: pointer;
       }

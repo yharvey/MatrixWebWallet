@@ -1,5 +1,6 @@
 <template>
   <div class="online-transfer-form align-center">
+    <h2>Transfer</h2>
     <el-form :rules="rules"
              ref="ruleForm"
              :model="ruleForm"
@@ -787,6 +788,10 @@ export default {
   /deep/.el-select {
     min-width: 114px;
   }
+}
+/deep/.el-input__inner  {
+  background: rgb(247, 247, 255);
+  border-radius: 5px;
 }
 /deep/.el-card__body {
   padding: 1.625rem 0 3rem 0;

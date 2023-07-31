@@ -4,7 +4,11 @@
       <unlock-wallet :title="$t('myWallet.queryWallet')"
                      @openWallet="openWallet('openWallet')"></unlock-wallet>
       <div>
-        <span class="keyStoneHintFont">{{$t('myWallet.msg1')}}&nbsp; <a @click="goPage('createWallet')">{{$t('myWallet.create')}}</a></span>
+        <span class="keyStoneHintFont">{{$t('myWallet.msg1')}}&nbsp;<br/>
+        </span>
+        <div>
+           <el-button round style="border:1px solid #007EFF;color:#007EFF;margin-top:1rem" @click="goPage('createWallet')">{{$t('myWallet.create')}}</el-button>
+        </div>
       </div>
     </el-card>
   </div>
@@ -14,7 +18,7 @@
 import UnlockWallet from '@/components/UnlockWallet/UnlockWallet'
 import store from '@/store'
 import WalletUtil from '@/assets/js/WalletUtil'
-import { mortgage } from '@/assets/js/config'
+import { stake } from '@/assets/js/config'
 import filter from '@/assets/js/filters'
 import * as storeLocal from 'store'
 export default {
@@ -38,6 +42,11 @@ export default {
         this.$router.push({ path: '/my-wallet/openWallet/myAssets' })
       }
     } catch (error) {
+    }
+    console.log('sssss', this.$router)
+    console.log(this.$store)
+    if (this.$store.state.newWalletUrl === '/newWallet') {
+      this.$router.push({ path: '/my-wallet/createWallet' })
     }
   },
   methods: {
@@ -75,7 +84,7 @@ export default {
           type: 'success',
           showClose: true
         })
-        if (historyUrl.indexOf('green-mining') > -1 || historyUrl.indexOf('ai-application') > -1 || historyUrl.indexOf('contract') > -1 || historyUrl.indexOf('jointMining') > -1) {
+        if (historyUrl.indexOf('green-mining') > -1 || historyUrl.indexOf('aiApplication') > -1 || historyUrl.indexOf('contract') > -1 || historyUrl.indexOf('jointMining') > -1) {
           if (historyUrl.indexOf('jointMining') > -1) {
             this.$router.push({ path: '/jointMining/jointMiningfirst' })
             return
@@ -104,8 +113,8 @@ export default {
         spinner: 'el-icon-loading',
         background: 'rgba(0, 0, 0, 0.7)'
       })
-      let abiArray = JSON.parse(mortgage.abi)
-      let contractAddress = mortgage.address
+      let abiArray = JSON.parse(stake.abi)
+      let contractAddress = stake.address
       let contract = this.httpProvider.man.contract(abiArray)
       let myContractInstance = contract.at(contractAddress)
       let deposit = myContractInstance.getDepositInfo(WalletUtil.getAddress(store.state.wallet.address), { currency: 'MAN' })

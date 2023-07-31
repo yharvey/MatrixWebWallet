@@ -41,7 +41,7 @@
 
 <script>
 import WalletUtil from '@/assets/js/WalletUtil'
-import { mortgage } from '@/assets/js/config'
+import { stake } from '@/assets/js/config'
 import CommonDialog from '@/components/CommonDialog/CommonDialog'
 import CommonDialogCancel from '@/components/CommonDialog/CommonDialogCancel'
 
@@ -89,8 +89,8 @@ export default {
       }
     },
     getDepositInfo () {
-      let abiArray = JSON.parse(mortgage.abi)
-      let contractAddress = mortgage.address
+      let abiArray = JSON.parse(stake.abi)
+      let contractAddress = stake.address
       let contract = this.httpProvider.man.contract(abiArray)
       let myContractInstance = contract.at(contractAddress)
       let deposit = myContractInstance.getDepositInfo(WalletUtil.getAddress(this.address), { currency: 'MAN' })

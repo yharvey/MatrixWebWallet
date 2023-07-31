@@ -11,122 +11,135 @@
       <el-input type="textarea"
                 :autosize="{ minRows: 4, maxRows: 6}"
                 v-model="transferJson"></el-input>
-      <div>
+      <div  style="display:flex;flex-direction: row;justify-content: left;margin-left: 0rem;">
         <div class="card_pos">
-          <div class="card_way"
+          <!-- keystore -->
+          <div class="card_way div_dis"
                @click="selectUnlock('keystore')">
+            <div class="check_font" @click="selectWay('keystore')">
+              <img v-if="unlockType === 'keystore'" src="../../assets/images/radiof.png" alt="">
+              <img v-if="unlockType !== 'keystore'" src="../../assets/images/radio.png" alt="">
+            </div>
             <div class="pic_dis">
               <img src="../../assets/images/keystone.png">
             </div>
-            <div class="check_font">
-              <input type="radio"
-                     v-model="unlockType"
-                     value="keystore">
-              <label>Keystore {{$t('myWallet.file')}}</label>
-            </div>
           </div>
+           <!-- privateKey -->
           <div class="card_way div_dis"
                @click="selectUnlock('privateKey')">
+            <div class="check_font" @click="selectWay('privateKey')">
+              <img v-if="unlockType === 'privateKey'" src="../../assets/images/radiof.png" alt="">
+              <img v-if="unlockType !== 'privateKey'" src="../../assets/images/radio.png" alt="">
+            </div>
             <div class="pic_dis">
               <img src="../../assets/images/private_key.png">
             </div>
-            <div class="check_font">
+            <!-- <div class="check_font">
               <input type="radio"
                      v-model="unlockType"
                      value="privateKey">
               <label>{{$t('myWallet.privateKey')}}</label>
-            </div>
+            </div> -->
           </div>
+           <!-- mnemonic -->
           <div class="card_way div_dis"
                @click="selectUnlock('mnemonic')">
+            <div class="check_font" @click="selectWay('mnemonic')">
+              <img v-if="unlockType === 'mnemonic'" src="../../assets/images/radiof.png" alt="">
+              <img v-if="unlockType !== 'mnemonic'" src="../../assets/images/radio.png" alt="">
+            </div>
             <div class="pic_dis">
               <img src="../../assets/images/mnemonic.png">
-            </div>
-            <div class="check_font">
-              <input type="radio"
-                     v-model="unlockType"
-                     value="mnemonic">
-              <label>{{$t('myWallet.mnemonic')}}</label>
-              <div class="font-blue">{{$t('myWallet.mnemonicMan')}}</div>
             </div>
           </div>
           <!--ledger硬件钱包 Card-->
           <div class="card_way div_dis"
                @click="selectUnlock('ledger')">
+            <div class="check_font" @click="selectWay('ledger')">
+              <img v-if="unlockType === 'ledger'" src="../../assets/images/radiof.png" alt="">
+              <img v-if="unlockType !== 'ledger'" src="../../assets/images/radio.png" alt="">
+            </div>
             <div class="pic_dis">
-              <img src="../../assets/images/ledger.svg">
-            </div>
-            <div class="check_font">
-              <input type="radio"
-                     v-model="unlockType"
-                     value="ledger">
-              <label>ledger</label>
+              <img src="../../assets/images/ledger.png">
             </div>
           </div>
-      </div>
+        </div>
 
-      <div v-show="unlockType == 'keystore'">
-        <div class="pass_input"
-             v-if="keyStore != null">
-          <input class="storeInput"
-                 :type="isShowPassword ? 'text' : 'password'"
-                 :placeholder="$t('myWallet.enterPassword')"
-                 v-model="password">
-          <div class="pass_pic"
-               :class="{'passwordClose': !isShowPassword, 'passwordOpen' : isShowPassword }"
-               @click="changeShowPassword">
-            <img
-              :src="isShowPassword ? require('../../assets/images/password_open.png') : require('../../assets/images/password_close.png')">
+        <div  class="cardcontent" v-show="unlockType == 'keystore'">
+          <h3 style="text-align: left;font-family: Poppins;">Keystore {{$t('myWallet.file')}}</h3>
+          <div class="pass_input"
+              v-if="keyStore != null">
+            <input class="storeInput"
+                  :type="isShowPassword ? 'text' : 'password'"
+                  :placeholder="$t('myWallet.enterPassword')"
+                  v-model="password">
+            <div class="pass_pic"
+                :class="{'passwordClose': !isShowPassword, 'passwordOpen' : isShowPassword }"
+                @click="changeShowPassword">
+              <img
+                :src="isShowPassword ? require('../../assets/images/password_open.png') : require('../../assets/images/password_close.png')">
+            </div>
           </div>
+          <div class="hint_error"
+              v-show="keystoreError">*{{$t('createWallet.passWordError')}}
+          </div>
+          <button class="common-button button-top"
+                  @click="selectFile"
+                  v-if="keyStore == null">{{$t('myWallet.selectWalletFile')}}...
+          </button>
+          <button class="common-button button-top"
+                  @click="unlockPassword"
+                  v-if="keyStore != null">{{$t('myWallet.openWallet')}}
+          </button>
+          <input type="file"
+                class="input-file"
+                ref="file"
+                @change="changeFile($event)"/>
         </div>
-        <div class="hint_error"
-             v-show="keystoreError">*{{$t('createWallet.passWordError')}}
+        <div class="cardcontent" v-show="unlockType == 'privateKey'">
+          <div>
+              <h3 style="text-align: left;">{{$t('myWallet.privateKey')}}</h3>
+              <textarea class="key_text"
+                        :placeholder="$t('myWallet.enterPrivate')"
+                        v-model="privateKey"
+                        rows="4"></textarea>
+          </div>
+          <div class="hint_error"
+              v-show="keyPrivateError">*{{$t('myWallet.privateIncorrect')}}
+          </div>
+          <button class="common-button button-top"
+                  @click="openWallet">{{$t('myWallet.openWallet')}}
+          </button>
         </div>
-        <button class="common-button button-top"
-                @click="selectFile"
-                v-if="keyStore == null">{{$t('myWallet.selectWalletFile')}}...
-        </button>
-        <button class="common-button button-top"
-                @click="unlockPassword"
-                v-if="keyStore != null">{{$t('myWallet.openWallet')}}
-        </button>
-        <input type="file"
-               class="input-file"
-               ref="file"
-               @change="changeFile($event)"/>
-      </div>
-      <div v-show="unlockType == 'privateKey'">
-        <div>
-            <textarea class="key_text"
-                      :placeholder="$t('myWallet.enterPrivate')"
-                      v-model="privateKey"
-                      rows="4"></textarea>
+        <div class="cardcontent" v-show="unlockType == 'mnemonic'">
+          <div>
+            <h3 style="text-align: left;">{{$t('myWallet.mnemonic')}}{{$t('myWallet.mnemonicMan')}}</h3>
+              <!-- <textarea class="key_text"
+                        :placeholder="$t('myWallet.enterMnemonic')"
+                        v-model="mnemonic"
+                        rows="4"></textarea> -->
+            <div class="mnemonic_list">
+              <ul>
+                <li v-for="(item,index) in mnemonicList"
+                    :key="index">
+                  <span>word{{index+1}}</span>
+                  <input type="text" :id="index" v-model="mnemonicList[index]">
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="hint_error"
+              v-show="keyPrivateError">*{{$t('myWallet.mnemonicIncorrect')}}
+          </div>
+          <button class="common-button button-top"
+                  @click="openWallet">{{$t('myWallet.openWallet')}}
+          </button>
         </div>
-        <div class="hint_error"
-             v-show="keyPrivateError">*{{$t('myWallet.privateIncorrect')}}
-        </div>
-        <button class="common-button button-top"
-                @click="openWallet">{{$t('myWallet.openWallet')}}
-        </button>
-      </div>
-      <div v-show="unlockType == 'mnemonic'">
-        <div>
-            <textarea class="key_text"
-                      :placeholder="$t('myWallet.enterMnemonic')"
-                      v-model="mnemonic"
-                      rows="4"></textarea>
-        </div>
-        <div class="hint_error"
-             v-show="keyPrivateError">*{{$t('myWallet.mnemonicIncorrect')}}
-        </div>
-        <button class="common-button button-top"
-                @click="openWallet">{{$t('myWallet.openWallet')}}
-        </button>
-      </div>
         <!--ledger-->
-        <div v-show="unlockType == 'ledger'"
-             class="ledger">
-          <h4>请连接您的ledger硬件钱包</h4>
+        <div class="cardcontent ledger" v-show="unlockType == 'ledger'">
+          <h3 style="text-align: left">Ledger</h3>
+          <!-- <h4 style="margin-top: 4rem;" >请连接您的ledger硬件钱包</h4> -->
+          <h4 style="margin-top: 4rem;" >Please connect your Ledger hardware wallet</h4>
           <div class="hint_error"
                v-show="keyPrivateError">*{{$t('myWallet.ledgerIncorrect')}}</div>
           <button class="common-button button-top"
@@ -164,7 +177,8 @@ export default {
       isEmit: true,
       offSwitch: false,
       address: '',
-      wallet: null
+      wallet: null,
+      mnemonicList: ['', '', '', '', '', '', '', '', '', '', '', '']
     }
   },
   props: {
@@ -182,6 +196,9 @@ export default {
     }
   },
   methods: {
+    selectWay (way) {
+      this.unlockType = way
+    },
     openSendSign () {
       this.$emit('changeConfirmOffline', false)
       this.$emit('openSendSign')
@@ -263,7 +280,19 @@ export default {
           this.signTransfer()
         }
       } else if (this.unlockType === 'mnemonic') {
-        if (this.mnemonic.split(' ').length !== 12) {
+        this.mnemonic = ''
+        for (let i = 0; i < 12; i++) {
+          if (this.mnemonicList[i] === '') {
+            this.keyPrivateError = true
+            return
+          }
+          if (i === 11) {
+            this.mnemonic = this.mnemonic + this.mnemonicList[i].replace(/\s*/g, '')
+          } else {
+            this.mnemonic = this.mnemonic + this.mnemonicList[i].replace(/\s*/g, '') + ' '
+          }
+        }
+        if (this.mnemonic.split(' ').length !== 24 && this.mnemonic.split(' ').length !== 12) {
           this.keyPrivateError = true
         } else {
           this.keyPrivateError = false
@@ -290,6 +319,7 @@ export default {
         })
         let tx = WalletUtil.createTx(JSON.parse(this.transferJson))
         tx.v = '0x' + chainId.toString(16)
+        // console.log(tx.serialize())
         LedgerUtil.sign(tx.serialize()).then((result) => {
           loading.close()
           let v = '0x' + (parseInt(result.v.toString('hex'), 16) + (chainId * 2 + 8)).toString(16)
@@ -334,6 +364,48 @@ export default {
 
 <style scoped lang="less">
   .offline-dialog {
+    .mnemonic_list {
+      width: 100%;
+      background: #FFFFFF;
+      margin: 0 auto;
+      ul {
+        display: flex;
+        flex-wrap: wrap;
+        margin-left: -3rem;
+        li {
+          width: 20%;
+          padding: 0 0;
+          box-sizing: border-box;
+          color: #333333;
+          border-radius: 1rem;
+          // height: 2rem;
+          margin-top: 0.1rem;
+          margin-bottom: 0.1rem;
+          margin-left: auto;
+          margin-right: 1rem;
+          text-align: left;
+          input {
+            background-color: #F7F7FF;
+            width: 100%;
+            text-indent: 0rem;
+            height: 3rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            color: rgba(120, 153, 206, 1);
+          }
+          input::-webkit-input-placeholder{
+                color: rgba(120, 153, 206, 1);
+              }
+          }
+          li::marker {
+            content: '';
+          }
+      }
+    }
+    .cardcontent{
+      width: auto;
+    }
     .ledger {
       h4 {
         margin-top: 1rem;
@@ -367,6 +439,9 @@ export default {
       text-align: center;
       .div_dis {
         margin-left: 2.5rem;
+        .mnemonic {
+          margin-bottom: 0;
+        }
       }
       label {
         font-size: 14px;
@@ -376,7 +451,7 @@ export default {
       padding: 0 2.5rem;
       text-align: center;
       img {
-        width: 2rem;
+        width: 4rem;
       }
       .button-top {
         margin: 2.5rem 0 0 0;
@@ -422,8 +497,15 @@ export default {
         border: 1px solid #f2f4f8;
       }
       .passwordOpen {
-        background: #415eaa;
-        border: 1px solid #415eaa;
+        background: #0066FF;
+        border: 1px solid #0066FF;
+      }
+    }
+    .check_font{
+      margin-top: 2.5rem;
+      margin-right: 2rem;
+      img{
+        width: 2rem;
       }
     }
   }

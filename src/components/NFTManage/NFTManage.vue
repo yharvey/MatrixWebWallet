@@ -26,7 +26,8 @@
             </template>
           </el-table-column>
           <el-table-column :label="$t('TokenID')"
-                           prop="states">
+                           prop="states"
+                            width="100">>
             <template slot-scope="scope">
               {{ scope.row.TokenID}}
             </template>
@@ -57,12 +58,14 @@
 </template>
 <script>
 import WalletUtil from '@/assets/js/WalletUtil'
+import { nftAbi } from '@/assets/js/config.js'
 import store from 'store'
 export default {
   name: 'nft-assets',
   data () {
     return {
       address: '',
+      ethaddress: '',
       balance: [],
       currency: '',
       selectedCurrency: {
@@ -120,18 +123,63 @@ export default {
       this.selectedCurrency.address = address
       this.selectedCurrency.balance = this.getBalance(address)
     },
+    ownerOf (nftContract, id) {
+      let abiArray = JSON.parse(nftAbi)
+      let contractAddress = nftContract
+      console.log(this.httpProvider.man)
+      let contract = this.httpProvider.man
+        .contract(abiArray)
+        .at(contractAddress)
+      console.log('contract', contract)
+      const result = contract.ownerOf(id, { currency: 'MAN' })
+      console.log('result', result.toString())
+      return result
+    },
+    tokenURI (nftContract, id) {
+      let abiArray = JSON.parse(nftAbi)
+      let contractAddress = nftContract
+      console.log(this.httpProvider.man)
+      let contract = this.httpProvider.man
+        .contract(abiArray)
+        .at(contractAddress)
+      console.log('contract', contract)
+      const result = contract.tokenURI(id, { currency: 'MAN' })
+      console.log('result', result.toString())
+      return result
+    },
     getNFTCoin () { // 获取NFT内容
       try {
-        // this.matrixCoin = this.httpProvider.man.getMatrixCoin('latest')
-        // if (this.matrixCoin != null && this.matrixCoin.length !== 0) {
-        //   this.currency = this.matrixCoin[0]
-        //   let address = WalletUtil.getCurrencyAddress(this.address, this.matrixCoin[0])
-        //   this.selectedCurrency.address = address
-        //   this.selectedCurrency.balance = this.getBalance(address)
-        // }
-
-        this.nftList = store.get('nftoken')
-        console.log(this.nftList)
+        this.nftList = []
+        console.log('address', this.ethaddress)
+        let nft = store.get('nftoken')
+        if (nft === undefined || nft === null) {
+          nft = [{nftContract: 'MAN.2gRxHsKucf5EeDNi9Bg87EGG7Zxft', nftName: 'MANIA'}]
+        } else {
+          nft.push({nftContract: 'MAN.2gRxHsKucf5EeDNi9Bg87EGG7Zxft', nftName: 'MANIA'})
+        }
+        console.log('nft store :', nft)
+        if (nft !== undefined) {
+          let abiArray = JSON.parse(nftAbi)
+          for (let i = 0; i < nft.length; i++) {
+            let contractAddress = nft[i].nftContract
+            // console.log(this.httpProvider.man)
+            let contract = this.httpProvider.man
+              .contract(abiArray)
+              .at(contractAddress)
+            // console.log('contract', contract)
+            const result = contract.getAllNft({ currency: 'MAN' })
+            console.log('result', result.toString())
+            for (let j = 1; j <= result; j++) {
+              if (this.ownerOf(contractAddress, j) === this.ethaddress) {
+                let uri = this.tokenURI(contractAddress, j)
+                // eslint-disable-next-line standard/object-curly-even-spacing
+                let nfta = {'nftName': nft[i].nftName, 'nftContract': contractAddress, 'TokenID': j, 'Detail': uri}
+                this.nftList.push(nfta)
+              }
+            }
+            console.log(this.nftList)
+          }
+        }
       } catch (e) {
         this.$message.error(e.message)
       }
@@ -141,11 +189,13 @@ export default {
     }
   },
   mounted () {
-    // if (this.$store.state.wallet != null) {
-    //   this.address = this.$store.getters.wallet.address
-    // } else {
-    //   this.address = this.$store.state.offline
-    // }
+    if (this.$store.state.wallet != null) {
+      this.address = this.$store.getters.wallet.address
+    } else {
+      this.address = this.$store.state.offline
+    }
+    console.log(this.address)
+    this.ethaddress = WalletUtil.getEthAddress(this.address)
     // this.balance = this.getBalance(this.address)
     this.getNFTCoin()
   }

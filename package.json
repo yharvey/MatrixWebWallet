@@ -14,7 +14,7 @@
     "build": "node --max_old_space_size=4096 build/build.js"
   },
   "dependencies": {
-    "@ledgerhq/hw-transport-webusb": "^4.68.2",
+    "@ledgerhq/hw-transport-webusb": "^6.27.8",
     "@ledgerhq/logs": "^4.68.2",
     "aiman": "0.0.12",
     "axios": "^0.18.0",
@@ -24,7 +24,7 @@
     "bip39": "^2.5.0",
     "bs58": "^4.0.1",
     "echarts": "^4.2.1",
-    "element-ui": "^2.6.0",
+    "element-ui": "^2.15.13",
     "es6-proxy-polyfill": "^1.2.1",
     "ethereumjs-tx": "^2.1.2",
     "ethers": "^4.0.48",
@@ -32,7 +32,7 @@
     "hdkey": "^1.1.1",
     "ipfs-api": "^26.1.2",
     "keythereum": "^1.0.4",
-    "ledger-matrix": "^1.1.4",
+    "@zondax/ledger-matrix": "^0.0.2",
     "less": "^3.9.0",
     "less-loader": "^4.1.0",
     "lodash": "^4.17.11",

@@ -5,11 +5,22 @@
         <!-- <label :class="{'active' : type === 'miningTransaction'}"
                @click="changeType('miningTransaction')">{{$t('greenMining.mining_revenue')}}&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</label> -->
         <label :class="{'active' : type === 'refund'}"
-               @click="changeType('refund')">{{$t('header.refund')}}&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</label>
+               @click="changeType('refund')">
+                <img style="width:32px;display: inline-block;
+    vertical-align: middle;" src="../../assets/images/alljoint.png" alt="">
+               <span style="display: inline-block;
+                        vertical-align: middle;
+                        line-height: 31px;">{{$t('header.refund')}}</span>
+               </label>
         <!-- <label :class="{'active' : type === 'campaignNode'}"
                @click="changeType('campaignNode')">{{$t('greenMining.campaign_node')}}&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</label> -->
-        <label :class="{'active' : type === 'secondaryKey'}"
-               @click="changeType('secondaryKey')">{{$t('greenMining.secondKey')}}</label>
+        <label :class="{'active' : type === 'secondaryKey'}" style="margin-left:50px"
+               @click="changeType('secondaryKey')">
+                <img  style="width:32px;display: inline-block;
+    vertical-align: middle;" src="../../assets/images/secondkey.png" alt="">
+               <span style="display: inline-block;
+                        vertical-align: middle;
+                        line-height: 31px;">{{$t('greenMining.secondKey')}}</span></label>
         <span class="back"
               @click="back"
               v-if="showBack">
@@ -106,7 +117,7 @@ export default {
 <style scoped lang="less">
 .green-mining {
   margin: auto;
-  width: 1040px;
+  width: 960px;
   .box-card {
     /deep/.el-card__body {
       padding: 0px;
@@ -119,7 +130,7 @@ export default {
       font-size: 1rem;
       color: #9aa0b6;
       letter-spacing: 0.15px;
-      border-bottom: 1px #d5d7de solid;
+      border-bottom: 1px #0066FF solid;
       label {
         cursor: pointer;
       }

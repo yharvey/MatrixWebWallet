@@ -160,10 +160,10 @@ export default {
 <style scoped lang="less">
 .jointRegular {
   margin: auto;
-  width: 1040px;
+  width: 960px;
   .back-tittle {
     position: relative;
-    left: 454px;
+    left: 400px;
     cursor: pointer;
     color: #1c51dd;
     font-size: 0.88rem;

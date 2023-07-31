@@ -1,8 +1,12 @@
 <template>
   <div class="digAccount">
     <div>
-      <label class="mortgage-font">{{$t('digAccount.deposit_account')}}： {{totalValue}} MAN</label>
-      <label class="transfer_font"
+      <label class="stake-font">{{$t('digAccount.deposit_account')}}： {{totalValue}} MAN</label>
+      <label class="transfer_font" style="background: #0066FF;
+    border: 2px solid #0033ff;
+    padding: 3px 20px;
+    border-radius: 15px;
+    color: #FFFFFF;"
                 @click="goPage('CampaignNode')">{{$t('digAccount.deposit')}}</label>
       <div class="role_font">
           <label >
@@ -14,80 +18,69 @@
             : {{signAddress}}
           </label>
       </div>
-      <table class="tab_info">
-        <tbody>
-          <tr class="tr1_info">
-            <td>
-              <div>
+      <div>
+        <div class="minningcard">
+            <div style="width:200px;margin-left:15px">
+              <div class="title">
                 <span> {{$t('digAccount.regular')}}</span>
               </div>
-              <div>
+              <div class="valuediv">
                 <label>{{regularDepositValue}} MAN</label>
               </div>
               <div>
-                <a @click="goPage('RegularDetail',{regularDepositList: regularDepositList,regularDepositValue:regularDepositValue})">{{$t('digAccount.withdraw_detail')}}</a>
+                <a class="abutton" @click="goPage('RegularDetail',{regularDepositList: regularDepositList,regularDepositValue:regularDepositValue})">{{$t('digAccount.withdraw_detail')}}</a>
               </div>
-            </td>
-          </tr>
-          <tr class="tr2_info">
-            <td>
-              <div>
+            </div>
+            <el-divider direction="vertical"></el-divider>
+            <div style="margin-left:15px;min-width:200px">
+              <div class="title">
                 <span>{{$t('digAccount.current')}}</span>
               </div>
-              <div>
+              <div class="valuediv">
                 <label> {{currentDepositValue}} MAN</label>
               </div>
               <div>
                 <a @click="goPage('CurrentWithdrawals',{currentDepositValue:currentDepositValue})"
-                   class="dis-right">{{$t('digAccount.withdraw_deposit')}}</a>
-                <a @click="goPage('RegularMortgage',{currentDepositValue:currentDepositValue})">{{$t('digAccount.change_regular')}}</a>
+                   class="abutton">{{$t('digAccount.withdraw_deposit')}}</a>
+                <a class="alink" @click="goPage('RegularMortgage',{currentDepositValue:currentDepositValue})">{{$t('digAccount.change_regular')}}</a>
               </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+            </div>
+            <el-divider direction="vertical" style="height:4rem;margin: 16px 8px;"></el-divider>
+        </div>
+      </div>
     </div>
-    <div class="mortgage-font">
+    <div class="stake-font">
       {{$t('digAccount.refund_account')}}： {{totalWithdrawalsValue}} MAN
     </div>
-    <table class="tab_info">
-      <tbody>
-        <tr class="tr1_info">
-          <td>
-            <div>
-              <span> {{$t('digAccount.regular')}}</span>
+     <div>
+        <div class="minningcard">
+            <div style="width:200px;margin-left:15px">
+              <div class="title">
+                <span> {{$t('digAccount.regular')}}</span>
+              </div>
+              <div class="valuediv">
+                <label>{{regularWithdrawalsValue}} MAN</label>
+              </div>
+              <div>
+                <a class="abutton" @click="goPage('RegularWithdrawals',{regularWithdrawalsList:regularWithdrawalsList})">{{$t('digAccount.withdrawals_detail')}}</a>
+              </div>
             </div>
-            <div>
-              <label>{{regularWithdrawalsValue}} MAN</label>
+             <el-divider direction="vertical" ></el-divider>
+            <div style="margin-left:15px;min-width:200px">
+              <div class="title">
+                <span>{{$t('digAccount.current')}}</span>
+              </div>
+              <div class="valuediv">
+                <label> {{currentWithdrawalsValue}} MAN</label>
+              </div>
+              <div>
+                <a class="abutton" @click="goPage('CurrentRefund',{currentWithdrawalsList:currentWithdrawalsList})"
+                  >{{$t('digAccount.withdrawals_detail')}}</a>
+              </div>
             </div>
-            <div>
-              <a @click="goPage('RegularWithdrawals',{regularWithdrawalsList:regularWithdrawalsList})">{{$t('digAccount.withdrawals_detail')}}</a>
-            </div>
-          </td>
-        </tr>
-        <tr class="tr2_info">
-          <td>
-            <div>
-              <span>{{$t('digAccount.current')}}</span>
-            </div>
-            <div>
-              <label> {{currentWithdrawalsValue}} MAN</label>
-            </div>
-            <div>
-              <a @click="goPage('CurrentRefund',{currentWithdrawalsList:currentWithdrawalsList})"
-                 class="dis-right">{{$t('digAccount.withdrawals_detail')}}</a>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <hr>
-    <!-- <div class="tip-font">
-      <p>{{$t('digAccount.tips1')}}</p>
-      <p>{{$t('digAccount.tips2')}}</p>
-      <p>{{$t('digAccount.tips3')}}</p>
-      <p>{{$t('digAccount.tips4')}}</p>
-    </div> -->
+            <el-divider direction="vertical" ></el-divider>
+        </div>
+      </div>
   </div>
 </template>
 
@@ -187,6 +180,63 @@ export default {
 <style scoped lang="less">
 .digAccount {
   padding: 1.5rem 0 2rem;
+  .minningcard{
+    background: rgba(242, 244, 248, 0.3);
+    background: rgb(255, 255, 255);
+    box-shadow: 0px 2px 48px rgba(0, 0, 0, 0.04);
+    border-radius:20px;
+    display: flex;
+    flex-direction: row;
+    margin-top: 30px;
+    margin-bottom: 50px;
+    padding: 1rem 1rem;
+    .title{
+      color: rgb(119, 131, 143);
+      font-family: Open Sans;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 16px;
+      letter-spacing: 0.8571429252624512px;
+      text-align: left;
+      text-transform: uppercase;
+    }
+    .valuediv{
+      margin-top: 10px;
+      margin-bottom: 10px;
+      color: rgb(37, 39, 38);
+      font-family: Open Sans;
+      font-size: 22px;
+      font-weight: 400;
+      line-height: 30px;
+      letter-spacing: 0.8799999952316284px;
+      text-align: left;
+      text-transform: uppercase;
+    }
+    .abutton{
+      background: rgb(0, 102, 255);
+      border: 2px solid rgb(0, 51, 255);
+      border-radius:13px;
+      padding: 0.1rem 1rem;
+      color: #FFFF;
+      font-family: Open Sans;
+      font-size: 11px;
+      font-weight: 400;
+      line-height: 15px;
+      letter-spacing: 0.785714328289032px;
+      cursor: pointer;
+    }
+    .alink{
+      margin-left: 30px;
+      color: rgb(0, 126, 255);
+      font-family: DM Sans;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 21px;
+      letter-spacing: 0px;
+      text-align: left;
+      cursor: pointer;
+    }
+  }
   .transfer_font {
     font-size: 0.875rem;
     color: #1c51dd;
@@ -200,13 +250,13 @@ export default {
   .dis-right2 {
     margin-right: 4rem;
   }
-  .mortgage-font {
-    font-size: 1.25rem;
+  .stake-font {
+    font-size: 1.55rem;
     color: #2c365c;
     letter-spacing: 0.18px;
     font-weight: bold;
   }
-  .mortgage-font1 {
+  .stake-font1 {
     margin: 1.5rem 0 1rem 5rem;
     font-size: 0.875rem;
     color: #2c365c;
@@ -236,6 +286,7 @@ export default {
     margin-top: 1rem;
     border-spacing: 0px;
     margin-bottom: 1.5rem;
+    border-radius: 5px;
     .tr1_info {
       background: rgba(242, 244, 248, 0.8);
       color: #2c365c;
@@ -243,7 +294,7 @@ export default {
       height: 3rem;
       font-size: 0.875rem;
       :first-child {
-        padding-left: 3rem;
+        padding-left: 0rem;
       }
       td {
         display: flex;
@@ -296,6 +347,10 @@ export default {
   hr {
     margin: 2.5rem 0 2.5rem 0;
     border: 1px solid #d5d7de;
+  }
+  /deep/.el-divider--vertical {
+    height: 4rem;
+    margin: 10px 18px;
   }
 }
 </style>

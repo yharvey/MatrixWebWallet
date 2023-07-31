@@ -3,7 +3,7 @@
     <div class="addForm">
       <h1 class="h1-dis">{{$t('startNode.name')}}</h1>
       <button class="common-button button-width"
-              @click="startCampaignNode">{{$t('startNode.mortgage-button')}}</button>
+              @click="startCampaignNode">{{$t('startNode.stake-button')}}</button>
     </div>
   </div>
 </template>
@@ -80,7 +80,7 @@ export default {
   .button-email {
     background: #ffffff;
     border: 1px solid #1c51dd;
-    border-radius: 2px;
+    border-radius: 5px;
     color: #1c51dd;
     width: 200px;
     height: 2.63rem;

@@ -21,7 +21,7 @@
           <el-table-column :label="$t('regularDetail.deposit_time')"
                            prop="depositeTime">
             <template slot-scope="scope">
-              {{scope.row.DepositType }}{{$t('regularDetail.month')}}
+              {{scope.row.DepositType*30 }}{{$t('regularDetail.month')}}
             </template>
           </el-table-column>
           <el-table-column :label="$t('regularDetail.deposit_value')"
@@ -85,7 +85,7 @@
 import SendTransfer from '@/assets/js/SendTransfer'
 import WalletUtil from '@/assets/js/WalletUtil'
 import TradingFuns from '@/assets/js/TradingFuns'
-import { mortgage, contract } from '@/assets/js/config'
+import { stake, contract } from '@/assets/js/config'
 import AllDialog from '@/components/TransferDialog/AllDialog'
 import OfflineDialog from '@/components/TransferDialog/TipOfflineDialog'
 import sendSign from '@/components/TransferDialog/sendSignTransfer'
@@ -152,7 +152,7 @@ export default {
     },
     confirm (obj) {
       try {
-        let tAbi = JSON.parse(mortgage.abi)
+        let tAbi = JSON.parse(stake.abi)
         for (let i in tAbi) {
           if (tAbi[i].type === 'function') {
             tAbi[i].inputs.map(function (i) {
@@ -295,7 +295,7 @@ export default {
   }
   .back-tittle {
     position: relative;
-    left: 446px;
+    left: 400px;
     top: -33px;
     cursor: pointer;
     color: #1c51dd;

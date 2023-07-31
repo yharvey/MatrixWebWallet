@@ -29,7 +29,7 @@
           </el-table-column>
           <el-table-column :label="$t('CampaignNode.timeLimit')">
             <template slot-scope="scope">
-              {{scope.row.DType==='——'?'——':scope.row.DType+$t('regularDetail.month')}}
+              {{scope.row.DType==='——'?'——':scope.row.DType*30+$t('regularDetail.month')}}
             </template>
           </el-table-column>
           <el-table-column :label="$t('transfer.amount')"
@@ -401,7 +401,7 @@ export default {
 <style scoped lang="less">
 .participantsDetail {
   margin: auto;
-  width: 1040px;
+  width: 960px;
   .box-card1 {
     .header {
       text-align: left;

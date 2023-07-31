@@ -2,14 +2,26 @@
   <div class="create-wallet card-width">
     <el-card>
       <div>
-        <h1>{{$t('createWallet.createWallet')}}</h1>
+        <h1 style="text-align: left;margin-left: 6rem;">{{$t('createWallet.createWallet')}}</h1>
         <span class="back-tittle"
               v-show="backTittle"
               @click="backPage">
           <i class="el-icon-arrow-left"></i>
           {{$t('openWallet.back')}}
         </span>
-        <div class="creat_walllet_hint">{{$t('createWallet.hint')}}</div>
+        <div class="creat_walllet_hint" style="display:flex;flex-direction: row;">
+          <div>
+             <span>
+            {{$t('createWallet.hint')}}
+             </span><br>
+            <span>
+              {{$t('createWallet.hint2')}}
+            </span>
+          </div>
+         <div style="margin-left:20px;margin-top:3px">
+           <img style="width:2rem" src="../../assets/images/ok.png" alt="">
+         </div>
+        </div>
         <span class="back"
               @click="back"
               v-if="backShow">
@@ -20,55 +32,60 @@
           <div class="item"
                @click="createWallet('keystore')"
                v-show="selectKeystore">
-            <div class="type_font">{{$t('createWallet.method1')}}</div>
-            <div class="card_way">
+            <!-- <div class="type_font">{{$t('createWallet.method1')}}</div> -->
+            <div class="card_way" style="height:none;width:6rem;margin-left:3rem;">
               <div class="pic_dis">
                 <img src="../../assets/images/keystone.png">
               </div>
-              <div class="check_font">
-                <label>Keystore {{$t('myWallet.file')}}</label>
-              </div>
             </div>
-            <div class="keyStore_explain">{{$t('createWallet.backupKeyStoreTip')}}</div>
+            <div class="keyStore_explain">
+              <h3 style="margin-block-start:0.3rem;margin-block-end: 0em;">Keystore {{$t('myWallet.file')}}</h3>
+              {{$t('createWallet.backupKeyStoreTip')}}
+              </div>
           </div>
           <div class="item"
                v-show="selectPrivateKey"
                @click="createWallet('privateKey')">
-            <div class="type_font">{{$t('createWallet.method2')}}</div>
-            <div class="card_way div_dis">
+            <!-- <div class="type_font">{{$t('createWallet.method2')}}</div> -->
+            <div class="card_way div_dis " style="height:none;width:6rem;margin-left:3rem;">
               <div class="pic_dis">
                 <img src="../../assets/images/private_key.png">
               </div>
-              <div class="check_font">
+              <!-- <div class="check_font">
                 <label>{{$t('myWallet.privateKey')}}</label>
-              </div>
+              </div> -->
             </div>
             <div translate="key_explain"
-                 class="keyStore_explain">{{$t('createWallet.backupPrivateKeyTip')}}</div>
+                 class="keyStore_explain">
+                 <h3 style="margin-block-start:0.3rem;margin-block-end: 0em;">{{$t('myWallet.privateKey')}}</h3>
+                 {{$t('createWallet.backupPrivateKeyTip')}}
+                 </div>
           </div>
           <div class="item"
                @click="createWallet('mnemonic')"
                v-show="selectMnemonicKey">
-            <div class="type_font">{{$t('createWallet.method3')}}</div>
-            <div class="card_way">
+            <!-- <div class="type_font">{{$t('createWallet.method3')}}</div> -->
+            <div class="card_way" style="height:none;width:6rem;margin-left:3rem;">
               <div class="pic_dis">
                 <img src="../../assets/images/mnemonic.png">
               </div>
-              <div class="check_font">
+              <!-- <div class="check_font">
                 <label>{{$t('myWallet.mnemonic')}}</label>
-              </div>
+              </div> -->
             </div>
-            <div class="keyStore_explain">{{$t('createWallet.backupMnemonicTip')}}</div>
+            <div class="keyStore_explain">
+              <h3 style="margin-block-start:0.3rem;margin-block-end: 0em;">{{$t('myWallet.mnemonic')}}</h3>
+              {{$t('createWallet.backupMnemonicTip')}}</div>
           </div>
         </div>
         <div v-show="!selectMnemonicKey && !selectKeystore && selectPrivateKey && !downShow">
-          <h5>{{$t('conversion.manAddress')}}</h5>
-          <div>
+          <h5 style="text-align: left;margin-left: 6rem;">{{$t('conversion.manAddress')}}</h5>
+          <div style="text-align: left;margin-left: 6rem;">
             <input class="addressInput"
                    v-model="wallet.address"
                    readonly>
           </div>
-          <div class="pass_input">
+          <div class="pass_input" style="text-align: left;margin-left: 6rem;">
             <input class="storeInput"
                    v-model="privateKey"
                    readonly>
@@ -86,36 +103,45 @@
           </div>
         </div>
         <div v-show="selectMnemonicKey && !selectKeystore && !selectPrivateKey && !downShow">
-          <h5>{{$t('conversion.manAddress')}}</h5>
-          <div>
+          <h5 style="text-align: left;margin-left: 6rem;">{{$t('conversion.manAddress')}}</h5>
+          <div style="text-align: left;margin-left: 6rem;">
             <input class="addressInput"
                    v-model="wallet.address"
                    readonly>
           </div>
-          <div class="pass_input">
-            <input class="storeInput"
-                   v-model="mnemonic">
-            <div class="copy_btn"
-                 v-clipboard="mnemonic"
-                 @success="copySuccess"
-                 @error="copyError">
-              {{$t('createWallet.copy')}}
-            </div>
+          <h5 style="text-align: left;margin-left: 6rem;">{{'Write down these words'}}</h5>
+          <div class="mnemonic_list">
+            <ul>
+              <li v-for="(item,index) in mnemonicList"
+                  :key="index">
+                <!-- <input type="text" :id="index" disabled :value="item"> -->
+                <span>{{index+1}}. {{item}}</span>
+              </li>
+            </ul>
+          </div>
+        <div style="display:flex;flex-direction: row;margin-left:6rem">
+          <div class="file_btn"
+                style="margin-bottom: -3rem; width: 150px;margin-right:100px"
+                  v-clipboard="mnemonic"
+                  @success="copySuccess"
+                  @error="copyError">
+                {{$t('createWallet.copy')}}(not recommend)
           </div>
           <div class="file_btn"
-               style="margin-bottom: -3rem;"
-               @click="saveMnemonic">
+              style="margin-bottom: -3rem;"
+              @click="saveMnemonic">
             {{$t('createWallet.saveMnemonic')}}
           </div>
         </div>
+        </div>
         <div v-show="!selectMnemonicKey && selectKeystore && !selectPrivateKey && !downShow">
-          <h5>{{$t('conversion.manAddress')}}</h5>
-          <div>
+          <h5 style="text-align: left;margin-left: 6rem;">{{$t('conversion.manAddress')}}</h5>
+          <div style="text-align: left;margin-left: 6rem;">
             <input class="addressInput"
                    v-model="wallet.address"
                    readonly>
           </div>
-          <div class="pass_input">
+          <div class="pass_input" style="text-align: left;margin-left: 6rem;">
             <input :placeholder="$t('myWallet.enterPassword')"
                    :type="isShowPassword ? 'text' : 'password'"
                    v-model="password"
@@ -123,7 +149,7 @@
             <div class="pass_pic"
                  :class="{'passwordClose': !isShowPassword, 'passwordOpen' : isShowPassword }"
                  @click="changeShowPassword">
-              <img :src="isShowPassword ? require('../../assets/images/password_open.png') : require('../../assets/images/password_close.png')">
+              <img style="width:1.5rem;" :src="isShowPassword ? require('../../assets/images/password_open.png') : require('../../assets/images/password_close.png')">
             </div>
           </div>
           <div class="error_hint"
@@ -168,12 +194,15 @@ export default {
       mnemonic: this.$store.state.mnemonic,
       backShow: false,
       wallet: {},
-      backTittle: true
+      backTittle: true,
+      mnemonicList: ['kjsdf', 'dfdfd', 'dddd', 'eeee', 'kjsdf', 'dfdfd', 'dddd', 'eeee', 'kjsdf', 'dfdfd', 'dddd', 'eeee']
     }
   },
   mounted () {
     let privateKey = WalletUtil.mnemonicToPrivateKey(this.mnemonic).toString('hex')
     this.wallet = WalletUtil.privateKeyToWallet(privateKey)
+    console.log(this.$store.state.mnemonic)
+    this.mnemonicList = this.$store.state.mnemonic.split(' ')
   },
   methods: {
     copySuccess () {
@@ -272,11 +301,50 @@ export default {
 
 <style scoped lang="less">
 .create-wallet {
+   .mnemonic_list {
+    width: 90%;
+    background: #FFFFFF;
+    margin: 0 auto;
+    ul {
+      display: flex;
+      flex-wrap: wrap;
+      li {
+        width: 22%;
+        padding: 15px 0;
+        box-sizing: border-box;
+        background-color: #F7F7FF;
+        color: #333333;
+        border-radius: 1rem;
+        // height: 2rem;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+        input {
+          background-color: unset;
+          width: 100%;
+          text-indent: 1rem;
+          height: 3rem;
+          border: none;
+          font-size: 0.9rem;
+          color: rgba(120, 153, 206, 1);
+        }
+        input::-webkit-input-placeholder{
+              color: rgba(120, 153, 206, 1);
+            }
+        }
+        li::marker {
+          content: '';
+        }
+    }
+  }
   .creat_walllet_hint {
     font-size: 14px;
     color: #9298ae;
     letter-spacing: 0.13px;
-    text-align: center;
+    text-align: left;
+    margin-left: 6rem;
   }
   .keyStoneHintFont {
     font-size: 0.75rem;
@@ -285,16 +353,26 @@ export default {
     text-align: center;
   }
   .card_pos {
+    text-align: center;
+    // align-items: center;
+    margin-left: 6rem;
     .item {
+      margin-top: 20px;
+      // margin-left: 6rem;
+       border: 1px solid #0066FF;
+       border-radius: 5px;
+      width: 70%;
       cursor: pointer;
+      display: flex;
+      flex-direction: row;
       .keyStore_explain {
-        width: 12rem;
-        text-align: center;
+        width: 27rem;
+        text-align: left;
       }
     }
-    .item:not(:first-child) {
-      margin-left: 1rem;
-    }
+    // .item:not(:first-child) {
+    //   margin-left: 1rem;
+    // }
   }
   .type_font {
     font-size: 0.875rem;
@@ -319,7 +397,7 @@ export default {
     background: #f2f4f8;
   }
   .passwordOpen {
-    background: #415eaa;
+    background: #0066FF;
   }
   a {
     font-size: 12px;
@@ -330,7 +408,7 @@ export default {
     cursor: pointer;
   }
   img {
-    width: 2rem;
+    width: 4rem;
   }
   label {
     font-size: 0.875rem;
@@ -340,11 +418,11 @@ export default {
   .pass_input {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    // justify-content: center;
     margin-top: 1rem;
   }
   .storeInput {
-    width: 23.125rem;
+    width: 32.125rem;
     height: 2.5rem;
     padding: 0;
     border: 1px solid #d5d7de;
@@ -353,7 +431,9 @@ export default {
     width: 26.5rem;
     height: 2.5rem;
     padding: 0;
-    border: 1px solid #d5d7de;
+    border: 1px solid #F7F7FF;
+    color: #1C51DD;
+    background: #F7F7FF;
     margin-top: 0.5rem;
   }
   .error_hint {
@@ -369,7 +449,7 @@ export default {
   .download_btn {
     background: #ffffff;
     border: 1px solid #1c51dd;
-    border-radius: 2px;
+    border-radius: 5px;
     width: 26.5rem;
     height: 2.625rem;
     line-height: 2.625rem;
@@ -386,7 +466,7 @@ export default {
     height: 2.5rem;
     line-height: 2.5rem;
     border: 1px solid #d5d7de;
-    border-radius: 2px;
+    border-radius: 5px;
     border-left: none;
     font-size: 0.875rem;
     border-left: none;
@@ -416,7 +496,7 @@ export default {
   }
   .back-tittle {
     position: relative;
-    left: 470px;
+    left: 364px;
     top: -33px;
     cursor: pointer;
     color: #1c51dd;

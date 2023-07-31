@@ -12,11 +12,15 @@ button {
 }
 
 .body-card {
-  width: 1040px;
+  width: 960px;
 }
 
 .body-card .el-card__body {
   padding: 0;
+}
+.el-card {
+  border-radius: 40px;
+  min-height: 500px;
 }
 
 .align-center {
@@ -28,8 +32,8 @@ button {
 .common-button {
   width: 26.5rem;
   height: 2.63rem;
-  background: #415eaa;
-  border-radius: 2px;
+  background: #0066FF;
+  border-radius: 5px;
   border: none;
   font-size: 0.88rem;
   color: #fff;
@@ -44,7 +48,7 @@ button {
 }
 
 .card-width {
-  width: 1040px;
+  width: 960px;
 }
 
 h1 {
@@ -53,20 +57,30 @@ h1 {
   letter-spacing: 0.18px;
   margin: 0 0 0.5rem 0;
 }
+.el-input__inner{
+  background: rgb(247, 247, 255);
+  border-radius: 5px;
+  border:0rem;
+}
+
 
 .card_pos {
   display: flex;
-  flex-direction: row;
+  /* flex-direction: row; */
+  flex-direction: column;
   justify-content: center;
-  margin-top: 2.5rem;
+  height: 100%;
+  /* margin-top: 0.5rem; */
 }
 
 .card_way {
+  display: flex;
+  flex-direction: row;
   background: #fff;
-  border: 1px solid #d5d7de;
-  border-radius: 3px;
+  /* border: 1px solid #d5d7de; */
+  /* border-radius: 3px; */
   width: 12rem;
-  height: 7rem;
+  height: 6rem;
 }
 
 .pic_dis {
@@ -77,18 +91,18 @@ h1 {
 /* 私钥输入框 */
 .key_text {
   border: 1px solid #ebecf2;
-  width: 26.5rem;
-  height: 5.25rem;
+  width: 24.5rem;
+  height: 10.25rem;
   margin: 0 auto;
-  background: #fff;
+  background: #F7F7FF;
   border-radius: 3px;
   margin-top: 2.5rem;
 }
 
 .file_btn {
-  background: #415eaa;
-  border-radius: 2px;
-  width: 424px;
+  background: #0066FF;
+  border-radius: 5px;
+  width: 324px;
   height: 42px;
   line-height: 42px;
   font-size: 0.875rem;

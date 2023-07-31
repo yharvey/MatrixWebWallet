@@ -306,7 +306,7 @@ export default {
     letter-spacing: 0.13px;
     font-weight: bold;
     display: flex;
-    margin-left: 260px;
+    margin-left: 217px;
     margin-bottom: 1rem;
   }
   .h4-delDis {

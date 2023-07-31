@@ -10,7 +10,7 @@ import VueI18n from 'vue-i18n'
 import ElementUI from 'element-ui'
 import filters from './assets/js/filters'
 import http from './assets/js/http'
-import { chainUrl, ethUrl, ipfsUrl, ipfsPort, protocol } from './assets/js/config' // 配置
+import { ethUrl, ipfsUrl, ipfsPort, protocol } from './assets/js/config' // 配置
 import VueClipboards from 'vue-clipboards'
 import 'element-ui/lib/theme-chalk/index.css'
 import { getCookie } from './assets/js/cookie'
@@ -23,6 +23,8 @@ import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
 // 富文本
+
+import stored from 'store'
 
 // aiman API
 import HttpProvider from '@/assets/js/HttpProvider'
@@ -38,6 +40,14 @@ import enLocale from './assets/lang/en'
 import elementEnLocale from 'element-ui/lib/locale/lang/en' // element-ui lang
 import elementZhLocale from 'element-ui/lib/locale/lang/zh-CN'// element-ui lang
 
+let chain = stored.get('chainUrl')
+console.log(chain)
+var chainUrl = ''
+if (chain === undefined) {
+  chainUrl = 'https://api00.matrix.io'
+} else {
+  chainUrl = chain
+}
 // aiman API
 Vue.prototype.httpProvider = new HttpProvider(chainUrl)
 
