@@ -113,7 +113,7 @@
       </div>
       <!--ledger-->
       <div  class="ledger cardcontent" v-show="unlockType == 'ledger'">
-        <h4>请连接您的ledger硬件钱包</h4>
+        <h4 style="margin-top: 4rem;">Please connect your Ledger hardware wallet</h4>
         <div class="hint_error"
              v-show="keyPrivateError">*{{$t('myWallet.ledgerIncorrect')}}</div>
         <div class="file_btn"

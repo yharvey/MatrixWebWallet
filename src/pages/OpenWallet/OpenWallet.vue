@@ -100,7 +100,7 @@ export default {
   }
   .transaction_records {
     color: #989a9c;
-    margin-left: 1rem;
+    //margin-left: 1rem;
     cursor: pointer;
     display: inline-block;
     vertical-align: top;

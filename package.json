@@ -32,7 +32,7 @@
     "hdkey": "^1.1.1",
     "ipfs-api": "^26.1.2",
     "keythereum": "^1.0.4",
-    "ledger-matrix": "^1.1.4",
+    "@zondax/ledger-matrix": "^0.0.2",
     "less": "^3.9.0",
     "less-loader": "^4.1.0",
     "lodash": "^4.17.11",

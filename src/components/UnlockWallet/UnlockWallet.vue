@@ -36,7 +36,7 @@
         <!--助记词 Card-->
         <div class="card_way div_dis"
              @click="selectUnlock('mnemonic')">
-          <div class="check_font" @click="selectWay('privateKey')">
+          <div class="check_font" @click="selectWay('mnemonic')">
             <img v-if="unlockType === 'mnemonic'" src="../../assets/images/radiof.png" alt="">
             <img v-if="unlockType !== 'mnemonic'" src="../../assets/images/radio.png" alt="">
           </div>
@@ -47,7 +47,7 @@
         <!--ledger硬件钱包 Card-->
         <div class="card_way div_dis"
              @click="selectUnlock('ledger')">
-          <div class="check_font" @click="selectWay('privateKey')">
+          <div class="check_font" @click="selectWay('ledger')">
             <img v-if="unlockType === 'ledger'" src="../../assets/images/radiof.png" alt="">
             <img v-if="unlockType !== 'ledger'" src="../../assets/images/radio.png" alt="">
           </div>
@@ -126,7 +126,7 @@
       <!--ledger-->
       <div class="cardcontent ledger" v-show="unlockType == 'ledger'">
         <h3 style="text-align: left">Ledger</h3>
-        <h4>请连接您的ledger硬件钱包</h4>
+        <h4 style="margin-top: 4rem;">Please connect your Ledger hardware wallet</h4>
         <div class="hint_error"
              v-show="keyPrivateError">*{{$t('myWallet.ledgerIncorrect')}}</div>
         <div class="file_btn"
