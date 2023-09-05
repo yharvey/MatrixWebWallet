@@ -149,6 +149,8 @@
 <script>
 import WalletUtil from '@/assets/js/WalletUtil'
 import LedgerUtil from '@/assets/js/LedgerUtil'
+// import MatrixAIApp from '@zondax/ledger-matrix'
+// import TransportWebUSB from '@ledgerhq/hw-transport-webusb'
 import Validate from '@/assets/js/Validate'
 import store from '@/store'
 import Bus from '@/assets/js/Bus'
@@ -252,7 +254,7 @@ export default {
       this.keyPrivateError = false
       this.$refs.file.value = ''
     },
-    openWallet () {
+    async openWallet () {
       if (this.unlockType === 'privateKey') {
         if (!/^[0-9a-fA-F]{64}$/.test(this.privateKey.trim())) {
           this.keyPrivateError = true
@@ -314,6 +316,24 @@ export default {
           spinner: 'el-icon-loading',
           background: 'rgba(0, 0, 0, 0.7)'
         })
+        // test case
+        // const PATH = "m/44'/318'/0'/0/0"
+        // let transport = await TransportWebUSB.create()
+        // const BLOB = Buffer.from(
+        //   'f84d8710000000000000850430e2340083033450a14d414e2e3246745a483939796f533747695564516a64514c553534364e65474739880de0b6b3a76400008001808080808464c3d5f5c4c38080c0',
+        //   'hex'
+        // )
+        // const MatrixAI = new MatrixAIApp(transport)
+
+        // // // Try to sign a transaction and log the response
+        // const signResponse = await MatrixAI.sign(PATH, BLOB)
+        // console.log('sign', signResponse.returnCode)
+        // console.log(signResponse)
+        // console.log(Buffer.from(signResponse.signatureDER).toString('hex'))
+        // console.log(signResponse.signatureDER.toString('ascii'))
+        // console.log(signResponse.signatureRSV.toString('hex'))
+        // loading.close()
+        //
         LedgerUtil.getAddress(0, 0, 0).then((result) => {
           loading.close()
           let wallet = {

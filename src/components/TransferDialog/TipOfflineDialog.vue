@@ -319,12 +319,14 @@ export default {
         })
         let tx = WalletUtil.createTx(JSON.parse(this.transferJson))
         tx.v = '0x' + chainId.toString(16)
-        // console.log(tx.serialize())
         LedgerUtil.sign(tx.serialize()).then((result) => {
           loading.close()
-          let v = '0x' + (parseInt(result.v.toString('hex'), 16) + (chainId * 2 + 8)).toString(16)
-          let r = '0x' + result.r.toString('hex')
-          let s = '0x' + result.s.toString('hex')
+          // let v = '0x' + (parseInt(result.v.toString('hex'), 16) + (chainId * 2 + 8)).toString(16)
+          // let r = '0x' + result.r.toString('hex')
+          // let s = '0x' + result.s.toString('hex')
+          const r = '0x' + Buffer.from(result.signatureRSV.slice(0, 32)).toString('hex')
+          const s = '0x' + Buffer.from(result.signatureRSV.slice(32, 64)).toString('hex')
+          const v = '0x' + (parseInt(Buffer.from(result.signatureRSV.slice(64)).toString('hex'), 16) + (chainId * 2 + 8 + 27)).toString(16)
           tx.s = s
           tx.r = r
           tx.v = v
